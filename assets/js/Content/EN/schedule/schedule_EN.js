@@ -17,6 +17,7 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
   "junior-second|011174.01": "Minor",
   "junior-second|CS2002.03": "Minor",
   "junior-second|CS4017.01": "Minor",
+  "junior-summer|CS4029.01": "Minor",
   "junior-first|Null": "Micro-minor",
   "junior-second|Null": "Micro-minor",
   "junior-second|EE3502.01": "TA",
@@ -52,21 +53,24 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                 Select Semester <i class="fas fa-caret-down"></i>
               </button>
               <div class="semester-dropdown-content">
-                <a href="#" data-semester="freshman-first">Freshman Year - First Semester</a>
-                <a href="#" data-semester="freshman-second">Freshman Year - Second Semester</a>
-                <a href="#" data-semester="sophomore-first">Sophomore Year - First Semester</a>
-                <a href="#" data-semester="sophomore-second">Sophomore Year - Second Semester</a>
-                <a href="#" data-semester="junior-first">Junior Year - First Semester</a>
-                <a href="#" data-semester="junior-second">Junior Year - Second Semester</a>
-                <a href="#" data-semester="senior-first">Senior Year - First Semester</a>
-                <a href="#" data-semester="senior-second">Senior Year - Second Semester</a>
+                <a href="#" data-semester="freshman-first">Freshman Year - First Semester (2023 Fall)</a>
+                <a href="#" data-semester="freshman-second">Freshman Year - Second Semester (2024 Spring)</a>
+                <a href="#" data-semester="freshman-summer">Freshman Year - Mini Semester (2024 Summer)</a>
+                <a href="#" data-semester="sophomore-first">Sophomore Year - First Semester (2024 Fall)</a>
+                <a href="#" data-semester="sophomore-second">Sophomore Year - Second Semester (2025 Spring)</a>
+                <a href="#" data-semester="sophomore-summer">Sophomore Year - Mini Semester (2025 Summer)</a>
+                <a href="#" data-semester="junior-first">Junior Year - First Semester (2025 Fall)</a>
+                <a href="#" data-semester="junior-second">Junior Year - Second Semester (2026 Spring)</a>
+                <a href="#" data-semester="junior-summer">Junior Year - Mini Semester (2026 Summer)</a>
+                <a href="#" data-semester="senior-first">Senior Year - First Semester (2026 Fall)</a>
+                <a href="#" data-semester="senior-second">Senior Year - Second Semester (2027 Spring)</a>
               </div>
             </div>
           </div>
           
           <!-- Freshman Year - First Semester -->
           <div class="semester-timetable-container active" id="freshman-first">
-            <h3 class="semester-title">Freshman Year - First Semester</h3>
+            <h3 class="semester-title">Freshman Year - First Semester (2023 Fall)</h3>
             <div class="timetable-container">
               <table class="timetable" id="freshman-first-timetable">
                 <thead>
@@ -581,7 +585,7 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
           
           <!-- Freshman Year - Second Semester -->
           <div class="semester-timetable-container" id="freshman-second">
-            <h3 class="semester-title">Freshman Year - Second Semester</h3>
+            <h3 class="semester-title">Freshman Year - Second Semester (2024 Spring)</h3>
             <div class="timetable-container">
               <table class="timetable" id="freshman-second-timetable">
                 <thead>
@@ -1154,9 +1158,189 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
             </div>
           </div>
 
+          <!-- Freshman Year - Mini Semester -->
+          <div class="semester-timetable-container" id="freshman-summer">
+            <h3 class="semester-title">Freshman Year - Mini Semester (2024 Summer)</h3>
+            <div class="timetable-container">
+              <table class="timetable" id="freshman-summer-timetable">
+                <thead>
+                  <tr>
+                    <th>Period</th>
+                    <th>Period Number</th>
+                    <th>Monday</th>
+                    <th>Tuesday</th>
+                    <th>Wednesday</th>
+                    <th>Thursday</th>
+                    <th>Friday</th>
+                    <th>Saturday</th>
+                    <th>Sunday</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Morning Section -->
+                  <tr>
+                    <td rowspan="5" class="period-header">Morning</td>
+                    <td class="period-number">1</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td class="period-number">2</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td class="period-number">3</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td class="period-number">4</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td class="period-number">5</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  
+                  <!-- Afternoon Section -->
+                  <tr>
+                    <td rowspan="5" class="period-header">Afternoon</td>
+                    <td class="period-number">6</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td class="period-number">7</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td class="period-number">8</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td class="period-number">9</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td class="period-number">10</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  
+                  <!-- Evening Section -->
+                  <tr>
+                    <td rowspan="3" class="period-header">Evening</td>
+                    <td class="period-number">11</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td class="period-number">12</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td class="period-number">13</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- My Classes Table for Freshman Mini Semester -->
+            <div class="my-classes-container">
+              <h3 style="text-align: center; margin-top: 20px;">My Classes</h3>
+              <table class="my-classes-table">
+                <thead>
+                  <tr>
+                    <th>Course Number</th>
+                    <th>Course Name</th>
+                    <th>Instructor</th>
+                    <th>Time</th>
+                    <th>Credits</th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
           <!-- Sophomore Year - First Semester -->
           <div class="semester-timetable-container" id="sophomore-first">
-            <h3 class="semester-title">Sophomore Year - First Semester</h3>
+            <h3 class="semester-title">Sophomore Year - First Semester (2024 Fall)</h3>
             <div class="timetable-container">
               <table class="timetable" id="sophomore-first-timetable">
                 <thead>
@@ -1592,7 +1776,7 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
           
           <!-- Sophomore Year - Second Semester -->
           <div class="semester-timetable-container" id="sophomore-second">
-            <h3 class="semester-title">Sophomore Year - Second Semester</h3>
+            <h3 class="semester-title">Sophomore Year - Second Semester (2025 Spring)</h3>
             <div class="timetable-container">
               <table class="timetable" id="sophomore-second-timetable">
                 <thead>
@@ -2035,9 +2219,189 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
             </div>
           </div>
 
+          <!-- Sophomore Year - Mini Semester -->
+          <div class="semester-timetable-container" id="sophomore-summer">
+            <h3 class="semester-title">Sophomore Year - Mini Semester (2025 Summer)</h3>
+            <div class="timetable-container">
+              <table class="timetable" id="sophomore-summer-timetable">
+                <thead>
+                  <tr>
+                    <th>Period</th>
+                    <th>Period Number</th>
+                    <th>Monday</th>
+                    <th>Tuesday</th>
+                    <th>Wednesday</th>
+                    <th>Thursday</th>
+                    <th>Friday</th>
+                    <th>Saturday</th>
+                    <th>Sunday</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Morning Section -->
+                  <tr>
+                    <td rowspan="5" class="period-header">Morning</td>
+                    <td class="period-number">1</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td class="period-number">2</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td class="period-number">3</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td class="period-number">4</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td class="period-number">5</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  
+                  <!-- Afternoon Section -->
+                  <tr>
+                    <td rowspan="5" class="period-header">Afternoon</td>
+                    <td class="period-number">6</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td class="period-number">7</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td class="period-number">8</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td class="period-number">9</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td class="period-number">10</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  
+                  <!-- Evening Section -->
+                  <tr>
+                    <td rowspan="3" class="period-header">Evening</td>
+                    <td class="period-number">11</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td class="period-number">12</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td class="period-number">13</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- My Classes Table for Sophomore Mini Semester -->
+            <div class="my-classes-container">
+              <h3 style="text-align: center; margin-top: 20px;">My Classes</h3>
+              <table class="my-classes-table">
+                <thead>
+                  <tr>
+                    <th>Course Number</th>
+                    <th>Course Name</th>
+                    <th>Instructor</th>
+                    <th>Time</th>
+                    <th>Credits</th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
           <!-- Junior Year - First Semester -->
           <div class="semester-timetable-container" id="junior-first">
-            <h3 class="semester-title">Junior Year - First Semester</h3>
+            <h3 class="semester-title">Junior Year - First Semester (2025 Fall)</h3>
             <div class="timetable-container">
               <table class="timetable" id="junior-first-timetable">
                 <!-- Empty timetable structure same as freshman-second -->
@@ -2543,7 +2907,7 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                   <tr>
                     <td>Null</td>
                     <td>Mathematical Foundations of AI (AI+X Micro-minor Foundation Course)</td>
-                    <td>Zhengxing Huang, Junfei Dai</td>
+                    <td>Zhengxing Huang; Junfei Dai</td>
                     <td>……</td>
                     <td>1</td>
                   </tr>
@@ -2561,7 +2925,7 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
           
           <!-- Junior Year - Second Semester -->
           <div class="semester-timetable-container" id="junior-second">
-            <h3 class="semester-title">Junior Year - Second Semester</h3>
+            <h3 class="semester-title">Junior Year - Second Semester (2026 Spring)</h3>
             <div class="timetable-container">
               <table class="timetable" id="junior-second-timetable">
                 <!-- Empty timetable structure same as freshman-second -->
@@ -2972,7 +3336,7 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                   <tr>
                     <td>BIO1509G.02</td>
                     <td>Life Science: Human Microbiota and Health</td>
-                    <td>Guorong Zhang, Shu Zhu</td>
+                    <td>Guorong Zhang; Shu Zhu</td>
                     <td>5(8-10), 2-8, 10-13 week(s)</td>
                     <td>2</td>
                   </tr>
@@ -2993,7 +3357,7 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                   <tr>
                     <td>011145.02</td>
                     <td>Computer Organization</td>
-                    <td>Jianliang Lu, Junxia Zhang, Yanen Fan, Yanan Zhao</td>
+                    <td>Jianliang Lu; Junxia Zhang; Yanen Fan; Yanan Zhao</td>
                     <td>1(6-7), 1-5, 7-9, 11-15 week(s);<br> 3(6-7), 1-15 week(s);<br> 1(11-13), 1-5, 7-9, 11-15 week(s);<br> 6(11-13), 10 week(s)</td>
                     <td>4</td>
                   </tr>
@@ -3021,14 +3385,14 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                   <tr>
                     <td>001046.01</td>
                     <td>Numerical Analysis</td>
-                    <td>Yan Xu, Yinhua Xia</td>
+                    <td>Yan Xu; Yinhua Xia</td>
                     <td>2(8-9), 1-9, 11-12 week(s);<br> 4(3-5), 1-12 week(s)</td>
                     <td>3</td>
                   </tr>
                   <tr>
                     <td>001139.01</td>
                     <td>Mathematical Modeling</td>
-                    <td>Renjie Chen, Yumeng Liu</td>
+                    <td>Renjie Chen; Yumeng Liu</td>
                     <td>3(3-5), 1-14 week(s)</td>
                     <td>3</td>
                   </tr>
@@ -3042,7 +3406,7 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                   <tr>
                     <td>HS1648.01</td>
                     <td>Public Affairs in Life</td>
-                    <td>Shanyong Wang, Huping Shang, Liang Wan</td>
+                    <td>Shanyong Wang; Huping Shang; Liang Wan</td>
                     <td>3(11-13), 2-14 week(s)</td>
                     <td>2</td>
                   </tr>
@@ -3086,9 +3450,423 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
             </div>
           </div>
           
+          <!-- Junior Year - Mini Semester -->
+          <div class="semester-timetable-container" id="junior-summer">
+            <h3 class="semester-title">Junior Year - Mini Semester (2026 Summer)</h3>
+            <div class="timetable-container">
+              <table class="timetable" id="junior-summer-timetable">
+                <thead>
+                  <tr>
+                    <th>Period</th>
+                    <th>Period Number</th>
+                    <th>Monday</th>
+                    <th>Tuesday</th>
+                    <th>Wednesday</th>
+                    <th>Thursday</th>
+                    <th>Friday</th>
+                    <th>Saturday</th>
+                    <th>Sunday</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Morning Section -->
+                  <tr>
+                    <td rowspan="5" class="period-header">Morning</td>
+                    <td class="period-number">1</td>
+                    <td class="has-class event-cell" rowspan="1">
+                      <div class="time-info start-info">7:50</div>
+                      <div class="time-info end-info">8:35</div>
+                      <div class="course-container">
+                        <div class="course-number">001M06.01 [2]</div>
+                        <div class="course-name">Advances in Computer Graphics</div>
+                        <div class="instructor">Ligang Liu</div>
+                        <div class="location">2321</div>
+                        <div class="weeks">1 week(s)</div>
+                      </div>
+                    </td>
+                    <td class="has-class event-cell" rowspan="1">
+                      <div class="time-info start-info">7:50</div>
+                      <div class="time-info end-info">8:35</div>
+                      <div class="course-container">
+                        <div class="course-number">001M06.01 [2]</div>
+                        <div class="course-name">Advances in Computer Graphics</div>
+                        <div class="instructor">Ligang Liu</div>
+                        <div class="location">2321</div>
+                        <div class="weeks">1 week(s)</div>
+                      </div>
+                    </td>
+                    <td class="has-class event-cell" rowspan="1">
+                      <div class="time-info start-info">7:50</div>
+                      <div class="time-info end-info">8:35</div>
+                      <div class="course-container">
+                        <div class="course-number">001M06.01 [2]</div>
+                        <div class="course-name">Advances in Computer Graphics</div>
+                        <div class="instructor">Ligang Liu</div>
+                        <div class="location">2321</div>
+                        <div class="weeks">1 week(s)</div>
+                      </div>
+                    </td>
+                    <td class="has-class event-cell" rowspan="1">
+                      <div class="time-info start-info">7:50</div>
+                      <div class="time-info end-info">8:35</div>
+                      <div class="course-container">
+                        <div class="course-number">001M06.01 [2]</div>
+                        <div class="course-name">Advances in Computer Graphics</div>
+                        <div class="instructor">Ligang Liu</div>
+                        <div class="location">2321</div>
+                        <div class="weeks">1 week(s)</div>
+                      </div>
+                    </td>
+                    <td class="has-class event-cell" rowspan="1">
+                      <div class="time-info start-info">7:50</div>
+                      <div class="time-info end-info">8:35</div>
+                      <div class="course-container">
+                        <div class="course-number">001M06.01 [2]</div>
+                        <div class="course-name">Advances in Computer Graphics</div>
+                        <div class="instructor">Ligang Liu</div>
+                        <div class="location">2321</div>
+                        <div class="weeks">1 week(s)</div>
+                      </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td class="period-number">2</td>
+                    <td class="has-class event-cell" rowspan="3">
+                      <div class="time-info start-info">8:40</div>
+                      <div class="time-info end-info">11:20</div>
+                      <div class="overlap-container">
+                        <div class="overlap-course">
+                          <div class="course-number">001M06.01 [2]</div>
+                          <div class="course-name">Advances in Computer Graphics</div>
+                          <div class="instructor">Ligang Liu</div>
+                          <div class="location">2321</div>
+                          <div class="weeks">1 week(s)</div>
+                        </div>
+                        <div class="overlap-course">
+                          <div class="course-number">CS4029.01 [2]</div>
+                          <div class="course-name">Innovative Practice Based on Domestic Computing Platform</div>
+                          <div class="instructor">Hui Zhang</div>
+                          <div class="location">West Campus Electrical Building (3F) 406</div>
+                          <div class="weeks">2 week(s)</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="has-class event-cell" rowspan="3">
+                      <div class="time-info start-info">8:40</div>
+                      <div class="time-info end-info">11:20</div>
+                      <div class="overlap-container">
+                        <div class="overlap-course">
+                          <div class="course-number">001M06.01 [2]</div>
+                          <div class="course-name">Advances in Computer Graphics</div>
+                          <div class="instructor">Ligang Liu</div>
+                          <div class="location">2321</div>
+                          <div class="weeks">1 week(s)</div>
+                        </div>
+                        <div class="overlap-course">
+                          <div class="course-number">CS4029.01 [2]</div>
+                          <div class="course-name">Innovative Practice Based on Domestic Computing Platform</div>
+                          <div class="instructor">Hui Zhang</div>
+                          <div class="location">West Campus Electrical Building (3F) 406</div>
+                          <div class="weeks">2 week(s)</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="has-class event-cell" rowspan="3">
+                      <div class="time-info start-info">8:40</div>
+                      <div class="time-info end-info">11:20</div>
+                      <div class="overlap-container">
+                        <div class="overlap-course">
+                          <div class="course-number">001M06.01 [2]</div>
+                          <div class="course-name">Advances in Computer Graphics</div>
+                          <div class="instructor">Ligang Liu</div>
+                          <div class="location">2321</div>
+                          <div class="weeks">1 week(s)</div>
+                        </div>
+                        <div class="overlap-course">
+                          <div class="course-number">CS4029.01 [2]</div>
+                          <div class="course-name">Innovative Practice Based on Domestic Computing Platform</div>
+                          <div class="instructor">Hui Zhang</div>
+                          <div class="location">West Campus Electrical Building (3F) 406</div>
+                          <div class="weeks">2 week(s)</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="has-class event-cell" rowspan="3">
+                      <div class="time-info start-info">8:40</div>
+                      <div class="time-info end-info">11:20</div>
+                      <div class="overlap-container">
+                        <div class="overlap-course">
+                          <div class="course-number">001M06.01 [2]</div>
+                          <div class="course-name">Advances in Computer Graphics</div>
+                          <div class="instructor">Ligang Liu</div>
+                          <div class="location">2321</div>
+                          <div class="weeks">1 week(s)</div>
+                        </div>
+                        <div class="overlap-course">
+                          <div class="course-number">CS4029.01 [2]</div>
+                          <div class="course-name">Innovative Practice Based on Domestic Computing Platform</div>
+                          <div class="instructor">Hui Zhang</div>
+                          <div class="location">West Campus Electrical Building (3F) 406</div>
+                          <div class="weeks">2 week(s)</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="has-class event-cell" rowspan="3">
+                      <div class="time-info start-info">8:40</div>
+                      <div class="time-info end-info">11:20</div>
+                      <div class="overlap-container">
+                        <div class="overlap-course">
+                          <div class="course-number">001M06.01 [2]</div>
+                          <div class="course-name">Advances in Computer Graphics</div>
+                          <div class="instructor">Ligang Liu</div>
+                          <div class="location">2321</div>
+                          <div class="weeks">1 week(s)</div>
+                        </div>
+                        <div class="overlap-course">
+                          <div class="course-number">CS4029.01 [2]</div>
+                          <div class="course-name">Innovative Practice Based on Domestic Computing Platform</div>
+                          <div class="instructor">Hui Zhang</div>
+                          <div class="location">West Campus Electrical Building (3F) 406</div>
+                          <div class="weeks">2 week(s)</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td class="period-number">3</td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td class="period-number">4</td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td class="period-number">5</td>
+                    <td class="has-class event-cell" rowspan="1">
+                      <div class="time-info start-info">11:25</div>
+                      <div class="time-info end-info">12:10</div>
+                      <div class="course-container">
+                        <div class="course-number">CS4029.01 [2]</div>
+                        <div class="course-name">Innovative Practice Based on Domestic Computing Platform</div>
+                        <div class="instructor">Hui Zhang</div>
+                        <div class="location">West Campus Electrical Building (3F) 406</div>
+                        <div class="weeks">2 week(s)</div>
+                      </div>
+                    </td>
+                    <td class="has-class event-cell" rowspan="1">
+                      <div class="time-info start-info">11:25</div>
+                      <div class="time-info end-info">12:10</div>
+                      <div class="course-container">
+                        <div class="course-number">CS4029.01 [2]</div>
+                        <div class="course-name">Innovative Practice Based on Domestic Computing Platform</div>
+                        <div class="instructor">Hui Zhang</div>
+                        <div class="location">West Campus Electrical Building (3F) 406</div>
+                        <div class="weeks">2 week(s)</div>
+                      </div>
+                    </td>
+                    <td class="has-class event-cell" rowspan="1">
+                      <div class="time-info start-info">11:25</div>
+                      <div class="time-info end-info">12:10</div>
+                      <div class="course-container">
+                        <div class="course-number">CS4029.01 [2]</div>
+                        <div class="course-name">Innovative Practice Based on Domestic Computing Platform</div>
+                        <div class="instructor">Hui Zhang</div>
+                        <div class="location">West Campus Electrical Building (3F) 406</div>
+                        <div class="weeks">2 week(s)</div>
+                      </div>
+                    </td>
+                    <td class="has-class event-cell" rowspan="1">
+                      <div class="time-info start-info">11:25</div>
+                      <div class="time-info end-info">12:10</div>
+                      <div class="course-container">
+                        <div class="course-number">CS4029.01 [2]</div>
+                        <div class="course-name">Innovative Practice Based on Domestic Computing Platform</div>
+                        <div class="instructor">Hui Zhang</div>
+                        <div class="location">West Campus Electrical Building (3F) 406</div>
+                        <div class="weeks">2 week(s)</div>
+                      </div>
+                    </td>
+                    <td class="has-class event-cell" rowspan="1">
+                      <div class="time-info start-info">11:25</div>
+                      <div class="time-info end-info">12:10</div>
+                      <div class="course-container">
+                        <div class="course-number">CS4029.01 [2]</div>
+                        <div class="course-name">Innovative Practice Based on Domestic Computing Platform</div>
+                        <div class="instructor">Hui Zhang</div>
+                        <div class="location">West Campus Electrical Building (3F) 406</div>
+                        <div class="weeks">2 week(s)</div>
+                      </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  
+                  <!-- Afternoon Section -->
+                  <tr>
+                    <td rowspan="5" class="period-header">Afternoon</td>
+                    <td class="period-number">6</td>
+                    <td class="has-class event-cell" rowspan="4">
+                      <div class="time-info start-info">14:00</div>
+                      <div class="time-info end-info">17:30</div>
+                      <div class="course-container">
+                        <div class="course-number">001M06.01 [2]</div>
+                        <div class="course-name">Advances in Computer Graphics</div>
+                        <div class="instructor">Ligang Liu</div>
+                        <div class="location">2321</div>
+                        <div class="weeks">1 week(s)</div>
+                      </div>
+                    </td>
+                    <td class="has-class event-cell" rowspan="4">
+                      <div class="time-info start-info">14:00</div>
+                      <div class="time-info end-info">17:30</div>
+                      <div class="course-container">
+                        <div class="course-number">001M06.01 [2]</div>
+                        <div class="course-name">Advances in Computer Graphics</div>
+                        <div class="instructor">Ligang Liu</div>
+                        <div class="location">2321</div>
+                        <div class="weeks">1 week(s)</div>
+                      </div>
+                    </td>
+                    <td class="has-class event-cell" rowspan="4">
+                      <div class="time-info start-info">14:00</div>
+                      <div class="time-info end-info">17:30</div>
+                      <div class="course-container">
+                        <div class="course-number">001M06.01 [2]</div>
+                        <div class="course-name">Advances in Computer Graphics</div>
+                        <div class="instructor">Ligang Liu</div>
+                        <div class="location">2321</div>
+                        <div class="weeks">1 week(s)</div>
+                      </div>
+                    </td>
+                    <td class="has-class event-cell" rowspan="4">
+                      <div class="time-info start-info">14:00</div>
+                      <div class="time-info end-info">17:30</div>
+                      <div class="course-container">
+                        <div class="course-number">001M06.01 [2]</div>
+                        <div class="course-name">Advances in Computer Graphics</div>
+                        <div class="instructor">Ligang Liu</div>
+                        <div class="location">2321</div>
+                        <div class="weeks">1 week(s)</div>
+                      </div>
+                    </td>
+                    <td class="has-class event-cell" rowspan="4">
+                      <div class="time-info start-info">14:00</div>
+                      <div class="time-info end-info">17:30</div>
+                      <div class="course-container">
+                        <div class="course-number">001M06.01 [2]</div>
+                        <div class="course-name">Advances in Computer Graphics</div>
+                        <div class="instructor">Ligang Liu</div>
+                        <div class="location">2321</div>
+                        <div class="weeks">1 week(s)</div>
+                      </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td class="period-number">7</td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td class="period-number">8</td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td class="period-number">9</td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td class="period-number">10</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  
+                  <!-- Evening Section -->
+                  <tr>
+                    <td rowspan="3" class="period-header">Evening</td>
+                    <td class="period-number">11</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td class="period-number">12</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td class="period-number">13</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- My Classes Table for Junior Mini Semester -->
+            <div class="my-classes-container">
+              <h3 style="text-align: center; margin-top: 20px;">My Classes</h3>
+              <table class="my-classes-table">
+                <thead>
+                  <tr>
+                    <th>Course Number</th>
+                    <th>Course Name</th>
+                    <th>Instructor</th>
+                    <th>Time</th>
+                    <th>Credits</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>001M06.01</td>
+                    <td>Advances in Computer Graphics</td>
+                    <td>Ligang Liu</td>
+                    <td>1(1-4; 6-9), 1 week(s);<br> 2(1-4; 6-9), 1 week(s);<br> 3(1-4; 6-9), 1 week(s);<br> 4(1-4; 6-9), 1 week(s);<br> 5(1-4; 6-9), 1 week(s)</td>
+                    <td>2</td>
+                  </tr>
+                  <tr>
+                    <td>CS4029.01</td>
+                    <td>Innovative Practice Based on Domestic Computing Platform</td>
+                    <td>Hui Zhang</td>
+                    <td>1(2-5), 2 week(s);<br> 2(2-5), 2 week(s);<br> 3(2-5), 2 week(s);<br> 4(2-5), 2 week(s);<br> 5(2-5), 2 week(s)</td>
+                    <td>2</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
           <!-- Senior Year - First Semester -->
           <div class="semester-timetable-container" id="senior-first">
-            <h3 class="semester-title">Senior Year - First Semester</h3>
+            <h3 class="semester-title">Senior Year - First Semester (2026 Fall)</h3>
             <div class="timetable-container">
               <table class="timetable" id="senior-first-timetable">
                 <!-- Empty timetable structure same as freshman-second -->
@@ -3270,7 +4048,7 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
           
           <!-- Senior Year - Second Semester -->
           <div class="semester-timetable-container" id="senior-second">
-            <h3 class="semester-title">Senior Year - Second Semester</h3>
+            <h3 class="semester-title">Senior Year - Second Semester (2027 Spring)</h3>
             <div class="timetable-container">
               <table class="timetable" id="senior-second-timetable">
                 <!-- Empty timetable structure same as freshman-second -->

@@ -19,6 +19,7 @@
     "001356.02": "代数学基础",
     "001361.01": "符号计算软件",
     "001702.01": "实分析 (H)",
+    "001M06.01": "计算机图形学前沿",
     "006196.01": "多媒体技术基础",
     "011044.02": "计算机导论",
     "011103.02": "代数结构",
@@ -32,6 +33,7 @@
     "CS2002.03": "数理逻辑基础",
     "CS2502A.01": "数据结构 A",
     "CS4017.01": "最优化导论",
+    "CS4029.01": "国产算力平台创新实践",
     "EDUS1001.33": "劳动教育",
     "EE3502.01": "机器学习 B",
     "ESS1513.01": "气象与摄影",
@@ -89,6 +91,7 @@
 
   // 作为兜底：按英文课程名匹配
   const COURSE_NAME_ZH_BY_TEXT = {
+    "Advances in Computer Graphics": "计算机图形学前沿",
     "AI Ethics and Security (AI+X Micro-minor Foundation Course)": "人工智能伦理与安全 (AI+X 微专业基础课程)",
     "Algebraic Structure": "代数结构",
     "An Outline of Modern and Contemporary Chinese History": "中国近现代史纲要",
@@ -123,6 +126,7 @@
     "History of Mind in Physics": "物理学思想史",
     "History of Reform and Open-up": "改革开放史",
     "Ideology, Morality, and Rule of Law": "思想道德与法治",
+    "Innovative Practice Based on Domestic Computing Platform": "国产算力平台创新实践",
     "Introduction to Artificial Intelligence (AI+X Micro-minor Foundation Course)": "人工智能导论 (AI+X 微专业基础课程)",
     "Introduction to Brain and Cognition Science": "脑与认知科学导论",
     "Introduction to Computer Science": "计算机导论",
@@ -193,6 +197,7 @@
     "Hao Ding": "丁浩",
     "Hongli Xu": "徐宏力",
     "Hu Si": "司虎",
+    "Hui Zhang": "张辉",
     "Huping Shang": "尚虎平",
     "Jianliang Lu": "卢建良",
     "Jinlong Li": "李金龙",
@@ -203,6 +208,7 @@
     "Li Xiao": "肖力",
     "Liang Wan": "万亮",
     "Lifeng Zhao": "赵立峰",
+    "Ligang Liu": "刘利刚",
     "Liming Ma": "马立明",
     "Liucheng Duan": "段柳成",
     "Luo Luo": "罗罗",
@@ -588,14 +594,17 @@
 
     // ---- 3) Static UI texts (semester dropdown / titles / table headers) ----
     const SEMESTER_ZH = {
-      "freshman-first": "大一上 (2023年秋季学期)",
-      "freshman-second": "大一下 (2024年春季学期)",
-      "sophomore-first": "大二上 (2024年秋季学期)",
-      "sophomore-second": "大二下 (2025年春季学期)",
-      "junior-first": "大三上 (2025年秋季学期)",
-      "junior-second": "大三下 (2026年春季学期)",
-      "senior-first": "大四上 (2026年秋季学期)",
-      "senior-second": "大四下 (2027年春季学期)",
+      "freshman-first": "大一上（23秋）",
+      "freshman-second": "大一下（24春）",
+      "freshman-summer": "大一暑假（24夏）",
+      "sophomore-first": "大二上（24秋）",
+      "sophomore-second": "大二下（25春）",
+      "sophomore-summer": "大二暑假（25夏）",
+      "junior-first": "大三上（25秋）",
+      "junior-second": "大三下（26春）",
+      "junior-summer": "大三暑假（26夏）",
+      "senior-first": "大四上（26秋）",
+      "senior-second": "大四下（27春）",
     };
 
     // Dropdown button label

@@ -6,10 +6,13 @@
   const SEMESTER_ORDER = [
     'freshman-first',
     'freshman-second',
+    'freshman-summer',
     'sophomore-first',
     'sophomore-second',
+    'sophomore-summer',
     'junior-first',
     'junior-second',
+    'junior-summer',
     'senior-first',
     'senior-second'
   ];
@@ -71,36 +74,48 @@
 
     const fallback = {
       'freshman-first': {
-        en: 'Freshman Year - First Semester',
-        zh: '大一秋季学期'
+        en: 'Freshman Year - First Semester (2023 Fall)',
+        zh: '大一上（23秋）'
       },
       'freshman-second': {
-        en: 'Freshman Year - Second Semester',
-        zh: '大一春季学期'
+        en: 'Freshman Year - Second Semester (2024 Spring)',
+        zh: '大一下（24春）'
+      },
+      'freshman-summer': {
+        en: 'Freshman Year - Mini Semester (2024 Summer)',
+        zh: '大一暑假（24夏）'
       },
       'sophomore-first': {
-        en: 'Sophomore Year - First Semester',
-        zh: '大二秋季学期'
+        en: 'Sophomore Year - First Semester (2024 Fall)',
+        zh: '大二上（24秋）'
       },
       'sophomore-second': {
-        en: 'Sophomore Year - Second Semester',
-        zh: '大二春季学期'
+        en: 'Sophomore Year - Second Semester (2025 Spring)',
+        zh: '大二下（25春）'
+      },
+      'sophomore-summer': {
+        en: 'Sophomore Year - Mini Semester (2025 Summer)',
+        zh: '大二暑假（25夏）'
       },
       'junior-first': {
-        en: 'Junior Year - First Semester',
-        zh: '大三秋季学期'
+        en: 'Junior Year - First Semester (2025 Fall)',
+        zh: '大三上（25秋）'
       },
       'junior-second': {
-        en: 'Junior Year - Second Semester',
-        zh: '大三春季学期'
+        en: 'Junior Year - Second Semester (2026 Spring)',
+        zh: '大三下（26春）'
+      },
+      'junior-summer': {
+        en: 'Junior Year - Mini Semester (2026 Summer)',
+        zh: '大三暑假（26夏）'
       },
       'senior-first': {
-        en: 'Senior Year - First Semester',
-        zh: '大四秋季学期'
+        en: 'Senior Year - First Semester (2026 Fall)',
+        zh: '大四上（26秋）'
       },
       'senior-second': {
-        en: 'Senior Year - Second Semester',
-        zh: '大四春季学期'
+        en: 'Senior Year - Second Semester (2027 Spring)',
+        zh: '大四下（27春）'
       }
     };
 

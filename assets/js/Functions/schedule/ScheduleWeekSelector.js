@@ -57,6 +57,63 @@
     return UI_TEXT[normalizeLang(lang)] || UI_TEXT.en;
   }
 
+  function getSemesterConfig() {
+    return window.SCHEDULE_SEMESTER_CONFIG && window.SCHEDULE_SEMESTER_CONFIG.semesters
+      ? window.SCHEDULE_SEMESTER_CONFIG.semesters
+      : {};
+  }
+
+  function getMaxWeekForType(type) {
+    if (type !== 'my') return MAX_WEEK;
+
+    const activeSemester = getActiveMySemester();
+    const semesterId = activeSemester && activeSemester.id ? activeSemester.id : '';
+    const semester = getSemesterConfig()[semesterId] || null;
+    const teachingWeeks = parseInt(semester && semester.teachingWeeks, 10);
+
+    return Number.isFinite(teachingWeeks) && teachingWeeks >= MIN_WEEK
+      ? teachingWeeks
+      : MAX_WEEK;
+  }
+
+  function normalizeSelectedWeekValue(type, value) {
+    const selected = String(value || state[type] || 'all');
+
+    if (selected === 'all') return 'all';
+
+    const week = parseInt(selected, 10);
+    const maxWeek = getMaxWeekForType(type);
+
+    return Number.isFinite(week) && week >= MIN_WEEK && week <= maxWeek
+      ? String(week)
+      : 'all';
+  }
+
+  function populateWeekSelectOptions(select, type, lang) {
+    if (!select) return;
+
+    const text = textFor(lang);
+    const selectedValue = normalizeSelectedWeekValue(type, select.value || state[type] || 'all');
+    const maxWeek = getMaxWeekForType(type);
+
+    select.innerHTML = '';
+
+    const allOption = document.createElement('option');
+    allOption.value = 'all';
+    allOption.textContent = text.allWeeks;
+    select.appendChild(allOption);
+
+    for (let week = MIN_WEEK; week <= maxWeek; week += 1) {
+      const option = document.createElement('option');
+      option.value = String(week);
+      option.textContent = text.weekOption(week);
+      select.appendChild(option);
+    }
+
+    select.value = selectedValue;
+    state[type] = selectedValue;
+  }
+
   function cleanWeekText(value) {
     return String(value || '')
       .replace(/\s+/g, ' ')
@@ -117,9 +174,13 @@
     return textFor(lang).weekCell(week);
   }
 
-  function parseWeeksFromText(value) {
+  function parseWeeksFromText(value, maxWeek) {
     let text = cleanWeekText(value);
     const result = new Set();
+    const upperWeek = Math.max(
+      MIN_WEEK,
+      parseInt(maxWeek || MAX_WEEK, 10) || MAX_WEEK
+    );
 
     if (!text) return result;
 
@@ -160,7 +221,7 @@
           const right = Math.max(start, end);
 
           for (let week = left; week <= right; week += 1) {
-            if (week < MIN_WEEK || week > MAX_WEEK) continue;
+            if (week < MIN_WEEK || week > upperWeek) continue;
             if (oddOnly && week % 2 === 0) continue;
             if (evenOnly && week % 2 !== 0) continue;
             result.add(week);
@@ -173,7 +234,7 @@
 
         numbers.forEach(function (numText) {
           const week = parseInt(numText, 10);
-          if (week < MIN_WEEK || week > MAX_WEEK) return;
+          if (week < MIN_WEEK || week > upperWeek) return;
           if (oddOnly && week % 2 === 0) return;
           if (evenOnly && week % 2 !== 0) return;
           result.add(week);
@@ -200,7 +261,7 @@
     }
 
     if (!weeksEl.dataset.weekSelectorWeeks) {
-      const weeks = Array.from(parseWeeksFromText(weeksEl.dataset.weekSelectorOriginalText));
+      const weeks = Array.from(parseWeeksFromText(weeksEl.dataset.weekSelectorOriginalText, getMaxWeekForType('my')));
       weeksEl.dataset.weekSelectorWeeks = weeks.join(',');
     }
   }
@@ -657,19 +718,7 @@
     select.setAttribute('aria-label', text.selectWeek);
     select.dataset.scheduleWeekSelect = type;
 
-    const allOption = document.createElement('option');
-    allOption.value = 'all';
-    allOption.textContent = text.allWeeks;
-    select.appendChild(allOption);
-
-    for (let week = MIN_WEEK; week <= MAX_WEEK; week += 1) {
-      const option = document.createElement('option');
-      option.value = String(week);
-      option.textContent = text.weekOption(week);
-      select.appendChild(option);
-    }
-
-    select.value = state[type] || 'all';
+    populateWeekSelectOptions(select, type, lang);
 
     select.addEventListener('change', function () {
       state[type] = select.value || 'all';
@@ -698,23 +747,8 @@
 
     if (!select) return;
 
-    const selectedValue = select.value || state[type] || 'all';
-
     select.setAttribute('aria-label', text.selectWeek);
-
-    const allOption = select.querySelector('option[value="all"]');
-    if (allOption) {
-      setTextIfChanged(allOption, text.allWeeks);
-    }
-
-    for (let week = MIN_WEEK; week <= MAX_WEEK; week += 1) {
-      const option = select.querySelector('option[value="' + week + '"]');
-      if (option) {
-        setTextIfChanged(option, text.weekOption(week));
-      }
-    }
-
-    select.value = selectedValue;
+    populateWeekSelectOptions(select, type, lang);
   }
 
   function mountMyWeekSelector() {
@@ -810,6 +844,7 @@
   });
 
   window.addEventListener('schedule:semesterchange', function () {
+    refreshControlLanguage();
     applyMyWeekSelection();
   });
 

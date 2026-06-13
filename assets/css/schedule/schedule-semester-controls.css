@@ -143,7 +143,7 @@
 }
 
 #schedule .schedule-control-row-my {
-  grid-template-columns: minmax(300px, 1.12fr) minmax(220px, 0.88fr) minmax(340px, 1.25fr);
+  grid-template-columns: minmax(420px, 1.35fr) minmax(200px, 0.7fr) minmax(340px, 1.1fr);
 }
 
 #schedule .schedule-control-row-ustc {
@@ -233,7 +233,7 @@
   margin: -4px 0 20px;
 }
 
-@media (max-width: 980px) {
+@media (max-width: 1060px) {
   #schedule .schedule-control-row-my,
   #schedule .schedule-control-row-ustc {
     grid-template-columns: 1fr;
