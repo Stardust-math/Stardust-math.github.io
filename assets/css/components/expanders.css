@@ -55,11 +55,12 @@
 
   border-radius: 3px;
   opacity: 0.9;
+  transform-origin: center;
 
   transition:
-    transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 0.18s ease,
-    filter 0.18s ease;
+    transform 0.24s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.16s ease,
+    filter 0.16s ease;
 
   filter: drop-shadow(0 0.4px 0.8px rgba(0, 0, 0, 0.22));
 }
@@ -72,7 +73,7 @@
 
   background: linear-gradient(
     135deg,
-    rgba(255, 255, 255, 0.75),
+    rgba(255, 255, 255, 0.72),
     rgba(255, 255, 255, 0) 55%
   );
 
@@ -88,7 +89,7 @@
   );
 
   opacity: 0;
-  transition: opacity 0.18s ease;
+  transition: opacity 0.16s ease;
   mix-blend-mode: screen;
 }
 
@@ -97,11 +98,11 @@
   transform: translateX(1px);
   filter:
     drop-shadow(0 0.6px 1.1px rgba(0, 0, 0, 0.24))
-    drop-shadow(0 0 6px color-mix(in srgb, var(--accent) 32%, transparent));
+    drop-shadow(0 0 4px color-mix(in srgb, var(--accent) 20%, transparent));
 }
 
 .expander:hover::after {
-  opacity: 0.55;
+  opacity: 0.42;
 }
 
 .expander.is-open::before {
@@ -110,7 +111,7 @@
 }
 
 .expander.is-open:hover::before {
-  transform: rotate(-90deg) translateX(1px);
+  transform: rotate(-90deg) translateY(1px);
 }
 
 .expander:focus-visible {
@@ -133,41 +134,65 @@ tr.expand-row.is-animating {
 }
 
 .expand-content {
+  --expand-max-height: 760px;
+  --expand-open-duration: 0.52s;
+  --expand-close-duration: 0.32s;
+  --expand-ease-open: cubic-bezier(0.18, 0.72, 0.22, 1);
+  --expand-ease-close: cubic-bezier(0.4, 0, 0.2, 1);
+
   box-sizing: border-box;
 
   margin-top: 0;
-  padding-top: 10px;
-  border-top: 1px dashed color-mix(in srgb, var(--border) 80%, transparent);
+  padding-top: 0;
+  border-top: 1px dashed transparent;
 
   display: grid;
   gap: 12px;
   align-items: start;
 
-  height: 0;
+  max-height: 0;
   overflow: hidden;
   opacity: 0;
-  transform: translateY(-3px);
+  transform: translateY(-4px);
 
   transition:
-    height 0.40s cubic-bezier(0.33, 1, 0.68, 1),
-    opacity 0.26s ease,
-    transform 0.30s cubic-bezier(0.33, 1, 0.68, 1);
-
-  will-change: height, opacity, transform;
+    max-height var(--expand-close-duration) var(--expand-ease-close),
+    padding-top 0.24s var(--expand-ease-close),
+    border-color 0.16s ease,
+    opacity 0.16s ease,
+    transform 0.22s var(--expand-ease-close);
 }
 
 .expand-row.is-open .expand-content {
+  max-height: var(--expand-max-height);
+  padding-top: 10px;
+  border-top-color: color-mix(in srgb, var(--border) 80%, transparent);
   opacity: 1;
   transform: translateY(0);
+
+  transition:
+    max-height var(--expand-open-duration) var(--expand-ease-open),
+    padding-top 0.36s var(--expand-ease-open),
+    border-color 0.22s ease,
+    opacity 0.26s ease 0.04s,
+    transform 0.34s var(--expand-ease-open);
+}
+
+.expand-row.is-closing .expand-content {
+  pointer-events: none;
 }
 
 .expand-content.is-multi {
+  --expand-max-height: 1180px;
+
   grid-template-columns: repeat(3, minmax(0, 1fr));
   justify-content: start;
   justify-items: start;
 }
 
 .expand-content.is-single {
+  --expand-max-height: 680px;
+
   grid-template-columns: minmax(0, 33.333%);
   justify-content: center;
   justify-items: center;
@@ -208,10 +233,14 @@ a.expand-item img {
 
 @media (max-width: 768px) {
   .expand-content.is-multi {
+    --expand-max-height: 1450px;
+
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .expand-content.is-single {
+    --expand-max-height: 860px;
+
     grid-template-columns: minmax(0, min(360px, 80%));
   }
 }

@@ -2,7 +2,7 @@
   "use strict";
 
   const STORAGE_KEY = "resume_expanders_open_keys_v1";
-  const ANIMATION_MS = 400;
+  const ANIMATION_MS = 280;
 
   try {
     sessionStorage.removeItem(STORAGE_KEY);
@@ -10,6 +10,17 @@
 
   function qsAll(sel, root) {
     return Array.prototype.slice.call((root || document).querySelectorAll(sel));
+  }
+
+  function prefersReducedMotion() {
+    try {
+      return (
+        window.matchMedia &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      );
+    } catch (e) {
+      return false;
+    }
   }
 
   function getOpenDisplay(el) {
@@ -27,11 +38,6 @@
     el.style.display = open ? getOpenDisplay(el) : "none";
   }
 
-  function getPanel(row) {
-    if (!row) return null;
-    return row.querySelector(".expand-content") || row;
-  }
-
   function clearMotionTimer(row) {
     if (!row || !row.dataset.expandTimer) return;
 
@@ -42,59 +48,18 @@
     delete row.dataset.expandTimer;
   }
 
-  function clearPanelInlineMotion(panel) {
-    if (!panel) return;
-
-    panel.style.transition = "";
-    panel.style.height = "";
-    panel.style.opacity = "";
-    panel.style.transform = "";
-    panel.style.overflow = "";
-  }
-
-  function measurePanelHeight(panel) {
-    if (!panel) return 0;
-
-    const oldHeight = panel.style.height;
-    const oldOverflow = panel.style.overflow;
-
-    panel.style.height = "auto";
-    panel.style.overflow = "visible";
-
-    const h = Math.ceil(panel.getBoundingClientRect().height);
-
-    panel.style.height = oldHeight;
-    panel.style.overflow = oldOverflow;
-
-    return h;
-  }
-
-  function afterHeightTransition(row, panel, callback) {
-    if (!row || !panel) return;
+  function finishAnimationLater(row, callback) {
+    if (!row) return;
 
     clearMotionTimer(row);
 
-    let done = false;
+    const delay = prefersReducedMotion() ? 0 : ANIMATION_MS + 60;
 
-    function finish() {
-      if (done) return;
-      done = true;
-
-      panel.removeEventListener("transitionend", onEnd);
+    const timer = window.setTimeout(function () {
       clearMotionTimer(row);
-
       callback();
-    }
+    }, delay);
 
-    function onEnd(e) {
-      if (e.target !== panel) return;
-      if (e.propertyName !== "height") return;
-      finish();
-    }
-
-    panel.addEventListener("transitionend", onEnd);
-
-    const timer = window.setTimeout(finish, ANIMATION_MS + 180);
     row.dataset.expandTimer = String(timer);
   }
 
@@ -103,24 +68,10 @@
 
     clearMotionTimer(row);
 
-    const panel = getPanel(row);
-
-    row.classList.remove("is-animating");
+    row.classList.remove("is-animating", "is-closing");
     row.classList.toggle("is-open", open);
     row.setAttribute("aria-hidden", open ? "false" : "true");
     setDisplay(row, open);
-
-    if (panel) {
-      clearPanelInlineMotion(panel);
-
-      if (open) {
-        panel.style.height = "auto";
-        panel.style.overflow = "";
-      } else {
-        panel.style.height = "0px";
-        panel.style.overflow = "hidden";
-      }
-    }
   }
 
   function animateRowOpen(row) {
@@ -128,52 +79,17 @@
 
     clearMotionTimer(row);
 
-    const panel = getPanel(row);
-
+    row.classList.remove("is-closing");
     row.classList.add("is-animating");
-    row.classList.add("is-open");
     row.setAttribute("aria-hidden", "false");
     setDisplay(row, true);
 
-    if (!panel) {
-      row.classList.remove("is-animating");
-      return;
-    }
-
-    panel.style.transition = "none";
-    panel.style.height = "auto";
-    panel.style.overflow = "visible";
-    panel.style.opacity = "1";
-    panel.style.transform = "translateY(0)";
-
-    const targetHeight = Math.ceil(panel.getBoundingClientRect().height);
-
-    panel.style.height = "0px";
-    panel.style.overflow = "hidden";
-    panel.style.opacity = "0";
-    panel.style.transform = "translateY(-3px)";
-
-    panel.offsetHeight;
-
-    panel.style.transition = "";
-
     requestAnimationFrame(function () {
-      panel.style.height = targetHeight + "px";
-      panel.style.opacity = "1";
-      panel.style.transform = "translateY(0)";
-    });
+      row.classList.add("is-open");
 
-    afterHeightTransition(row, panel, function () {
-      row.classList.remove("is-animating");
-
-      if (row.classList.contains("is-open")) {
-        panel.style.height = "auto";
-        panel.style.overflow = "";
-      }
-
-      panel.style.transition = "";
-      panel.style.opacity = "";
-      panel.style.transform = "";
+      finishAnimationLater(row, function () {
+        row.classList.remove("is-animating", "is-closing");
+      });
     });
   }
 
@@ -182,46 +98,16 @@
 
     clearMotionTimer(row);
 
-    const panel = getPanel(row);
-
-    row.classList.add("is-animating");
-    row.classList.add("is-open");
+    row.classList.add("is-animating", "is-closing");
     row.setAttribute("aria-hidden", "true");
-    setDisplay(row, true);
-
-    if (!panel) {
-      row.classList.remove("is-open");
-      row.classList.remove("is-animating");
-      setDisplay(row, false);
-      return;
-    }
-
-    panel.style.transition = "none";
-    panel.style.height = "auto";
-    panel.style.overflow = "visible";
-    panel.style.opacity = "1";
-    panel.style.transform = "translateY(0)";
-
-    const startHeight = Math.ceil(panel.getBoundingClientRect().height);
-
-    panel.style.height = startHeight + "px";
-    panel.style.overflow = "hidden";
-
-    panel.offsetHeight;
-
-    panel.style.transition = "";
 
     requestAnimationFrame(function () {
       row.classList.remove("is-open");
-      panel.style.height = "0px";
-      panel.style.opacity = "0";
-      panel.style.transform = "translateY(-3px)";
-    });
 
-    afterHeightTransition(row, panel, function () {
-      row.classList.remove("is-animating");
-      setDisplay(row, false);
-      clearPanelInlineMotion(panel);
+      finishAnimationLater(row, function () {
+        row.classList.remove("is-animating", "is-closing");
+        setDisplay(row, false);
+      });
     });
   }
 
@@ -275,7 +161,7 @@
     btn.setAttribute("aria-expanded", open ? "true" : "false");
     btn.classList.toggle("is-open", open);
 
-    if (!animate) {
+    if (!animate || prefersReducedMotion()) {
       setInstantRowState(row, open);
       return;
     }
