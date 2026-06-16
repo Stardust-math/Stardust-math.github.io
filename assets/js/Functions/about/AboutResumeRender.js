@@ -4,17 +4,19 @@
   const ROOT_ID = 'resume';
   const MOUNT_ID = 'mount-resume';
 
-  const SECONDARY_IMAGE_IDLE_TIMEOUT = 1200;
-  const SECONDARY_IMAGE_START_DELAY = 480;
-  const SECONDARY_IMAGE_STAGGER_MS = 180;
-  const SECONDARY_IMAGE_FALLBACK_ENTER_DELAY = 1800;
+  const EXPANDABLE_IMAGE_START_DELAY = 120;
+  const EXPANDABLE_IMAGE_ENTER_DELAY = 650;
+  const EXPANDABLE_IMAGE_LANG_DELAY = 260;
+  const EXPANDABLE_IMAGE_STAGGER_MS = 70;
+  const HERO_TIMEOUT = 1400;
 
-  const preloadedSecondaryImages = Object.create(null);
+  const preloadedExpandableImages = Object.create(null);
+  const preloadLinks = Object.create(null);
 
   let mutationObserver = null;
   let optimizeRaf = 0;
-  let secondaryWarmupTimer = 0;
-  let secondaryWarmupStarted = false;
+  let expandableWarmupTimer = 0;
+  let expandableWarmupStarted = false;
 
   function getMount() {
     return document.getElementById(MOUNT_ID) || document.body;
@@ -52,27 +54,6 @@
 
   function qsAll(selector, root) {
     return Array.prototype.slice.call((root || document).querySelectorAll(selector));
-  }
-
-  function runWhenIdle(callback, timeout) {
-    if (typeof callback !== 'function') return;
-
-    const fallbackTimeout = Math.max(0, Number(timeout) || SECONDARY_IMAGE_IDLE_TIMEOUT);
-    const loader = window.SiteResourceLoader;
-
-    if (loader && typeof loader.idle === 'function') {
-      loader.idle(callback, fallbackTimeout);
-      return;
-    }
-
-    if (typeof window.requestIdleCallback === 'function') {
-      window.requestIdleCallback(callback, {
-        timeout: fallbackTimeout
-      });
-      return;
-    }
-
-    window.setTimeout(callback, fallbackTimeout);
   }
 
   function getConnection() {
@@ -117,14 +98,42 @@
       '';
   }
 
-  function setFetchPriority(img, priority) {
-    if (!img || !priority) return;
+  function setFetchPriority(el, priority) {
+    if (!el || !priority) return;
 
-    img.setAttribute('fetchpriority', priority);
+    el.setAttribute('fetchpriority', priority);
 
     try {
-      img.fetchPriority = priority;
+      el.fetchPriority = priority;
     } catch (e) {}
+  }
+
+  function ensureImagePreloadLink(src, priority) {
+    const url = normalizeImageUrl(src);
+
+    if (!url) {
+      return null;
+    }
+
+    const fetchPriority = priority || 'high';
+
+    if (preloadLinks[url]) {
+      setFetchPriority(preloadLinks[url], fetchPriority);
+      return preloadLinks[url];
+    }
+
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.as = 'image';
+    link.href = url;
+    link.dataset.aboutExpandablePreload = '1';
+
+    setFetchPriority(link, fetchPriority);
+
+    document.head.appendChild(link);
+    preloadLinks[url] = link;
+
+    return link;
   }
 
   function preloadImageSrc(src, priority) {
@@ -134,12 +143,14 @@
       return Promise.resolve(false);
     }
 
-    if (preloadedSecondaryImages[url]) {
-      return preloadedSecondaryImages[url].promise;
+    ensureImagePreloadLink(url, priority || 'high');
+
+    if (preloadedExpandableImages[url]) {
+      return preloadedExpandableImages[url].promise;
     }
 
     const image = new Image();
-    const fetchPriority = priority || 'low';
+    const fetchPriority = priority || 'high';
 
     try {
       image.decoding = 'async';
@@ -161,15 +172,15 @@
 
         settled = true;
 
-        if (preloadedSecondaryImages[url]) {
-          preloadedSecondaryImages[url].ready = value === true;
+        if (preloadedExpandableImages[url]) {
+          preloadedExpandableImages[url].ready = value === true;
         }
 
         resolve(value);
       }
 
       image.onload = function () {
-        if (fetchPriority === 'high' && typeof image.decode === 'function') {
+        if (typeof image.decode === 'function') {
           image.decode()
             .then(() => done(true))
             .catch(() => done(true));
@@ -186,7 +197,7 @@
       image.src = url;
     });
 
-    preloadedSecondaryImages[url] = {
+    preloadedExpandableImages[url] = {
       promise,
       ready: false
     };
@@ -204,69 +215,54 @@
     return qsAll('.expand-row img[src], .expand-content img[src]', root);
   }
 
-  function preloadImages(images, priority, options) {
-    const opts = options || {};
+  function promoteImages(images, priority) {
     const list = Array.isArray(images) ? images : [];
-    const fetchPriority = priority || 'low';
+    const fetchPriority = priority || 'high';
 
     list.forEach((img) => {
       const src = getImageSource(img);
 
       if (!src) return;
 
-      if (opts.promoteActualImage) {
-        img.setAttribute('loading', 'eager');
-        setFetchPriority(img, fetchPriority);
-      }
+      img.setAttribute('loading', 'eager');
+      img.setAttribute('decoding', 'async');
+      setFetchPriority(img, fetchPriority);
 
+      ensureImagePreloadLink(src, fetchPriority);
       preloadImageSrc(src, fetchPriority);
     });
   }
 
-  function preloadExpandableImagesSequentially(scope, options) {
-    const opts = options || {};
-    const force = opts.force === true;
-
-    if (!force && shouldAvoidBackgroundImageWarmup()) {
-      return;
-    }
-
-    const images = getExpandableImages(scope);
-
-    if (!images.length) {
-      return;
-    }
-
-    let index = 0;
-
-    function step() {
-      const img = images[index];
-
-      if (!img) return;
-
-      preloadImages([img], 'low', {
-        promoteActualImage: false
-      });
-
-      index += 1;
-
-      if (index < images.length) {
-        window.setTimeout(() => {
-          runWhenIdle(step, SECONDARY_IMAGE_IDLE_TIMEOUT);
-        }, SECONDARY_IMAGE_STAGGER_MS);
-      }
-    }
-
-    step();
-  }
-
-  function scheduleSecondaryAboutImageWarmup(scope, options) {
+  function warmExpandableImagesNow(scope, options) {
     const opts = options || {};
     const root = scope || getResumeRoot();
 
     if (!root) return;
 
-    if (!opts.force && secondaryWarmupStarted) {
+    if (!opts.force && shouldAvoidBackgroundImageWarmup()) {
+      return;
+    }
+
+    const images = getExpandableImages(root);
+
+    if (!images.length) {
+      return;
+    }
+
+    images.forEach((img, index) => {
+      window.setTimeout(() => {
+        promoteImages([img], opts.priority || 'high');
+      }, index * EXPANDABLE_IMAGE_STAGGER_MS);
+    });
+  }
+
+  function scheduleExpandableImageWarmup(scope, options) {
+    const opts = options || {};
+    const root = scope || getResumeRoot();
+
+    if (!root) return;
+
+    if (!opts.force && expandableWarmupStarted) {
       return;
     }
 
@@ -274,10 +270,10 @@
       return;
     }
 
-    if (secondaryWarmupTimer) {
+    if (expandableWarmupTimer) {
       if (opts.replace === true) {
-        window.clearTimeout(secondaryWarmupTimer);
-        secondaryWarmupTimer = 0;
+        window.clearTimeout(expandableWarmupTimer);
+        expandableWarmupTimer = 0;
       } else {
         return;
       }
@@ -285,23 +281,22 @@
 
     const delay = Math.max(
       0,
-      Number.isFinite(Number(opts.delay)) ? Number(opts.delay) : SECONDARY_IMAGE_START_DELAY
+      Number.isFinite(Number(opts.delay)) ? Number(opts.delay) : EXPANDABLE_IMAGE_START_DELAY
     );
 
-    secondaryWarmupTimer = window.setTimeout(() => {
-      secondaryWarmupTimer = 0;
+    expandableWarmupTimer = window.setTimeout(() => {
+      expandableWarmupTimer = 0;
 
-      if (!opts.force && secondaryWarmupStarted) {
+      if (!opts.force && expandableWarmupStarted) {
         return;
       }
 
-      secondaryWarmupStarted = true;
+      expandableWarmupStarted = true;
 
-      runWhenIdle(() => {
-        preloadExpandableImagesSequentially(root, {
-          force: opts.force === true
-        });
-      }, opts.idleTimeout || SECONDARY_IMAGE_IDLE_TIMEOUT);
+      warmExpandableImagesNow(root, {
+        force: opts.force === true,
+        priority: opts.priority || 'high'
+      });
     }, delay);
   }
 
@@ -315,7 +310,7 @@
     return document.getElementById(targetId);
   }
 
-  function preloadExpandableTarget(btn, priority, options) {
+  function preloadExpandableTarget(btn, priority) {
     const row = getTargetRowFromButton(btn);
 
     if (!row) return;
@@ -324,9 +319,7 @@
 
     if (!images.length) return;
 
-    preloadImages(images, priority || 'high', options || {
-      promoteActualImage: true
-    });
+    promoteImages(images, priority || 'high');
   }
 
   function bindExpandableImageIntentWarmup(scope) {
@@ -340,9 +333,7 @@
       btn.dataset.aboutImageWarmupBound = '1';
 
       const warmByIntent = function () {
-        preloadExpandableTarget(btn, 'high', {
-          promoteActualImage: true
-        });
+        preloadExpandableTarget(btn, 'high');
       };
 
       btn.addEventListener('pointerenter', warmByIntent);
@@ -460,7 +451,7 @@
   function waitForImageReady(img, timeout) {
     if (!img) return Promise.resolve(false);
 
-    const timeoutMs = Math.max(0, Number(timeout) || 1400);
+    const timeoutMs = Math.max(0, Number(timeout) || HERO_TIMEOUT);
 
     if (img.complete && img.naturalWidth > 0) {
       if (typeof img.decode === 'function') {
@@ -538,11 +529,11 @@
       avatar.fetchPriority = 'high';
     } catch (e) {}
 
-    return waitForImageReady(avatar, opts.timeout || 1400)
+    return waitForImageReady(avatar, opts.timeout || HERO_TIMEOUT)
       .then((ready) => {
-        scheduleSecondaryAboutImageWarmup(resume, {
-          delay: ready ? 120 : 900,
-          idleTimeout: SECONDARY_IMAGE_IDLE_TIMEOUT,
+        scheduleExpandableImageWarmup(resume, {
+          delay: ready ? EXPANDABLE_IMAGE_START_DELAY : 900,
+          priority: 'high',
           replace: true
         });
 
@@ -570,8 +561,9 @@
     optimizeResumeImages(resume);
     bindExpandableImageIntentWarmup(resume);
 
-    scheduleSecondaryAboutImageWarmup(resume, {
-      delay: SECONDARY_IMAGE_FALLBACK_ENTER_DELAY
+    scheduleExpandableImageWarmup(resume, {
+      delay: EXPANDABLE_IMAGE_ENTER_DELAY,
+      priority: 'high'
     });
   }
 
@@ -581,7 +573,7 @@
     renderEnglishResume,
     optimizeResumeImages,
     bindExpandableImageIntentWarmup,
-    scheduleSecondaryAboutImageWarmup,
+    scheduleExpandableImageWarmup,
     preloadExpandableTarget,
     waitForCriticalImages
   };
@@ -611,11 +603,12 @@
   window.addEventListener('site:langchange', () => {
     const resume = getResumeRoot();
 
-    secondaryWarmupStarted = false;
+    expandableWarmupStarted = false;
 
     scheduleImageOptimization(resume);
-    scheduleSecondaryAboutImageWarmup(resume, {
-      delay: 420,
+    scheduleExpandableImageWarmup(resume, {
+      delay: EXPANDABLE_IMAGE_LANG_DELAY,
+      priority: 'high',
       replace: true
     });
   });
