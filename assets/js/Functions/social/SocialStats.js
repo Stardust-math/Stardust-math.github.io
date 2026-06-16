@@ -9,10 +9,17 @@
   const VISITOR_MAP_RESIZE_DEBOUNCE = 320;
   const VISITOR_MAP_WIDTH_EPSILON = 8;
 
+  const SOCIAL_RESOURCE_START_DELAY = 180;
+  const GOATCOUNTER_STATS_DELAY = 120;
+  const GOATCOUNTER_DASHBOARD_DELAY = 360;
+  const VISITOR_MAP_DELAY = 620;
+  const VISITOR_MAP_SCRIPT_DELAY = 120;
+
   let statsStarted = false;
   let statsFinished = false;
   let goatCounterFrameStarted = false;
   let visitorMapStarted = false;
+  let visitorMapScriptStarted = false;
   let visibleObserver = null;
   let delayedLoadTimer = null;
 
@@ -53,6 +60,17 @@
     } catch (e) {
       return false;
     }
+  }
+
+  function allSocialStatsResourcesStarted() {
+    return statsStarted && goatCounterFrameStarted && visitorMapScriptStarted;
+  }
+
+  function disconnectVisibleObserverIfDone() {
+    if (!visibleObserver || !allSocialStatsResourcesStarted()) return;
+
+    visibleObserver.disconnect();
+    visibleObserver = null;
   }
 
   function setText(id, text) {
@@ -98,6 +116,7 @@
     if (statsStarted) return;
 
     statsStarted = true;
+    disconnectVisibleObserverIfDone();
 
     try {
       const currentPath = window.location.pathname || '/';
@@ -134,11 +153,23 @@
     const src = frame.getAttribute('data-src');
     if (!src) return;
 
+    frame.setAttribute('loading', 'eager');
+    frame.setAttribute('fetchpriority', 'low');
+
+    try {
+      frame.loading = 'eager';
+    } catch (e) {}
+
+    try {
+      frame.fetchPriority = 'low';
+    } catch (e) {}
+
     if (!frame.getAttribute('src')) {
       frame.setAttribute('src', src);
     }
 
     goatCounterFrameStarted = true;
+    disconnectVisibleObserverIfDone();
   }
 
   function getVisitorMapPlaceholder() {
@@ -184,7 +215,13 @@
   }
 
   function appendMapMyVisitorsScript(target, id, src) {
-    if (!target || target.querySelector(`#${id}`)) return;
+    if (!target) return;
+
+    if (target.querySelector(`#${id}`)) {
+      visitorMapScriptStarted = true;
+      disconnectVisibleObserverIfDone();
+      return;
+    }
 
     const script = document.createElement('script');
     script.type = 'text/javascript';
@@ -202,6 +239,37 @@
     }, { once: true });
 
     target.appendChild(script);
+
+    visitorMapScriptStarted = true;
+    disconnectVisibleObserverIfDone();
+  }
+
+  function scheduleVisitorMapScriptLoad(mapSlot, options) {
+    const opts = options || {};
+
+    if (!mapSlot) return;
+
+    if (!opts.force && visitorMapScriptStarted) {
+      disconnectVisibleObserverIfDone();
+      return;
+    }
+
+    window.setTimeout(() => {
+      if (!socialIsVisible()) {
+        armWhenVisible();
+        return;
+      }
+
+      appendMapMyVisitorsScript(
+        mapSlot,
+        'mapmyvisitors',
+        MAPMYVISITORS_MAP_SRC
+      );
+
+      window.setTimeout(() => {
+        visitorMapLastSignature = readVisitorMapSignature();
+      }, 600);
+    }, VISITOR_MAP_SCRIPT_DELAY);
   }
 
   function mountVisitorMapWidgets(force) {
@@ -212,6 +280,12 @@
 
     if (!force && visitorMapStarted && existingMapSlot) {
       startVisitorMapResizeWatch();
+
+      if (!visitorMapScriptStarted) {
+        scheduleVisitorMapScriptLoad(existingMapSlot);
+      }
+
+      disconnectVisibleObserverIfDone();
       return;
     }
 
@@ -229,19 +303,9 @@
     visitorMapLastSignature = readVisitorMapSignature();
     startVisitorMapResizeWatch();
 
-    window.setTimeout(() => {
-      if (!socialIsVisible()) return;
-
-      appendMapMyVisitorsScript(
-        mapSlot,
-        'mapmyvisitors',
-        MAPMYVISITORS_MAP_SRC
-      );
-
-      window.setTimeout(() => {
-        visitorMapLastSignature = readVisitorMapSignature();
-      }, 600);
-    }, 250);
+    scheduleVisitorMapScriptLoad(mapSlot, {
+      force: force === true
+    });
   }
 
   function remountVisitorMapIfNeeded() {
@@ -308,24 +372,40 @@
     delayedLoadTimer = window.setTimeout(() => {
       delayedLoadTimer = null;
 
-      if (!socialIsVisible()) return;
-
-      mountVisitorMapWidgets(false);
+      if (!socialIsVisible()) {
+        armWhenVisible();
+        return;
+      }
 
       window.setTimeout(() => {
-        if (!socialIsVisible()) return;
+        if (!socialIsVisible()) {
+          armWhenVisible();
+          return;
+        }
 
         if (!statsFinished) {
           initStats();
         }
-      }, 180);
+      }, GOATCOUNTER_STATS_DELAY);
 
       window.setTimeout(() => {
-        if (!socialIsVisible()) return;
+        if (!socialIsVisible()) {
+          armWhenVisible();
+          return;
+        }
 
         loadGoatCounterFrame();
-      }, 1200);
-    }, 180);
+      }, GOATCOUNTER_DASHBOARD_DELAY);
+
+      window.setTimeout(() => {
+        if (!socialIsVisible()) {
+          armWhenVisible();
+          return;
+        }
+
+        mountVisitorMapWidgets(false);
+      }, VISITOR_MAP_DELAY);
+    }, SOCIAL_RESOURCE_START_DELAY);
   }
 
   function initVisibleResources() {
@@ -340,27 +420,22 @@
     return true;
   }
 
-  function disconnectVisibleObserver() {
-    if (!visibleObserver) return;
-
-    visibleObserver.disconnect();
-    visibleObserver = null;
-  }
-
   function armWhenVisible() {
     const social = ensureSocialRoot();
     if (!social) return;
 
-    if (initVisibleResources()) {
-      disconnectVisibleObserver();
-      return;
+    if (socialIsVisible()) {
+      initVisibleResources();
     }
 
-    if (visibleObserver) return;
+    disconnectVisibleObserverIfDone();
+
+    if (visibleObserver || allSocialStatsResourcesStarted()) return;
 
     visibleObserver = new MutationObserver(() => {
-      if (initVisibleResources()) {
-        disconnectVisibleObserver();
+      if (socialIsVisible()) {
+        initVisibleResources();
+        disconnectVisibleObserverIfDone();
       }
     });
 
@@ -388,18 +463,6 @@
     mountVisitorMapWidgets,
     remountVisitorMapIfNeeded
   };
-
-  if (window.SitePages && typeof window.SitePages.register === 'function') {
-    window.SitePages.register('social', {
-      enter() {
-        enter();
-      },
-
-      refresh() {
-        refresh();
-      }
-    });
-  }
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', armWhenVisible);

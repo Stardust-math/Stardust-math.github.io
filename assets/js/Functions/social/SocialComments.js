@@ -9,13 +9,15 @@
     reactionsEnabled: '0',
     emitMetadata: '0',
     inputPosition: 'top',
-    loading: 'lazy'
+    loading: 'eager'
   };
 
   const GISCUS_ORIGIN = 'https://giscus.app';
+  const GISCUS_MOUNT_DELAY = 780;
 
   let giscusLoaded = false;
-  let containerObserver = null;
+  let giscusMountTimer = null;
+  let socialVisibleObserver = null;
   let themeObserver = null;
 
   function getLang() {
@@ -45,6 +47,40 @@
     }
 
     return document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+  }
+
+  function getSocialRoot() {
+    return document.getElementById('social');
+  }
+
+  function ensureSocialRoot() {
+    let social = getSocialRoot();
+
+    if (
+      !social &&
+      window.SocialRender &&
+      typeof window.SocialRender.renderSocialPage === 'function'
+    ) {
+      social = window.SocialRender.renderSocialPage();
+    }
+
+    return social || getSocialRoot();
+  }
+
+  function socialIsVisible() {
+    const social = getSocialRoot();
+    if (!social) return false;
+
+    if (social.classList.contains('visible')) {
+      return true;
+    }
+
+    try {
+      const cs = window.getComputedStyle(social);
+      return cs.display !== 'none' && social.offsetWidth > 0 && social.offsetHeight > 0;
+    } catch (e) {
+      return false;
+    }
   }
 
   function getSocialDict() {
@@ -101,6 +137,7 @@
 
   function mountGiscus() {
     if (giscusLoaded) return;
+    if (!socialIsVisible()) return;
 
     const container = document.getElementById('giscus-container');
     if (!container) return;
@@ -132,39 +169,88 @@
 
     container.appendChild(script);
     giscusLoaded = true;
+    disconnectSocialVisibleObserver();
   }
 
-  function observeContainer() {
-    const container = document.getElementById('giscus-container');
-    if (!container || giscusLoaded) return;
+  function clearGiscusMountTimer() {
+    if (!giscusMountTimer) return;
 
-    if (containerObserver) {
-      containerObserver.disconnect();
-      containerObserver = null;
+    window.clearTimeout(giscusMountTimer);
+    giscusMountTimer = null;
+  }
+
+  function scheduleGiscusMount(options) {
+    if (giscusLoaded) return true;
+
+    const opts = options || {};
+    const social = ensureSocialRoot();
+
+    if (!social || !socialIsVisible()) {
+      return false;
     }
 
-    if ('IntersectionObserver' in window) {
-      containerObserver = new IntersectionObserver(function (entries) {
-        const entry = entries[0];
-        if (!entry || !entry.isIntersecting) return;
-
-        mountGiscus();
-
-        if (containerObserver) {
-          containerObserver.disconnect();
-          containerObserver = null;
-        }
-      }, {
-        root: null,
-        rootMargin: '520px 0px',
-        threshold: 0
-      });
-
-      containerObserver.observe(container);
-      return;
+    if (!document.getElementById('giscus-container')) {
+      return false;
     }
 
-    window.setTimeout(mountGiscus, 800);
+    if (giscusMountTimer && opts.replace !== true) {
+      return true;
+    }
+
+    if (giscusMountTimer && opts.replace === true) {
+      clearGiscusMountTimer();
+    }
+
+    const delay = Math.max(
+      0,
+      Number.isFinite(Number(opts.delay)) ? Number(opts.delay) : GISCUS_MOUNT_DELAY
+    );
+
+    giscusMountTimer = window.setTimeout(() => {
+      giscusMountTimer = null;
+
+      if (!socialIsVisible()) {
+        armWhenSocialVisible();
+        return;
+      }
+
+      mountGiscus();
+    }, delay);
+
+    return true;
+  }
+
+  function disconnectSocialVisibleObserver() {
+    if (!socialVisibleObserver) return;
+
+    socialVisibleObserver.disconnect();
+    socialVisibleObserver = null;
+  }
+
+  function armWhenSocialVisible() {
+    const social = ensureSocialRoot();
+    if (!social || giscusLoaded) return;
+
+    if (socialIsVisible()) {
+      scheduleGiscusMount();
+    }
+
+    if (socialVisibleObserver || giscusLoaded) return;
+
+    socialVisibleObserver = new MutationObserver(() => {
+      if (socialIsVisible()) {
+        scheduleGiscusMount();
+      }
+
+      if (giscusLoaded) {
+        disconnectSocialVisibleObserver();
+      }
+    });
+
+    socialVisibleObserver.observe(social, {
+      attributes: true,
+      attributeFilter: ['class', 'style']
+    });
   }
 
   function observeTheme() {
@@ -182,8 +268,29 @@
 
   function init() {
     updateStaticTexts();
-    observeContainer();
     observeTheme();
+    armWhenSocialVisible();
+  }
+
+  function enter() {
+    updateStaticTexts();
+    observeTheme();
+
+    scheduleGiscusMount({
+      delay: GISCUS_MOUNT_DELAY,
+      replace: true
+    }) || armWhenSocialVisible();
+  }
+
+  function refresh() {
+    updateStaticTexts();
+    observeTheme();
+
+    if (!giscusLoaded) {
+      armWhenSocialVisible();
+    } else {
+      syncGiscusAppearance();
+    }
   }
 
   window.addEventListener('site:langchange', function () {
@@ -193,7 +300,10 @@
 
   window.SocialComments = {
     init,
+    enter,
+    refresh,
     mountGiscus,
+    scheduleGiscusMount,
     syncGiscusAppearance
   };
 
@@ -203,5 +313,9 @@
     init();
   }
 
-  window.addEventListener('load', init, { once: true });
+  window.addEventListener('load', () => {
+    if (socialIsVisible()) {
+      enter();
+    }
+  }, { once: true });
 })();
