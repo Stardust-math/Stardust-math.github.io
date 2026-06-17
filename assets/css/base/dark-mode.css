@@ -48,6 +48,20 @@ body.dark-mode {
   color: var(--text);
 }
 
+/*
+  Keep the root canvas in sync with body.dark-mode.
+
+  The viewport scrollbar gutter can expose the html background.
+  Since dark-mode tokens currently live on body.dark-mode, html would
+  otherwise keep the light :root background in some browsers.
+*/
+@supports selector(html:has(body.dark-mode)) {
+  html:has(body.dark-mode) {
+    background-color: #0f1217;
+    color-scheme: dark;
+  }
+}
+
 /* Dark-mode tweaks for specific components */
 
 /* FullCalendar (prevents default bright/bluish panel in dark mode) */

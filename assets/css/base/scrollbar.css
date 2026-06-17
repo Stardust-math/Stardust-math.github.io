@@ -1,0 +1,56 @@
+/* =========================================================
+   Scrollbar
+   - Inspired by cardigan0214.github.io / Hexo Theme Fluid
+   - Adapted to this site's own visual system
+   - Native scrollbar styling only
+   - No JavaScript, no layout changes, no custom scroll engine
+   ========================================================= */
+
+:root {
+  /*
+    One consistent thumb color for both light and dark modes.
+
+    The color is a restrained blue-grey:
+    - visible enough on the light background
+    - not too pale or glaring on the dark background
+    - still consistent with the site's academic navy / blue-grey tone
+  */
+  --site-scrollbar-thumb: #9aa8b6;
+  --site-scrollbar-thumb-hover: #8294a6;
+
+  /*
+    Keep the track transparent.
+    The non-draggable area should always merge with the page background.
+  */
+  --site-scrollbar-track: transparent;
+
+  /*
+    Fluid-style geometry:
+    Cardigan / Fluid uses a slim 6px scrollbar.
+  */
+  --site-scrollbar-size: 6px;
+  --site-scrollbar-radius: 6px;
+}
+
+/* Chrome / Edge / Safari */
+::-webkit-scrollbar {
+  width: var(--site-scrollbar-size);
+  height: var(--site-scrollbar-size);
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--site-scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--site-scrollbar-thumb);
+  border-radius: var(--site-scrollbar-radius);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--site-scrollbar-thumb-hover);
+}
+
+::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
