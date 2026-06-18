@@ -21,6 +21,14 @@ body.dark-mode {
   --nav-border: rgba(211, 219, 232, 0.14);
   --nav-shadow: 0 14px 40px rgba(0, 0, 0, 0.60);
 
+  /* Dark-mode top-nav press feedback */
+  --topnav-press-bg: rgba(12, 16, 22, 0.96);
+  --topnav-press-border: rgba(180, 210, 236, 0.22);
+  --topnav-press-shadow:
+    inset 0 2px 10px rgba(0, 0, 0, 0.72),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 0 0 1px rgba(143, 179, 214, 0.10);
+
   /* Typography */
   --text: rgba(232, 237, 244, 0.96);
   --muted: rgba(165, 174, 188, 0.92);
@@ -63,6 +71,43 @@ body.dark-mode {
 }
 
 /* Dark-mode tweaks for specific components */
+
+/* Top navigation press feedback */
+body.dark-mode .top-nav-link:active,
+body.dark-mode #top-toggle-btn:active,
+body.dark-mode #top-lang-btn:active {
+  background: var(--topnav-press-bg);
+  border-color: var(--topnav-press-border);
+  box-shadow: var(--topnav-press-shadow);
+}
+
+/* Schedule/Life submodule button outer glow */
+body.dark-mode .schedule-switch-btn:hover,
+body.dark-mode .schedule-switcher a.schedule-switch-btn:hover,
+body.dark-mode .life-switch-btn:hover,
+body.dark-mode .life-switcher a.life-switch-btn:hover {
+  box-shadow:
+    0 -3px 8px rgba(255, 255, 255, 0.105),
+    0 2px 6px rgba(255, 255, 255, 0.055);
+}
+
+body.dark-mode .schedule-switch-btn.active,
+body.dark-mode .schedule-switch-btn[aria-selected="true"],
+body.dark-mode .life-switch-btn.active,
+body.dark-mode .life-switch-btn[aria-selected="true"] {
+  box-shadow:
+    0 -4px 11px rgba(255, 255, 255, 0.13),
+    0 3px 8px rgba(255, 255, 255, 0.07);
+}
+
+body.dark-mode .schedule-switch-btn.active:hover,
+body.dark-mode .schedule-switch-btn[aria-selected="true"]:hover,
+body.dark-mode .life-switch-btn.active:hover,
+body.dark-mode .life-switch-btn[aria-selected="true"]:hover {
+  box-shadow:
+    0 -5px 13px rgba(255, 255, 255, 0.145),
+    0 4px 10px rgba(255, 255, 255, 0.08);
+}
 
 /* FullCalendar (prevents default bright/bluish panel in dark mode) */
 body.dark-mode .fc {
