@@ -10,11 +10,11 @@
       data-medit-fullscreen-open
       data-cursor="precise_select"
       data-cursor-fallback="pointer"
-    >阅读全文</button>
+    >全屏阅读</button>
 
     <a
       class="medit-reader-action"
-      href="./assets/vendor/pdfjs/web/viewer.html?file=..%2F..%2F..%2Fpdf%2Flife%2Fmeditations%2FStardust_Meditations.pdf"
+      href="./assets/vendor/pdfjs/web/viewer.html?file=..%2F..%2F..%2Fpdf%2Flife%2Fmeditations%2FStardust_Meditations.pdf#page=1&amp;zoom=page-width&amp;pagemode=bookmarks"
       target="_blank"
       rel="noopener noreferrer"
       data-cursor="link_select"
@@ -28,7 +28,7 @@
     <div class="medit-fullscreen-actions">
       <a
         class="medit-fullscreen-link"
-        href="./assets/vendor/pdfjs/web/viewer.html?file=..%2F..%2F..%2Fpdf%2Flife%2Fmeditations%2FStardust_Meditations.pdf"
+        href="./assets/vendor/pdfjs/web/viewer.html?file=..%2F..%2F..%2Fpdf%2Flife%2Fmeditations%2FStardust_Meditations.pdf#page=1&amp;zoom=page-width&amp;pagemode=bookmarks"
         target="_blank"
         rel="noopener noreferrer"
         data-cursor="link_select"
@@ -50,7 +50,7 @@
     <iframe
       class="medit-pdfjs-frame"
       title="沉思录 PDF 预览"
-      data-src="./assets/vendor/pdfjs/web/viewer.html?file=..%2F..%2F..%2Fpdf%2Flife%2Fmeditations%2FStardust_Meditations.pdf"
+      data-src="./assets/vendor/pdfjs/web/viewer.html?file=..%2F..%2F..%2Fpdf%2Flife%2Fmeditations%2FStardust_Meditations.pdf#page=1&amp;zoom=page-width&amp;pagemode=bookmarks"
       loading="lazy"
       allow="fullscreen"
       allowfullscreen

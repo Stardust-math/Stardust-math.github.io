@@ -30,7 +30,7 @@ body[data-lang="zh"] #meditations .resume-heading {
 
 /* Layout */
 #meditations .medit-pdf-page {
-  max-width: min(1120px, calc(100vw - 48px));
+  max-width: min(1280px, calc(100vw - 48px));
 }
 
 /* Reader actions */
@@ -108,8 +108,19 @@ body[data-lang="zh"] #meditations .medit-readerbar {
 /* PDF.js preview */
 #meditations .medit-pdfjs-shell {
   width: 100%;
-  height: min(96vh, 1280px);
-  min-height: 860px;
+
+  /*
+    Desktop reading height for the default two-page view:
+    - PDF.js opens the outline sidebar by default.
+    - The PDF itself is fit to page width.
+    - The spread mode is two-page view, so the required height is lower
+      than the previous single-page preview.
+    - If the browser viewport is shorter, the page itself scrolls while
+      the PDF preview frame keeps a stable reading height.
+  */
+  height: min(1040px, max(800px, 58vw));
+  min-height: 780px;
+
   overflow: hidden;
   border-top: 1px solid color-mix(in srgb, var(--text) 14%, transparent);
   border-bottom: 1px solid color-mix(in srgb, var(--text) 14%, transparent);

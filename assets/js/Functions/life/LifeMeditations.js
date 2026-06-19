@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const PDF_VIEWER_SRC = './assets/vendor/pdfjs/web/viewer.html?file=..%2F..%2F..%2Fpdf%2Flife%2Fmeditations%2FStardust_Meditations.pdf';
+  const PDF_VIEWER_SRC = './assets/vendor/pdfjs/web/viewer.html?file=..%2F..%2F..%2Fpdf%2Flife%2Fmeditations%2FStardust_Meditations.pdf#page=1&zoom=page-width&pagemode=bookmarks';
 
   const LANG_CONFIG = {
     en: {
