@@ -1,6 +1,8 @@
 (function () {
   'use strict';
 
+  const PDF_VIEWER_SRC = './assets/vendor/pdfjs/web/viewer.html?file=..%2F..%2F..%2Fpdf%2Flife%2Fmeditations%2FStardust_Meditations.pdf';
+
   const LANG_CONFIG = {
     en: {
       src: './assets/js/Content/EN/life/meditations_EN.js',
@@ -23,6 +25,8 @@
   };
 
   let currentLang = null;
+  let lastFocusedElement = null;
+  let globalHandlersBound = false;
 
   function getLang() {
     if (window.SiteLang && typeof window.SiteLang.getLang === 'function') {
@@ -45,7 +49,7 @@
     const raw = String(html || '').trim();
 
     if (!raw) {
-      return '<div id="meditations"><div class="container"></div></div>';
+      return '<div id="meditations"><div class="container medit-pdf-page"></div></div>';
     }
 
     if (/^<div\s+id=["']meditations["']/i.test(raw)) {
@@ -73,7 +77,7 @@
 
     mount.innerHTML = `
       <div id="meditations">
-        <div class="container">
+        <div class="container medit-pdf-page">
           <div class="section">
             <p class="medit-loading">${text}</p>
           </div>
@@ -92,7 +96,7 @@
 
     mount.innerHTML = `
       <div id="meditations">
-        <div class="container">
+        <div class="container medit-pdf-page">
           <div class="section">
             <p class="medit-loading">${text}</p>
           </div>
@@ -102,32 +106,190 @@
   }
 
   function getOpenKeys() {
-    const mount = getMount();
-
-    if (
-      mount &&
-      window.ResumeExpanders &&
-      typeof window.ResumeExpanders.getOpenKeys === 'function'
-    ) {
-      return window.ResumeExpanders.getOpenKeys(mount);
-    }
-
     return [];
   }
 
-  function refreshAfterRender(openKeys) {
+  function ensurePdfFrameLoaded(root) {
+    const frame = root && root.querySelector('.medit-pdfjs-frame');
+    if (!frame) return;
+
+    const nextSrc = frame.dataset.src || PDF_VIEWER_SRC;
+
+    if (!frame.getAttribute('src')) {
+      frame.setAttribute('src', nextSrc);
+    }
+  }
+
+  function setTopbarVisibility(root, visible) {
+    const topbar = root && root.querySelector('.medit-fullscreen-topbar');
+    if (!topbar) return;
+
+    topbar.setAttribute('aria-hidden', visible ? 'false' : 'true');
+  }
+
+  function getFullscreenElement() {
+    return document.fullscreenElement ||
+      document.webkitFullscreenElement ||
+      document.mozFullScreenElement ||
+      document.msFullscreenElement ||
+      null;
+  }
+
+  function requestBrowserFullscreen(element) {
+    if (!element) return Promise.resolve(false);
+
+    const request =
+      element.requestFullscreen ||
+      element.webkitRequestFullscreen ||
+      element.mozRequestFullScreen ||
+      element.msRequestFullscreen;
+
+    if (typeof request !== 'function') {
+      return Promise.resolve(false);
+    }
+
+    try {
+      const result = request.call(element);
+      return Promise.resolve(result).then(() => true).catch(() => false);
+    } catch (err) {
+      return Promise.resolve(false);
+    }
+  }
+
+  function exitBrowserFullscreen() {
+    const exit =
+      document.exitFullscreen ||
+      document.webkitExitFullscreen ||
+      document.mozCancelFullScreen ||
+      document.msExitFullscreen;
+
+    if (!getFullscreenElement() || typeof exit !== 'function') {
+      return Promise.resolve(false);
+    }
+
+    try {
+      const result = exit.call(document);
+      return Promise.resolve(result).then(() => true).catch(() => false);
+    } catch (err) {
+      return Promise.resolve(false);
+    }
+  }
+
+  function openFullscreen(root) {
+    if (!root || root.classList.contains('is-fullscreen')) return;
+
+    lastFocusedElement = document.activeElement instanceof HTMLElement
+      ? document.activeElement
+      : null;
+
+    ensurePdfFrameLoaded(root);
+
+    root.classList.add('is-fullscreen');
+    document.body.classList.add('medit-pdf-fullscreen-open');
+    setTopbarVisibility(root, true);
+
+    requestBrowserFullscreen(root).then((ok) => {
+      if (!ok) {
+        root.classList.add('is-css-fullscreen-fallback');
+      }
+    });
+
+    const closeButton = root.querySelector('[data-medit-fullscreen-close]');
+    if (closeButton && typeof closeButton.focus === 'function') {
+      window.setTimeout(() => closeButton.focus({ preventScroll: true }), 0);
+    }
+  }
+
+  function closeFullscreen(root, options) {
+    const opts = options || {};
+    const target = root || getExistingMeditations();
+
+    if (!target) return;
+
+    target.classList.remove('is-fullscreen');
+    target.classList.remove('is-css-fullscreen-fallback');
+    document.body.classList.remove('medit-pdf-fullscreen-open');
+    setTopbarVisibility(target, false);
+
+    exitBrowserFullscreen();
+
+    if (
+      opts.restoreFocus !== false &&
+      lastFocusedElement &&
+      typeof lastFocusedElement.focus === 'function' &&
+      document.contains(lastFocusedElement)
+    ) {
+      window.setTimeout(() => lastFocusedElement.focus({ preventScroll: true }), 0);
+    }
+
+    lastFocusedElement = null;
+  }
+
+  function syncAfterNativeFullscreenExit() {
+    if (getFullscreenElement()) return;
+
+    const root = getExistingMeditations();
+
+    if (root && root.classList.contains('is-fullscreen')) {
+      root.classList.remove('is-fullscreen');
+      root.classList.remove('is-css-fullscreen-fallback');
+      document.body.classList.remove('medit-pdf-fullscreen-open');
+      setTopbarVisibility(root, false);
+      lastFocusedElement = null;
+    }
+  }
+
+  function handleKeydown(event) {
+    if (!event || event.key !== 'Escape') return;
+
+    const root = getExistingMeditations();
+
+    if (root && root.classList.contains('is-fullscreen')) {
+      event.preventDefault();
+      closeFullscreen(root);
+    }
+  }
+
+  function bindGlobalHandlers() {
+    if (globalHandlersBound) return;
+
+    globalHandlersBound = true;
+
+    document.addEventListener('keydown', handleKeydown);
+    document.addEventListener('fullscreenchange', syncAfterNativeFullscreenExit);
+    document.addEventListener('webkitfullscreenchange', syncAfterNativeFullscreenExit);
+    document.addEventListener('mozfullscreenchange', syncAfterNativeFullscreenExit);
+    document.addEventListener('MSFullscreenChange', syncAfterNativeFullscreenExit);
+  }
+
+  function bindPdfControls(root) {
+    if (!root || root.dataset.meditPdfBound === '1') return;
+
+    root.dataset.meditPdfBound = '1';
+
+    const openButton = root.querySelector('[data-medit-fullscreen-open]');
+    const closeButton = root.querySelector('[data-medit-fullscreen-close]');
+
+    if (openButton) {
+      openButton.addEventListener('click', () => openFullscreen(root));
+    }
+
+    if (closeButton) {
+      closeButton.addEventListener('click', () => closeFullscreen(root));
+    }
+
+    bindGlobalHandlers();
+  }
+
+  function refreshAfterRender() {
     const mount = getMount();
     if (!mount) return;
 
-    if (
-      window.ResumeExpanders &&
-      typeof window.ResumeExpanders.init === 'function'
-    ) {
-      window.ResumeExpanders.init(mount, {
-        openKeys: Array.isArray(openKeys) ? openKeys : [],
-        skipSave: false
-      });
-    }
+    const root = getExistingMeditations();
+    if (!root) return;
+
+    ensurePdfFrameLoaded(root);
+    bindPdfControls(root);
 
     if (
       window.CustomCursorAPI &&
@@ -201,11 +363,6 @@
     const mount = getMount();
     if (!mount) return null;
 
-    /*
-      EN content file currently inserts DOM directly.
-      ZH content file currently exposes MEDITATIONS_ZH_INNER_HTML.
-      This loader supports both patterns.
-    */
     mount.innerHTML = '';
 
     const ok = await loadScript(lang);
@@ -233,15 +390,15 @@
 
     if (!mount) return false;
 
-    const openKeys = Array.isArray(opts.openKeys)
-      ? opts.openKeys
-      : opts.preserveState
-        ? getOpenKeys()
-        : [];
+    const existing = getExistingMeditations();
 
-    if (currentLang === lang && getExistingMeditations()) {
-      refreshAfterRender(openKeys);
+    if (currentLang === lang && existing) {
+      refreshAfterRender();
       return true;
+    }
+
+    if (existing && existing.classList.contains('is-fullscreen')) {
+      closeFullscreen(existing, { restoreFocus: false });
     }
 
     captureCurrentHtml();
@@ -249,7 +406,7 @@
     if (CACHE[lang]) {
       mount.innerHTML = CACHE[lang];
       currentLang = lang;
-      refreshAfterRender(openKeys);
+      refreshAfterRender();
       return true;
     }
 
@@ -260,14 +417,14 @@
     if (!html) {
       setFallback(lang);
       currentLang = lang;
-      refreshAfterRender(openKeys);
+      refreshAfterRender();
       return false;
     }
 
     mount.innerHTML = html;
     currentLang = lang;
 
-    refreshAfterRender(openKeys);
+    refreshAfterRender();
 
     return true;
   }
@@ -279,15 +436,17 @@
   }
 
   function refreshCurrentLanguage() {
-    const openKeys = getOpenKeys();
-
     return render({
-      lang: getLang(),
-      openKeys
+      lang: getLang()
     });
   }
 
   function clear() {
+    const existing = getExistingMeditations();
+    if (existing && existing.classList.contains('is-fullscreen')) {
+      closeFullscreen(existing, { restoreFocus: false });
+    }
+
     captureCurrentHtml();
 
     const mount = getMount();
