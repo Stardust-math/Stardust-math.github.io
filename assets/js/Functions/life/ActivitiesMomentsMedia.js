@@ -212,7 +212,13 @@
     box.setAttribute('aria-modal', 'true');
 
     box.innerHTML = `
-      <button class="am-lightbox-close" type="button" aria-label="${U.escapeHtml(ui.close)}">×</button>
+      <button
+        class="am-lightbox-close"
+        type="button"
+        aria-label="${U.escapeHtml(ui.close)}"
+        data-cursor="precise_select"
+        data-cursor-fallback="pointer"
+      >×</button>
       <img src="${U.escapeHtml(src)}" alt="">
     `;
 
@@ -226,15 +232,6 @@
     });
 
     document.body.appendChild(box);
-
-    const onKey = (event) => {
-      if (event.key === 'Escape') {
-        closeLightbox();
-        document.removeEventListener('keydown', onKey);
-      }
-    };
-
-    document.addEventListener('keydown', onKey);
   }
 
   function closeLightbox() {

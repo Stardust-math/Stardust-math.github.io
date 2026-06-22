@@ -3,7 +3,9 @@
   margin-bottom: 20px;
 }
 
-.fc { font-family: "Georgia", serif; }
+.fc {
+  font-family: "Georgia", serif;
+}
 
 .fc-toolbar-title {
   font-family: "Georgia", serif;
@@ -76,45 +78,201 @@
   box-shadow: var(--shadow) !important;
 }
 
-.fc-daygrid-day-number { color: var(--accent); }
+.fc-daygrid-day-number {
+  color: var(--accent);
+}
 
 .fc-daygrid-day.fc-day-today {
   background: var(--accent-weak) !important;
 }
 
-.fc-event {
-  /* “Left bar + light fill” looks more like a polished calendar than a solid chip */
-  background: color-mix(in srgb, var(--accent-weak) 72%, var(--surface)) !important;
-  border: 1px solid color-mix(in srgb, var(--border) 78%, var(--accent-weak)) !important;
-  color: var(--text) !important;
-  cursor: pointer;
-  transition: background-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease, border-color 0.18s ease;
-  border-radius: 10px;
+/* Calendar event cards: align FullCalendar events with My/USTC Timetable cards. */
+.fc-event,
+.fc-h-event,
+.fc-v-event {
   position: relative;
-  padding-left: 10px;
+  box-sizing: border-box;
+
+  max-width: 100%;
+  min-width: 0;
+
+  border: 1px solid var(--course-card-border) !important;
+  border-radius: var(--course-card-radius) !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--course-card-bg-top),
+      var(--course-card-bg-bottom)
+    ) !important;
+
+  color: var(--text) !important;
+
+  box-shadow: var(--course-card-shadow) !important;
+
+  padding: 4px 7px 5px !important;
+  overflow: hidden;
+
+  cursor: pointer;
+
+  transform: translate3d(0, 0, 0);
+  will-change: transform, box-shadow, border-color;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease;
 }
 
-.fc-event::before {
+/*
+  FullCalendar Month view wraps each event in a harness.
+  Keep the card inside the day cell instead of letting padding/title
+  stretch the event beyond the grid column.
+*/
+.fc .fc-daygrid-event-harness {
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.fc .fc-daygrid-event {
+  box-sizing: border-box;
+  max-width: calc(100% - 4px);
+  min-width: 0;
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
+.fc-event::before,
+.fc-h-event::before,
+.fc-v-event::before {
   content: "";
   position: absolute;
-  left: 0;
+
   top: 0;
-  bottom: 0;
-  width: 3px;
-  background: var(--accent);
-  opacity: 0.95;
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
+  left: 0;
+  right: 0;
+
+  height: 2px;
+
+  background:
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--course-card-muted-accent) 68%, transparent),
+      color-mix(in srgb, var(--course-card-accent) 88%, transparent),
+      color-mix(in srgb, var(--course-card-muted-accent) 68%, transparent)
+    );
+
+  opacity: 1;
+  pointer-events: none;
 }
 
-.fc-event:hover {
-  background: color-mix(in srgb, var(--accent-weak) 88%, var(--surface)) !important;
-  border-color: color-mix(in srgb, var(--accent) 55%, var(--border)) !important;
-  box-shadow: var(--shadow-sm);
-  transform: translateY(-0.5px);
+.fc-event::after,
+.fc-h-event::after,
+.fc-v-event::after {
+  content: "";
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      color-mix(in srgb, var(--accent-weak) 38%, transparent),
+      transparent 58%
+    );
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease;
 }
 
-.fc-event:active {
-  transform: translateY(0);
-  box-shadow: var(--shadow-xs);
+.fc-event:hover,
+.fc-h-event:hover,
+.fc-v-event:hover {
+  background:
+    linear-gradient(
+      180deg,
+      var(--course-card-hover-bg-top),
+      var(--course-card-hover-bg-bottom)
+    ) !important;
+
+  border-color: var(--course-card-border-hover) !important;
+  box-shadow: var(--course-card-shadow-hover) !important;
+
+  transform: translate3d(0, -2px, 0);
+}
+
+.fc-event:hover::after,
+.fc-h-event:hover::after,
+.fc-v-event:hover::after {
+  opacity: 1;
+}
+
+.fc-event:active,
+.fc-h-event:active,
+.fc-v-event:active {
+  transform: translate3d(0, 0, 0);
+  box-shadow: var(--course-card-shadow) !important;
+}
+
+.fc .fc-daygrid-event-dot {
+  display: none !important;
+}
+
+/*
+  Hide FullCalendar's native time text completely.
+  Calendar time is rendered only by .schedule-calendar-event-time.
+*/
+.fc .fc-event-time {
+  display: none !important;
+}
+
+.fc .fc-event-main {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  max-width: 100%;
+  color: var(--text) !important;
+}
+
+.schedule-calendar-event-frame {
+  position: relative;
+  z-index: 1;
+
+  display: grid;
+  grid-template-columns: minmax(0, auto) minmax(0, 1fr);
+  align-items: center;
+  column-gap: 4px;
+
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
+  overflow: hidden;
+}
+
+.schedule-calendar-event-time {
+  min-width: 0;
+  max-width: 100%;
+
+  color: color-mix(in srgb, var(--text) 78%, var(--course-card-accent));
+  font-weight: 700;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.schedule-calendar-event-title {
+  min-width: 0;
+  max-width: 100%;
+
+  color: var(--text);
+  font-weight: 700;
+  line-height: 1.25;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

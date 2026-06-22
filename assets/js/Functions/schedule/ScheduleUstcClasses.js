@@ -22,6 +22,13 @@ let ustcClasses = JSON.parse(localStorage.getItem('ustcClasses')) || [];
 const timetableTbody = document.querySelector('#ustc-timetable tbody');
 const timetableTbodyInitialHTML = timetableTbody ? timetableTbody.innerHTML : '';
 
+function markUstcCursorTarget(element) {
+  if (!element || !element.dataset) return;
+
+  element.dataset.cursor = element.dataset.cursor || 'precise_select';
+  element.dataset.cursorFallback = element.dataset.cursorFallback || 'pointer';
+}
+
 // Initialize weeks selection
 function initWeeksSelection() {
   const weeksGrid = document.getElementById('weeks-grid');
@@ -129,6 +136,8 @@ function renderUstcTimetable() {
     cell.rowSpan = 1;
     cell.className = '';
     cell.style.display = '';
+    cell.removeAttribute('data-cursor');
+    cell.removeAttribute('data-cursor-fallback');
   });
 
   ustcClasses.sort((a, b) => a.periodStart - b.periodStart);
@@ -189,6 +198,7 @@ function renderUstcTimetable() {
 
       cell.rowSpan = rowSpan;
       cell.className = 'has-class event-cell';
+      markUstcCursorTarget(cell);
 
       const endPeriod = period + rowSpan - 1;
 
@@ -202,6 +212,7 @@ function renderUstcTimetable() {
 
       const container = document.createElement('div');
       container.className = 'overlap-container';
+      markUstcCursorTarget(container);
 
       cell.appendChild(startInfo);
       cell.appendChild(endInfo);
@@ -209,6 +220,7 @@ function renderUstcTimetable() {
       courses.forEach(course => {
         const courseDiv = document.createElement('div');
         courseDiv.className = 'overlap-course';
+        markUstcCursorTarget(courseDiv);
 
         const credit = (course.credits ?? '').toString().trim();
         const creditHtml = credit ? ` <span class="credits-inline">[${credit}]</span>` : '';
@@ -253,6 +265,10 @@ function renderUstcTimetable() {
   }
 
   renderUstcClassesList();
+
+  if (window.Schedule && typeof window.Schedule.markCursorTargets === 'function') {
+    window.Schedule.markCursorTargets(document.getElementById('schedule'));
+  }
 }
 
 function renderUstcClassesList() {
@@ -273,8 +289,8 @@ function renderUstcClassesList() {
       <td>${getDaysString(cls.days)}</td>
       <td>${cls.credits || t('unknown')}</td>
       <td>
-        <button class="edit-ustc-class" data-id="${cls.id}">${t('edit')}</button>
-        <button class="delete-ustc-class" data-id="${cls.id}">${t('del')}</button>
+        <button class="edit-ustc-class" data-id="${cls.id}" data-cursor="precise_select" data-cursor-fallback="pointer">${t('edit')}</button>
+        <button class="delete-ustc-class" data-id="${cls.id}" data-cursor="precise_select" data-cursor-fallback="pointer">${t('del')}</button>
       </td>
     `;
 
@@ -282,6 +298,8 @@ function renderUstcClassesList() {
   });
 
   document.querySelectorAll('.edit-ustc-class').forEach(btn => {
+    markUstcCursorTarget(btn);
+
     btn.addEventListener('click', () => {
       const id = btn.dataset.id;
       const cls = ustcClasses.find(c => c.id === id);
@@ -293,6 +311,8 @@ function renderUstcClassesList() {
   });
 
   document.querySelectorAll('.delete-ustc-class').forEach(btn => {
+    markUstcCursorTarget(btn);
+
     btn.addEventListener('click', () => {
       const id = btn.dataset.id;
       deleteUstcClass(id);
@@ -384,6 +404,10 @@ function openUstcClassModal(cls = null, periodStart = null, periodEnd = null, da
   }
 
   modal.style.display = 'flex';
+
+  if (window.Schedule && typeof window.Schedule.markCursorTargets === 'function') {
+    window.Schedule.markCursorTargets(document.getElementById('schedule'));
+  }
 }
 
 function saveUstcClass() {

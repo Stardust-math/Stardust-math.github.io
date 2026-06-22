@@ -58,6 +58,13 @@
     return normalizeView(slug);
   }
 
+  function applyScheduleSubnavCursor(control) {
+    if (!control || !control.dataset) return;
+
+    control.dataset.cursor = control.dataset.cursor || 'precise_select';
+    control.dataset.cursorFallback = control.dataset.cursorFallback || 'pointer';
+  }
+
   function toRouteLink(control) {
     const view = normalizeView(control && control.dataset ? control.dataset.view : '');
     if (!control || !view) return control;
@@ -67,6 +74,7 @@
     if (control.tagName && control.tagName.toLowerCase() === 'a') {
       control.setAttribute('href', href);
       control.setAttribute('role', 'button');
+      applyScheduleSubnavCursor(control);
       return control;
     }
 
@@ -83,6 +91,8 @@
     link.setAttribute('role', 'button');
     link.innerHTML = control.innerHTML;
 
+    applyScheduleSubnavCursor(link);
+
     control.replaceWith(link);
     return link;
   }
@@ -94,8 +104,13 @@
 
       if (link && view) {
         link.setAttribute('href', getRoute(view));
+        applyScheduleSubnavCursor(link);
       }
     });
+
+    if (window.CustomCursorAPI && typeof window.CustomCursorAPI.refresh === 'function') {
+      window.CustomCursorAPI.refresh();
+    }
   }
 
   function getScheduleSetter() {

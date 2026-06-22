@@ -113,6 +113,8 @@
               class="am-gallery-item"
               type="button"
               data-am-image="${safeSrc}"
+              data-cursor="precise_select"
+              data-cursor-fallback="pointer"
               aria-label="${U.escapeHtml(ui.openImage)}"
             >
               <img src="${safeSrc}" alt="${alt}" loading="lazy" decoding="async">

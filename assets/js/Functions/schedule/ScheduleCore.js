@@ -27,6 +27,8 @@ function t(key) {
 // ===============================================================
 
 let schedulePageInitialized = false;
+let scheduleCursorObserver = null;
+let scheduleCursorMarkPending = false;
 
 function dispatchScheduleViewChange(view) {
   try {
@@ -65,6 +67,8 @@ function setScheduleView(view) {
       if (typeof ensureCalendarRendered === 'function') {
         ensureCalendarRendered('dayGridMonth');
       }
+
+      scheduleCursorRefresh(document.getElementById('schedule'));
     }, 0);
   } else if (targetView === 'timetable') {
     if (timetableSection) timetableSection.classList.add('active');
@@ -80,6 +84,7 @@ function setScheduleView(view) {
     if (myTimetableSection) myTimetableSection.classList.add('active');
   }
 
+  scheduleCursorRefresh(document.getElementById('schedule'));
   dispatchScheduleViewChange(targetView);
 }
 
@@ -99,6 +104,188 @@ function bindOnce(element, eventName, handler, flag) {
   }
 }
 
+function setCursorHint(element, cursorKey, fallback, overwrite) {
+  if (!element || !element.dataset) return;
+
+  if (overwrite || !element.dataset.cursor) {
+    element.dataset.cursor = cursorKey || 'precise_select';
+  }
+
+  if (overwrite || !element.dataset.cursorFallback) {
+    element.dataset.cursorFallback = fallback || 'pointer';
+  }
+}
+
+function setCursorHintForAll(root, selectors, cursorKey, fallback, overwrite) {
+  const scope = root || document;
+
+  if (!scope || typeof scope.querySelectorAll !== 'function') return;
+
+  scope.querySelectorAll(selectors.join(', ')).forEach((el) => {
+    setCursorHint(el, cursorKey, fallback, overwrite);
+  });
+}
+
+function markScheduleCursorTargets(root) {
+  const scheduleRoot = document.getElementById('schedule') || root;
+
+  if (!scheduleRoot || typeof scheduleRoot.querySelectorAll !== 'function') return;
+
+  /*
+    Schedule is a dense UI panel. The page itself, labels, wrappers,
+    helper text and table text should use the normal cursor. Only the
+    actual controls should opt into precise_select.
+  */
+  setCursorHint(scheduleRoot, 'normal', 'auto', true);
+
+  setCursorHintForAll(scheduleRoot, [
+    '.schedule-container',
+    '.schedule-section',
+    '.schedule-heading',
+    '.semester-title',
+
+    '.schedule-switcher',
+
+    '.semester-selector',
+    '.semester-dropdown',
+    '.semester-dropdown-content',
+
+    '.schedule-semester-panel',
+    '.schedule-semester-panel label',
+    '.schedule-semester-select-wrap',
+
+    '.schedule-week-panel',
+    '.schedule-week-panel label',
+    '.schedule-week-select-wrap',
+
+    '.schedule-export-toolbar',
+    '.schedule-export-control',
+    '.schedule-export-control label',
+
+    '.ustc-local-save-hint',
+    '.week-display',
+    '.weeks-title',
+    '.schedule-control-hint-below',
+
+    '.timetable',
+    '.timetable th',
+    '.timetable td',
+    '#ustc-timetable',
+    '#ustc-timetable th',
+    '#ustc-timetable td'
+  ], 'normal', 'auto', true);
+
+  /*
+    Actual clickable / selectable controls.
+    These are intentionally narrower than the panel wrappers above.
+  */
+  setCursorHintForAll(scheduleRoot, [
+    '.schedule-switch-btn',
+    '.schedule-switch-btn *',
+    '.schedule-switcher a.schedule-switch-btn',
+    '.schedule-switcher a.schedule-switch-btn *',
+
+    '.semester-dropdown-btn',
+    '.semester-dropdown-btn *',
+    '.semester-dropdown-content a',
+    '.semester-dropdown-content a *',
+
+    '.schedule-semester-select',
+    '.schedule-semester-select *',
+    '[data-schedule-semester-select]',
+    '[data-schedule-semester-select] *',
+
+    '.schedule-week-panel select',
+    '.schedule-week-panel select *',
+    '[data-schedule-week-select]',
+    '[data-schedule-week-select] *',
+
+    '.schedule-export-control select',
+    '.schedule-export-control select *',
+    '.schedule-export-btn',
+    '.schedule-export-btn *',
+    '.schedule-export-action',
+    '.schedule-export-action *',
+
+    '.add-event-btn',
+    '.add-event-btn *',
+    '.event-form-btn',
+    '.event-form-btn *',
+    '.event-modal-close',
+    '.event-modal-close *',
+
+    '.week-nav-btn',
+    '.week-nav-btn *',
+
+    '.edit-ustc-class',
+    '.delete-ustc-class',
+    '.edit-ustc-class *',
+    '.delete-ustc-class *'
+  ], 'precise_select', 'pointer', true);
+
+  setCursorHintForAll(scheduleRoot, [
+    '.timetable td.has-event',
+    '.timetable td.has-event *',
+    '.timetable-event',
+    '.timetable-event *',
+    'td.event-cell',
+    'td.event-cell *',
+    'td.event-cell .course-container',
+    'td.event-cell .course-container *',
+    'td.event-cell .overlap-container',
+    'td.event-cell .overlap-container *',
+    'td.event-cell .overlap-course',
+    'td.event-cell .overlap-course *',
+    '.fc .fc-button',
+    '.fc .fc-button *',
+    '.fc-event',
+    '.fc-event *'
+  ], 'precise_select', 'pointer', true);
+
+  setCursorHintForAll(scheduleRoot, [
+    'input:not([type])',
+    'input[type="text"]',
+    'input[type="search"]',
+    'input[type="email"]',
+    'input[type="password"]',
+    'input[type="number"]',
+    'input[type="url"]',
+    'input[type="tel"]',
+    'textarea',
+    '[contenteditable="true"]'
+  ], 'text_select', 'text', true);
+}
+
+function scheduleCursorRefresh(root) {
+  if (scheduleCursorMarkPending) return;
+
+  scheduleCursorMarkPending = true;
+
+  window.requestAnimationFrame(() => {
+    scheduleCursorMarkPending = false;
+    markScheduleCursorTargets(root || document.getElementById('schedule'));
+
+    if (window.CustomCursorAPI && typeof window.CustomCursorAPI.refresh === 'function') {
+      window.CustomCursorAPI.refresh();
+    }
+  });
+}
+
+function installScheduleCursorObserver() {
+  const root = document.getElementById('schedule');
+
+  if (!root || scheduleCursorObserver) return;
+
+  scheduleCursorObserver = new MutationObserver(() => {
+    scheduleCursorRefresh(root);
+  });
+
+  scheduleCursorObserver.observe(root, {
+    childList: true,
+    subtree: true
+  });
+}
+
 function initSchedulePage() {
   if (typeof initCalendar === 'function') {
     initCalendar();
@@ -115,6 +302,8 @@ function initSchedulePage() {
   }
 
   viewSwitchers.forEach(btn => {
+    setCursorHint(btn, 'precise_select', 'pointer', true);
+
     bindOnce(btn, 'click', () => {
       const view = btn.dataset.view;
       setScheduleView(view);
@@ -217,6 +406,9 @@ function initSchedulePage() {
     }
   }, 'scheduleNextWeekBound');
 
+  installScheduleCursorObserver();
+  scheduleCursorRefresh(document.getElementById('schedule'));
+
   schedulePageInitialized = true;
 }
 
@@ -244,11 +436,23 @@ window.addEventListener('site:langchange', function (e) {
   try {
     if (typeof renderUstcClassesList === 'function') renderUstcClassesList();
   } catch (err) { }
+
+  scheduleCursorRefresh(document.getElementById('schedule'));
+});
+
+window.addEventListener('schedule:semesterchange', function () {
+  scheduleCursorRefresh(document.getElementById('schedule'));
+});
+
+window.addEventListener('schedule:viewchange', function () {
+  scheduleCursorRefresh(document.getElementById('schedule'));
 });
 
 window.Schedule = window.Schedule || {};
 window.Schedule.setScheduleView = setScheduleView;
 window.Schedule.initSchedulePage = initSchedulePage;
+window.Schedule.markCursorTargets = markScheduleCursorTargets;
+window.Schedule.refreshCursorTargets = scheduleCursorRefresh;
 window.Schedule.initWeeksSelection = (typeof initWeeksSelection === 'function') ? initWeeksSelection : undefined;
 window.Schedule.initSemesterSelection = function () {};
 window.Schedule.updateCalendarTheme = (typeof updateCalendarTheme === 'function') ? updateCalendarTheme : function () {};

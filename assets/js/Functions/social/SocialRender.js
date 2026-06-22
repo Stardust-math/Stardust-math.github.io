@@ -12,8 +12,24 @@
     return document.getElementById(ROOT_ID);
   }
 
+  function markSocialCursorTargets(root) {
+    if (!root || typeof root.querySelectorAll !== 'function') return;
+
+    root.querySelectorAll([
+      '[data-orcid-qr-open]',
+      '[data-orcid-qr-close]'
+    ].join(', ')).forEach(function (el) {
+      if (!el.dataset) return;
+
+      el.dataset.cursor = el.dataset.cursor || 'precise_select';
+      el.dataset.cursorFallback = el.dataset.cursorFallback || 'pointer';
+    });
+  }
+
   function refreshAfterRender(root) {
     if (!root) return;
+
+    markSocialCursorTargets(root);
 
     if (window.CustomCursorAPI && typeof window.CustomCursorAPI.refresh === 'function') {
       window.CustomCursorAPI.refresh(root);
@@ -29,6 +45,8 @@
     const closeBtns = root.querySelectorAll('[data-orcid-qr-close]');
 
     if (!openBtn || !modal || !dialog) return;
+
+    markSocialCursorTargets(root);
 
     function openModal() {
       modal.classList.add('is-open');
@@ -111,7 +129,14 @@
               <div class="social-link-group">
                 <a href="https://orcid.org/0009-0009-1961-6829" class="social-link" target="_blank" rel="noopener noreferrer" data-i18n="link_record">Record</a>
                 <span class="social-divider">/</span>
-                <button type="button" class="social-link social-qr-button" data-orcid-qr-open data-i18n="link_qr_code">QR Code</button>
+                <button
+                  type="button"
+                  class="social-link social-qr-button"
+                  data-orcid-qr-open
+                  data-i18n="link_qr_code"
+                  data-cursor="precise_select"
+                  data-cursor-fallback="pointer"
+                >QR Code</button>
               </div>
             </div>
 
@@ -191,7 +216,14 @@
         <!-- ORCID QR modal -->
         <div id="orcid-qr-modal" class="orcid-qr-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="orcid-qr-title">
           <div class="orcid-qr-dialog">
-            <button type="button" class="orcid-qr-close" data-orcid-qr-close aria-label="Close ORCID QR code / 关闭 ORCID 二维码">
+            <button
+              type="button"
+              class="orcid-qr-close"
+              data-orcid-qr-close
+              aria-label="Close ORCID QR code / 关闭 ORCID 二维码"
+              data-cursor="precise_select"
+              data-cursor-fallback="pointer"
+            >
               <i class="fas fa-times" aria-hidden="true"></i>
             </button>
             <div id="orcid-qr-title" class="orcid-qr-title" data-i18n="orcid_qr_title">ORCID QR Code</div>
