@@ -1,5 +1,3 @@
-window.__SCHEDULE_CALENDAR_GENERAL_VERSION__ = 'calendar-custom-timegrid-overlay-v14';
-
 // General events storage
 let calendarEvents = JSON.parse(localStorage.getItem('calendarEvents')) || [];
 let timetableEvents = JSON.parse(localStorage.getItem('timetableEvents')) || [];
@@ -12,7 +10,8 @@ let calendarRefreshPending = false;
 let currentWeek = new Date();
 let fullCalendarLoadPromise = null;
 let timetableInitialized = false;
-let calendarOverlayResizeBound = false;
+let calendarResizeBound = false;
+let calendarUnzoomDepth = 0;
 
 function getFullCalendarAssets() {
   const resources = window.SiteResources || {};
@@ -81,6 +80,68 @@ function isCalendarVisible() {
   );
 }
 
+function getDocumentZoomValue() {
+  const root = document.documentElement;
+
+  if (!root || !window.getComputedStyle) {
+    return 1;
+  }
+
+  const raw = window.getComputedStyle(root).zoom;
+  const parsed = Number.parseFloat(raw);
+
+  if (!Number.isFinite(parsed) || parsed <= 0) {
+    return 1;
+  }
+
+  return parsed;
+}
+
+/*
+  FullCalendar computes widths and time-grid vertical positions with JS.
+  The site uses desktop html zoom, and Chrome exposes zoomed dimensions to
+  getBoundingClientRect(). If FullCalendar computes while html zoom is 0.8,
+  events such as 23:23 are drawn around 18:42.
+
+  Temporarily unzoom only during FullCalendar's synchronous layout methods.
+  The previous inline zoom is restored immediately, so the global site visual
+  scaling remains unchanged.
+*/
+function withCalendarUnzoomedLayout(callback) {
+  if (typeof callback !== 'function') return undefined;
+
+  const root = document.documentElement;
+  const currentZoom = getDocumentZoomValue();
+
+  if (
+    !root ||
+    calendarUnzoomDepth > 0 ||
+    Math.abs(currentZoom - 1) < 0.001
+  ) {
+    return callback();
+  }
+
+  const previousInlineZoom = root.style.zoom;
+
+  calendarUnzoomDepth += 1;
+
+  try {
+    root.style.zoom = '1';
+
+    /*
+      Force the style change to be applied before FullCalendar measures.
+      This is intentionally scoped to the synchronous callback.
+    */
+    void root.offsetWidth;
+
+    return callback();
+  } finally {
+    root.style.zoom = previousInlineZoom;
+    void root.offsetWidth;
+    calendarUnzoomDepth -= 1;
+  }
+}
+
 async function createCalendarIfNeeded() {
   if (calendar) return calendar;
 
@@ -107,17 +168,27 @@ async function createCalendarIfNeeded() {
 
     slotMinTime: '00:00:00',
     slotMaxTime: '24:00:00',
+    scrollTime: '08:00:00',
+    scrollTimeReset: false,
     allDaySlot: false,
 
     events: [],
     eventDisplay: 'block',
+
+    /*
+      Keep very short time-grid events readable.
+      This only affects FullCalendar's native event card height;
+      it does not change view switching, scrolling, or event timing.
+    */
+    eventMinHeight: 28,
+    eventShortHeight: 28,
 
     displayEventTime: false,
     displayEventEnd: false,
     eventContent: renderCalendarEventContent,
 
     datesSet: function () {
-      scheduleCustomTimeGridOverlayRender();
+      requestCalendarSizeUpdate();
     },
 
     eventDidMount: function (info) {
@@ -125,8 +196,6 @@ async function createCalendarIfNeeded() {
         info.el.dataset.cursor = 'precise_select';
         info.el.dataset.cursorFallback = 'pointer';
       }
-
-      scheduleCustomTimeGridOverlayRender();
     },
 
     eventClick: function (info) {
@@ -134,19 +203,42 @@ async function createCalendarIfNeeded() {
     }
   });
 
-  bindCalendarOverlayResize();
+  bindCalendarResize();
   updateCalendarTheme();
   return calendar;
 }
 
-function bindCalendarOverlayResize() {
-  if (calendarOverlayResizeBound) return;
+function bindCalendarResize() {
+  if (calendarResizeBound) return;
 
-  calendarOverlayResizeBound = true;
+  calendarResizeBound = true;
 
   window.addEventListener('resize', () => {
-    scheduleCustomTimeGridOverlayRender();
+    requestCalendarSizeUpdate();
   });
+}
+
+function requestCalendarSizeUpdate() {
+  if (!calendar) return;
+
+  const run = () => {
+    if (!calendar || !isCalendarVisible()) return;
+
+    withCalendarUnzoomedLayout(() => {
+      try {
+        calendar.updateSize();
+      } catch (e) { }
+    });
+
+    if (window.Schedule && typeof window.Schedule.markCursorTargets === 'function') {
+      window.Schedule.markCursorTargets(document.getElementById('schedule'));
+    }
+  };
+
+  requestAnimationFrame(run);
+  setTimeout(run, 0);
+  setTimeout(run, 80);
+  setTimeout(run, 220);
 }
 
 function buildCalendarDisplayEvents() {
@@ -345,22 +437,6 @@ function getCalendarSourceEvent(calendarEvent) {
   };
 }
 
-function getCalendarSourceEventFromDisplayEvent(displayEvent) {
-  const props = displayEvent && displayEvent.extendedProps ? displayEvent.extendedProps : {};
-
-  if (props.sourceEvent) {
-    return {
-      id: props.sourceEvent.id,
-      title: props.sourceEvent.title || '',
-      description: props.sourceEvent.description || '',
-      start: props.sourceEvent.start,
-      end: props.sourceEvent.end
-    };
-  }
-
-  return getCalendarSourceEvent(displayEvent);
-}
-
 function renderCalendarEventContent(info) {
   const event = info && info.event ? info.event : null;
 
@@ -403,233 +479,20 @@ function formatCalendarEventTime(event) {
   return formatEventTimeRange(start, end);
 }
 
-function scheduleCustomTimeGridOverlayRender() {
-  requestAnimationFrame(renderCustomTimeGridOverlay);
-  setTimeout(renderCustomTimeGridOverlay, 0);
-  setTimeout(renderCustomTimeGridOverlay, 80);
-  setTimeout(renderCustomTimeGridOverlay, 220);
-}
-
-function renderCustomTimeGridOverlay() {
-  const calendarRoot = document.getElementById('calendar-container');
-
-  if (!calendarRoot || !calendar || !calendar.view) return;
-
-  const viewType = calendar.view.type;
-  const isTimeGrid = viewType === 'timeGridWeek' || viewType === 'timeGridDay';
-
-  removeCustomTimeGridOverlay();
-
-  if (!isTimeGrid) {
-    showNativeTimeGridEvents();
-    return;
-  }
-
-  hideNativeTimeGridEvents();
-
-  const body = calendarRoot.querySelector('.fc-timegrid-body');
-  const slots = calendarRoot.querySelector('.fc-timegrid-slots');
-  const cols = Array.from(calendarRoot.querySelectorAll('.fc-timegrid-col[data-date]'));
-
-  if (!body || !slots || !cols.length) return;
-
-  body.style.position = 'relative';
-
-  const bodyRect = body.getBoundingClientRect();
-  const slotsRect = slots.getBoundingClientRect();
-
-  if (!slotsRect.height || slotsRect.height <= 0) return;
-
-  const overlay = document.createElement('div');
-  overlay.className = 'schedule-calendar-timegrid-overlay';
-  overlay.style.position = 'absolute';
-  overlay.style.left = '0';
-  overlay.style.top = '0';
-  overlay.style.right = '0';
-  overlay.style.bottom = '0';
-  overlay.style.zIndex = '20';
-  overlay.style.pointerEvents = 'none';
-
-  body.appendChild(overlay);
-
-  const dayMinutes = 24 * 60;
-  const pxPerMinute = slotsRect.height / dayMinutes;
-
-  const colMap = new Map();
-
-  cols.forEach(col => {
-    const date = col.getAttribute('data-date');
-    const rect = col.getBoundingClientRect();
-
-    colMap.set(date, {
-      left: rect.left - bodyRect.left,
-      width: rect.width
-    });
-  });
-
-  buildCalendarDisplayEvents().forEach(event => {
-    const props = event.extendedProps || {};
-
-    if (!props.isCalendarSegment) return;
-
-    const start = event.start instanceof Date ? event.start : new Date(event.start);
-
-    if (Number.isNaN(start.getTime())) return;
-
-    const dateKey = formatDateKeyDashed(start);
-    const col = colMap.get(dateKey);
-
-    if (!col) return;
-
-    const startMinutes = parseCalendarDisplayStartMinutes(props);
-    const endMinutes = parseCalendarDisplayEndMinutes(props);
-
-    if (
-      startMinutes == null ||
-      endMinutes == null ||
-      endMinutes <= startMinutes
-    ) {
-      return;
-    }
-
-    const top = (slotsRect.top - bodyRect.top) + startMinutes * pxPerMinute;
-    const height = Math.max(18, (endMinutes - startMinutes) * pxPerMinute);
-
-    const card = document.createElement('div');
-    card.className = 'schedule-calendar-timegrid-event';
-    card.dataset.cursor = 'precise_select';
-    card.dataset.cursorFallback = 'pointer';
-
-    card.style.position = 'absolute';
-    card.style.left = `${col.left + 3}px`;
-    card.style.top = `${top}px`;
-    card.style.width = `${Math.max(0, col.width - 6)}px`;
-    card.style.height = `${height}px`;
-    card.style.pointerEvents = 'auto';
-
-    card.innerHTML = `
-      <div class="schedule-calendar-event-frame">
-        <div class="schedule-calendar-event-time">${escapeHtml(props.displayTimeText || '')}</div>
-        <div class="schedule-calendar-event-title">${escapeHtml(event.title || '')}</div>
-      </div>
-    `;
-
-    card.addEventListener('click', (e) => {
-      e.stopPropagation();
-      openGeneralEventModal('calendar', getCalendarSourceEventFromDisplayEvent(event));
-    });
-
-    overlay.appendChild(card);
-  });
-
-  if (window.Schedule && typeof window.Schedule.markCursorTargets === 'function') {
-    window.Schedule.markCursorTargets(document.getElementById('schedule'));
-  }
-}
-
-function removeCustomTimeGridOverlay() {
-  document
-    .querySelectorAll('.schedule-calendar-timegrid-overlay')
-    .forEach(node => node.remove());
-}
-
-function hideNativeTimeGridEvents() {
-  document
-    .querySelectorAll('#calendar-container .fc-timegrid-event-harness')
-    .forEach(node => {
-      node.style.display = 'none';
-    });
-}
-
-function showNativeTimeGridEvents() {
-  document
-    .querySelectorAll('#calendar-container .fc-timegrid-event-harness')
-    .forEach(node => {
-      node.style.display = '';
-    });
-}
-
-function parseCalendarDisplayStartMinutes(props) {
-  if (typeof props.displayStartLabel === 'string') {
-    return parseTimeLabelToMinutes(props.displayStartLabel);
-  }
-
-  if (typeof props.displayTimeText === 'string') {
-    const parts = props.displayTimeText.split('-');
-
-    if (parts[0]) {
-      return parseTimeLabelToMinutes(parts[0].trim());
-    }
-  }
-
-  return null;
-}
-
-function parseCalendarDisplayEndMinutes(props) {
-  if (typeof props.displayEndLabel === 'string') {
-    return parseTimeLabelToMinutes(props.displayEndLabel);
-  }
-
-  if (typeof props.displayTimeText === 'string') {
-    const parts = props.displayTimeText.split('-');
-
-    if (parts[1]) {
-      return parseTimeLabelToMinutes(parts[1].trim());
-    }
-  }
-
-  return null;
-}
-
-function parseTimeLabelToMinutes(label) {
-  const text = String(label || '').trim();
-
-  if (text === '24:00') return 24 * 60;
-
-  const match = text.match(/^(\d{1,2}):(\d{2})$/);
-
-  if (!match) return null;
-
-  const hour = Number(match[1]);
-  const minute = Number(match[2]);
-
-  if (
-    !Number.isFinite(hour) ||
-    !Number.isFinite(minute) ||
-    hour < 0 ||
-    hour > 24 ||
-    minute < 0 ||
-    minute >= 60
-  ) {
-    return null;
-  }
-
-  if (hour === 24 && minute !== 0) return null;
-
-  return hour * 60 + minute;
-}
-
-function formatDateKeyDashed(value) {
-  const date = value instanceof Date ? value : new Date(value);
-
-  const yyyy = date.getFullYear();
-  const mm = String(date.getMonth() + 1).padStart(2, '0');
-  const dd = String(date.getDate()).padStart(2, '0');
-
-  return `${yyyy}-${mm}-${dd}`;
-}
-
 function refreshCalendarEvents() {
   if (!calendar) return;
 
-  if (typeof calendar.removeAllEventSources === 'function') {
-    calendar.removeAllEventSources();
-  } else {
-    calendar.removeAllEvents();
-  }
+  withCalendarUnzoomedLayout(() => {
+    if (typeof calendar.removeAllEventSources === 'function') {
+      calendar.removeAllEventSources();
+    } else {
+      calendar.removeAllEvents();
+    }
 
-  calendar.addEventSource(buildCalendarDisplayEvents());
-  scheduleCustomTimeGridOverlayRender();
+    calendar.addEventSource(buildCalendarDisplayEvents());
+  });
+
+  requestCalendarSizeUpdate();
 }
 
 function ensureCalendarRendered(forceView) {
@@ -646,13 +509,19 @@ function ensureCalendarRendered(forceView) {
     }
 
     if (!calendarRendered) {
-      instance.render();
+      withCalendarUnzoomedLayout(() => {
+        instance.render();
+      });
+
       calendarRendered = true;
       refreshCalendarEvents();
     }
 
     if (calendarPendingView) {
-      instance.changeView(calendarPendingView);
+      withCalendarUnzoomedLayout(() => {
+        instance.changeView(calendarPendingView);
+      });
+
       calendarPendingView = null;
     }
 
@@ -661,17 +530,7 @@ function ensureCalendarRendered(forceView) {
       calendarRefreshPending = false;
     }
 
-    setTimeout(() => {
-      try {
-        instance.updateSize();
-      } catch (e) { }
-
-      scheduleCustomTimeGridOverlayRender();
-
-      if (window.Schedule && typeof window.Schedule.markCursorTargets === 'function') {
-        window.Schedule.markCursorTargets(document.getElementById('schedule'));
-      }
-    }, 0);
+    requestCalendarSizeUpdate();
   });
 }
 
@@ -683,8 +542,6 @@ function initCalendar() {
 
     calendar = null;
   }
-
-  removeCustomTimeGridOverlay();
 
   calendarRendered = false;
   calendarPendingView = null;
@@ -699,7 +556,10 @@ function updateCalendarTheme() {
 function setCalendarLocale(lang) {
   if (!calendar) return;
 
-  calendar.setOption('locale', getFullCalendarLocale(lang));
+  withCalendarUnzoomedLayout(() => {
+    calendar.setOption('locale', getFullCalendarLocale(lang));
+  });
+
   calendarRefreshPending = true;
   ensureCalendarRendered();
 }

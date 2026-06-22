@@ -3,8 +3,62 @@
   margin-bottom: 20px;
 }
 
+#calendar-container .fc {
+  width: 100%;
+}
+
+/*
+  FullCalendar writes pixel widths to several inner wrappers after measuring
+  getBoundingClientRect(). Under the site's desktop html zoom, those inline
+  widths can become visually too narrow. Keep this fix scoped to the Calendar
+  module and only reset FullCalendar's measured width wrappers, not global tables.
+*/
+#calendar-container .fc-view-harness,
+#calendar-container .fc-view,
+#calendar-container .fc-scrollgrid,
+#calendar-container .fc-scrollgrid-section,
+#calendar-container .fc-scrollgrid-section > td,
+#calendar-container .fc-scroller-harness,
+#calendar-container .fc-scroller,
+#calendar-container .fc-col-header,
+#calendar-container .fc-col-header table,
+#calendar-container .fc-daygrid-body,
+#calendar-container .fc-daygrid-body table,
+#calendar-container .fc-scrollgrid-sync-table,
+#calendar-container .fc-timegrid-body,
+#calendar-container .fc-timegrid-body table,
+#calendar-container .fc-timegrid-slots,
+#calendar-container .fc-timegrid-slots table,
+#calendar-container .fc-timegrid-cols,
+#calendar-container .fc-timegrid-cols table {
+  width: 100% !important;
+  min-width: 100% !important;
+}
+
+#calendar-container .fc-scroller {
+  overflow-x: hidden !important;
+}
+
 .fc {
   font-family: "Georgia", serif;
+}
+
+.fc .fc-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.fc .fc-toolbar-chunk {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.fc .fc-toolbar-title {
+  min-width: 0;
+  text-align: center;
 }
 
 .fc-toolbar-title {
@@ -275,4 +329,107 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+/* Month cells are narrow: stack time/title to avoid the cramped inline look. */
+.fc-dayGridMonth-view .schedule-calendar-event-frame {
+  display: block;
+}
+
+.fc-dayGridMonth-view .schedule-calendar-event-time {
+  display: block;
+  font-size: 0.78em;
+  line-height: 1.1;
+  opacity: 0.78;
+}
+
+.fc-dayGridMonth-view .schedule-calendar-event-title {
+  display: block;
+  margin-top: 1px;
+  line-height: 1.18;
+}
+
+/* Week/Day native timeGrid events: keep the same card language, but let FullCalendar position them. */
+.fc-timeGridWeek-view .fc-timegrid-event,
+.fc-timeGridDay-view .fc-timegrid-event {
+  min-height: 18px;
+}
+
+.fc-timeGridWeek-view .schedule-calendar-event-frame,
+.fc-timeGridDay-view .schedule-calendar-event-frame {
+  align-items: start;
+  grid-template-columns: minmax(0, auto) minmax(0, 1fr);
+  row-gap: 2px;
+}
+
+.fc-timeGridWeek-view .schedule-calendar-event-time,
+.fc-timeGridDay-view .schedule-calendar-event-time {
+  font-size: 0.82em;
+  line-height: 1.15;
+}
+
+.fc-timeGridWeek-view .schedule-calendar-event-title,
+.fc-timeGridDay-view .schedule-calendar-event-title {
+  font-size: 0.92em;
+  line-height: 1.16;
+}
+
+@media (max-width: 760px) {
+  #calendar-container {
+    height: 68vh;
+  }
+
+  .fc .fc-toolbar {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .fc .fc-toolbar-chunk {
+    justify-content: center;
+  }
+
+  .fc .fc-toolbar-chunk:nth-child(2) {
+    order: -1;
+    flex-basis: 100%;
+  }
+
+  .fc-toolbar-title {
+    font-size: 1.18em;
+  }
+
+  .fc .fc-button {
+    padding: 0.34em 0.54em !important;
+  }
+}
+
+@media (max-width: 520px) {
+  #calendar-container {
+    height: 66vh;
+  }
+
+  .fc .fc-toolbar {
+    align-items: stretch;
+  }
+
+  .fc .fc-toolbar-chunk {
+    flex-wrap: wrap;
+  }
+
+  .fc .fc-toolbar-chunk:first-child,
+  .fc .fc-toolbar-chunk:last-child {
+    flex: 1 1 100%;
+  }
+
+  .fc .fc-button {
+    font-size: 0.9em !important;
+  }
+
+  .fc-dayGridMonth-view .schedule-calendar-event-time {
+    font-size: 0.72em;
+  }
+
+  .fc-dayGridMonth-view .schedule-calendar-event-title {
+    font-size: 0.86em;
+  }
 }
