@@ -67,8 +67,8 @@
             href="${detailHref}"
             data-am-action="view"
             data-date-key="${dateKey}"
-            data-cursor="precise_select"
-            data-cursor-fallback="pointer"
+            data-cursor="handwriting"
+            data-cursor-fallback="crosshair"
           >${action}</a>
         </div>
       </article>
@@ -114,8 +114,6 @@
               type="button"
               data-am-image="${safeSrc}"
               aria-label="${U.escapeHtml(ui.openImage)}"
-              data-cursor="precise_select"
-              data-cursor-fallback="zoom-in"
             >
               <img src="${safeSrc}" alt="${alt}" loading="lazy" decoding="async">
             </button>
@@ -198,8 +196,8 @@
           class="am-detail-back"
           href="${backHref}"
           data-am-action="back"
-          data-cursor="precise_select"
-          data-cursor-fallback="pointer"
+          data-cursor="handwriting"
+          data-cursor-fallback="crosshair"
         >${U.escapeHtml(ui.backToMoments)}</a>
       </div>
     `);

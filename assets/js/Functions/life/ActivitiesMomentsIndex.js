@@ -74,8 +74,8 @@
           href="${escapeHtml(href)}"
           data-am-action="view"
           data-date-key="${escapeHtml(rawDateKey)}"
-          data-cursor="precise_select"
-          data-cursor-fallback="pointer"
+          data-cursor="handwriting"
+          data-cursor-fallback="crosshair"
           ${isActive ? 'aria-current="page"' : ''}
         >
           <span class="am-index-date">${escapeHtml(dateText)}</span>

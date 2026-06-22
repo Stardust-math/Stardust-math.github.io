@@ -1,4 +1,4 @@
-(function () {
+﻿(function () {
   'use strict';
 
   var BASE = new URL('./assets/cursors/', document.baseURI).href;
@@ -47,23 +47,24 @@
     css += rule('.resize-diag1', 'diagonal1', 'nwse-resize');
     css += rule('.resize-diag2', 'diagonal2', 'nesw-resize');
     css += rule('.help, [data-cursor="help"]', 'help', 'help');
+    css += rule('#resume button.expander[data-expand-target]', 'help', 'help');
     css += rule('.busy, [data-busy], [aria-busy="true"]', 'busy', 'wait');
     css += rule('.handwriting, .scribble-area', 'handwriting', 'crosshair');
 
-    css += rule('[data-cursor="normal"]', 'normal', 'auto');
-    css += rule('[data-cursor="unavailable"]', 'unavailable', 'not-allowed');
-    css += rule('[data-cursor="vertical_resize"]', 'vertical_resize', 'ns-resize');
-    css += rule('[data-cursor="background_run"]', 'background_run', 'progress');
-    css += rule('[data-cursor="candidate"]', 'candidate', 'copy');
-    css += rule('[data-cursor="precise_select"]', 'precise_select', 'pointer');
-    css += rule('[data-cursor="link_select"]', 'link_select', 'pointer');
-    css += rule('[data-cursor="busy"]', 'busy', 'wait');
-    css += rule('[data-cursor="handwriting"]', 'handwriting', 'crosshair');
-    css += rule('[data-cursor="horizontal_resize"]', 'horizontal_resize', 'ew-resize');
-    css += rule('[data-cursor="text_select"]', 'text_select', 'text');
-    css += rule('[data-cursor="diagonal1"]', 'diagonal1', 'nwse-resize');
-    css += rule('[data-cursor="diagonal2"]', 'diagonal2', 'nesw-resize');
-    css += rule('[data-cursor="move"]', 'move', 'move');
+    css += rule('[data-cursor][data-cursor="normal"]', 'normal', 'auto');
+    css += rule('[data-cursor][data-cursor="unavailable"]', 'unavailable', 'not-allowed');
+    css += rule('[data-cursor][data-cursor="vertical_resize"]', 'vertical_resize', 'ns-resize');
+    css += rule('[data-cursor][data-cursor="background_run"]', 'background_run', 'progress');
+    css += rule('[data-cursor][data-cursor="candidate"]', 'candidate', 'copy');
+    css += rule('[data-cursor][data-cursor="precise_select"]', 'precise_select', 'pointer');
+    css += rule('[data-cursor][data-cursor="link_select"]', 'link_select', 'pointer');
+    css += rule('[data-cursor][data-cursor="busy"]', 'busy', 'wait');
+    css += rule('[data-cursor][data-cursor="handwriting"]', 'handwriting', 'crosshair');
+    css += rule('[data-cursor][data-cursor="horizontal_resize"]', 'horizontal_resize', 'ew-resize');
+    css += rule('[data-cursor][data-cursor="text_select"]', 'text_select', 'text');
+    css += rule('[data-cursor][data-cursor="diagonal1"]', 'diagonal1', 'nwse-resize');
+    css += rule('[data-cursor][data-cursor="diagonal2"]', 'diagonal2', 'nesw-resize');
+    css += rule('[data-cursor][data-cursor="move"]', 'move', 'move');
 
     return css;
   }
