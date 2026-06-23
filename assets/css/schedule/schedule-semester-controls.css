@@ -32,6 +32,76 @@
   min-height: 20px;
 }
 
+.week-expression-controls {
+  margin: 10px 0 12px;
+}
+
+.week-input-mode-row {
+  display: grid;
+  grid-template-columns: minmax(110px, 0.36fr) minmax(180px, 1fr);
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.week-input-mode-row label,
+.week-expression-panel label {
+  margin: 0;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.week-expression-panel {
+  padding: 12px;
+  border: 1px solid color-mix(in srgb, var(--border) 82%, var(--accent-weak));
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--surface) 90%, var(--surface-2));
+  box-shadow: var(--shadow-xs);
+}
+
+.week-expression-row {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.week-expression-row .event-form-control {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.week-pattern-apply-btn {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  padding: 10px 16px;
+}
+
+.week-pattern-hint {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.82em;
+  line-height: 1.5;
+}
+
+.week-pattern-error {
+  min-height: 18px;
+  margin-top: 6px;
+  color: var(--danger);
+  font-size: 0.85em;
+  line-height: 1.4;
+}
+
+#week-pattern-input.has-error {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger) 20%, transparent);
+}
+
+.week-expression-panel[hidden],
+.week-checkbox-panel[hidden] {
+  display: none !important;
+}
+
 .semester-selector {
   display: flex;
   justify-content: center;
@@ -245,5 +315,17 @@
     border-radius: 22px;
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .week-input-mode-row {
+    grid-template-columns: 1fr;
+  }
+
+  .week-expression-row {
+    flex-direction: column;
+  }
+
+  .week-pattern-apply-btn {
+    width: 100%;
   }
 }
