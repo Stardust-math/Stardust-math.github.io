@@ -176,12 +176,11 @@ async function createCalendarIfNeeded() {
     eventDisplay: 'block',
 
     /*
-      Keep very short time-grid events readable.
-      This only affects FullCalendar's native event card height;
-      it does not change view switching, scrolling, or event timing.
+      Do not force a minimum height for timed events.
+      FullCalendar should size each event from its actual start/end time.
     */
-    eventMinHeight: 28,
-    eventShortHeight: 28,
+    eventMinHeight: 0,
+    eventShortHeight: 0,
 
     displayEventTime: false,
     displayEventEnd: false,

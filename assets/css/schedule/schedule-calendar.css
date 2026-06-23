@@ -216,6 +216,15 @@
   margin-right: 2px;
 }
 
+/*
+  In timeGrid views, the column frame is the real vertical boundary of a day.
+  Keep event shadows, rounded corners, and hover effects from painting outside
+  00:00 / 24:00 without clipping FullCalendar's internal event positioning layer.
+*/
+#calendar-container .fc-timegrid-col-frame {
+  overflow: hidden;
+}
+
 .fc-event::before,
 .fc-h-event::before,
 .fc-v-event::before {
@@ -274,6 +283,16 @@
   box-shadow: var(--course-card-shadow-hover) !important;
 
   transform: translate3d(0, -2px, 0);
+}
+
+/*
+  Day/Week timed events sit inside exact time intervals. Do not move them
+  upward on hover, otherwise events near 00:00 / 24:00 can visually cross
+  the clipped day boundary.
+*/
+.fc-timeGridWeek-view .fc-timegrid-event:hover,
+.fc-timeGridDay-view .fc-timegrid-event:hover {
+  transform: translate3d(0, 0, 0);
 }
 
 .fc-event:hover::after,
@@ -368,12 +387,7 @@
   line-height: 1.18;
 }
 
-/* Week/Day native timeGrid events: keep the same card language, but let FullCalendar position them. */
-.fc-timeGridWeek-view .fc-timegrid-event,
-.fc-timeGridDay-view .fc-timegrid-event {
-  min-height: 18px;
-}
-
+/* Week/Day native timeGrid events: keep the same card language, but let FullCalendar position and size them. */
 .fc-timeGridWeek-view .schedule-calendar-event-frame,
 .fc-timeGridDay-view .schedule-calendar-event-frame {
   align-items: start;
