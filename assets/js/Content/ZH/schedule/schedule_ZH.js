@@ -741,7 +741,9 @@
         : hint.dataset.enText;
     }
 
-    // Global table headers inside schedule
+    // Global table headers inside schedule.
+    // Do not touch FullCalendar headers inside #calendar-container.
+    // FullCalendar owns its own DOM and is already localized through setCalendarLocale().
     const TH_ZH_GLOBAL = {
       "Period": "时段",
       "Period Number": "节次",
@@ -763,7 +765,10 @@
       "Credits": "学分",
       "Actions": "操作",
     };
+
     scheduleRoot.querySelectorAll("th").forEach(th => {
+      if (th.closest("#calendar-container")) return;
+
       storeIfEmptyDataset(th, "enText", th.textContent.trim());
       const en = th.dataset.enText;
       th.textContent = (l === LANG.ZH) ? (TH_ZH_GLOBAL[en] || en) : en;
