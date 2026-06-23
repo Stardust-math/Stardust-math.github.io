@@ -1,0 +1,764 @@
+/* =========================================================
+   Social Page - Friends
+   - Friend links
+   - Application template
+   - Site information copy block
+   ========================================================= */
+
+.friends-block {
+  margin-top: 6px;
+}
+
+.friends-title-row {
+  margin-bottom: 8px;
+}
+
+.friends-intro {
+  margin: 0 0 16px;
+
+  color: var(--muted);
+  font-size: 0.96rem;
+  line-height: 1.65;
+  text-align: left;
+}
+
+/* =========================================================
+   Friend cards
+   ========================================================= */
+
+.friends-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+
+  margin: 14px 0 20px;
+}
+
+.friend-card {
+  position: relative;
+  isolation: isolate;
+
+  display: block;
+
+  min-height: 110px;
+  padding: 14px 16px;
+
+  color: var(--text);
+  text-decoration: none;
+
+  background:
+    radial-gradient(
+      circle at 8% 0%,
+      color-mix(in srgb, var(--accent-weak) 58%, transparent),
+      transparent 48%
+    ),
+    linear-gradient(
+      180deg,
+      var(--surface),
+      color-mix(in srgb, var(--surface) 78%, var(--surface-2))
+    );
+  border: 1px solid color-mix(in srgb, var(--border) 90%, var(--accent-weak));
+  border-radius: calc(var(--radius) + 10px);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+
+  transition:
+    transform 0.22s ease,
+    border-color 0.22s ease,
+    box-shadow 0.22s ease,
+    background-color 0.22s ease;
+}
+
+.friend-card:hover {
+  color: var(--text);
+  text-decoration: none;
+
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--accent) 56%, var(--border));
+  box-shadow:
+    var(--shadow),
+    0 0 22px color-mix(in srgb, var(--accent) 11%, transparent);
+}
+
+.friend-card-bg {
+  position: absolute;
+  left: -10px;
+  top: 0;
+  z-index: 0;
+
+  width: 68%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center;
+  opacity: 0.13;
+  filter: saturate(0.82) contrast(0.96) blur(0.1px);
+
+  pointer-events: none;
+  user-select: none;
+
+  -webkit-mask-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.96) 0%,
+    rgba(0, 0, 0, 0.56) 48%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.96) 0%,
+    rgba(0, 0, 0, 0.56) 48%,
+    rgba(0, 0, 0, 0) 100%
+  );
+
+  transition:
+    opacity 0.24s ease,
+    transform 0.24s ease,
+    filter 0.24s ease;
+}
+
+.friend-card:hover .friend-card-bg {
+  opacity: 0.2;
+  transform: scale(1.045);
+  filter: saturate(0.92) contrast(1) blur(0.05px);
+}
+
+.friend-card-inner {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  min-height: 82px;
+}
+
+.friend-avatar-wrap {
+  position: relative;
+  z-index: 1;
+
+  flex: 0 0 68px;
+
+  width: 68px;
+  height: 68px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.friend-avatar-shell {
+  position: relative;
+  z-index: 1;
+
+  width: 68px;
+  height: 68px;
+
+  display: grid;
+  place-items: center;
+
+  overflow: hidden;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--border) 72%, var(--accent-weak));
+  background:
+    radial-gradient(
+      circle at 35% 25%,
+      color-mix(in srgb, var(--accent-weak) 80%, transparent),
+      transparent 48%
+    ),
+    var(--surface-2);
+  box-shadow:
+    var(--shadow-xs),
+    inset 0 0 0 1px color-mix(in srgb, var(--surface) 60%, transparent);
+
+  transition:
+    transform 0.22s ease,
+    border-color 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.friend-avatar {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  border-radius: inherit;
+
+  transition:
+    transform 0.28s ease,
+    filter 0.28s ease,
+    opacity 0.28s ease;
+}
+
+.friend-avatar-fallback {
+  color: var(--accent);
+  font-size: 1.42rem;
+  font-weight: 800;
+  font-family: var(--font-social-heading);
+}
+
+/* Bauklotze-like avatar overlay:
+   whole card hover -> dark round mask -> animated SVG arrow */
+.friend-avatar-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+  background: rgba(17, 24, 39, 0.52);
+  backdrop-filter: saturate(0.95) brightness(0.96);
+  -webkit-backdrop-filter: saturate(0.95) brightness(0.96);
+
+  opacity: 0;
+  pointer-events: none;
+
+  transition:
+    opacity 0.24s ease,
+    background-color 0.24s ease;
+}
+
+.friend-avatar-arrow-svg {
+  width: 34px;
+  height: 34px;
+
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.94);
+  stroke-width: 2.65;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+
+  filter:
+    drop-shadow(0 1px 2px rgba(0, 0, 0, 0.22))
+    drop-shadow(0 0 6px rgba(255, 255, 255, 0.14));
+
+  transform: translateX(-4px);
+  transition:
+    transform 0.28s ease,
+    stroke 0.24s ease,
+    filter 0.24s ease;
+}
+
+.friend-arrow-line {
+  transform-box: fill-box;
+  transform-origin: right center;
+  transform: translateX(7px) scaleX(0.05);
+  opacity: 0.78;
+
+  transition:
+    transform 0.3s ease,
+    opacity 0.24s ease;
+}
+
+.friend-arrow-head {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: translateX(0);
+
+  transition:
+    transform 0.3s ease;
+}
+
+.friend-card:hover .friend-avatar-shell {
+  transform: scale(1.045);
+  border-color: color-mix(in srgb, var(--accent) 48%, var(--border));
+  box-shadow:
+    var(--shadow-sm),
+    0 0 16px color-mix(in srgb, var(--accent) 13%, transparent);
+}
+
+.friend-card:hover .friend-avatar-overlay {
+  opacity: 1;
+}
+
+.friend-card:hover .friend-avatar-arrow-svg {
+  transform: translateX(1px);
+}
+
+.friend-card:hover .friend-arrow-line {
+  opacity: 1;
+  transform: translateX(1px) scaleX(1);
+}
+
+.friend-card:hover .friend-arrow-head {
+  transform: translateX(1.5px);
+}
+
+.friend-card:hover .friend-avatar {
+  transform: scale(1.065);
+  filter: saturate(0.92) contrast(0.98) brightness(0.95);
+  opacity: 0.94;
+}
+
+.friend-card-body {
+  min-width: 0;
+
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.friend-title {
+  display: block;
+
+  color: var(--accent);
+  font-size: 1.06rem;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: 0.18px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  transition: color 0.2s ease;
+}
+
+.friend-card:hover .friend-title {
+  color: var(--accent-strong);
+}
+
+.friend-desc {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+
+  margin-top: 6px;
+
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.42;
+
+  overflow: hidden;
+}
+
+.friend-tag {
+  align-self: flex-start;
+
+  margin-top: 9px;
+  padding: 3px 9px;
+
+  color: var(--accent);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--border));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent-weak) 78%, transparent);
+}
+
+.friends-empty {
+  margin: 12px 0 20px;
+  padding: 16px;
+
+  color: var(--muted);
+  text-align: center;
+
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+/* =========================================================
+   Panels
+   ========================================================= */
+
+.friends-panels {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+
+  margin-top: 18px;
+}
+
+.friends-panel {
+  padding: 18px;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--surface),
+      color-mix(in srgb, var(--surface) 70%, var(--surface-2))
+    );
+  border: 1px solid color-mix(in srgb, var(--border) 88%, var(--accent-weak));
+  border-radius: calc(var(--radius) + 8px);
+  box-shadow: var(--shadow-sm);
+}
+
+.friends-panel-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+
+  margin-bottom: 12px;
+}
+
+.friends-panel-header h3 {
+  margin: 0;
+
+  color: var(--accent);
+  font-size: 1.15rem;
+  line-height: 1.3;
+}
+
+.friends-panel-header p {
+  margin: 6px 0 0;
+
+  color: var(--muted);
+  font-size: 0.94rem;
+  line-height: 1.55;
+}
+
+/* =========================================================
+   Email row
+   ========================================================= */
+
+.friends-email-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+
+  margin: 0 0 12px;
+
+  color: var(--muted);
+  font-size: 0.94rem;
+}
+
+.friends-email-label {
+  font-weight: 700;
+  color: var(--text);
+}
+
+.friends-email-address {
+  color: var(--accent);
+  font-weight: 700;
+  border-bottom: 1px dotted color-mix(in srgb, var(--accent) 70%, transparent);
+}
+
+.friends-email-address:hover {
+  border-bottom-style: solid;
+  text-decoration: none;
+}
+
+.friends-email-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  margin-left: 2px;
+}
+
+/* =========================================================
+   Icon buttons
+   ========================================================= */
+
+.friends-icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 36px;
+  height: 36px;
+  padding: 0;
+
+  color: var(--accent);
+  font: inherit;
+  line-height: 1;
+  text-decoration: none;
+
+  border: 1px solid color-mix(in srgb, var(--border) 86%, var(--accent-weak));
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--surface) 88%, var(--accent-weak));
+  box-shadow: var(--shadow-xs);
+  cursor: pointer;
+
+  transition:
+    transform 0.18s ease,
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.friends-icon-button:hover {
+  color: var(--accent-strong);
+  text-decoration: none;
+
+  background: var(--accent-weak);
+  border-color: color-mix(in srgb, var(--accent) 46%, var(--border));
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+}
+
+.friends-icon-button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.friends-icon-button.is-copied {
+  color: #1f8a4c;
+  border-color: color-mix(in srgb, #1f8a4c 52%, var(--border));
+  background: color-mix(in srgb, #1f8a4c 12%, var(--surface));
+}
+
+.friends-icon-button.is-copy-failed {
+  color: var(--danger);
+  border-color: color-mix(in srgb, var(--danger) 45%, var(--border));
+  background: color-mix(in srgb, var(--danger) 10%, var(--surface));
+}
+
+/* =========================================================
+   Code blocks
+   ========================================================= */
+
+.friends-code-card {
+  margin-top: 12px;
+
+  overflow: hidden;
+
+  border: 1px solid color-mix(in srgb, var(--border) 82%, var(--accent-weak));
+  border-radius: calc(var(--radius) + 6px);
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--surface-2) 82%, var(--accent-weak)),
+      var(--surface-2)
+    );
+  box-shadow: var(--shadow-xs);
+}
+
+.friends-code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  padding: 10px 12px;
+
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 88%, transparent);
+  background: color-mix(in srgb, var(--surface) 82%, var(--accent-weak));
+}
+
+.friends-code-title {
+  color: var(--accent);
+  font-size: 0.92rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.friends-code-header .friends-icon-button {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+}
+
+.friends-code {
+  max-width: 100%;
+  overflow-x: auto;
+
+  padding: 8px 0;
+
+  font-family: var(--font-mono, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace);
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+.friends-code-line {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 0;
+
+  min-width: max-content;
+  padding: 1px 16px 1px 0;
+}
+
+.friends-code-no {
+  padding-right: 12px;
+
+  color: color-mix(in srgb, var(--muted) 58%, transparent);
+  text-align: right;
+  user-select: none;
+
+  border-right: 1px solid color-mix(in srgb, var(--border) 82%, transparent);
+}
+
+.friends-code-text {
+  display: block;
+
+  padding-left: 14px;
+
+  color: var(--text);
+  font: inherit;
+  white-space: pre;
+}
+
+/* =========================================================
+   Dark mode refinements
+   ========================================================= */
+
+body.dark-mode .friend-card {
+  background:
+    radial-gradient(
+      circle at 8% 0%,
+      color-mix(in srgb, var(--accent-weak) 58%, transparent),
+      transparent 50%
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--surface) 92%, #000),
+      color-mix(in srgb, var(--surface-2) 84%, #000)
+    );
+}
+
+body.dark-mode .friend-card-bg {
+  opacity: 0.16;
+  filter: saturate(0.76) contrast(0.9) brightness(0.92) blur(0.1px);
+}
+
+body.dark-mode .friend-card:hover .friend-card-bg {
+  opacity: 0.24;
+  filter: saturate(0.86) contrast(0.96) brightness(0.96) blur(0.05px);
+}
+
+body.dark-mode .friend-avatar-shell {
+  background:
+    radial-gradient(
+      circle at 35% 25%,
+      color-mix(in srgb, var(--accent-weak) 72%, transparent),
+      transparent 48%
+    ),
+    var(--surface-3);
+}
+
+body.dark-mode .friend-avatar-overlay {
+  background: rgba(0, 0, 0, 0.48);
+}
+
+body.dark-mode .friend-avatar-arrow-svg {
+  stroke: rgba(255, 255, 255, 0.92);
+}
+
+body.dark-mode .friends-code-card {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--surface-2) 88%, #000),
+      color-mix(in srgb, var(--surface-3) 92%, #000)
+    );
+}
+
+body.dark-mode .friends-code-header {
+  background: color-mix(in srgb, var(--surface-2) 86%, var(--accent-weak));
+}
+
+body.dark-mode .friends-icon-button.is-copied {
+  color: #74d99f;
+  border-color: color-mix(in srgb, #74d99f 42%, var(--border));
+  background: color-mix(in srgb, #74d99f 12%, var(--surface));
+}
+
+/* =========================================================
+   Responsive
+   ========================================================= */
+
+@media (max-width: 1050px) {
+  .friends-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .friends-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .friend-card {
+    min-height: 106px;
+    padding: 14px 15px;
+  }
+
+  .friend-card-inner {
+    min-height: 78px;
+    gap: 14px;
+  }
+
+  .friend-avatar-wrap,
+  .friend-avatar-shell {
+    width: 64px;
+    height: 64px;
+    flex-basis: 64px;
+  }
+
+  .friend-avatar-arrow-svg {
+    width: 32px;
+    height: 32px;
+  }
+
+  .friend-title {
+    font-size: 1.05rem;
+  }
+
+  .friend-desc {
+    font-size: 0.9rem;
+  }
+
+  .friends-panel {
+    padding: 16px;
+  }
+
+  .friends-panel-header {
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 520px) {
+  .friends-panel-header {
+    flex-direction: column;
+  }
+
+  .friends-code {
+    font-size: 0.84rem;
+  }
+
+  .friends-code-line {
+    grid-template-columns: 36px minmax(0, 1fr);
+  }
+
+  .friends-code-text {
+    padding-left: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .friend-card,
+  .friend-card-bg,
+  .friend-avatar-shell,
+  .friend-avatar,
+  .friend-avatar-overlay,
+  .friend-avatar-arrow-svg,
+  .friend-arrow-line,
+  .friend-arrow-head,
+  .friends-icon-button {
+    transition: none !important;
+  }
+
+  .friend-card:hover,
+  .friend-card:hover .friend-card-bg,
+  .friend-card:hover .friend-avatar-shell,
+  .friend-card:hover .friend-avatar,
+  .friend-card:hover .friend-avatar-arrow-svg,
+  .friend-card:hover .friend-arrow-line,
+  .friend-card:hover .friend-arrow-head {
+    transform: none !important;
+  }
+}

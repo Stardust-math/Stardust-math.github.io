@@ -292,12 +292,17 @@
         mountId: 'mount-social',
         styles: [
           A + 'css/social/social-cards.css',
-          A + 'css/social/social-stats.css'
+          A + 'css/social/social-stats.css',
+          A + 'css/social/social-friends.css'
         ],
         scripts: [
           A + 'js/Content/EN/social/social_EN.js',
           A + 'js/Content/ZH/social/social_ZH.js',
+          A + 'js/Config/SocialFriendsConfig.js',
+          A + 'js/Content/EN/social/friends_EN.js',
+          A + 'js/Content/ZH/social/friends_ZH.js',
           A + 'js/Functions/social/SocialRender.js',
+          A + 'js/Functions/social/SocialFriends.js',
           A + 'js/Functions/social/SocialStats.js',
           A + 'js/Functions/social/SocialComments.js'
         ]
