@@ -55,9 +55,14 @@
   overflow-y: auto;
 }
 
+/*
+  General Event modal is used by Timetable and Calendar.
+  Keep it vertically centered like the USTC Add Class modal.
+*/
 #general-event-modal.event-modal {
-  align-items: flex-start;
-  padding: 48px 18px;
+  justify-content: center;
+  align-items: center;
+  padding: 24px 18px;
   overflow-y: auto;
   box-sizing: border-box;
 }
@@ -65,10 +70,10 @@
 #general-event-modal .event-modal-content {
   width: min(92vw, 620px);
   max-width: 620px;
-  max-height: none;
+  max-height: calc(100vh - 96px);
   margin: 0 auto;
   padding: 28px 30px 26px;
-  overflow: visible;
+  overflow-y: auto;
 }
 
 .event-modal-close {
@@ -290,6 +295,7 @@
 
   #general-event-modal .event-modal-content {
     width: min(94vw, 620px);
+    max-height: calc(100vh - 56px);
     padding: 26px 20px 22px;
   }
 

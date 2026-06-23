@@ -820,6 +820,17 @@ function goToNextWeek() {
   updateTimetable();
 }
 
+function refreshGeneralEventModalLanguage() {
+  const modal = document.getElementById('general-event-modal');
+  const title = document.getElementById('general-event-modal-title');
+  const eventIdInput = document.getElementById('general-event-id');
+
+  if (!modal || !title || !eventIdInput) return;
+
+  const isEditing = Boolean(eventIdInput.value);
+  title.textContent = isEditing ? t('editEvent') : t('addNewEvent');
+}
+
 function openGeneralEventModal(type, event = null, preset = null) {
   const modal = document.getElementById('general-event-modal');
   const deleteBtn = document.getElementById('general-event-delete-btn');
@@ -827,7 +838,6 @@ function openGeneralEventModal(type, event = null, preset = null) {
   if (!modal || !deleteBtn) return;
 
   if (event) {
-    document.getElementById('general-event-modal-title').textContent = t('editEvent');
     document.getElementById('general-event-id').value = event.id || '';
     document.getElementById('event-title').value = event.title || '';
     document.getElementById('event-description').value = getGeneralEventDescription(event);
@@ -835,7 +845,6 @@ function openGeneralEventModal(type, event = null, preset = null) {
     document.getElementById('event-end').value = formatDateTimeForInput(getGeneralEventEnd(event));
     deleteBtn.style.display = 'inline-block';
   } else {
-    document.getElementById('general-event-modal-title').textContent = t('addNewEvent');
     document.getElementById('general-event-id').value = '';
     document.getElementById('event-title').value = '';
     document.getElementById('event-description').value = '';
@@ -854,6 +863,9 @@ function openGeneralEventModal(type, event = null, preset = null) {
   }
 
   document.getElementById('general-event-type').value = type;
+
+  refreshGeneralEventModalLanguage();
+
   modal.style.display = 'flex';
 
   if (window.Schedule && typeof window.Schedule.markCursorTargets === 'function') {
@@ -1095,3 +1107,16 @@ function deleteGeneralEvent() {
     updateTimetable();
   }
 }
+
+window.addEventListener('site:langchange', function (e) {
+  if (e && e.detail && e.detail.scheduleExportOnly === true) {
+    return;
+  }
+
+  try {
+    refreshGeneralEventModalLanguage();
+  } catch (err) { }
+});
+
+window.Schedule = window.Schedule || {};
+window.Schedule.refreshGeneralEventModalLanguage = refreshGeneralEventModalLanguage;
