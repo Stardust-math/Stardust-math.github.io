@@ -3,8 +3,27 @@
   margin-bottom: 20px;
 }
 
-#calendar-container .fc {
+#calendar-container.fc {
   width: 100%;
+}
+
+/*
+  FullCalendar mounts itself directly on #calendar-container:
+  <div id="calendar-container" class="fc ...">
+
+  Therefore the root selector must be #calendar-container.fc, not
+  #calendar-container .fc.
+
+  In timeGrid views, FullCalendar draws most horizontal rules through slot
+  borders. The final time-grid boundary can visually look unfinished under the
+  site's custom border color and scrollable time-grid body. Add the missing
+  terminal rule to the actual timeGrid content layers without changing layout
+  height, scroll behavior, event timing, or FullCalendar initialization.
+*/
+#calendar-container .fc-timegrid-body,
+#calendar-container .fc-timegrid-slots table,
+#calendar-container .fc-timegrid-cols table {
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 72%, transparent) !important;
 }
 
 /*
