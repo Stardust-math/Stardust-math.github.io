@@ -1,12 +1,13 @@
 {{GENERATED_NOTICE}}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"{{HTML_CLASS_ATTR}}>
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <base href="{{BASE_HREF}}">
 {{ROUTE_ENTRY_HEAD}}
 <title>{{TITLE}}</title>
+{{PRECOVER_LOADING_HEAD}}
 
 <script src="./assets/js/Config/SiteFonts.js"></script>
 <script src="./assets/js/Config/SiteResources.js"></script>
@@ -14,7 +15,7 @@
 </head>
 
 <body>
-  <div id="mount-top-nav"></div>
+{{PRECOVER_LOADING_BODY}}  <div id="mount-top-nav"></div>
   <div id="mount-cover"></div>
   <div id="mount-resume"></div>
   <div id="mount-social"></div>
@@ -22,6 +23,6 @@
   <div id="mount-schedule"></div>
   <div id="mount-life"></div>
 
-  <script src="./assets/js/Functions/general/SiteResourceLoader.js"></script>
+{{PRECOVER_LOADING_SCRIPT}}  <script src="./assets/js/Functions/general/SiteResourceLoader.js"></script>
 </body>
 </html>
