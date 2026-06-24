@@ -14,9 +14,10 @@
 
     <a
       class="medit-reader-action"
-      href="./assets/vendor/pdfjs/web/viewer.html?file=..%2F..%2F..%2Fpdf%2Flife%2Fmeditations%2FStardust_Meditations.pdf#page=1&amp;zoom=page-width&amp;pagemode=bookmarks"
+      href="./assets/pdf/life/meditations/Stardust_Meditations.pdf#page=1&amp;zoom=page-width&amp;pagemode=bookmarks&amp;view=FitH&amp;navpanes=1&amp;toolbar=1"
       target="_blank"
       rel="noopener noreferrer"
+      data-medit-pdf-link
       data-cursor="link_select"
       data-cursor-fallback="pointer"
     >Open in New Tab</a>
@@ -28,9 +29,10 @@
     <div class="medit-fullscreen-actions">
       <a
         class="medit-fullscreen-link"
-        href="./assets/vendor/pdfjs/web/viewer.html?file=..%2F..%2F..%2Fpdf%2Flife%2Fmeditations%2FStardust_Meditations.pdf#page=1&amp;zoom=page-width&amp;pagemode=bookmarks"
+        href="./assets/pdf/life/meditations/Stardust_Meditations.pdf#page=1&amp;zoom=page-width&amp;pagemode=bookmarks&amp;view=FitH&amp;navpanes=1&amp;toolbar=1"
         target="_blank"
         rel="noopener noreferrer"
+        data-medit-pdf-link
         data-cursor="link_select"
         data-cursor-fallback="pointer"
       >Open in New Tab</a>
@@ -46,23 +48,21 @@
     </div>
   </div>
 
-  <div class="medit-pdfjs-shell" data-medit-pdf-shell>
-    <iframe
-      class="medit-pdfjs-frame"
-      title="Meditations PDF preview"
-      data-src="./assets/vendor/pdfjs/web/viewer.html?file=..%2F..%2F..%2Fpdf%2Flife%2Fmeditations%2FStardust_Meditations.pdf#page=1&amp;zoom=page-width&amp;pagemode=bookmarks"
-      loading="lazy"
-      allow="fullscreen"
-      allowfullscreen
-    ></iframe>
+  <div class="medit-pdf-shell" data-medit-pdf-shell>
+    <embed
+      class="medit-pdf-frame"
+      type="application/pdf"
+      data-src="./assets/pdf/life/meditations/Stardust_Meditations.pdf#page=1&amp;zoom=page-width&amp;pagemode=bookmarks&amp;view=FitH&amp;navpanes=1&amp;toolbar=1"
+    >
   </div>
 
-  <p class="medit-pdfjs-fallback">
+  <p class="medit-pdf-fallback">
     If the PDF preview does not load,
     <a
-      href="./assets/pdf/life/meditations/Stardust_Meditations.pdf"
+      href="./assets/pdf/life/meditations/Stardust_Meditations.pdf#page=1&amp;zoom=page-width&amp;pagemode=bookmarks&amp;view=FitH&amp;navpanes=1&amp;toolbar=1"
       target="_blank"
       rel="noopener noreferrer"
+      data-medit-pdf-link
     >open the PDF directly</a>.
   </p>
 </div>
