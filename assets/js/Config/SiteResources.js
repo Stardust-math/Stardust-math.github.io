@@ -129,7 +129,7 @@
 
     navigation: {
       defaultPage: 'resume',
-      pages: ['resume', 'social', 'toolkit', 'life'],
+      pages: ['resume', 'schedule', 'social', 'toolkit', 'life'],
 
       warmup: {
         /*
@@ -139,8 +139,8 @@
           - Hidden/easter-egg pages are excluded.
           - FullCalendar and Life moment details stay lazy-loaded.
         */
-        afterCover: ['resume', 'social', 'life'],
-        afterFirstPage: ['resume', 'social', 'life'],
+        afterCover: ['resume', 'schedule', 'social', 'life'],
+        afterFirstPage: ['resume', 'schedule', 'social', 'life'],
 
         delayAfterCover: 250,
         delayAfterFirstPage: 600,
@@ -232,8 +232,8 @@
         A + 'js/Functions/general/Theme.js',
         A + 'js/Functions/general/Translate.js',
         A + 'js/Functions/general/Expanders.js',
-        A + 'js/Functions/general/Custom-cursors.js',
-        A + 'js/Functions/general/SiteBusyState.js',
+        //A + 'js/Functions/general/Custom-cursors.js',
+        //A + 'js/Functions/general/SiteBusyState.js',
         A + 'js/Functions/general/SitePreloader.js',
         A + 'js/Functions/general/SitePages.js'
       ],
