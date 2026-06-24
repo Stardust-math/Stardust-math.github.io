@@ -105,14 +105,18 @@ body[data-lang="zh"] #meditations .medit-readerbar {
   outline-offset: 3px;
 }
 
-/* Native PDF preview */
-#meditations .medit-pdf-shell {
+/* PDF.js preview */
+#meditations .medit-pdfjs-shell {
   width: 100%;
 
   /*
-    Native browser PDF preview.
-    This mimics the reference Hexo PDF embed pattern:
-    <embed src="..." width="100%" type="application/pdf">
+    Desktop reading height for the default two-page view:
+    - PDF.js opens the outline sidebar by default.
+    - The PDF itself is fit to page width.
+    - The spread mode is two-page view, so the required height is lower
+      than the previous single-page preview.
+    - If the browser viewport is shorter, the page itself scrolls while
+      the PDF preview frame keeps a stable reading height.
   */
   height: min(1040px, max(800px, 58vw));
   min-height: 780px;
@@ -123,7 +127,7 @@ body[data-lang="zh"] #meditations .medit-readerbar {
   background: color-mix(in srgb, var(--surface) 96%, var(--surface-2));
 }
 
-#meditations .medit-pdf-frame {
+#meditations .medit-pdfjs-frame {
   display: block;
   width: 100%;
   height: 100%;
@@ -131,7 +135,7 @@ body[data-lang="zh"] #meditations .medit-readerbar {
   background: transparent;
 }
 
-#meditations .medit-pdf-fallback {
+#meditations .medit-pdfjs-fallback {
   margin: 10px 0 0;
   text-align: center;
   color: var(--muted);
@@ -139,12 +143,12 @@ body[data-lang="zh"] #meditations .medit-readerbar {
   line-height: 1.7;
 }
 
-#meditations .medit-pdf-fallback a {
+#meditations .medit-pdfjs-fallback a {
   color: var(--accent);
   text-decoration: none;
 }
 
-#meditations .medit-pdf-fallback a:hover {
+#meditations .medit-pdfjs-fallback a:hover {
   color: var(--accent-strong);
   text-decoration: underline;
 }
@@ -188,7 +192,7 @@ body.medit-pdf-fullscreen-open {
 
 #meditations.is-fullscreen .resume-heading,
 #meditations.is-fullscreen .medit-readerbar,
-#meditations.is-fullscreen .medit-pdf-fallback {
+#meditations.is-fullscreen .medit-pdfjs-fallback {
   display: none;
 }
 
@@ -281,7 +285,7 @@ body[data-lang="zh"] #meditations .medit-fullscreen-close {
   transform: rotate(4deg);
 }
 
-#meditations.is-fullscreen .medit-pdf-shell {
+#meditations.is-fullscreen .medit-pdfjs-shell {
   flex: 1 1 auto;
   height: auto;
   min-height: 0;
@@ -289,7 +293,7 @@ body[data-lang="zh"] #meditations .medit-fullscreen-close {
   background: color-mix(in srgb, var(--surface) 98%, #000 2%);
 }
 
-#meditations.is-fullscreen .medit-pdf-frame {
+#meditations.is-fullscreen .medit-pdfjs-frame {
   height: 100%;
 }
 
@@ -320,7 +324,7 @@ body[data-lang="zh"] #meditations .medit-fullscreen-close {
     font-size: 0.92rem;
   }
 
-  #meditations .medit-pdf-shell {
+  #meditations .medit-pdfjs-shell {
     height: 78vh;
     min-height: 560px;
   }
@@ -354,7 +358,7 @@ body[data-lang="zh"] #meditations .medit-fullscreen-close {
     max-width: calc(100vw - 18px);
   }
 
-  #meditations .medit-pdf-shell {
+  #meditations .medit-pdfjs-shell {
     height: 74vh;
     min-height: 500px;
   }

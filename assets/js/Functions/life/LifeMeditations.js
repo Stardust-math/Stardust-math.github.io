@@ -1,20 +1,7 @@
 (function () {
   'use strict';
 
-  /*
-    Lightweight Meditations PDF preview.
-
-    Design:
-    - No bundled PDF.js viewer.
-    - No custom page renderer.
-    - Keep native vertical PDF scrolling.
-    - Keep fullscreen wrapper.
-    - Load PDF only after the user enters the Meditations submodule.
-  */
-
-  const PDF_SRC = './assets/pdf/life/meditations/Stardust_Meditations.pdf';
-  const PDF_VIEW_PARAMS = '#page=1&zoom=page-width&pagemode=bookmarks&view=FitH&navpanes=1&toolbar=1';
-  const PDF_VIEWER_SRC = PDF_SRC + PDF_VIEW_PARAMS;
+  const PDF_VIEWER_SRC = './assets/vendor/pdfjs/web/viewer.html?file=..%2F..%2F..%2Fpdf%2Flife%2Fmeditations%2FStardust_Meditations.pdf#page=1&zoom=page-width&pagemode=bookmarks';
 
   const LANG_CONFIG = {
     en: {
@@ -107,22 +94,11 @@
       ? '沉思录内容暂时无法加载。'
       : 'Meditations could not be loaded.';
 
-    const linkText = lang === 'zh'
-      ? '直接打开 PDF'
-      : 'Open the PDF directly';
-
     mount.innerHTML = `
       <div id="meditations">
         <div class="container medit-pdf-page">
           <div class="section">
             <p class="medit-loading">${text}</p>
-            <p class="medit-pdf-fallback">
-              <a
-                href="${PDF_VIEWER_SRC}"
-                target="_blank"
-                rel="noopener noreferrer"
-              >${linkText}</a>
-            </p>
           </div>
         </div>
       </div>
@@ -133,24 +109,12 @@
     return [];
   }
 
-  function ensurePdfLinks(root) {
-    if (!root) return;
-
-    root.querySelectorAll('[data-medit-pdf-link]').forEach((link) => {
-      link.setAttribute('href', PDF_VIEWER_SRC);
-    });
-  }
-
   function ensurePdfFrameLoaded(root) {
-    const frame = root && root.querySelector('.medit-pdf-frame');
+    const frame = root && root.querySelector('.medit-pdfjs-frame');
     if (!frame) return;
 
     const nextSrc = frame.dataset.src || PDF_VIEWER_SRC;
 
-    /*
-      The embed intentionally has no src in the static HTML.
-      This prevents the PDF from loading during cover loading or Life warm-up.
-    */
     if (!frame.getAttribute('src')) {
       frame.setAttribute('src', nextSrc);
     }
@@ -218,7 +182,6 @@
       ? document.activeElement
       : null;
 
-    ensurePdfLinks(root);
     ensurePdfFrameLoaded(root);
 
     root.classList.add('is-fullscreen');
@@ -325,7 +288,6 @@
     const root = getExistingMeditations();
     if (!root) return;
 
-    ensurePdfLinks(root);
     ensurePdfFrameLoaded(root);
     bindPdfControls(root);
 
