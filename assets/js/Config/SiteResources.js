@@ -129,7 +129,7 @@
 
     navigation: {
       defaultPage: 'resume',
-      pages: ['resume', 'schedule', 'social', 'toolkit', 'life'],
+      pages: ['resume', 'social', 'toolkit', 'life'],
 
       warmup: {
         /*
@@ -139,8 +139,8 @@
           - Hidden/easter-egg pages are excluded.
           - FullCalendar and Life moment details stay lazy-loaded.
         */
-        afterCover: ['resume', 'schedule', 'social', 'life'],
-        afterFirstPage: ['resume', 'schedule', 'social', 'life'],
+        afterCover: ['resume', 'social', 'life'],
+        afterFirstPage: ['resume', 'social', 'life'],
 
         delayAfterCover: 250,
         delayAfterFirstPage: 600,
