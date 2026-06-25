@@ -45,14 +45,14 @@
         tag: 'Academic'
       },
       {
-        title: 'Bauklotze's World',
+        title: 'Bauklotze\'s World',
         desc: '墙壁的那边,有大海。',
         siteurl: 'https://bauklotze.vercel.app',
         avatar: 'https://bauklotze.vercel.app/avatar/avatar.png',
         tag: 'Blog'
       },
       {
-        title: 'Mirawind's Blog',
+        title: 'Mirawind\'s Blog',
         desc: '相寻梦里路，飞雨落花中。',
         siteurl: 'https://mirawind.top',
         avatar: 'https://avatars.githubusercontent.com/u/53815918?v=4',
