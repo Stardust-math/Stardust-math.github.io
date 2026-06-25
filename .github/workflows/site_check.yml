@@ -22,5 +22,8 @@ jobs:
         with:
           node-version: 20
 
+      - name: Check generated index pages
+        run: node scripts/generate_index_pages.js --check
+
       - name: Check configured site resources
         run: node scripts/check_site_resources.js
