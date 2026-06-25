@@ -27,7 +27,18 @@ jobs:
 
       - name: Commit generated index pages
         run: |
-          if git diff --quiet; then
+          has_tracked_changes=false
+          has_untracked_changes=false
+
+          if ! git diff --quiet; then
+            has_tracked_changes=true
+          fi
+
+          if [ -n "$(git ls-files --others --exclude-standard)" ]; then
+            has_untracked_changes=true
+          fi
+
+          if [ "$has_tracked_changes" = false ] && [ "$has_untracked_changes" = false ]; then
             echo "No generated index page changes."
             exit 0
           fi
@@ -38,5 +49,11 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           git add -A
+
+          if git diff --cached --quiet; then
+            echo "No generated index page changes after staging."
+            exit 0
+          fi
+
           git commit -m "chore(index): regenerate index pages"
           git push
