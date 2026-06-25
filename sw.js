@@ -1,4 +1,4 @@
-/* Stardust Math service worker: offline fallback only */
+/* "Stardust Math" service worker: offline fallback only */
 
 (function () {
   'use strict';
