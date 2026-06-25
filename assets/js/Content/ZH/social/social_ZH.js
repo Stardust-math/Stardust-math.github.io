@@ -5,6 +5,10 @@
   window.SOCIAL_ZH_I18N = {
     social_heading: "联系我",
 
+    social_tab_constellation: "星群",
+    social_tab_identity: "身份",
+    social_tab_footprints: "足迹",
+
     youtube_title: "YouTube",
     youtube_desc: "我的视频内容与播放列表",
 
@@ -65,6 +69,7 @@
     comments_hint_math: "数学公式",
     comments_hint_suffix: "；未登录用户可点击 GitHub 登录后留言。",
     comments_loading: "正在加载留言...",
-    comments_failed: "留言加载失败，可以在 GitHub 中打开讨论页。"
+    comments_failed: "留言加载失败，可以在 GitHub 中打开讨论页。",
+    comments_open_github: "在 GitHub 中打开讨论页"
   };
 })();

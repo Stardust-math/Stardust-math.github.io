@@ -13,7 +13,7 @@
   };
 
   const GISCUS_ORIGIN = 'https://giscus.app';
-  const GISCUS_MOUNT_DELAY = 780;
+  const GISCUS_MOUNT_DELAY = 120;
 
   let giscusLoaded = false;
   let giscusMountTimer = null;
@@ -67,9 +67,23 @@
     return social || getSocialRoot();
   }
 
+  function isConstellationActive() {
+    if (window.SocialShell && typeof window.SocialShell.isViewActive === 'function') {
+      return window.SocialShell.isViewActive('constellation');
+    }
+
+    const section = document.querySelector('#social .social-section[data-view="constellation"]');
+
+    if (!section) {
+      return true;
+    }
+
+    return section.classList.contains('active') && !section.hidden;
+  }
+
   function socialIsVisible() {
     const social = getSocialRoot();
-    if (!social) return false;
+    if (!social || !isConstellationActive()) return false;
 
     if (social.classList.contains('visible')) {
       return true;
@@ -296,6 +310,14 @@
   window.addEventListener('site:langchange', function () {
     updateStaticTexts();
     syncGiscusAppearance();
+  });
+
+  window.addEventListener('social:viewchange', function (event) {
+    const detail = event && event.detail ? event.detail : {};
+
+    if (detail.view === 'constellation') {
+      enter();
+    }
   });
 
   window.SocialComments = {

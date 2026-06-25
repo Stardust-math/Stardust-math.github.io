@@ -5,6 +5,10 @@
   window.SOCIAL_EN_I18N = {
     social_heading: "Connect With Me",
 
+    social_tab_constellation: "Constellation",
+    social_tab_identity: "Identity",
+    social_tab_footprints: "Footprints",
+
     youtube_title: "YouTube",
     youtube_desc: "My video content and playlists",
 
@@ -65,6 +69,7 @@
     comments_hint_math: "mathematical expressions",
     comments_hint_suffix: ". Sign in with GitHub to comment.",
     comments_loading: "Loading comments...",
-    comments_failed: "Comments failed to load. Please open the discussion on GitHub."
+    comments_failed: "Comments failed to load. Please open the discussion on GitHub.",
+    comments_open_github: "Open discussion on GitHub"
   };
 })();

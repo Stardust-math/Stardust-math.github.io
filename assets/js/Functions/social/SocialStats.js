@@ -9,11 +9,11 @@
   const VISITOR_MAP_RESIZE_DEBOUNCE = 320;
   const VISITOR_MAP_WIDTH_EPSILON = 8;
 
-  const SOCIAL_RESOURCE_START_DELAY = 180;
-  const GOATCOUNTER_STATS_DELAY = 120;
-  const GOATCOUNTER_DASHBOARD_DELAY = 360;
-  const VISITOR_MAP_DELAY = 620;
-  const VISITOR_MAP_SCRIPT_DELAY = 120;
+  const SOCIAL_RESOURCE_START_DELAY = 60;
+  const GOATCOUNTER_STATS_DELAY = 60;
+  const GOATCOUNTER_DASHBOARD_DELAY = 180;
+  const VISITOR_MAP_DELAY = 280;
+  const VISITOR_MAP_SCRIPT_DELAY = 80;
 
   let statsStarted = false;
   let statsFinished = false;
@@ -46,9 +46,23 @@
     return social || getSocialRoot();
   }
 
+  function isFootprintsActive() {
+    if (window.SocialShell && typeof window.SocialShell.isViewActive === 'function') {
+      return window.SocialShell.isViewActive('footprints');
+    }
+
+    const section = document.querySelector('#social .social-section[data-view="footprints"]');
+
+    if (!section) {
+      return true;
+    }
+
+    return section.classList.contains('active') && !section.hidden;
+  }
+
   function socialIsVisible() {
     const social = getSocialRoot();
-    if (!social) return false;
+    if (!social || !isFootprintsActive()) return false;
 
     if (social.classList.contains('visible')) {
       return true;
@@ -463,6 +477,14 @@
     mountVisitorMapWidgets,
     remountVisitorMapIfNeeded
   };
+
+  window.addEventListener('social:viewchange', function (event) {
+    const detail = event && event.detail ? event.detail : {};
+
+    if (detail.view === 'footprints') {
+      refresh();
+    }
+  });
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', armWhenVisible);

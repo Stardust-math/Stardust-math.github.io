@@ -291,20 +291,29 @@
         domId: 'social',
         mountId: 'mount-social',
         styles: [
+          A + 'css/social/social-shell.css',
           A + 'css/social/social-cards.css',
-          A + 'css/social/social-stats.css',
-          A + 'css/social/social-friends.css'
+          A + 'css/social/social-friends.css',
+          A + 'css/social/social-comments.css',
+          A + 'css/social/social-footprints.css'
         ],
         scripts: [
           A + 'js/Content/EN/social/social_EN.js',
           A + 'js/Content/ZH/social/social_ZH.js',
+
           A + 'js/Config/SocialFriendsConfig.js',
           A + 'js/Content/EN/social/friends_EN.js',
           A + 'js/Content/ZH/social/friends_ZH.js',
+
+          A + 'js/Functions/social/SocialConstellationRender.js',
+          A + 'js/Functions/social/SocialIdentityRender.js',
+          A + 'js/Functions/social/SocialFootprintsRender.js',
+          A + 'js/Functions/social/SocialShell.js',
           A + 'js/Functions/social/SocialRender.js',
+
           A + 'js/Functions/social/SocialFriends.js',
-          A + 'js/Functions/social/SocialStats.js',
-          A + 'js/Functions/social/SocialComments.js'
+          A + 'js/Functions/social/SocialComments.js',
+          A + 'js/Functions/social/SocialStats.js'
         ]
       },
 

@@ -1,0 +1,142 @@
+/* =========================================================
+   Social Page - Guestbook / Giscus comments
+   ========================================================= */
+
+.comments-block {
+  width: 100%;
+  max-width: none;
+  margin: 8px 0 0;
+}
+
+.comments-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+
+  margin-bottom: 6px;
+  padding-bottom: 6px;
+
+  border-bottom: 1px solid var(--border);
+}
+
+.comments-subtitle {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-start;
+  gap: 8px;
+
+  margin-bottom: 0;
+  padding-bottom: 0;
+
+  border-bottom: 0;
+}
+
+.comments-github-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 32px;
+  height: 32px;
+
+  color: var(--muted);
+  line-height: 1;
+
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: transparent;
+}
+
+.comments-github-icon:hover {
+  color: var(--accent);
+  border-color: var(--border);
+  background: var(--accent-weak);
+  text-decoration: none;
+}
+
+.comments-github-icon:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.comments-github-svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
+.comments-login-hint {
+  margin: 0 0 10px;
+
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-style: italic;
+  line-height: 1.55;
+  text-align: left;
+}
+
+.comments-syntax-link {
+  color: var(--accent);
+  font-weight: 700;
+  border-bottom: 1px dotted color-mix(in srgb, var(--accent) 70%, transparent);
+}
+
+.comments-syntax-link:hover {
+  color: var(--accent);
+  border-bottom-style: solid;
+  text-decoration: none;
+}
+
+.giscus-container {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.giscus-container .giscus,
+.giscus-container .giscus-frame {
+  width: 100%;
+}
+
+.giscus-loading,
+.giscus-fallback {
+  padding: 16px 0;
+
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  text-align: left;
+}
+
+@media (max-width: 768px) {
+  .comments-header {
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .comments-subtitle {
+    flex-direction: row;
+    align-items: baseline;
+  }
+
+  .comments-github-icon {
+    width: 30px;
+    height: 30px;
+  }
+
+  .comments-github-svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .comments-login-hint {
+    font-size: 0.88rem;
+  }
+}

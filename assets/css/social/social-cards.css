@@ -1,20 +1,9 @@
 /* =========================================================
    Social Page - Account Cards
-   - Heading
    - Social platform cards
    - Icons, descriptions, links
    - ORCID QR modal
    ========================================================= */
-
-.social-heading {
-  font-size: 2.4em;
-  text-align: center;
-  color: var(--accent);
-  margin-bottom: 26px;
-  font-family: var(--font-social-heading);
-  font-variant: small-caps;
-  letter-spacing: 0.6px;
-}
 
 .social-grid {
   display: grid;
@@ -258,23 +247,4 @@
 
   color: var(--muted);
   font-size: 0.95rem;
-  line-height: 1.6;
-}
-
-.orcid-qr-modal-open {
-  overflow: hidden;
-}
-
-@media (max-width: 520px) {
-  .orcid-qr-dialog {
-    padding: 28px 20px 24px;
-  }
-
-  .orcid-qr-title {
-    font-size: 1.2rem;
-  }
-
-  .orcid-qr-image {
-    width: min(220px, 70vw);
-  }
 }

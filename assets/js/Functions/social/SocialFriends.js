@@ -520,14 +520,17 @@
     let root = document.getElementById(ROOT_ID);
 
     if (!root) {
+      const dedicatedMount = social.querySelector('#mount-social-friends');
       const guestbook = social.querySelector('#guestbook');
-      const statsContainer = social.querySelector('.stats-container') || social;
+      const fallbackContainer = social.querySelector('#mount-social-constellation') || social;
       const html = renderModuleHTML();
 
-      if (guestbook && guestbook.parentNode) {
+      if (dedicatedMount) {
+        dedicatedMount.innerHTML = html;
+      } else if (guestbook && guestbook.parentNode) {
         guestbook.insertAdjacentHTML('beforebegin', html);
       } else {
-        statsContainer.insertAdjacentHTML('beforeend', html);
+        fallbackContainer.insertAdjacentHTML('beforeend', html);
       }
 
       root = document.getElementById(ROOT_ID);
@@ -566,6 +569,13 @@
   window.addEventListener('site:pageassetsloaded', function (event) {
     const detail = event && event.detail ? event.detail : {};
     if (detail.page === 'social') {
+      initWithRetry();
+    }
+  });
+
+  window.addEventListener('social:viewchange', function (event) {
+    const detail = event && event.detail ? event.detail : {};
+    if (detail.view === 'constellation') {
       initWithRetry();
     }
   });
