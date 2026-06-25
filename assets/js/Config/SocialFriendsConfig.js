@@ -64,6 +64,13 @@
         siteurl: 'https://jaceywei.github.io',
         avatar: 'https://jaceywei.github.io/images/avatar.jpg',
         tag: 'Academic'
+      },
+      {
+        title: 'Kisaragi\'s World',
+        desc: 'This is the only immortality you and I may share.',
+        siteurl: 'https://kisaragi-irona.top/',
+        avatar: 'https://avatars.githubusercontent.com/u/78963949?v=4',
+        tag: 'Blog'
       }
     ]
   };
