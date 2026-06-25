@@ -1,7 +1,6 @@
 (function () {
   'use strict';
 
-  const STYLE_ID = 'site-busy-state-style';
   const BUSY_CLASS = 'site-busy';
   const BUSY_ATTR = 'data-site-busy';
 
@@ -31,32 +30,12 @@
     return Math.max(0, numberOr(value, fallback));
   }
 
-  function getBusyCursorUrl() {
-    return new URL('./assets/cursors/busy.cur', document.baseURI).href;
-  }
+  function syncCursorStyle() {
+    const api = window.CustomCursorAPI;
 
-  function injectBusyStyle() {
-    if (!document.head) return;
-
-    const css = [
-      'html.' + BUSY_CLASS + ',',
-      'html.' + BUSY_CLASS + ' *,',
-      'html.' + BUSY_CLASS + ' *::before,',
-      'html.' + BUSY_CLASS + ' *::after {',
-      '  cursor: url("' + getBusyCursorUrl() + '"), wait !important;',
-      '}'
-    ].join('\n');
-
-    const existing = document.getElementById(STYLE_ID);
-    if (existing) {
-      existing.textContent = css;
-      return;
+    if (api && typeof api.refresh === 'function') {
+      api.refresh();
     }
-
-    const style = document.createElement('style');
-    style.id = STYLE_ID;
-    style.textContent = css;
-    document.head.appendChild(style);
   }
 
   function hasVisibleBusyRecord() {
@@ -676,7 +655,7 @@
   }
 
   function init() {
-    injectBusyStyle();
+    syncCursorStyle();
     bindEvents();
   }
 
@@ -686,12 +665,11 @@
     pulse,
     withBusy,
     clearAll,
-    injectStyle: injectBusyStyle,
+    injectStyle: syncCursorStyle,
     startPageBusy
   };
 
   if (document.readyState === 'loading') {
-    if (document.head) injectBusyStyle();
     document.addEventListener('DOMContentLoaded', init, { once: true });
   } else {
     init();

@@ -22,9 +22,16 @@
   };
 
   var STYLE_ID = 'custom-cursor-style';
+  var BUSY_CLASS = 'site-busy';
+  var CURSOR_OVERRIDE_VAR = '--site-cursor-override';
 
   function cursorValue(fileName, fallback) {
     return 'url("' + BASE + fileName + '"), ' + (fallback || 'auto');
+  }
+
+  function cursorCssValue(key, fallback) {
+    if (!CURSORS[key]) return '';
+    return 'var(' + CURSOR_OVERRIDE_VAR + ', ' + cursorValue(CURSORS[key], fallback) + ')';
   }
 
   function normalizeSelectors(selectors) {
@@ -59,12 +66,32 @@
 
   function rule(selectors, key, fallback, important) {
     var selectorText = joinSelectors(selectors);
+    var value = cursorCssValue(key, fallback);
 
-    if (!selectorText || !CURSORS[key]) return '';
+    if (!selectorText || !value) return '';
 
     return selectorText + ' {\n' +
-      '  cursor: ' + cursorValue(CURSORS[key], fallback) + (important ? ' !important' : '') + ';\n' +
+      '  cursor: ' + value + (important ? ' !important' : '') + ';\n' +
       '}\n';
+  }
+
+  function buildBusyStateCss() {
+    if (!CURSORS.busy) return '';
+
+    var busyValue = cursorValue(CURSORS.busy, 'wait');
+
+    return [
+      'html.' + BUSY_CLASS + ' {',
+      '  ' + CURSOR_OVERRIDE_VAR + ': ' + busyValue + ';',
+      '}',
+      '',
+      'html.' + BUSY_CLASS + ',',
+      'html.' + BUSY_CLASS + ' *,',
+      'html.' + BUSY_CLASS + ' *::before,',
+      'html.' + BUSY_CLASS + ' *::after {',
+      '  cursor: var(' + CURSOR_OVERRIDE_VAR + ') !important;',
+      '}'
+    ].join('\n') + '\n';
   }
 
   function buildCursorCss() {
@@ -151,6 +178,10 @@
       still contain native cursor: pointer/default declarations. The scope is not
       a business-class fallback list; it only applies where the element itself
       explicitly declares data-cursor.
+
+      The site-busy state is handled by --site-cursor-override, so these explicit
+      declarations keep their normal semantics while automatically resolving to
+      busy.cur whenever the document root has html.site-busy.
     */
     addWithChildren('[data-cursor][data-cursor="normal"]', 'normal', 'auto', true);
     addWithChildren('[data-cursor][data-cursor="unavailable"]', 'unavailable', 'not-allowed', true);
@@ -173,6 +204,16 @@
       '.disabled',
       '.is-disabled'
     ], 'unavailable', 'not-allowed', true);
+
+    /*
+      Global busy is the highest-priority cursor state.
+
+      The rule below is intentionally part of the cursor stylesheet itself rather
+      than a separate late override. It makes busy a first-class cursor state:
+      when SiteBusyState toggles html.site-busy, every cursor declaration produced
+      by this file resolves through --site-cursor-override to busy.cur.
+    */
+    css += buildBusyStateCss();
 
     return css;
   }
@@ -204,18 +245,20 @@
   }
 
   function applyCursorToElement(el, cursorKey, fallback) {
-    if (!el || !cursorKey || !CURSORS[cursorKey]) return;
+    var value = cursorCssValue(cursorKey, fallback);
+    if (!el || !value) return;
 
     try {
-      el.style.cursor = cursorValue(CURSORS[cursorKey], fallback);
+      el.style.cursor = value;
     } catch (e) { }
   }
 
   function setDefaultCursor(key, fallback) {
-    if (!CURSORS[key]) return;
+    var value = cursorCssValue(key, fallback || 'auto');
+    if (!value) return;
 
     try {
-      document.documentElement.style.cursor = cursorValue(CURSORS[key], fallback || 'auto');
+      document.documentElement.style.cursor = value;
     } catch (e) { }
   }
 
