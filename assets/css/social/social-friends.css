@@ -329,11 +329,13 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
 
   margin-top: 6px;
 
   color: var(--muted);
   font-size: 0.88rem;
+  font-style: italic;
   line-height: 1.42;
 
   overflow: hidden;
