@@ -31,6 +31,13 @@
         tag: 'Blog'
       },*/
       {
+        title: 'Yuzhou Zhu',
+        desc: '神',
+        siteurl: 'https://yuzhou541.github.io',
+        avatar: 'https://yuzhou541.github.io/pics/avatar/favicon.JPG',
+        tag: 'Academic'
+      },
+      {
         title: 'Jingyi Zhang',
         desc: '事不宿夜，业不逾时。',
         siteurl: 'https://jingyizhang05.github.io',
@@ -38,10 +45,24 @@
         tag: 'Academic'
       },
       {
-        title: 'Yuzhou Zhu',
-        desc: '神',
-        siteurl: 'https://yuzhou541.github.io',
-        avatar: 'https://yuzhou541.github.io/pics/avatar/favicon.JPG',
+        title: 'Bauklotze's World',
+        desc: '墙壁的那边,有大海。',
+        siteurl: 'https://bauklotze.vercel.app',
+        avatar: 'https://bauklotze.vercel.app/avatar/avatar.png',
+        tag: 'Blog'
+      },
+      {
+        title: 'Mirawind's Blog',
+        desc: '相寻梦里路，飞雨落花中。',
+        siteurl: 'https://mirawind.top',
+        avatar: 'https://avatars.githubusercontent.com/u/53815918?v=4',
+        tag: 'Blog'
+      },
+      {
+        title: 'Yanzhou Wei',
+        desc: '',
+        siteurl: 'https://jaceywei.github.io',
+        avatar: 'https://jaceywei.github.io/images/avatar.jpg',
         tag: 'Academic'
       }
     ]
