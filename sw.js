@@ -3,7 +3,7 @@
 (function () {
   'use strict';
 
-  const SW_VERSION = 'stardust-offline-fallback-v1';
+  const SW_VERSION = 'stardust-offline-fallback-v2';
 
   function isNavigationRequest(request) {
     if (!request || request.method !== 'GET') return false;
@@ -16,116 +16,140 @@
     return accept.indexOf('text/html') !== -1;
   }
 
-  function createOfflineResponse() {
-    const html = `<!DOCTYPE html>
+  function createOfflineHtml() {
+    return `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Offline | Stardust Math</title>
+<title>Connection Unavailable | Stardust Archive</title>
+
 <style>
   :root {
-    color-scheme: light dark;
+    color-scheme: dark;
+    --bg: #020612;
+    --bg2: #071128;
+    --ink: #eef5ff;
+    --muted: rgba(224,235,255,0.72);
+    --faint: rgba(224,235,255,0.4);
+    --gold: rgba(228,202,141,0.85);
+    --line: rgba(224,235,255,0.16);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    height: 100%;
+    background: var(--bg);
+    font-family: Georgia, "Times New Roman", "Noto Serif SC", serif;
+    color: var(--ink);
   }
 
   body {
-    margin: 0;
-    min-height: 100vh;
     display: grid;
     place-items: center;
-    font-family: Georgia, "Times New Roman", "Noto Serif CJK SC", serif;
     background:
-      radial-gradient(circle at top left, rgba(124, 58, 237, 0.14), transparent 32rem),
-      radial-gradient(circle at bottom right, rgba(59, 130, 246, 0.12), transparent 28rem),
-      #f8fafc;
-    color: #111827;
+      radial-gradient(circle at 30% 20%, rgba(100,140,255,0.12), transparent 40%),
+      radial-gradient(circle at 70% 80%, rgba(228,202,141,0.08), transparent 45%),
+      linear-gradient(180deg, var(--bg), var(--bg2));
   }
 
-  main {
-    width: min(560px, calc(100vw - 48px));
-    padding: 34px 30px;
-    border: 1px solid rgba(148, 163, 184, 0.45);
-    border-radius: 24px;
-    background: rgba(255, 255, 255, 0.84);
-    box-shadow: 0 18px 48px rgba(15, 23, 42, 0.12);
+  .card {
+    width: min(560px, calc(100vw - 40px));
+    padding: 42px 34px;
     text-align: center;
-    backdrop-filter: blur(14px);
+    border-top: 1px solid var(--gold);
+    border-bottom: 1px solid var(--line);
+    position: relative;
   }
 
-  h1 {
-    margin: 0 0 12px;
-    font-size: 1.8rem;
-    line-height: 1.25;
+  .card::before,
+  .card::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    width: 70px;
+    height: 1px;
+    transform: translateX(-50%);
+    background: var(--gold);
   }
 
-  p {
+  .card::before { top: 0; }
+  .card::after { bottom: 0; opacity: 0.3; }
+
+  .title {
+    font-size: 1.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
     margin: 0;
-    color: #4b5563;
+  }
+
+  .sub {
+    margin-top: 18px;
+    color: var(--muted);
+    line-height: 1.8;
     font-size: 1rem;
-    line-height: 1.75;
   }
 
   .site {
-    margin-top: 18px;
-    font-size: 0.88rem;
-    color: #6b7280;
+    margin-top: 22px;
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    color: var(--faint);
+  }
+
+  .nav {
+    margin-top: 10px;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    color: rgba(224,235,255,0.28);
   }
 
   button {
-    margin-top: 24px;
+    margin-top: 28px;
     padding: 10px 18px;
-    border: 1px solid #7c3aed;
     border-radius: 999px;
-    background: #7c3aed;
-    color: #ffffff;
-    font: inherit;
-    font-weight: 700;
+    border: 1px solid rgba(228,202,141,0.5);
+    background: rgba(228,202,141,0.1);
+    color: var(--ink);
     cursor: pointer;
+    font: inherit;
   }
 
   button:hover {
-    filter: brightness(0.96);
+    background: rgba(228,202,141,0.16);
   }
 
-  @media (prefers-color-scheme: dark) {
-    body {
-      background:
-        radial-gradient(circle at top left, rgba(124, 58, 237, 0.24), transparent 32rem),
-        radial-gradient(circle at bottom right, rgba(59, 130, 246, 0.18), transparent 28rem),
-        #020617;
-      color: #f9fafb;
-    }
-
-    main {
-      border-color: rgba(148, 163, 184, 0.24);
-      background: rgba(15, 23, 42, 0.82);
-      box-shadow: 0 18px 48px rgba(0, 0, 0, 0.28);
-    }
-
-    p {
-      color: #cbd5e1;
-    }
-
-    .site {
-      color: #94a3b8;
-    }
+  button:active {
+    transform: translateY(1px);
   }
 </style>
+
 </head>
+
 <body>
-  <main>
-    <h1>Stardust Math is currently offline.</h1>
-    <p>
-      The page could not be loaded because the network connection is unavailable.
-      Please reconnect and refresh the page.
-    </p>
+  <div class="card">
+    <h1 class="title">Connection Unavailable</h1>
+
+    <div class="sub">
+      This path is temporarily out of reach.<br/>
+      Please restore your network connection and try again.
+    </div>
+
     <div class="site">stardust-math.github.io</div>
-    <button type="button" onclick="window.location.reload()">Retry</button>
-  </main>
+    <div class="nav">ABOUT · SCHEDULE · SOCIAL · LIFE</div>
+
+    <button onclick="window.location.reload()">
+      Try Again
+    </button>
+  </div>
 </body>
 </html>`;
+  }
 
-    return new Response(html, {
+  function createOfflineResponse() {
+    return new Response(createOfflineHtml(), {
       status: 503,
       statusText: 'Service Unavailable',
       headers: {
@@ -149,7 +173,7 @@
 
   self.addEventListener('activate', (event) => {
     event.waitUntil((async () => {
-      if (self.clients && typeof self.clients.claim === 'function') {
+      if (self.clients && self.clients.claim) {
         await self.clients.claim();
       }
     })());
@@ -157,7 +181,6 @@
 
   self.addEventListener('fetch', (event) => {
     if (!isNavigationRequest(event.request)) return;
-
     event.respondWith(networkFirstNavigation(event.request));
   });
 
