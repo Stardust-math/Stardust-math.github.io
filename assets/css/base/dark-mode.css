@@ -81,34 +81,6 @@ body.dark-mode #top-lang-btn:active {
   box-shadow: var(--topnav-press-shadow);
 }
 
-/* Schedule/Life submodule button outer glow */
-body.dark-mode .schedule-switch-btn:hover,
-body.dark-mode .schedule-switcher a.schedule-switch-btn:hover,
-body.dark-mode .life-switch-btn:hover,
-body.dark-mode .life-switcher a.life-switch-btn:hover {
-  box-shadow:
-    0 -3px 8px rgba(255, 255, 255, 0.105),
-    0 2px 6px rgba(255, 255, 255, 0.055);
-}
-
-body.dark-mode .schedule-switch-btn.active,
-body.dark-mode .schedule-switch-btn[aria-selected="true"],
-body.dark-mode .life-switch-btn.active,
-body.dark-mode .life-switch-btn[aria-selected="true"] {
-  box-shadow:
-    0 -4px 11px rgba(255, 255, 255, 0.13),
-    0 3px 8px rgba(255, 255, 255, 0.07);
-}
-
-body.dark-mode .schedule-switch-btn.active:hover,
-body.dark-mode .schedule-switch-btn[aria-selected="true"]:hover,
-body.dark-mode .life-switch-btn.active:hover,
-body.dark-mode .life-switch-btn[aria-selected="true"]:hover {
-  box-shadow:
-    0 -5px 13px rgba(255, 255, 255, 0.145),
-    0 4px 10px rgba(255, 255, 255, 0.08);
-}
-
 /* FullCalendar (prevents default bright/bluish panel in dark mode) */
 body.dark-mode .fc {
   --fc-page-bg-color: var(--surface);

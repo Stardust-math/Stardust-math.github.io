@@ -206,6 +206,7 @@
         A + 'css/components/legacy-controls.css',
         A + 'css/components/expanders.css',
         A + 'css/base/dark-mode.css',
+        A + 'css/components/submodule-switcher.css',
         A + 'css/base/scrollbar.css',
 
         A + 'css/top-nav.css',

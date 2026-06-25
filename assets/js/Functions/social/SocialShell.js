@@ -156,10 +156,10 @@
 
           <div class="social-shell">
             <div class="social-switcher" role="tablist" aria-label="Social sections">
-              <button
+              <a
                 class="social-switch-btn active"
                 id="social-tab-constellation"
-                type="button"
+                href="./social/#constellation"
                 data-view="constellation"
                 role="tab"
                 aria-selected="true"
@@ -167,12 +167,12 @@
                 data-i18n="social_tab_constellation"
                 data-cursor="precise_select"
                 data-cursor-fallback="pointer"
-              >Constellation</button>
+              >Constellation</a>
 
-              <button
+              <a
                 class="social-switch-btn"
                 id="social-tab-identity"
-                type="button"
+                href="./social/#identity"
                 data-view="identity"
                 role="tab"
                 aria-selected="false"
@@ -180,12 +180,12 @@
                 data-i18n="social_tab_identity"
                 data-cursor="precise_select"
                 data-cursor-fallback="pointer"
-              >Identity</button>
+              >Identity</a>
 
-              <button
+              <a
                 class="social-switch-btn"
                 id="social-tab-footprints"
-                type="button"
+                href="./social/#footprints"
                 data-view="footprints"
                 role="tab"
                 aria-selected="false"
@@ -193,7 +193,7 @@
                 data-i18n="social_tab_footprints"
                 data-cursor="precise_select"
                 data-cursor-fallback="pointer"
-              >Footprints</button>
+              >Footprints</a>
             </div>
 
             ${renderSections()}

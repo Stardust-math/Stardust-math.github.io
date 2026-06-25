@@ -54,108 +54,11 @@ body[data-lang="zh"] .life-heading {
 }
 
 /* =========================================================
-   Life sub navigation
-   Schedule-like style, but independent structure
+   Life sub navigation shell
    ========================================================= */
 
 .life-shell {
   width: 100%;
-}
-
-.life-switcher {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-
-  gap: 10px;
-  margin: 4px auto 26px;
-  padding: 10px;
-
-  border: 1px solid color-mix(in srgb, var(--border) 85%, var(--accent-weak));
-  border-radius: 999px;
-
-  background: color-mix(in srgb, var(--surface) 88%, var(--surface-2));
-  box-shadow: var(--shadow-xs);
-}
-
-.life-switch-btn,
-.life-switcher a.life-switch-btn {
-  appearance: none;
-  -webkit-appearance: none;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  min-height: 38px;
-  padding: 8px 18px;
-  border-radius: 999px;
-
-  border: 1px solid transparent;
-  background: transparent;
-
-  color: var(--muted);
-  font-family: var(--font-nav-serif);
-  font-size: 0.95rem;
-  font-weight: 700;
-  line-height: 1.2;
-  font-variant: small-caps;
-  letter-spacing: 0.45px;
-
-  text-decoration: none;
-  cursor: pointer;
-  user-select: none;
-  white-space: nowrap;
-  box-sizing: border-box;
-
-  transition:
-    transform 0.16s ease,
-    color 0.16s ease,
-    background-color 0.16s ease,
-    border-color 0.16s ease,
-    box-shadow 0.16s ease;
-}
-
-body[data-lang="zh"] .life-switch-btn,
-body[data-lang="zh"] .life-switcher a.life-switch-btn {
-  font-family: var(--font-zh-heading);
-  font-variant: normal;
-  letter-spacing: 0.8px;
-}
-
-.life-switch-btn:hover,
-.life-switcher a.life-switch-btn:hover {
-  color: var(--accent);
-  text-decoration: none;
-  background: var(--accent-weak);
-  border-color: color-mix(in srgb, var(--border) 52%, var(--accent));
-  box-shadow:
-    0 3px 8px rgba(0, 0, 0, 0.045),
-    inset 0 1px 0 rgba(255, 255, 255, 0.32);
-  transform: translateY(-1px);
-}
-
-.life-switch-btn.active,
-.life-switch-btn[aria-selected="true"] {
-  color: var(--accent-strong);
-  background: color-mix(in srgb, var(--surface) 66%, var(--accent-weak));
-  border-color: color-mix(in srgb, var(--border) 58%, var(--accent));
-  box-shadow:
-    0 4px 12px rgba(0, 0, 0, 0.065),
-    0 1px 3px rgba(0, 0, 0, 0.045),
-    inset 0 1px 0 rgba(255, 255, 255, 0.38);
-}
-
-.life-switch-btn.active:hover,
-.life-switch-btn[aria-selected="true"]:hover {
-  color: var(--accent-strong);
-  background: color-mix(in srgb, var(--surface) 60%, var(--accent-weak));
-  border-color: color-mix(in srgb, var(--border) 50%, var(--accent));
-  box-shadow:
-    0 5px 14px rgba(0, 0, 0, 0.075),
-    0 1px 4px rgba(0, 0, 0, 0.05),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
 /* =========================================================
@@ -247,22 +150,10 @@ body[data-lang="zh"] .life-switcher a.life-switch-btn {
   .life-heading {
     font-size: 2.1em;
   }
-
-  .life-switcher {
-    border-radius: var(--radius);
-    gap: 8px;
-    padding: 8px;
-  }
-
-  .life-switch-btn {
-    width: 100%;
-    min-height: 40px;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  #life,
-  .life-switch-btn {
+  #life {
     transition: none;
   }
 }

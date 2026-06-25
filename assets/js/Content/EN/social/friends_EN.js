@@ -9,7 +9,7 @@
 
     friends_apply_title: 'How to Apply',
     friends_apply_desc: 'To exchange links, please send your site information to the email address below.',
-    friends_email_label: 'Email',
+    friends_email_label: 'Email:',
 
     friends_template_title: 'Application Template',
     friends_site_info_title: 'My Site Info',
