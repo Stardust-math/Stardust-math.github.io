@@ -19,6 +19,7 @@
     friends_send_email: '发送邮件',
     friends_copy_template: '复制申请模板',
     friends_copy_site_info: '复制本站信息',
+    friends_copy_line: '复制这一行',
     friends_open_site: '打开站点',
 
     friends_copied: '已复制',

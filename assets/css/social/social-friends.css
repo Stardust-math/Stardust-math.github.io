@@ -576,12 +576,87 @@
 }
 
 .friends-code-line {
+  position: relative;
+
   display: grid;
   grid-template-columns: 42px minmax(0, 1fr);
   gap: 0;
 
   min-width: max-content;
-  padding: 1px 16px 1px 0;
+  padding: 1px 44px 1px 0;
+
+  border-radius: 0;
+}
+
+.friends-code-line-copyable {
+  cursor: pointer;
+
+  transition:
+    background-color 0.16s ease,
+    color 0.16s ease;
+}
+
+.friends-code-line-copyable::after {
+  content: "\f0c5";
+  position: absolute;
+  top: 50%;
+  right: 16px;
+
+  color: color-mix(in srgb, var(--muted) 58%, transparent);
+  font-family: "Font Awesome 6 Free", "Font Awesome 5 Free", FontAwesome, sans-serif;
+  font-size: 0.74rem;
+  font-weight: 900;
+  line-height: 1;
+
+  opacity: 0;
+  transform: translateY(-50%) scale(0.92);
+
+  pointer-events: none;
+
+  transition:
+    opacity 0.16s ease,
+    color 0.16s ease,
+    transform 0.16s ease;
+}
+
+.friends-code-line-copyable:hover,
+.friends-code-line-copyable:focus-visible {
+  background: color-mix(in srgb, var(--accent-weak) 52%, transparent);
+}
+
+.friends-code-line-copyable:hover::after,
+.friends-code-line-copyable:focus-visible::after {
+  opacity: 1;
+  transform: translateY(-50%) scale(1);
+}
+
+.friends-code-line-copyable:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--accent) 72%, transparent);
+  outline-offset: -2px;
+}
+
+.friends-code-line-copyable.is-line-copied {
+  background: color-mix(in srgb, #1f8a4c 12%, var(--surface));
+}
+
+.friends-code-line-copyable.is-line-copied::after {
+  content: "\f00c";
+
+  color: #1f8a4c;
+  opacity: 1;
+  transform: translateY(-50%) scale(1);
+}
+
+.friends-code-line-copyable.is-line-copy-failed {
+  background: color-mix(in srgb, var(--danger) 10%, var(--surface));
+}
+
+.friends-code-line-copyable.is-line-copy-failed::after {
+  content: "\f071";
+
+  color: var(--danger);
+  opacity: 1;
+  transform: translateY(-50%) scale(1);
 }
 
 .friends-code-no {
@@ -669,6 +744,14 @@ body.dark-mode .friends-icon-button.is-copied {
   background: color-mix(in srgb, #74d99f 12%, var(--surface));
 }
 
+body.dark-mode .friends-code-line-copyable.is-line-copied {
+  background: color-mix(in srgb, #74d99f 12%, var(--surface));
+}
+
+body.dark-mode .friends-code-line-copyable.is-line-copied::after {
+  color: #74d99f;
+}
+
 /* =========================================================
    Responsive
    ========================================================= */
@@ -734,6 +817,11 @@ body.dark-mode .friends-icon-button.is-copied {
 
   .friends-code-line {
     grid-template-columns: 36px minmax(0, 1fr);
+    padding-right: 40px;
+  }
+
+  .friends-code-line-copyable::after {
+    right: 14px;
   }
 
   .friends-code-text {
@@ -750,7 +838,9 @@ body.dark-mode .friends-icon-button.is-copied {
   .friend-avatar-arrow-svg,
   .friend-arrow-line,
   .friend-arrow-head,
-  .friends-icon-button {
+  .friends-icon-button,
+  .friends-code-line-copyable,
+  .friends-code-line-copyable::after {
     transition: none !important;
   }
 
@@ -760,7 +850,8 @@ body.dark-mode .friends-icon-button.is-copied {
   .friend-card:hover .friend-avatar,
   .friend-card:hover .friend-avatar-arrow-svg,
   .friend-card:hover .friend-arrow-line,
-  .friend-card:hover .friend-arrow-head {
+  .friend-card:hover .friend-arrow-head,
+  .friends-code-line-copyable::after {
     transform: none !important;
   }
 }

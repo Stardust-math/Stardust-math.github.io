@@ -19,6 +19,7 @@
     friends_send_email: 'Send email',
     friends_copy_template: 'Copy application template',
     friends_copy_site_info: 'Copy my site information',
+    friends_copy_line: 'Copy this line',
     friends_open_site: 'Open site',
 
     friends_copied: 'Copied',

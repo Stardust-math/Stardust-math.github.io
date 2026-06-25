@@ -84,6 +84,10 @@
     return 'mailto:' + encodeURIComponent(email) + '?' + query;
   }
 
+  function getLineCopyLabel() {
+    return t('friends_copy_line') || 'Copy this line';
+  }
+
   function renderIntro() {
     const intro = String(t('friends_intro') || '').trim();
 
@@ -103,9 +107,22 @@
 
     return lines.map(function (line, index) {
       const content = escapeHTML(line) || '&nbsp;';
+      const copyText = escapeHTML(line);
+      const copyLabel = escapeHTML(getLineCopyLabel());
 
       return [
-        '<span class="friends-code-line">',
+        '<span',
+          ' class="friends-code-line friends-code-line-copyable"',
+          ' role="button"',
+          ' tabindex="0"',
+          ' data-friends-copy-line="1"',
+          ' data-copy-text="', copyText, '"',
+          ' data-social-friends-aria="friends_copy_line"',
+          ' aria-label="', copyLabel, '"',
+          ' title="', copyLabel, '"',
+          ' data-cursor="precise_select"',
+          ' data-cursor-fallback="pointer"',
+        '>',
           '<span class="friends-code-no" aria-hidden="true">', index + 1, '</span>',
           '<code class="friends-code-text">', content, '</code>',
         '</span>'
@@ -349,6 +366,17 @@
     ].join('');
   }
 
+  function isCopyStateActive(el) {
+    if (!el || !el.classList) return false;
+
+    return (
+      el.classList.contains('is-copied') ||
+      el.classList.contains('is-copy-failed') ||
+      el.classList.contains('is-line-copied') ||
+      el.classList.contains('is-line-copy-failed')
+    );
+  }
+
   function applyI18N(root) {
     if (!root) return;
 
@@ -363,7 +391,7 @@
     });
 
     root.querySelectorAll('[data-social-friends-aria]').forEach(function (el) {
-      if (el.classList && el.classList.contains('is-copied')) return;
+      if (isCopyStateActive(el)) return;
 
       const key = el.getAttribute('data-social-friends-aria');
       if (!key) return;
@@ -392,6 +420,17 @@
     }
 
     return '';
+  }
+
+  function getLineCopyText(lineEl) {
+    if (!lineEl) return '';
+
+    if (typeof lineEl.dataset.copyText === 'string') {
+      return lineEl.dataset.copyText;
+    }
+
+    const code = lineEl.querySelector('.friends-code-text');
+    return code ? code.textContent || '' : '';
   }
 
   function fallbackCopy(text) {
@@ -481,10 +520,57 @@
     btn.dataset.copyTimer = String(timer);
   }
 
+  function setLineState(lineEl, ok) {
+    if (!lineEl) return;
+
+    if (lineEl.dataset.copyLineTimer) {
+      window.clearTimeout(Number(lineEl.dataset.copyLineTimer));
+      lineEl.dataset.copyLineTimer = '';
+    }
+
+    lineEl.classList.remove('is-line-copied', 'is-line-copy-failed');
+    lineEl.classList.add(ok ? 'is-line-copied' : 'is-line-copy-failed');
+
+    const label = ok ? t('friends_copied') : t('friends_copy_failed');
+    lineEl.setAttribute('aria-label', label);
+    lineEl.setAttribute('title', label);
+
+    const timer = window.setTimeout(function () {
+      lineEl.classList.remove('is-line-copied', 'is-line-copy-failed');
+
+      const restored = getLineCopyLabel();
+      lineEl.setAttribute('aria-label', restored);
+      lineEl.setAttribute('title', restored);
+
+      lineEl.dataset.copyLineTimer = '';
+    }, COPY_RESET_MS);
+
+    lineEl.dataset.copyLineTimer = String(timer);
+  }
+
+  function copyLine(lineEl) {
+    const text = getLineCopyText(lineEl);
+
+    copyToClipboard(text)
+      .then(function () {
+        setLineState(lineEl, true);
+      })
+      .catch(function () {
+        setLineState(lineEl, false);
+      });
+  }
+
   function bindActions(root) {
     if (!root || root.dataset.friendsBound === '1') return;
 
     root.addEventListener('click', function (event) {
+      const line = event.target.closest('[data-friends-copy-line]');
+      if (line && root.contains(line)) {
+        event.preventDefault();
+        copyLine(line);
+        return;
+      }
+
       const btn = event.target.closest('[data-friends-copy]');
       if (!btn || !root.contains(btn)) return;
 
@@ -500,6 +586,16 @@
         .catch(function () {
           setButtonState(btn, false);
         });
+    });
+
+    root.addEventListener('keydown', function (event) {
+      const line = event.target.closest('[data-friends-copy-line]');
+      if (!line || !root.contains(line)) return;
+
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+
+      event.preventDefault();
+      copyLine(line);
     });
 
     root.dataset.friendsBound = '1';
