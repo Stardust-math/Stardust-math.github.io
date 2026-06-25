@@ -310,6 +310,7 @@
           A + 'js/Functions/social/SocialIdentityRender.js',
           A + 'js/Functions/social/SocialFootprintsRender.js',
           A + 'js/Functions/social/SocialShell.js',
+          A + 'js/Functions/social/SocialRoutes.js',
           A + 'js/Functions/social/SocialRender.js',
 
           A + 'js/Functions/social/SocialFriends.js',

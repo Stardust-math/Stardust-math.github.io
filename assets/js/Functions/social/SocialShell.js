@@ -159,7 +159,7 @@
               <a
                 class="social-switch-btn active"
                 id="social-tab-constellation"
-                href="./social/#constellation"
+                href="./social/constellation/"
                 data-view="constellation"
                 role="tab"
                 aria-selected="true"
@@ -172,7 +172,7 @@
               <a
                 class="social-switch-btn"
                 id="social-tab-identity"
-                href="./social/#identity"
+                href="./social/identity/"
                 data-view="identity"
                 role="tab"
                 aria-selected="false"
@@ -185,7 +185,7 @@
               <a
                 class="social-switch-btn"
                 id="social-tab-footprints"
-                href="./social/#footprints"
+                href="./social/footprints/"
                 data-view="footprints"
                 role="tab"
                 aria-selected="false"

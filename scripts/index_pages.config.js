@@ -66,6 +66,19 @@ module.exports = {
     },
 
     {
+      route: 'social/constellation/',
+      routeEntry: true
+    },
+    {
+      route: 'social/identity/',
+      routeEntry: true
+    },
+    {
+      route: 'social/footprints/',
+      routeEntry: true
+    },
+
+    {
       route: 'life/activities_moments/',
       routeEntry: true
     },
