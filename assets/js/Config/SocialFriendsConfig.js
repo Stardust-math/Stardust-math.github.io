@@ -60,7 +60,7 @@
       },
       {
         title: 'Yanzhou Wei',
-        desc: '',
+        desc: 'TBA.',
         siteurl: 'https://jaceywei.github.io',
         avatar: 'https://jaceywei.github.io/images/avatar.jpg',
         tag: 'Academic'
@@ -81,7 +81,7 @@
       },
       {
         title: 'Siyuan Liang',
-        desc: '',
+        desc: 'TBA.',
         siteurl: 'https://lys1eek.github.io',
         avatar: 'https://lys1eek.github.io/images/profile_self.png',
         tag: 'Academic'
