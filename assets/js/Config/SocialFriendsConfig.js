@@ -81,7 +81,7 @@
       },
       {
         title: 'Siyuan Liang',
-        desc: 'TBA.',
+        desc: '扣一复活牢大👨🏿‍🦲',
         siteurl: 'https://lys1eek.github.io',
         avatar: 'https://lys1eek.github.io/images/profile_self.png',
         tag: 'Academic'
