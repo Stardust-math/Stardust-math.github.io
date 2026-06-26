@@ -39,21 +39,21 @@
       },
       {
         title: 'Jingyi Zhang',
-        desc: '事不宿夜，业不逾时。',
+        desc: '事不宿夜, 业不逾时.',
         siteurl: 'https://jingyizhang05.github.io',
         avatar: 'https://jingyizhang05.github.io/favicon.ico',
         tag: 'Academic'
       },
       {
         title: 'Bauklotze\'s World',
-        desc: '墙壁的那边,有大海。',
+        desc: '墙壁的那边, 有大海.',
         siteurl: 'https://bauklotze.vercel.app',
         avatar: 'https://bauklotze.vercel.app/avatar/avatar.png',
         tag: 'Blog'
       },
       {
         title: 'Mirawind\'s Blog',
-        desc: '相寻梦里路，飞雨落花中。',
+        desc: '相寻梦里路, 飞雨落花中.',
         siteurl: 'https://mirawind.top',
         avatar: 'https://avatars.githubusercontent.com/u/53815918?v=4',
         tag: 'Blog'
@@ -68,9 +68,23 @@
       {
         title: 'Kisaragi\'s World',
         desc: 'This is the only immortality you and I may share.',
-        siteurl: 'https://kisaragi-irona.top/',
+        siteurl: 'https://kisaragi-irona.top',
         avatar: 'https://avatars.githubusercontent.com/u/78963949?v=4',
         tag: 'Blog'
+      },
+      {
+        title: 'Zishun Zhou',
+        desc: '热爱不问为何.',
+        siteurl: 'https://alienshun.github.io',
+        avatar: 'https://alienshun.github.io/assets/images/avatar.jpg',
+        tag: 'Academic'
+      },
+      {
+        title: 'Siyuan Liang',
+        desc: '',
+        siteurl: 'https://lys1eek.github.io',
+        avatar: 'https://lys1eek.github.io/images/profile_self.png',
+        tag: 'Academic'
       }
     ]
   };
