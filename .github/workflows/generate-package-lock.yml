@@ -27,6 +27,11 @@ jobs:
           ref: main
           fetch-depth: 0
 
+      - name: Ensure local main branch
+        run: |
+          git fetch origin main
+          git checkout -B main origin/main
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -56,5 +61,18 @@ jobs:
 
           git commit -m "chore(npm): update package lock"
 
-          git pull --rebase origin main
-          git push
+          for attempt in 1 2 3; do
+            echo "Push attempt ${attempt}..."
+
+            if git push origin HEAD:main; then
+              echo "package-lock.json pushed successfully."
+              exit 0
+            fi
+
+            echo "Push failed. Rebasing onto latest origin/main..."
+            git fetch origin main
+            git rebase origin/main
+          done
+
+          echo "Failed to push package-lock.json after 3 attempts."
+          exit 1
