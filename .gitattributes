@@ -1,2 +1,19 @@
-*.md linguist-detectable=true
-*.md linguist-language=Markdown
+assets/vendor/** linguist-vendored=true
+
+*.md linguist-detectable=true linguist-language=Markdown
+*.tex linguist-detectable=true linguist-language=TeX
+*.bib linguist-detectable=true linguist-language=BibTeX
+*.ipynb linguist-detectable=true linguist-language=Jupyter-Notebook
+*.nb linguist-detectable=true linguist-language=Wolfram-Language
+*.py linguist-detectable=true linguist-language=Python
+*.c linguist-detectable=true linguist-language=C
+*.h linguist-detectable=true linguist-language=C
+*.cpp linguist-detectable=true linguist-language=C++
+*.cc linguist-detectable=true linguist-language=C++
+*.cxx linguist-detectable=true linguist-language=C++
+*.hpp linguist-detectable=true linguist-language=C++
+
+.github/workflows/*.yml linguist-detectable=true linguist-language=YAML
+.github/workflows/*.yaml linguist-detectable=true linguist-language=YAML
+
+giscus.json linguist-detectable=true linguist-language=JSON
