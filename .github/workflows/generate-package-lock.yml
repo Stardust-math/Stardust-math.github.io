@@ -42,12 +42,12 @@ jobs:
 
       - name: Commit package-lock.json
         run: |
-          if git diff --quiet -- package-lock.json; then
+          if [ -z "$(git status --porcelain -- package-lock.json)" ]; then
             echo "No package-lock.json changes."
             exit 0
           fi
 
-          git status --short
+          git status --short -- package-lock.json
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
