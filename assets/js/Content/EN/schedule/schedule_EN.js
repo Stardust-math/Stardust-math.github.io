@@ -3969,7 +3969,7 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                     <td>Practice of Artificial Intelligence</td>
                     <td>Li Gu.</td>
                     <td>1(6-7), 2-11 week(s);<br> 4(3-4), 2-11 week(s).</td>
-                    <td>2.5</td>
+                    <td>1</td>
                   </tr>
                   <tr>
                     <td>011187.01</td>
