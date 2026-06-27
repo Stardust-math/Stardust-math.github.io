@@ -50,6 +50,34 @@
   justify-content: flex-start;
 }
 
+.site-footer-label__emblem-link {
+  display: block;
+  max-width: 100%;
+
+  color: inherit;
+  text-decoration: none;
+  line-height: 0;
+
+  border-radius: 2px;
+  cursor: pointer;
+
+  transition: opacity 0.16s ease;
+}
+
+.site-footer-label__emblem-link.is-hidden {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.site-footer-label__emblem-link:hover .site-footer-label__emblem {
+  opacity: 0.96;
+}
+
+.site-footer-label__emblem-link:focus-visible {
+  outline: 2px solid color-mix(in srgb, #2563eb 72%, transparent);
+  outline-offset: 6px;
+}
+
 .site-footer-label__emblem {
   width: clamp(330px, 29vw, 420px);
   max-width: 100%;

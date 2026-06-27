@@ -21,6 +21,7 @@
     */
     emblemSvg: './assets/images/labels/USTC.svg',
     emblemPng: './assets/images/labels/USTC.png',
+    ustcHome: 'https://www.ustc.edu.cn/',
 
     targetPageIds: [
       'resume',
@@ -220,7 +221,9 @@
 
     footer.innerHTML = [
       '<div class="site-footer-label__left">',
-      '  <img class="site-footer-label__emblem is-hidden" alt="School emblem" decoding="async" loading="lazy" fetchpriority="low" style="width:min(86vw,420px);max-width:100%;height:auto;visibility:hidden;">',
+      `  <a class="site-footer-label__emblem-link is-hidden" href="${CONFIG.ustcHome}" target="_blank" rel="noopener noreferrer" aria-label="Open University of Science and Technology of China website" aria-hidden="true" tabindex="-1">`,
+      '    <img class="site-footer-label__emblem is-hidden" alt="School emblem" decoding="async" loading="lazy" fetchpriority="low" style="width:min(86vw,420px);max-width:100%;height:auto;visibility:hidden;">',
+      '  </a>',
       '</div>',
 
       '<div class="site-footer-label__center">',
@@ -302,6 +305,34 @@
     }, 120);
   }
 
+  function setEmblemVisible(emblem, visible) {
+    const emblemLink = emblem && emblem.closest
+      ? emblem.closest('.site-footer-label__emblem-link')
+      : null;
+
+    if (visible) {
+      emblem.classList.remove('is-hidden');
+      emblem.style.visibility = '';
+
+      if (emblemLink) {
+        emblemLink.classList.remove('is-hidden');
+        emblemLink.removeAttribute('aria-hidden');
+        emblemLink.removeAttribute('tabindex');
+      }
+
+      return;
+    }
+
+    emblem.classList.add('is-hidden');
+    emblem.style.visibility = 'hidden';
+
+    if (emblemLink) {
+      emblemLink.classList.add('is-hidden');
+      emblemLink.setAttribute('aria-hidden', 'true');
+      emblemLink.setAttribute('tabindex', '-1');
+    }
+  }
+
   function hydrateEmblem(footer) {
     const emblem = footer.querySelector('.site-footer-label__emblem');
 
@@ -313,26 +344,22 @@
 
     preloadEmblem().then((src) => {
       if (!src) {
-        emblem.classList.add('is-hidden');
-        emblem.style.visibility = 'hidden';
+        setEmblemVisible(emblem, false);
         return;
       }
 
       emblem.onload = () => {
-        emblem.classList.remove('is-hidden');
-        emblem.style.visibility = '';
+        setEmblemVisible(emblem, true);
       };
 
       emblem.onerror = () => {
-        emblem.classList.add('is-hidden');
-        emblem.style.visibility = 'hidden';
+        setEmblemVisible(emblem, false);
       };
 
       emblem.src = src;
 
       if (emblem.complete && emblem.naturalWidth > 0) {
-        emblem.classList.remove('is-hidden');
-        emblem.style.visibility = '';
+        setEmblemVisible(emblem, true);
       }
     });
   }
