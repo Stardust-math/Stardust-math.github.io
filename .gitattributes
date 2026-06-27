@@ -1,19 +1,21 @@
-assets/vendor/** linguist-vendored=true
+assets/vendor/** linguist-vendored
 
-*.md linguist-detectable=true linguist-language=Markdown
-*.tex linguist-detectable=true linguist-language=TeX
-*.bib linguist-detectable=true linguist-language=BibTeX
-*.ipynb linguist-detectable=true linguist-language=Jupyter-Notebook
-*.nb linguist-detectable=true linguist-language=Wolfram-Language
-*.py linguist-detectable=true linguist-language=Python
-*.c linguist-detectable=true linguist-language=C
-*.h linguist-detectable=true linguist-language=C
-*.cpp linguist-detectable=true linguist-language=C++
-*.cc linguist-detectable=true linguist-language=C++
-*.cxx linguist-detectable=true linguist-language=C++
-*.hpp linguist-detectable=true linguist-language=C++
+*.md linguist-detectable linguist-language=Markdown
+*.tex linguist-detectable linguist-language=TeX
+*.bib linguist-detectable linguist-language=BibTeX
 
-.github/workflows/*.yml linguist-detectable=true linguist-language=YAML
-.github/workflows/*.yaml linguist-detectable=true linguist-language=YAML
+*.ipynb linguist-detectable linguist-language=Jupyter-Notebook
+*.nb linguist-detectable linguist-language=Wolfram-Language
 
-giscus.json linguist-detectable=true linguist-language=JSON
+*.py linguist-detectable linguist-language=Python
+*.c linguist-detectable linguist-language=C
+*.h linguist-detectable linguist-language=C
+*.cpp linguist-detectable linguist-language=C++
+*.cc linguist-detectable linguist-language=C++
+*.cxx linguist-detectable linguist-language=C++
+*.hpp linguist-detectable linguist-language=C++
+
+*.yml linguist-detectable linguist-language=YAML
+*.yaml linguist-detectable linguist-language=YAML
+
+giscus.json linguist-detectable linguist-language=JSON
