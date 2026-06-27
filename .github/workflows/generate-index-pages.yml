@@ -9,18 +9,24 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: main-auto-commit
+  cancel-in-progress: false
+
 jobs:
   generate-index-pages:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout latest main
         uses: actions/checkout@v4
+        with:
+          ref: main
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
       - name: Generate index pages
         run: node scripts/generate_index_pages.js
@@ -56,4 +62,6 @@ jobs:
           fi
 
           git commit -m "chore(index): regenerate index pages"
+
+          git pull --rebase origin main
           git push

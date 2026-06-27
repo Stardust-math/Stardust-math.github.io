@@ -12,13 +12,19 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: main-auto-commit
+  cancel-in-progress: false
+
 jobs:
   generate-package-lock:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout latest main
         uses: actions/checkout@v4
+        with:
+          ref: main
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -41,5 +47,13 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           git add package-lock.json
+
+          if git diff --cached --quiet; then
+            echo "No package-lock.json changes after staging."
+            exit 0
+          fi
+
           git commit -m "chore(npm): update package lock"
+
+          git pull --rebase origin main
           git push
