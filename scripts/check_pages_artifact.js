@@ -7,63 +7,19 @@ const path = require('path');
 const vm = require('vm');
 
 const ROOT = path.resolve(__dirname, '..');
-const SITE_FONTS_FILE = path.join(ROOT, 'assets/js/Config/SiteFonts.js');
-const SITE_RESOURCES_FILE = path.join(ROOT, 'assets/js/Config/SiteResources.js');
-
-const ROUTE_ENTRY_ROUTES = [
-  'about',
-  'schedule',
-  'social',
-  'life'
-];
-
-const FORBIDDEN_PATH_PATTERNS = [
-  {
-    label: 'removed fav/ directory',
-    pattern: /(?:^|['"`(=\s])(?:\.\/)?fav\//i
-  },
-  {
-    label: 'removed cursor.css file',
-    pattern: /cursor\.css/i
-  }
-];
-
-const SCANNED_EXTENSIONS = new Set([
-  '.html',
-  '.css',
-  '.scss',
-  '.sass',
-  '.js',
-  '.json',
-  '.yml',
-  '.yaml'
-]);
-
-const SKIP_DIRS = new Set([
-  '.git',
-  'node_modules',
-  '.cache',
-  '.next',
-  '_site',
-  'dist',
-  'build'
-]);
-
-const SELF_FILE = path.normalize(__filename);
+const SITE_DIR = path.join(ROOT, '_site');
+const SITE_FONTS_FILE = path.join(SITE_DIR, 'assets/js/Config/SiteFonts.js');
+const SITE_RESOURCES_FILE = path.join(SITE_DIR, 'assets/js/Config/SiteResources.js');
 
 let errors = [];
 let warnings = [];
 
-function rel(p) {
-  return path.relative(ROOT, p).replace(/\\/g, '/');
+function relFromSite(abs) {
+  return path.relative(SITE_DIR, abs).replace(/\\/g, '/');
 }
 
 function fail(message) {
   errors.push(message);
-}
-
-function warn(message) {
-  warnings.push(message);
 }
 
 function readText(file) {
@@ -79,44 +35,67 @@ function stripQueryAndHash(value) {
   return String(value).split(/[?#]/)[0];
 }
 
-function toRepoPath(value) {
+function normalizeConfigPath(value) {
+  if (typeof value !== 'string') return null;
+
   let clean = stripQueryAndHash(value).trim();
 
-  if (!clean || isExternalUrl(clean)) {
-    return null;
-  }
+  if (!clean || isExternalUrl(clean)) return null;
 
-  if (clean.startsWith('./')) {
-    clean = clean.slice(2);
-  }
-
-  if (clean.startsWith('/')) {
-    clean = clean.slice(1);
-  }
+  if (clean.startsWith('./')) clean = clean.slice(2);
+  if (clean.startsWith('/')) clean = clean.slice(1);
 
   return clean.replace(/\\/g, '/');
 }
 
+function getHtmlBaseHref(htmlText) {
+  const baseMatch = /<base\b[^>]*\bhref=["']([^"']+)["'][^>]*>/i.exec(htmlText);
+  return baseMatch ? baseMatch[1] : null;
+}
+
+function resolveHtmlHref(htmlFile, htmlText, href) {
+  if (typeof href !== 'string') return null;
+
+  const clean = stripQueryAndHash(href).trim();
+
+  if (!clean || isExternalUrl(clean)) return null;
+
+  if (clean.startsWith('/')) {
+    return clean.slice(1).replace(/\\/g, '/');
+  }
+
+  const baseHref = getHtmlBaseHref(htmlText);
+  const htmlDir = path.dirname(htmlFile);
+  const baseDir = baseHref && !isExternalUrl(baseHref)
+    ? path.resolve(htmlDir, stripQueryAndHash(baseHref))
+    : htmlDir;
+
+  const resolved = path.resolve(baseDir, clean);
+  const relative = path.relative(SITE_DIR, resolved).replace(/\\/g, '/');
+
+  if (relative.startsWith('..')) return null;
+
+  return relative;
+}
+
 function evaluateConfigFile(file, sandbox, requiredGlobalName) {
   if (!fs.existsSync(file)) {
-    fail(`Missing config file: ${rel(file)}`);
+    fail(`Missing config file in Pages artifact: ${relFromSite(file)}`);
     return false;
   }
 
-  const code = readText(file);
-
   try {
-    vm.runInNewContext(code, sandbox, {
+    vm.runInNewContext(readText(file), sandbox, {
       filename: file,
       timeout: 1000
     });
   } catch (e) {
-    fail(`Failed to evaluate ${rel(file)}: ${e.message}`);
+    fail(`Failed to evaluate ${relFromSite(file)}: ${e.message}`);
     return false;
   }
 
   if (requiredGlobalName && !sandbox.window[requiredGlobalName]) {
-    fail(`${rel(file)} did not define window.${requiredGlobalName}.`);
+    fail(`${relFromSite(file)} did not define window.${requiredGlobalName}.`);
     return false;
   }
 
@@ -143,13 +122,12 @@ function loadSiteResources() {
 }
 
 function addAsset(assets, value, origin, kind) {
-  if (typeof value !== 'string') return;
+  const localPath = normalizeConfigPath(value);
 
-  const repoPath = toRepoPath(value);
-  if (!repoPath) return;
+  if (!localPath) return;
 
   assets.push({
-    path: repoPath,
+    path: localPath,
     origin,
     kind: kind || 'file'
   });
@@ -268,19 +246,9 @@ function collectCoverVideos(assets, resources) {
     return;
   }
 
-  if (typeof extension !== 'string' || !extension.trim()) {
-    fail('coverVideo.extension must be a non-empty string when coverVideo is enabled.');
-    return;
-  }
-
   addAsset(assets, videoDir, 'coverVideo.dir', 'dir');
 
   coverFiles.forEach((imageFile, index) => {
-    if (typeof imageFile !== 'string') {
-      fail(`images.coverFiles[${index}] must be a string before checking cover video.`);
-      return;
-    }
-
     const videoFile = coverVideoFileFromImageFile(imageFile, extension);
 
     if (!videoFile) {
@@ -303,30 +271,17 @@ function collectPageAssets(assets, pages) {
   Object.keys(pages).forEach((pageKey) => {
     const page = pages[pageKey];
 
-    if (!page || typeof page !== 'object') {
-      fail(`pages.${pageKey} must be an object.`);
-      return;
-    }
-
-    if (typeof page.route !== 'string' || !page.route.trim()) {
-      fail(`pages.${pageKey}.route must be a non-empty string.`);
-    }
-
-    if (typeof page.domId !== 'string' || !page.domId.trim()) {
-      fail(`pages.${pageKey}.domId must be a non-empty string.`);
-    }
-
-    if (typeof page.mountId !== 'string' || !page.mountId.trim()) {
-      fail(`pages.${pageKey}.mountId must be a non-empty string.`);
-    }
+    if (!page || typeof page !== 'object') return;
 
     collectAssetList(assets, page.styles || [], `pages.${pageKey}.styles`, 'style');
     collectAssetList(assets, page.scripts || [], `pages.${pageKey}.scripts`, 'script');
   });
 }
 
-function collectAssets(resources) {
+function collectConfiguredAssets(resources) {
   const assets = [];
+
+  if (!resources) return assets;
 
   if (resources.site && resources.site.favicon && typeof resources.site.favicon.href === 'string') {
     addAsset(assets, resources.site.favicon.href, 'site.favicon.href', 'image');
@@ -353,54 +308,23 @@ function collectAssets(resources) {
   return assets;
 }
 
-function checkAssetExists(asset) {
-  if (asset.kind === 'external') return;
-
-  const abs = path.join(ROOT, asset.path);
+function checkPathExists(relativePath, origin, kind) {
+  const abs = path.join(SITE_DIR, relativePath);
 
   if (!fs.existsSync(abs)) {
-    fail(`Missing ${asset.kind}: ${asset.path}    from ${asset.origin}`);
+    fail(`Missing ${kind || 'file'} in Pages artifact: ${relativePath}    from ${origin}`);
     return;
   }
 
   const stat = fs.statSync(abs);
 
-  if (asset.kind === 'dir' && !stat.isDirectory()) {
-    fail(`Expected directory but found file: ${asset.path}    from ${asset.origin}`);
+  if (kind === 'dir' && !stat.isDirectory()) {
+    fail(`Expected directory but found file in Pages artifact: ${relativePath}    from ${origin}`);
   }
 
-  if (asset.kind !== 'dir' && !stat.isFile()) {
-    fail(`Expected file but found directory: ${asset.path}    from ${asset.origin}`);
+  if (kind !== 'dir' && !stat.isFile()) {
+    fail(`Expected file but found directory in Pages artifact: ${relativePath}    from ${origin}`);
   }
-}
-
-function checkDuplicateLocalScriptsAndStyles(assets) {
-  const map = new Map();
-
-  assets.forEach((asset) => {
-    if (asset.kind !== 'style' && asset.kind !== 'script') return;
-
-    const key = `${asset.kind}:${asset.path}`;
-    if (!map.has(key)) map.set(key, []);
-    map.get(key).push(asset.origin);
-  });
-
-  Array.from(map.entries()).forEach(([key, origins]) => {
-    if (origins.length <= 1) return;
-
-    const [, assetPath] = key.split(':');
-    warn(`Duplicate configured ${key.startsWith('style:') ? 'stylesheet' : 'script'}: ${assetPath}\n  used by: ${origins.join(', ')}`);
-  });
-}
-
-function checkForbiddenConfiguredAssets(assets) {
-  assets.forEach((asset) => {
-    FORBIDDEN_PATH_PATTERNS.forEach((item) => {
-      if (item.pattern.test(asset.path)) {
-        fail(`Forbidden old path reference (${item.label}): ${asset.path}    from ${asset.origin}`);
-      }
-    });
-  });
 }
 
 function walkFiles(dir, out) {
@@ -412,72 +336,94 @@ function walkFiles(dir, out) {
     const abs = path.join(dir, entry.name);
 
     if (entry.isDirectory()) {
-      if (SKIP_DIRS.has(entry.name)) return;
       walkFiles(abs, out);
       return;
     }
 
-    if (!entry.isFile()) return;
-
-    const ext = path.extname(entry.name).toLowerCase();
-    if (!SCANNED_EXTENSIONS.has(ext)) return;
-
-    if (path.normalize(abs) === SELF_FILE) return;
-
-    out.push(abs);
+    if (entry.isFile()) {
+      out.push(abs);
+    }
   });
 
   return out;
 }
 
-function checkForbiddenTextReferences() {
-  const files = walkFiles(ROOT, []);
+function checkHtmlLinkedCss() {
+  const htmlFiles = walkFiles(SITE_DIR, []).filter((file) => file.endsWith('.html'));
 
-  files.forEach((file) => {
-    const text = readText(file);
+  const linkPattern = /<link\b[^>]*>/gi;
+  const relPattern = /\brel=["'][^"']*stylesheet[^"']*["']/i;
+  const hrefPattern = /\bhref=["']([^"']+)["']/i;
 
-    FORBIDDEN_PATH_PATTERNS.forEach((item) => {
-      if (item.pattern.test(text)) {
-        fail(`Forbidden old path reference (${item.label}) found in ${rel(file)}`);
-      }
-    });
+  htmlFiles.forEach((htmlFile) => {
+    const text = readText(htmlFile);
+
+    let linkMatch;
+    while ((linkMatch = linkPattern.exec(text))) {
+      const tag = linkMatch[0];
+      if (!relPattern.test(tag)) continue;
+
+      const hrefMatch = hrefPattern.exec(tag);
+      if (!hrefMatch) continue;
+
+      const localPath = resolveHtmlHref(htmlFile, text, hrefMatch[1]);
+      if (!localPath || !localPath.endsWith('.css')) continue;
+
+      checkPathExists(localPath, relFromSite(htmlFile), 'style');
+    }
   });
 }
 
-function checkRouteEntries(resources) {
-  const rootIndex = path.join(ROOT, 'index.html');
+function checkRequiredFiles() {
+  [
+    'index.html',
+    'about/index.html',
+    'schedule/index.html',
+    'social/index.html',
+    'life/index.html',
+    'sw.js',
+    'giscus.json',
+    'assets/js/Config/SiteResources.js',
+    'assets/js/Config/SiteFonts.js',
+    'assets/css/base/site-zoom.css'
+  ].forEach((file) => {
+    checkPathExists(file, 'required artifact file', 'file');
+  });
+}
 
-  if (!fs.existsSync(rootIndex)) {
-    fail('Missing root index.html');
-  }
+function checkSourceOnlyFilesAreAbsent() {
+  [
+    'assets/scss',
+    'scripts',
+    'node_modules',
+    'package.json',
+    'package-lock.json',
+    '.github'
+  ].forEach((relativePath) => {
+    const abs = path.join(SITE_DIR, relativePath);
 
-  ROUTE_ENTRY_ROUTES.forEach((route) => {
-    const entry = path.join(ROOT, route, 'index.html');
-
-    if (!fs.existsSync(entry)) {
-      fail(`Missing route entry: ${route}/index.html`);
+    if (fs.existsSync(abs)) {
+      fail(`Source-only path should not be published in Pages artifact: ${relativePath}`);
     }
   });
+}
 
-  const toolkitEntry = path.join(ROOT, 'toolkit', 'index.html');
+function checkConfiguredAssets() {
+  const resources = loadSiteResources();
+  const assets = collectConfiguredAssets(resources);
 
-  if (fs.existsSync(toolkitEntry)) {
-    warn('toolkit/index.html exists. If Toolkit is intended to stay hidden, check whether this file is intentional.');
-  }
+  assets.forEach((asset) => {
+    if (asset.kind === 'external') return;
+    checkPathExists(asset.path, asset.origin, asset.kind);
+  });
+}
 
-  const pages = resources && resources.pages ? resources.pages : {};
+function checkNoCssSourceMaps() {
+  const cssDir = path.join(SITE_DIR, 'assets/css');
+  const maps = walkFiles(cssDir, []).filter((file) => file.endsWith('.css.map'));
 
-  Object.keys(pages).forEach((pageKey) => {
-    const page = pages[pageKey];
-    if (!page || typeof page !== 'object') return;
-
-    if (pageKey === 'toolkit') return;
-
-    const route = page.route;
-
-    if (typeof route === 'string' && route && !ROUTE_ENTRY_ROUTES.includes(route)) {
-      warn(`pages.${pageKey}.route is "${route}", but ${route}/index.html is not included in ROUTE_ENTRY_ROUTES.`);
-    }
+  maps.forEach((file) => {
+    fail(`Unexpected CSS source map in Pages artifact: ${relFromSite(file)}`);
   });
 }
 
@@ -495,28 +441,25 @@ function printResult() {
       console.error(`- ${message}`);
     });
 
-    console.error('\nSite resource check failed.');
+    console.error('\nPages artifact check failed.');
     process.exit(1);
   }
 
-  console.log('Site resource check passed.');
+  console.log('Pages artifact check passed.');
 }
 
 function main() {
-  const resources = loadSiteResources();
-
-  if (resources) {
-    const assets = collectAssets(resources);
-
-    assets.forEach(checkAssetExists);
-    checkDuplicateLocalScriptsAndStyles(assets);
-    checkForbiddenConfiguredAssets(assets);
-    checkRouteEntries(resources);
-  } else {
-    checkRouteEntries(null);
+  if (!fs.existsSync(SITE_DIR) || !fs.statSync(SITE_DIR).isDirectory()) {
+    fail('Missing Pages artifact directory: _site');
+    printResult();
+    return;
   }
 
-  checkForbiddenTextReferences();
+  checkRequiredFiles();
+  checkSourceOnlyFilesAreAbsent();
+  checkConfiguredAssets();
+  checkHtmlLinkedCss();
+  checkNoCssSourceMaps();
 
   printResult();
 }

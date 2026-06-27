@@ -1,0 +1,13 @@
+{
+  "private": true,
+  "scripts": {
+    "build:css": "sass assets/scss:assets/css --style=expanded --no-source-map --stop-on-error",
+    "check:css": "node scripts/check_scss_outputs.js",
+    "check:site": "npm run build:css && node scripts/generate_index_pages.js --check && node scripts/check_site_resources.js && npm run check:css",
+    "build:pages": "node scripts/build_pages_site.js",
+    "check:pages": "node scripts/check_pages_artifact.js"
+  },
+  "devDependencies": {
+    "sass": "1.101.0"
+  }
+}
