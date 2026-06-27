@@ -33,12 +33,7 @@ jobs:
           node-version: 22
 
       - name: Install Node dependencies
-        run: |
-          if [ -f package-lock.json ]; then
-            npm ci
-          else
-            npm install
-          fi
+        run: npm install
 
       - name: Generate index pages in workspace
         run: node scripts/generate_index_pages.js
@@ -48,11 +43,13 @@ jobs:
 
       - name: Verify generated CSS
         run: |
+          echo "Generated CSS files:"
+          find assets/css -type f -name "*.css" | sort
+
           test -f assets/css/fonts.css
           test -f assets/css/base/site-zoom.css
           test -f assets/css/about/about.css
           test -f assets/css/components/site-footer-label.css
-          find assets/css -type f -name "*.css" | sort
 
       - name: Check generated index pages
         run: node scripts/generate_index_pages.js --check

@@ -4,32 +4,14 @@ on:
   pull_request:
     branches:
       - main
-  workflow_run:
-    workflows:
-      - Generate index pages
-    types:
-      - completed
-    branches:
-      - main
   workflow_dispatch:
 
 jobs:
   check_site_resources:
     runs-on: ubuntu-latest
 
-    if: >
-      github.event_name != 'workflow_run' ||
-      github.event.workflow_run.conclusion == 'success'
-
     steps:
-      - name: Checkout latest main
-        if: github.event_name != 'pull_request'
-        uses: actions/checkout@v4
-        with:
-          ref: main
-
-      - name: Checkout pull request
-        if: github.event_name == 'pull_request'
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Set up Node.js
@@ -38,12 +20,7 @@ jobs:
           node-version: 22
 
       - name: Install Node dependencies
-        run: |
-          if [ -f package-lock.json ]; then
-            npm ci
-          else
-            npm install
-          fi
+        run: npm install
 
       - name: Compile SCSS to CSS
         run: npm run build:css
