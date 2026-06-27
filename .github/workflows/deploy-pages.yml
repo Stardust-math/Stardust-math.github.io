@@ -1,11 +1,7 @@
-name: Deploy GitHub Pages
+name: Deploy GitHub Pages with SCSS
 
 on:
-  workflow_run:
-    workflows:
-      - Generate index pages
-    types:
-      - completed
+  push:
     branches:
       - main
   workflow_dispatch:
@@ -21,10 +17,6 @@ jobs:
   build:
     name: Build Pages artifact
     runs-on: ubuntu-latest
-
-    if: >
-      github.event_name == 'workflow_dispatch' ||
-      github.event.workflow_run.conclusion == 'success'
 
     permissions:
       contents: read
@@ -49,8 +41,19 @@ jobs:
             npm install
           fi
 
+      - name: Generate index pages in workspace
+        run: node scripts/generate_index_pages.js
+
       - name: Compile SCSS to CSS
         run: npm run build:css
+
+      - name: Verify generated CSS
+        run: |
+          test -f assets/css/fonts.css
+          test -f assets/css/base/site-zoom.css
+          test -f assets/css/about/about.css
+          test -f assets/css/components/site-footer-label.css
+          find assets/css -type f -name "*.css" | sort
 
       - name: Check generated index pages
         run: node scripts/generate_index_pages.js --check
