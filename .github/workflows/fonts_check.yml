@@ -1,10 +1,14 @@
 name: Font resource check
 
 on:
-  push:
+  pull_request:
     branches:
       - main
-  pull_request:
+  workflow_run:
+    workflows:
+      - Generate index pages
+    types:
+      - completed
     branches:
       - main
   workflow_dispatch:
@@ -13,8 +17,19 @@ jobs:
   check_fonts:
     runs-on: ubuntu-latest
 
+    if: >
+      github.event_name != 'workflow_run' ||
+      github.event.workflow_run.conclusion == 'success'
+
     steps:
-      - name: Checkout repository
+      - name: Checkout latest main
+        if: github.event_name != 'pull_request'
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Checkout pull request
+        if: github.event_name == 'pull_request'
         uses: actions/checkout@v4
 
       - name: Set up Node.js
