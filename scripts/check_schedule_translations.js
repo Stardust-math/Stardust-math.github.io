@@ -50,41 +50,107 @@ function rel(file) {
   return path.relative(ROOT, file).replace(/\\/g, '/');
 }
 
-function fail(message) {
-  errors.push(message);
+function makeIssue(message, file, line) {
+  return {
+    message: String(message),
+    file: file || null,
+    line: Number.isFinite(line) ? line : null
+  };
 }
 
-function warn(message) {
-  warnings.push(message);
+function fail(message, file, line) {
+  errors.push(makeIssue(message, file, line));
 }
 
-function info(message) {
-  infos.push(message);
+function warn(message, file, line) {
+  warnings.push(makeIssue(message, file, line));
+}
+
+function info(message, file, line) {
+  infos.push(makeIssue(message, file, line));
+}
+
+function formatIssue(issue) {
+  const location = issue.file
+    ? `${rel(issue.file)}${issue.line ? `:${issue.line}` : ''}`
+    : '';
+
+  return location ? `${location}\n${issue.message}` : issue.message;
 }
 
 function readText(file) {
   if (!fs.existsSync(file)) {
-    fail(`Missing required file: ${rel(file)}`);
+    fail(`Missing required file: ${rel(file)}`, file);
     return '';
   }
 
   return fs.readFileSync(file, 'utf8');
 }
 
-function escapeForAnnotation(message) {
+function buildLineStarts(text) {
+  const starts = [0];
+
+  for (let i = 0; i < text.length; i++) {
+    if (text[i] === '\n') {
+      starts.push(i + 1);
+    }
+  }
+
+  return starts;
+}
+
+function lineForIndex(lineStarts, index) {
+  if (!Array.isArray(lineStarts) || !Number.isFinite(index)) return null;
+
+  let lo = 0;
+  let hi = lineStarts.length - 1;
+
+  while (lo <= hi) {
+    const mid = Math.floor((lo + hi) / 2);
+
+    if (lineStarts[mid] <= index) {
+      lo = mid + 1;
+    } else {
+      hi = mid - 1;
+    }
+  }
+
+  return hi + 1;
+}
+
+function escapeForAnnotationMessage(message) {
   return String(message)
     .replace(/%/g, '%25')
     .replace(/\r/g, '%0D')
     .replace(/\n/g, '%0A');
 }
 
-function printGithubAnnotation(level, message) {
-  const safe = escapeForAnnotation(message);
+function escapeForAnnotationProperty(value) {
+  return String(value)
+    .replace(/%/g, '%25')
+    .replace(/\r/g, '%0D')
+    .replace(/\n/g, '%0A')
+    .replace(/:/g, '%3A')
+    .replace(/,/g, '%2C');
+}
+
+function printGithubAnnotation(level, issue) {
+  const props = ['title=Schedule translation check'];
+
+  if (issue.file) {
+    props.push(`file=${escapeForAnnotationProperty(rel(issue.file))}`);
+  }
+
+  if (issue.line) {
+    props.push(`line=${issue.line}`);
+  }
+
+  const safeMessage = escapeForAnnotationMessage(issue.message);
 
   if (level === 'error') {
-    console.error(`::error title=Schedule translation check::${safe}`);
+    console.error(`::error ${props.join(',')}::${safeMessage}`);
   } else if (level === 'warning') {
-    console.log(`::warning title=Schedule translation check::${safe}`);
+    console.log(`::warning ${props.join(',')}::${safeMessage}`);
   }
 }
 
@@ -166,12 +232,15 @@ function escapeRegex(s) {
   return String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
-function extractObjectLiteral(source, constName) {
+function extractObjectLiteral(source, constName, sourceFile, lineStarts) {
   const re = new RegExp(`const\\s+${escapeRegex(constName)}\\s*=\\s*\\{`, 'm');
   const m = re.exec(source);
 
   if (!m) {
-    fail(`Cannot find object literal: ${constName} in ${rel(ZH_SCHEDULE_FILE)}`);
+    fail(
+      `Cannot find object literal: ${constName} in ${rel(sourceFile)}`,
+      sourceFile
+    );
     return null;
   }
 
@@ -210,7 +279,11 @@ function extractObjectLiteral(source, constName) {
     }
   }
 
-  fail(`Unclosed object literal: ${constName} in ${rel(ZH_SCHEDULE_FILE)}`);
+  fail(
+    `Unclosed object literal: ${constName} in ${rel(sourceFile)}`,
+    sourceFile,
+    lineForIndex(lineStarts, start)
+  );
   return null;
 }
 
@@ -235,19 +308,19 @@ function evaluateObjectLiteral(objectLiteral, label) {
   }
 }
 
-function parseZhMappings(zhText) {
+function parseZhMappings(zhText, zhLineStarts) {
   const byCode = evaluateObjectLiteral(
-    extractObjectLiteral(zhText, 'COURSE_NAME_ZH_BY_CODE'),
+    extractObjectLiteral(zhText, 'COURSE_NAME_ZH_BY_CODE', ZH_SCHEDULE_FILE, zhLineStarts),
     'COURSE_NAME_ZH_BY_CODE'
   );
 
   const byText = evaluateObjectLiteral(
-    extractObjectLiteral(zhText, 'COURSE_NAME_ZH_BY_TEXT'),
+    extractObjectLiteral(zhText, 'COURSE_NAME_ZH_BY_TEXT', ZH_SCHEDULE_FILE, zhLineStarts),
     'COURSE_NAME_ZH_BY_TEXT'
   );
 
   const instructors = evaluateObjectLiteral(
-    extractObjectLiteral(zhText, 'INSTRUCTOR_ZH_BY_TOKEN'),
+    extractObjectLiteral(zhText, 'INSTRUCTOR_ZH_BY_TOKEN', ZH_SCHEDULE_FILE, zhLineStarts),
     'INSTRUCTOR_ZH_BY_TOKEN'
   );
 
@@ -288,7 +361,7 @@ function makeRecordKey(semester, code, enName) {
   return `${semester}\u0000${code}\u0000${enName}`;
 }
 
-function addCourseRecord(map, semester, codeRaw, enNameRaw, sourceKind, index) {
+function addCourseRecord(map, semester, codeRaw, enNameRaw, sourceKind, index, lineStarts) {
   const code = normalizeCourseCode(codeRaw);
   const enName = normalizeCourseName(enNameRaw);
 
@@ -317,11 +390,12 @@ function addCourseRecord(map, semester, codeRaw, enNameRaw, sourceKind, index) {
 
   map.get(key).occurrences.push({
     sourceKind,
-    index
+    index,
+    line: lineForIndex(lineStarts, index)
   });
 }
 
-function parseTimetableCourseBlocks(enText, records, markers) {
+function parseTimetableCourseBlocks(enText, records, markers, lineStarts) {
   const blockRe =
     /<div\s+class=["']course-number["'][^>]*>([\s\S]*?)<\/div>\s*<div\s+class=["']course-name["'][^>]*>([\s\S]*?)<\/div>/g;
 
@@ -333,12 +407,13 @@ function parseTimetableCourseBlocks(enText, records, markers) {
       m[1],
       m[2],
       'timetable-cell',
-      m.index
+      m.index,
+      lineStarts
     );
   }
 }
 
-function parseRecoveredCourseBlocks(enText, records, markers) {
+function parseRecoveredCourseBlocks(enText, records, markers, lineStarts) {
   const brokenBlockRe =
     /<div\s+class=["']course-name["'][^>]*>([\s\S]*?)<\/div>\s*<div\s+class=["']course-name["'][^>]*>([\s\S]*?)<\/div>/g;
 
@@ -348,6 +423,7 @@ function parseRecoveredCourseBlocks(enText, records, markers) {
 
     const code = normalizeCourseCode(m[1]);
     const enName = normalizeCourseName(m[2]);
+    const line = lineForIndex(lineStarts, m.index);
 
     fail([
       `Probable HTML class typo in ${rel(EN_SCHEDULE_FILE)}.`,
@@ -355,7 +431,7 @@ function parseRecoveredCourseBlocks(enText, records, markers) {
       `  found: <div class="course-name">${normalizeSpaces(stripTags(m[1]))}</div>`,
       `  next course name: ${enName}`,
       `  suggestion: change the first class from "course-name" to "course-number".`
-    ].join('\n'));
+    ].join('\n'), EN_SCHEDULE_FILE, line);
 
     addCourseRecord(
       records,
@@ -363,12 +439,13 @@ function parseRecoveredCourseBlocks(enText, records, markers) {
       code,
       enName,
       'recovered-broken-course-block',
-      m.index
+      m.index,
+      lineStarts
     );
   }
 }
 
-function parseMyClassesTables(enText, records, markers) {
+function parseMyClassesTables(enText, records, markers, lineStarts) {
   const tableRe =
     /<table\s+class=["'][^"']*\bmy-classes-table\b[^"']*["'][^>]*>([\s\S]*?)<\/table>/gi;
 
@@ -376,6 +453,8 @@ function parseMyClassesTables(enText, records, markers) {
   while ((tableMatch = tableRe.exec(enText)) !== null) {
     const semester = getSemesterAt(markers, tableMatch.index);
     const tableHtml = tableMatch[1];
+    const tableContentOffset = tableMatch[0].indexOf(tableHtml);
+    const tableContentStart = tableMatch.index + Math.max(tableContentOffset, 0);
 
     const rowRe = /<tr\b[^>]*>([\s\S]*?)<\/tr>/gi;
     let rowMatch;
@@ -385,10 +464,18 @@ function parseMyClassesTables(enText, records, markers) {
 
       if (/<th\b/i.test(rowHtml)) continue;
 
-      const cells = Array.from(rowHtml.matchAll(/<td\b[^>]*>([\s\S]*?)<\/td>/gi))
-        .map(cell => cell[1]);
+      const rowAbsIndex = tableContentStart + rowMatch.index;
+      const rowContentOffset = rowMatch[0].indexOf(rowHtml);
+      const rowContentStart = rowAbsIndex + Math.max(rowContentOffset, 0);
+
+      const cellMatches = Array.from(rowHtml.matchAll(/<td\b[^>]*>([\s\S]*?)<\/td>/gi));
+      const cells = cellMatches.map(cell => cell[1]);
 
       if (cells.length < 2) continue;
+
+      const courseCellIndex = cellMatches[0]
+        ? rowContentStart + cellMatches[0].index
+        : rowAbsIndex;
 
       addCourseRecord(
         records,
@@ -396,19 +483,20 @@ function parseMyClassesTables(enText, records, markers) {
         cells[0],
         cells[1],
         'my-classes-table',
-        tableMatch.index + rowMatch.index
+        courseCellIndex,
+        lineStarts
       );
     }
   }
 }
 
-function parseEnglishCourses(enText) {
+function parseEnglishCourses(enText, lineStarts) {
   const records = new Map();
   const markers = collectSemesterMarkers(enText);
 
-  parseTimetableCourseBlocks(enText, records, markers);
-  parseRecoveredCourseBlocks(enText, records, markers);
-  parseMyClassesTables(enText, records, markers);
+  parseTimetableCourseBlocks(enText, records, markers, lineStarts);
+  parseRecoveredCourseBlocks(enText, records, markers, lineStarts);
+  parseMyClassesTables(enText, records, markers, lineStarts);
 
   return Array.from(records.values()).sort((a, b) => {
     if (a.semester !== b.semester) return a.semester.localeCompare(b.semester);
@@ -421,7 +509,7 @@ function makeInstructorRecordKey(semester, enName) {
   return `${semester}\u0000${enName}`;
 }
 
-function addInstructorRecords(map, semester, rawInstructorText, sourceKind, index) {
+function addInstructorRecords(map, semester, rawInstructorText, sourceKind, index, lineStarts) {
   const names = splitInstructorText(rawInstructorText);
 
   names.forEach(enName => {
@@ -437,12 +525,13 @@ function addInstructorRecords(map, semester, rawInstructorText, sourceKind, inde
 
     map.get(key).occurrences.push({
       sourceKind,
-      index
+      index,
+      line: lineForIndex(lineStarts, index)
     });
   });
 }
 
-function parseTimetableInstructors(enText, records, markers) {
+function parseTimetableInstructors(enText, records, markers, lineStarts) {
   const instructorRe =
     /<div\s+class=["']instructor["'][^>]*>([\s\S]*?)<\/div>/gi;
 
@@ -453,12 +542,13 @@ function parseTimetableInstructors(enText, records, markers) {
       getSemesterAt(markers, m.index),
       m[1],
       'timetable-cell',
-      m.index
+      m.index,
+      lineStarts
     );
   }
 }
 
-function parseMyClassesTableInstructors(enText, records, markers) {
+function parseMyClassesTableInstructors(enText, records, markers, lineStarts) {
   const tableRe =
     /<table\s+class=["'][^"']*\bmy-classes-table\b[^"']*["'][^>]*>([\s\S]*?)<\/table>/gi;
 
@@ -466,6 +556,8 @@ function parseMyClassesTableInstructors(enText, records, markers) {
   while ((tableMatch = tableRe.exec(enText)) !== null) {
     const semester = getSemesterAt(markers, tableMatch.index);
     const tableHtml = tableMatch[1];
+    const tableContentOffset = tableMatch[0].indexOf(tableHtml);
+    const tableContentStart = tableMatch.index + Math.max(tableContentOffset, 0);
 
     const rowRe = /<tr\b[^>]*>([\s\S]*?)<\/tr>/gi;
     let rowMatch;
@@ -475,28 +567,37 @@ function parseMyClassesTableInstructors(enText, records, markers) {
 
       if (/<th\b/i.test(rowHtml)) continue;
 
-      const cells = Array.from(rowHtml.matchAll(/<td\b[^>]*>([\s\S]*?)<\/td>/gi))
-        .map(cell => cell[1]);
+      const rowAbsIndex = tableContentStart + rowMatch.index;
+      const rowContentOffset = rowMatch[0].indexOf(rowHtml);
+      const rowContentStart = rowAbsIndex + Math.max(rowContentOffset, 0);
+
+      const cellMatches = Array.from(rowHtml.matchAll(/<td\b[^>]*>([\s\S]*?)<\/td>/gi));
+      const cells = cellMatches.map(cell => cell[1]);
 
       if (cells.length < 3) continue;
+
+      const instructorCellIndex = cellMatches[2]
+        ? rowContentStart + cellMatches[2].index
+        : rowAbsIndex;
 
       addInstructorRecords(
         records,
         semester,
         cells[2],
         'my-classes-table',
-        tableMatch.index + rowMatch.index
+        instructorCellIndex,
+        lineStarts
       );
     }
   }
 }
 
-function parseEnglishInstructors(enText) {
+function parseEnglishInstructors(enText, lineStarts) {
   const records = new Map();
   const markers = collectSemesterMarkers(enText);
 
-  parseTimetableInstructors(enText, records, markers);
-  parseMyClassesTableInstructors(enText, records, markers);
+  parseTimetableInstructors(enText, records, markers, lineStarts);
+  parseMyClassesTableInstructors(enText, records, markers, lineStarts);
 
   return Array.from(records.values()).sort((a, b) => {
     if (a.semester !== b.semester) return a.semester.localeCompare(b.semester);
@@ -504,10 +605,30 @@ function parseEnglishInstructors(enText) {
   });
 }
 
+function formatOccurrences(occurrences) {
+  if (!occurrences || !occurrences.length) return '  occurrences: unknown';
+
+  const lines = occurrences
+    .slice(0, 8)
+    .map(o => `  - ${o.sourceKind}${o.line ? `, line ${o.line}` : ''}`);
+
+  if (occurrences.length > 8) {
+    lines.push(`  - ... ${occurrences.length - 8} more occurrence(s) omitted`);
+  }
+
+  return lines.join('\n');
+}
+
+function firstOccurrenceLine(record) {
+  const first = record && record.occurrences && record.occurrences[0];
+  return first && first.line ? first.line : null;
+}
+
 function checkMissingAndFallbacks(records, byCode, byText) {
   for (const r of records) {
     const hasCodeMap = Object.prototype.hasOwnProperty.call(byCode, r.code);
     const hasTextMap = Object.prototype.hasOwnProperty.call(byText, r.enName);
+    const line = firstOccurrenceLine(r);
 
     if (!hasCodeMap && !hasTextMap) {
       fail([
@@ -515,8 +636,9 @@ function checkMissingAndFallbacks(records, byCode, byText) {
         `  semester: ${r.semester}`,
         `  code: ${r.code}`,
         `  EN: ${r.enName}`,
+        formatOccurrences(r.occurrences),
         `  Add either COURSE_NAME_ZH_BY_CODE["${r.code}"] or COURSE_NAME_ZH_BY_TEXT["${r.enName}"].`
-      ].join('\n'));
+      ].join('\n'), EN_SCHEDULE_FILE, line);
       continue;
     }
 
@@ -526,9 +648,10 @@ function checkMissingAndFallbacks(records, byCode, byText) {
         `  semester: ${r.semester}`,
         `  code: ${r.code}`,
         `  EN: ${r.enName}`,
+        formatOccurrences(r.occurrences),
         `  ZH by text: ${byText[r.enName]}`,
         `  Suggestion: add COURSE_NAME_ZH_BY_CODE["${r.code}"] for a more stable mapping.`
-      ].join('\n'));
+      ].join('\n'), EN_SCHEDULE_FILE, line);
     }
 
     if (hasCodeMap && hasTextMap && !sameText(byCode[r.code], byText[r.enName])) {
@@ -537,10 +660,11 @@ function checkMissingAndFallbacks(records, byCode, byText) {
         `  semester: ${r.semester}`,
         `  code: ${r.code}`,
         `  EN: ${r.enName}`,
+        formatOccurrences(r.occurrences),
         `  ZH by code: ${byCode[r.code]}`,
         `  ZH by text: ${byText[r.enName]}`,
         `  Effective page result: ${byCode[r.code]}`
-      ].join('\n'));
+      ].join('\n'), EN_SCHEDULE_FILE, line);
     }
   }
 }
@@ -586,14 +710,17 @@ function checkCodeNameConflicts(records) {
 function checkMissingInstructorMappings(instructorRecords, instructorMap) {
   for (const r of instructorRecords) {
     const hasMap = Object.prototype.hasOwnProperty.call(instructorMap, r.enName);
+    const line = firstOccurrenceLine(r);
 
     if (!hasMap) {
       fail([
         `Missing Chinese instructor mapping.`,
         `  semester: ${r.semester}`,
         `  instructor: ${r.enName}`,
-        `  Add INSTRUCTOR_ZH_BY_TOKEN["${r.enName}"].`
-      ].join('\n'));
+        formatOccurrences(r.occurrences),
+        `  Add INSTRUCTOR_ZH_BY_TOKEN["${r.enName}"].`,
+        `  Runtime fallback before fixing: the original English name will be kept.`
+      ].join('\n'), EN_SCHEDULE_FILE, line);
     }
   }
 }
@@ -637,7 +764,7 @@ function printSection(title, items, level) {
   }
 
   items.forEach((item, idx) => {
-    console.log(`${idx + 1}. ${item}`);
+    console.log(`${idx + 1}. ${formatIssue(item)}`);
 
     if (level === 'error') {
       printGithubAnnotation('error', item);
@@ -675,12 +802,18 @@ function main() {
     process.exit(1);
   }
 
-  const { byCode, byText, instructors } = parseZhMappings(zhText);
-  const records = parseEnglishCourses(enText);
-  const instructorRecords = parseEnglishInstructors(enText);
+  const enLineStarts = buildLineStarts(enText);
+  const zhLineStarts = buildLineStarts(zhText);
+
+  const { byCode, byText, instructors } = parseZhMappings(zhText, zhLineStarts);
+  const records = parseEnglishCourses(enText, enLineStarts);
+  const instructorRecords = parseEnglishInstructors(enText, enLineStarts);
 
   if (records.length === 0) {
-    fail(`No course records found in ${rel(EN_SCHEDULE_FILE)}. The parser may need to be updated.`);
+    fail(
+      `No course records found in ${rel(EN_SCHEDULE_FILE)}. The parser may need to be updated.`,
+      EN_SCHEDULE_FILE
+    );
   }
 
   checkMissingAndFallbacks(records, byCode, byText);
