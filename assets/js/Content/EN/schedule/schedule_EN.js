@@ -3473,9 +3473,9 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                   <tr>
                     <td rowspan="5" class="period-header">Morning</td>
                     <td class="period-number">1</td>
-                    <td class="has-class event-cell" rowspan="4">
+                    <td class="has-class event-cell" rowspan="1">
                       <div class="time-info start-info">7:50</div>
-                      <div class="time-info end-info">11:20</div>
+                      <div class="time-info end-info">8:35</div>
                       <div class="course-container">
                         <div class="course-number">001M06.01 [2]</div>
                         <div class="course-name">Advances in Computer Graphics</div>
@@ -3484,9 +3484,9 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                         <div class="weeks">1 week(s)</div>
                       </div>
                     </td>
-                    <td class="has-class event-cell" rowspan="4">
+                    <td class="has-class event-cell" rowspan="1">
                       <div class="time-info start-info">7:50</div>
-                      <div class="time-info end-info">11:20</div>
+                      <div class="time-info end-info">8:35</div>
                       <div class="course-container">
                         <div class="course-number">001M06.01 [2]</div>
                         <div class="course-name">Advances in Computer Graphics</div>
@@ -3495,9 +3495,9 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                         <div class="weeks">1 week(s)</div>
                       </div>
                     </td>
-                    <td class="has-class event-cell" rowspan="4">
+                    <td class="has-class event-cell" rowspan="1">
                       <div class="time-info start-info">7:50</div>
-                      <div class="time-info end-info">11:20</div>
+                      <div class="time-info end-info">8:35</div>
                       <div class="course-container">
                         <div class="course-number">001M06.01 [2]</div>
                         <div class="course-name">Advances in Computer Graphics</div>
@@ -3506,9 +3506,9 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                         <div class="weeks">1 week(s)</div>
                       </div>
                     </td>
-                    <td class="has-class event-cell" rowspan="4">
+                    <td class="has-class event-cell" rowspan="1">
                       <div class="time-info start-info">7:50</div>
-                      <div class="time-info end-info">11:20</div>
+                      <div class="time-info end-info">8:35</div>
                       <div class="course-container">
                         <div class="course-number">001M06.01 [2]</div>
                         <div class="course-name">Advances in Computer Graphics</div>
@@ -3517,9 +3517,9 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                         <div class="weeks">1 week(s)</div>
                       </div>
                     </td>
-                    <td class="has-class event-cell" rowspan="4">
+                    <td class="has-class event-cell" rowspan="1">
                       <div class="time-info start-info">7:50</div>
-                      <div class="time-info end-info">11:20</div>
+                      <div class="time-info end-info">8:35</div>
                       <div class="course-container">
                         <div class="course-number">001M06.01 [2]</div>
                         <div class="course-name">Advances in Computer Graphics</div>
@@ -3533,6 +3533,106 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                   </tr>
                   <tr>
                     <td class="period-number">2</td>
+                    <td class="has-class event-cell" rowspan="3">
+                      <div class="time-info start-info">8:40</div>
+                      <div class="time-info end-info">11:20</div>
+                      <div class="overlap-container">
+                        <div class="overlap-course">
+                          <div class="course-number">001M06.01 [2]</div>
+                          <div class="course-name">Advances in Computer Graphics</div>
+                          <div class="instructor">Ligang Liu</div>
+                          <div class="location">2321</div>
+                          <div class="weeks">1 week(s)</div>
+                        </div>
+                        <div class="overlap-course">
+                          <div class="course-number">MATH4003.01 [1]</div>
+                          <div class="course-name">Introduction to Frontiers in Mathematics</div>
+                          <div class="instructor">Lei Zhang, Junyan Zhang</div>
+                          <div class="location">2105</div>
+                          <div class="weeks">1 week(s)</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="has-class event-cell" rowspan="3">
+                      <div class="time-info start-info">8:40</div>
+                      <div class="time-info end-info">11:20</div>
+                      <div class="overlap-container">
+                        <div class="overlap-course">
+                          <div class="course-number">001M06.01 [2]</div>
+                          <div class="course-name">Advances in Computer Graphics</div>
+                          <div class="instructor">Ligang Liu</div>
+                          <div class="location">2321</div>
+                          <div class="weeks">1 week(s)</div>
+                        </div>
+                        <div class="overlap-course">
+                          <div class="course-number">MATH4003.01 [1]</div>
+                          <div class="course-name">Introduction to Frontiers in Mathematics</div>
+                          <div class="instructor">Xizhi Liu</div>
+                          <div class="location">2105</div>
+                          <div class="weeks">1 week(s)</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="has-class event-cell" rowspan="3">
+                      <div class="time-info start-info">8:40</div>
+                      <div class="time-info end-info">11:20</div>
+                      <div class="overlap-container">
+                        <div class="overlap-course">
+                          <div class="course-number">001M06.01 [2]</div>
+                          <div class="course-name">Advances in Computer Graphics</div>
+                          <div class="instructor">Ligang Liu</div>
+                          <div class="location">2321</div>
+                          <div class="weeks">1 week(s)</div>
+                        </div>
+                        <div class="overlap-course">
+                          <div class="course-number">MATH4003.01 [1]</div>
+                          <div class="course-name">Introduction to Frontiers in Mathematics</div>
+                          <div class="instructor">Yuchen Liao</div>
+                          <div class="location">2105</div>
+                          <div class="weeks">1 week(s)</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="has-class event-cell" rowspan="3">
+                      <div class="time-info start-info">8:40</div>
+                      <div class="time-info end-info">11:20</div>
+                      <div class="overlap-container">
+                        <div class="overlap-course">
+                          <div class="course-number">001M06.01 [2]</div>
+                          <div class="course-name">Advances in Computer Graphics</div>
+                          <div class="instructor">Ligang Liu</div>
+                          <div class="location">2321</div>
+                          <div class="weeks">1 week(s)</div>
+                        </div>
+                        <div class="overlap-course">
+                          <div class="course-number">MATH4003.01 [1]</div>
+                          <div class="course-name">Introduction to Frontiers in Mathematics</div>
+                          <div class="instructor">Chunhui Zhou</div>
+                          <div class="location">2105</div>
+                          <div class="weeks">1 week(s)</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="has-class event-cell" rowspan="3">
+                      <div class="time-info start-info">8:40</div>
+                      <div class="time-info end-info">11:20</div>
+                      <div class="overlap-container">
+                        <div class="overlap-course">
+                          <div class="course-number">001M06.01 [2]</div>
+                          <div class="course-name">Advances in Computer Graphics</div>
+                          <div class="instructor">Ligang Liu</div>
+                          <div class="location">2321</div>
+                          <div class="weeks">1 week(s)</div>
+                        </div>
+                        <div class="overlap-course">
+                          <div class="course-number">MATH4003.01 [1]</div>
+                          <div class="course-name">Introduction to Frontiers in Mathematics</div>
+                          <div class="instructor">Lei Zhang, Xiaoya Zhai</div>
+                          <div class="location">2105</div>
+                          <div class="weeks">1 week(s)</div>
+                        </div>
+                      </div>
+                    </td>
                     <td></td>
                     <td></td>
                   </tr>
@@ -3700,6 +3800,13 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                     <td>Advances in Computer Graphics</td>
                     <td>Ligang Liu.</td>
                     <td>1(1-4; 6-9), 1 week(s);<br> 2(1-4; 6-9), 1 week(s);<br> 3(1-4; 6-9), 1 week(s);<br> 4(1-4; 6-9), 1 week(s);<br> 5(1-4; 6-9), 1 week(s).</td>
+                    <td>2</td>
+                  </tr>
+                  <tr>
+                    <td>MATH4003.01</td>
+                    <td>Introduction to Frontiers in Mathematics</td>
+                    <td>Lei Zhang; Junyan Zhang; Xizhi Liu; Yuchen Liao; Chunhui Zhou; Xiaoya Zhai.</td>
+                    <td>1(2-4), 1 week(s);<br> 2(2-4), 1 week(s);<br> 3(2-4), 1 week(s);<br> 4(2-4), 1 week(s);<br> 5(2-4), 1 week(s).</td>
                     <td>2</td>
                   </tr>
                 </tbody>

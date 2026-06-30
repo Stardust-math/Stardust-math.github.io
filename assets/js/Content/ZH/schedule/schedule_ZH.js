@@ -68,6 +68,7 @@
     "MATH3008.01": "复分析",
     "MATH3011.01": "运筹学",
     "MATH3012.02": "微分方程引论",
+    "MATH4003.01": "数学前沿课程",
     "MARX1005.18": "思想政治理论课实践",
     "MARX1006.05": "形势与政策",
     "MARX1010.11": "中国近现代史纲要",
@@ -135,6 +136,7 @@
     "Introduction to Brain and Cognition Science": "脑与认知科学导论",
     "Introduction to Computer Science": "计算机导论",
     "Introduction to Differential Equations": "微分方程引论",
+    "Introduction to Frontiers in Mathematics": "数学前沿课程",
     "Introduction to Mao Zedong Thought and Theoretical System of Socialism with Chinese Characteristics": "毛泽东思想和中国特色社会主义理论体系概论",
     "Introduction to Optimization": "最优化导论",
     "Introduction to Xi Jinping Thought on Socialism with Chinese Characteristics for a New Era": "习近平新时代中国特色社会主义思想概论",
@@ -189,6 +191,7 @@
     "Bin Qian": "钱斌",
     "Cheng Chen": "陈澄",
     "Chen Zhao": "赵晨",
+    "Chunhui Zhou": "周春辉",
     "Chunkai Xu": "徐春凯",
     "Congwen Liu": "刘聪文",
     "Da Li": "李达",
@@ -212,7 +215,9 @@
     "Jun Si": "斯骏",
     "Junfei Dai": "戴俊飞",
     "Junxia Zhang": "张俊霞",
+    "Junyan Zhang": "章俊彦",
     "Lan Zhang": "张兰",
+    "Lei Zhang": "张磊",
     "Li Gu": "顾理",
     "Li Tang": "唐莉",
     "Li Xiao": "肖力",
@@ -246,13 +251,15 @@
     "Wei Yang": "杨威",
     "Weiwei Zhuang": "庄玮玮",
     "Wen Zeng": "曾文",
+    "Xizhi Liu": "刘西之",
     "Xianglan Chen": "陈香兰",
+    "Xiao Han": "韩笑",
     "Xiaobei Shen": "沈晓蓓",
     "Xiaochu Zhang": "张效初",
     "Xiaohua Xu": "徐小华",
     "Xiaohui Chen": "陈晓辉",
-    "Xiao Han": "韩笑",
     "Xiaojun Chang": "常晓军",
+    "Xiaoya Zhai": "翟晓雅",
     "Xinan Ma": "麻希南",
     "Xinmao Wang": "王新茂",
     "Xu Zhang": "张旭",
@@ -271,6 +278,7 @@
     "Yingqiu Yang": "杨映秋",
     "Yinhua Xia": "夏银华",
     "Yong Wang": "王永",
+    "Yuchen Liao": "廖羽晨",
     "Yumeng Liu": "刘雨萌",
     "Yunfei Fu": "傅云飞",
     "Zhihui Li": "李志慧",
@@ -438,14 +446,40 @@
     return COURSE_NAME_ZH_BY_CODE[code] || COURSE_NAME_ZH_BY_TEXT[en] || en;
   }
 
-  function translateInstructorToZh(enText) {
-    const raw = String(enText || "").trim();
-    if (!raw) return raw;
+  function translateInstructorNameTokenToZh(token) {
+    const raw = String(token || "");
+    if (!raw.trim()) return raw;
 
-    // Split by "," or ";"
-    const parts = raw.split(/\s*[,;]\s*/).filter(Boolean);
-    const mapped = parts.map(p => INSTRUCTOR_ZH_BY_TOKEN[p] || p);
-    return mapped.join("；");
+    const leading = raw.match(/^\s*/)[0] || "";
+    const trailing = raw.match(/\s*$/)[0] || "";
+    const coreWithPunct = raw.trim();
+
+    // Keep ending punctuation in the rendered text, but ignore it for lookup.
+    const punctMatch = coreWithPunct.match(/([.。]+)$/);
+    const punct = punctMatch ? punctMatch[1] : "";
+    const lookupToken = punct
+      ? coreWithPunct.slice(0, -punct.length).trim()
+      : coreWithPunct;
+
+    const mapped = INSTRUCTOR_ZH_BY_TOKEN[lookupToken];
+
+    if (!mapped) {
+      return raw;
+    }
+
+    return `${leading}${mapped}${punct}${trailing}`;
+  }
+
+  function translateInstructorToZh(enText) {
+    const raw = String(enText || "");
+    if (!raw.trim()) return raw;
+
+    // Preserve the original delimiters and punctuation, e.g. "," / ";" / ".".
+    return raw
+      .split(/([,;]\s*)/)
+      .map(part => (/^[,;]\s*$/.test(part) ? part : translateInstructorNameTokenToZh(part)))
+      .join("")
+      .trim();
   }
 
   function translateLocationToZh(enText) {
@@ -588,8 +622,11 @@
       const instCell = cells[2];
       if (instCell) {
         storeIfEmptyDataset(instCell, "enHtml", instCell.innerHTML);
-        const enInstText = instCell.textContent.trim();
+
         if (l === LANG.ZH) {
+          const tmp = document.createElement('div');
+          tmp.innerHTML = instCell.dataset.enHtml || instCell.innerHTML;
+          const enInstText = (tmp.textContent || '').trim();
           instCell.textContent = translateInstructorToZh(enInstText);
         } else {
           instCell.innerHTML = instCell.dataset.enHtml;

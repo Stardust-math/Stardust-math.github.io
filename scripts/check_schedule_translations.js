@@ -4,7 +4,7 @@
 
 /*
   Check consistency between the English schedule source and the Chinese
-  course-name mappings used by the Schedule / My Timetable module.
+  course-name / instructor mappings used by the Schedule / My Timetable module.
 
   Run from the repository root:
 
@@ -67,6 +67,7 @@ function readText(file) {
     fail(`Missing required file: ${rel(file)}`);
     return '';
   }
+
   return fs.readFileSync(file, 'utf8');
 }
 
@@ -146,6 +147,19 @@ function normalizeNameForConflict(name) {
   return normalizeSpaces(name)
     .replace(/\s*\(TA\)\s*$/i, '')
     .replace(/\s+/g, ' ');
+}
+
+function normalizeInstructorLookupToken(raw) {
+  return normalizeSpaces(stripTags(raw))
+    .replace(/[.。]+$/g, '')
+    .trim();
+}
+
+function splitInstructorText(raw) {
+  return normalizeSpaces(stripTags(raw))
+    .split(/\s*[,;]\s*/)
+    .map(normalizeInstructorLookupToken)
+    .filter(Boolean);
 }
 
 function escapeRegex(s) {
@@ -232,7 +246,12 @@ function parseZhMappings(zhText) {
     'COURSE_NAME_ZH_BY_TEXT'
   );
 
-  return { byCode, byText };
+  const instructors = evaluateObjectLiteral(
+    extractObjectLiteral(zhText, 'INSTRUCTOR_ZH_BY_TOKEN'),
+    'INSTRUCTOR_ZH_BY_TOKEN'
+  );
+
+  return { byCode, byText, instructors };
 }
 
 function collectSemesterMarkers(enText) {
@@ -398,6 +417,93 @@ function parseEnglishCourses(enText) {
   });
 }
 
+function makeInstructorRecordKey(semester, enName) {
+  return `${semester}\u0000${enName}`;
+}
+
+function addInstructorRecords(map, semester, rawInstructorText, sourceKind, index) {
+  const names = splitInstructorText(rawInstructorText);
+
+  names.forEach(enName => {
+    const key = makeInstructorRecordKey(semester, enName);
+
+    if (!map.has(key)) {
+      map.set(key, {
+        semester,
+        enName,
+        occurrences: []
+      });
+    }
+
+    map.get(key).occurrences.push({
+      sourceKind,
+      index
+    });
+  });
+}
+
+function parseTimetableInstructors(enText, records, markers) {
+  const instructorRe =
+    /<div\s+class=["']instructor["'][^>]*>([\s\S]*?)<\/div>/gi;
+
+  let m;
+  while ((m = instructorRe.exec(enText)) !== null) {
+    addInstructorRecords(
+      records,
+      getSemesterAt(markers, m.index),
+      m[1],
+      'timetable-cell',
+      m.index
+    );
+  }
+}
+
+function parseMyClassesTableInstructors(enText, records, markers) {
+  const tableRe =
+    /<table\s+class=["'][^"']*\bmy-classes-table\b[^"']*["'][^>]*>([\s\S]*?)<\/table>/gi;
+
+  let tableMatch;
+  while ((tableMatch = tableRe.exec(enText)) !== null) {
+    const semester = getSemesterAt(markers, tableMatch.index);
+    const tableHtml = tableMatch[1];
+
+    const rowRe = /<tr\b[^>]*>([\s\S]*?)<\/tr>/gi;
+    let rowMatch;
+
+    while ((rowMatch = rowRe.exec(tableHtml)) !== null) {
+      const rowHtml = rowMatch[1];
+
+      if (/<th\b/i.test(rowHtml)) continue;
+
+      const cells = Array.from(rowHtml.matchAll(/<td\b[^>]*>([\s\S]*?)<\/td>/gi))
+        .map(cell => cell[1]);
+
+      if (cells.length < 3) continue;
+
+      addInstructorRecords(
+        records,
+        semester,
+        cells[2],
+        'my-classes-table',
+        tableMatch.index + rowMatch.index
+      );
+    }
+  }
+}
+
+function parseEnglishInstructors(enText) {
+  const records = new Map();
+  const markers = collectSemesterMarkers(enText);
+
+  parseTimetableInstructors(enText, records, markers);
+  parseMyClassesTableInstructors(enText, records, markers);
+
+  return Array.from(records.values()).sort((a, b) => {
+    if (a.semester !== b.semester) return a.semester.localeCompare(b.semester);
+    return a.enName.localeCompare(b.enName);
+  });
+}
+
 function checkMissingAndFallbacks(records, byCode, byText) {
   for (const r of records) {
     const hasCodeMap = Object.prototype.hasOwnProperty.call(byCode, r.code);
@@ -477,7 +583,22 @@ function checkCodeNameConflicts(records) {
   }
 }
 
-function checkUnusedMappings(records, byCode, byText) {
+function checkMissingInstructorMappings(instructorRecords, instructorMap) {
+  for (const r of instructorRecords) {
+    const hasMap = Object.prototype.hasOwnProperty.call(instructorMap, r.enName);
+
+    if (!hasMap) {
+      fail([
+        `Missing Chinese instructor mapping.`,
+        `  semester: ${r.semester}`,
+        `  instructor: ${r.enName}`,
+        `  Add INSTRUCTOR_ZH_BY_TOKEN["${r.enName}"].`
+      ].join('\n'));
+    }
+  }
+}
+
+function checkUnusedMappings(records, byCode, byText, instructorRecords, instructorMap) {
   if (!CHECK_UNUSED_MAPPINGS) {
     info('Unused mapping check is disabled. Set CHECK_UNUSED_MAPPINGS=1 to enable it.');
     return;
@@ -485,6 +606,7 @@ function checkUnusedMappings(records, byCode, byText) {
 
   const usedCodes = new Set(records.map(r => r.code));
   const usedNames = new Set(records.map(r => r.enName));
+  const usedInstructorNames = new Set(instructorRecords.map(r => r.enName));
 
   Object.keys(byCode).sort().forEach(code => {
     if (!usedCodes.has(code)) {
@@ -495,6 +617,12 @@ function checkUnusedMappings(records, byCode, byText) {
   Object.keys(byText).sort().forEach(name => {
     if (!usedNames.has(name)) {
       warn(`Unused COURSE_NAME_ZH_BY_TEXT entry: ${name} -> ${byText[name]}`);
+    }
+  });
+
+  Object.keys(instructorMap).sort().forEach(name => {
+    if (!usedInstructorNames.has(name)) {
+      warn(`Unused INSTRUCTOR_ZH_BY_TOKEN entry: ${name} -> ${instructorMap[name]}`);
     }
   });
 }
@@ -519,9 +647,10 @@ function printSection(title, items, level) {
   });
 }
 
-function printSummary(records, byCode, byText) {
+function printSummary(records, byCode, byText, instructorRecords, instructorMap) {
   const uniqueCodes = new Set(records.map(r => r.code));
   const uniquePairs = new Set(records.map(r => `${r.code}\u0000${r.enName}`));
+  const uniqueInstructorNames = new Set(instructorRecords.map(r => r.enName));
 
   console.log('\nSchedule translation check summary');
   console.log('==================================');
@@ -532,6 +661,9 @@ function printSummary(records, byCode, byText) {
   console.log(`Unique course codes: ${uniqueCodes.size}`);
   console.log(`ZH mappings by code: ${Object.keys(byCode).length}`);
   console.log(`ZH mappings by English text: ${Object.keys(byText).length}`);
+  console.log(`Instructor records found: ${instructorRecords.length}`);
+  console.log(`Unique instructors: ${uniqueInstructorNames.size}`);
+  console.log(`ZH instructor mappings: ${Object.keys(instructorMap).length}`);
 }
 
 function main() {
@@ -543,8 +675,9 @@ function main() {
     process.exit(1);
   }
 
-  const { byCode, byText } = parseZhMappings(zhText);
+  const { byCode, byText, instructors } = parseZhMappings(zhText);
   const records = parseEnglishCourses(enText);
+  const instructorRecords = parseEnglishInstructors(enText);
 
   if (records.length === 0) {
     fail(`No course records found in ${rel(EN_SCHEDULE_FILE)}. The parser may need to be updated.`);
@@ -552,9 +685,10 @@ function main() {
 
   checkMissingAndFallbacks(records, byCode, byText);
   checkCodeNameConflicts(records);
-  checkUnusedMappings(records, byCode, byText);
+  checkMissingInstructorMappings(instructorRecords, instructors);
+  checkUnusedMappings(records, byCode, byText, instructorRecords, instructors);
 
-  printSummary(records, byCode, byText);
+  printSummary(records, byCode, byText, instructorRecords, instructors);
   printSection('Errors', errors, 'error');
   printSection('Warnings', warnings, 'warning');
 
