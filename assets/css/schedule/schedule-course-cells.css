@@ -289,7 +289,7 @@
     background 0.18s ease;
 }
 
-/* Top accent line: restrained and cleaner than a large colored block */
+/* Top accent line: rest state keeps the original full-width 2px line. */
 #my-timetable-section .semester-timetable-container.active .timetable td.event-cell > .course-container::before,
 #my-timetable-section .semester-timetable-container.active .timetable td.event-cell > .overlap-container::before,
 #ustc-timetable td.event-cell > .overlap-container::before,
@@ -312,6 +312,7 @@
     );
 
   pointer-events: none;
+  transition: height 0.18s ease;
 }
 
 /* Soft highlight layer, visible mainly on hover */
@@ -351,6 +352,13 @@
   box-shadow: var(--course-card-shadow-hover);
 
   transform: translate3d(0, -3px, 0);
+}
+
+#my-timetable-section .semester-timetable-container.active .timetable td.event-cell:hover > .course-container::before,
+#my-timetable-section .semester-timetable-container.active .timetable td.event-cell:hover > .overlap-container::before,
+#ustc-timetable td.event-cell:hover > .overlap-container::before,
+#timetable-section .timetable td.general-timetable-event-cell:hover > .course-container::before {
+  height: 3px;
 }
 
 #my-timetable-section .semester-timetable-container.active .timetable td.event-cell:hover > .course-container::after,
@@ -445,4 +453,13 @@
 #ustc-timetable td.event-cell .credits-inline {
   color: color-mix(in srgb, var(--text) 78%, var(--course-card-accent));
   font-weight: 700;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #my-timetable-section .semester-timetable-container.active .timetable td.event-cell > .course-container::before,
+  #my-timetable-section .semester-timetable-container.active .timetable td.event-cell > .overlap-container::before,
+  #ustc-timetable td.event-cell > .overlap-container::before,
+  #timetable-section .timetable td.general-timetable-event-cell > .course-container::before {
+    transition: none;
+  }
 }

@@ -247,6 +247,7 @@
 
   opacity: 1;
   pointer-events: none;
+  transition: height 0.18s ease;
 }
 
 .fc-event::after,
@@ -283,6 +284,12 @@
   box-shadow: var(--course-card-shadow-hover) !important;
 
   transform: translate3d(0, -2px, 0);
+}
+
+.fc-event:hover::before,
+.fc-h-event:hover::before,
+.fc-v-event:hover::before {
+  height: 3px;
 }
 
 /*
@@ -405,6 +412,14 @@
 .fc-timeGridDay-view .schedule-calendar-event-title {
   font-size: 0.92em;
   line-height: 1.16;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fc-event::before,
+  .fc-h-event::before,
+  .fc-v-event::before {
+    transition: none;
+  }
 }
 
 @media (max-width: 760px) {
