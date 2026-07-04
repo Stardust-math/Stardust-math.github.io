@@ -232,6 +232,20 @@
           </li>
           <li>给学生的作业和考试评分, 提供反馈和辅导. 每周开设习题课, 回答问题, 帮助学生准备考试.</li>
         </ul>
+
+        <div class="subheading">
+          <span class="subheading-title">助教, "数学分析(B1)"</span>
+          <span>2026年9月 -- 2027年1月</span>
+        </div>
+        <div class="subsubheading">
+          <div>授课教师: </div>
+          <div class="resume-advisor-list">
+            <div><strong><a class="resume-link" href="https://faculty.ustc.edu.cn/mingminzhang/zh_CN/index.htm" target="_blank" rel="noopener noreferrer">张明敏</a></strong> (<a class="resume-link" href="https://math.ustc.edu.cn/main.htm" target="_blank" rel="noopener noreferrer">中国科学技术大学 数学科学学院</a>)</div>
+          </div>
+        </div>
+        <ul>
+          <li>待添加</li>
+        </ul>
       </div>
 
       <div class="section">

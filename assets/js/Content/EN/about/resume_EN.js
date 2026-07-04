@@ -232,6 +232,20 @@
           </li>
           <li>Assisted in homework and exam grading, provided feedback and tutoring, and held weekly problem-solving sessions to answer questions and help students prepare for exams.</li>
         </ul>
+
+        <div class="subheading">
+          <span class="subheading-title">Teaching Assistant, "Mathematical Analysis B1"</span>
+          <span>Sep. 2026 -- Jan. 2027</span>
+        </div>
+        <div class="subsubheading">
+          <div>Instructor:</div>
+          <div class="resume-advisor-list">
+            <div><strong><a class="resume-link" href="https://faculty.ustc.edu.cn/mingminzhang/zh_CN/index.htm" target="_blank" rel="noopener noreferrer">Prof. Mingmin Zhang</a></strong> (<a class="resume-link" href="https://math.ustc.edu.cn/main.htm" target="_blank" rel="noopener noreferrer">School of Mathematical Sciences, University of Science and Technology of China</a>)</div>
+          </div>
+        </div>
+        <ul>
+          <li>TBA.</li>
+        </ul>
       </div>
 
       <div class="section">
