@@ -192,31 +192,17 @@
       <div class="section">
         <h2>教学经历</h2>
         <div class="subheading">
-          <span class="subheading-title">助教, "概率论与数理统计"</span>
-          <span>2025年9月 -- 2026年1月</span>
+          <span class="subheading-title">助教, "数学分析(B1)"</span>
+          <span>2026年9月 -- 2027年1月</span>
         </div>
         <div class="subsubheading">
           <div>授课教师: </div>
           <div class="resume-advisor-list">
-            <div><strong><a class="resume-link" href="https://bs.ustc.edu.cn/chinese/profile-97.html" target="_blank" rel="noopener noreferrer">张曙光教授</a></strong> (<a class="resume-link" href="https://business.ustc.edu.cn/main.htm" target="_blank" rel="noopener noreferrer">中国科学技术大学 管理学院</a>)</div>
+            <div><strong><a class="resume-link" href="https://faculty.ustc.edu.cn/mingminzhang/zh_CN/index.htm" target="_blank" rel="noopener noreferrer">张明敏</a></strong> (<a class="resume-link" href="https://math.ustc.edu.cn/main.htm" target="_blank" rel="noopener noreferrer">中国科学技术大学 数学科学学院</a>)</div>
           </div>
         </div>
         <ul>
-          <li>
-            基于缪柏其、张伟平编撰的教材整理并编写详细 LaTeX 习题解答与参考答案；维护开源仓库供同学使用:
-            <a
-              class="expand-action-btn"
-              href="https://github.com/Stardust-math/Reference-Answer"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <svg class="btn-ico" viewBox="0 0 24 24" aria-hidden="true">
-                <path fill="currentColor" d="M12 .5C5.65.5.5 5.65.5 12a11.5 11.5 0 0 0 7.86 10.92c.58.1.79-.25.79-.56v-2.17c-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.71.08-.71 1.16.08 1.78 1.2 1.78 1.2 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.56-.29-5.25-1.28-5.25-5.72 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.47.11-3.07 0 0 .97-.31 3.18 1.18a10.9 10.9 0 0 1 5.79 0c2.21-1.49 3.18-1.18 3.18-1.18.63 1.6.23 2.78.11 3.07.74.8 1.19 1.83 1.19 3.09 0 4.45-2.7 5.42-5.27 5.7.41.36.78 1.07.78 2.16v3.2c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/>
-              </svg>
-              <span>仓库</span>
-            </a>
-          </li>
-          <li>给学生的作业和考试评分, 提供反馈和辅导. 每周开设习题课, 回答问题, 帮助学生准备考试.</li>
+          <li>待添加</li>
         </ul>
 
         <div class="subheading">
@@ -248,17 +234,31 @@
         </ul>
 
         <div class="subheading">
-          <span class="subheading-title">助教, "数学分析(B1)"</span>
-          <span>2026年9月 -- 2027年1月</span>
+          <span class="subheading-title">助教, "概率论与数理统计"</span>
+          <span>2025年9月 -- 2026年1月</span>
         </div>
         <div class="subsubheading">
           <div>授课教师: </div>
           <div class="resume-advisor-list">
-            <div><strong><a class="resume-link" href="https://faculty.ustc.edu.cn/mingminzhang/zh_CN/index.htm" target="_blank" rel="noopener noreferrer">张明敏</a></strong> (<a class="resume-link" href="https://math.ustc.edu.cn/main.htm" target="_blank" rel="noopener noreferrer">中国科学技术大学 数学科学学院</a>)</div>
+            <div><strong><a class="resume-link" href="https://bs.ustc.edu.cn/chinese/profile-97.html" target="_blank" rel="noopener noreferrer">张曙光教授</a></strong> (<a class="resume-link" href="https://business.ustc.edu.cn/main.htm" target="_blank" rel="noopener noreferrer">中国科学技术大学 管理学院</a>)</div>
           </div>
         </div>
         <ul>
-          <li>待添加</li>
+          <li>
+            基于缪柏其、张伟平编撰的教材整理并编写详细 LaTeX 习题解答与参考答案；维护开源仓库供同学使用:
+            <a
+              class="expand-action-btn"
+              href="https://github.com/Stardust-math/Reference-Answer"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <svg class="btn-ico" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill="currentColor" d="M12 .5C5.65.5.5 5.65.5 12a11.5 11.5 0 0 0 7.86 10.92c.58.1.79-.25.79-.56v-2.17c-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.71.08-.71 1.16.08 1.78 1.2 1.78 1.2 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.56-.29-5.25-1.28-5.25-5.72 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.47.11-3.07 0 0 .97-.31 3.18 1.18a10.9 10.9 0 0 1 5.79 0c2.21-1.49 3.18-1.18 3.18-1.18.63 1.6.23 2.78.11 3.07.74.8 1.19 1.83 1.19 3.09 0 4.45-2.7 5.42-5.27 5.7.41.36.78 1.07.78 2.16v3.2c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/>
+              </svg>
+              <span>仓库</span>
+            </a>
+          </li>
+          <li>给学生的作业和考试评分, 提供反馈和辅导. 每周开设习题课, 回答问题, 帮助学生准备考试.</li>
         </ul>
       </div>
 
