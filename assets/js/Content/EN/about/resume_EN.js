@@ -142,6 +142,20 @@
       <div class="section">
         <h2>Research Experience</h2>
         <div class="subheading">
+          <span class="subheading-title">Choice Model Inequalities and Marginal Distribution Models</span>
+          <span>Jul. 2026 -- Present</span>
+        </div>
+        <div class="subsubheading">
+          <div>Advisor:</div>
+          <div class="resume-advisor-list">
+            <div><strong><a class="resume-link" href="https://cde.nus.edu.sg/isem/staff/li-xiaobo/" target="_blank" rel="noopener noreferrer">Prof. Xiaobo Li</a></strong></div>
+          </div>
+        </div>
+        <ul>
+          <li>TBA.</li>
+        </ul>
+
+        <div class="subheading">
           <span class="subheading-title">Demand Information Sharing with Inequality-Averse Consumers</span>
           <span>Jul. 2025 -- Present</span>
         </div>

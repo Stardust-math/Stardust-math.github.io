@@ -142,6 +142,20 @@
       <div class="section">
         <h2>科研经历</h2>
         <div class="subheading">
+          <span class="subheading-title">边际分布模型与选择模型不等式的猜想与证明</span>
+          <span>2026年7月 -- 至今</span>
+        </div>
+        <div class="subsubheading">
+          <div>导师: </div>
+          <div class="resume-advisor-list">
+            <div><strong><a class="resume-link" href="https://cde.nus.edu.sg/isem/staff/li-xiaobo/" target="_blank" rel="noopener noreferrer">李晓波</a></strong></div>
+          </div>
+        </div>
+        <ul>
+          <li>待添加</li>
+        </ul>
+
+        <div class="subheading">
           <span class="subheading-title">具有不平等厌恶偏好的消费者下的需求信息共享</span>
           <span>2025年7月 -- 至今</span>
         </div>
