@@ -16,12 +16,15 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
   "junior-second|011145.02": "Minor",
   "junior-second|011174.01": "Minor",
   "junior-second|CS2002.03": "Minor",
-  "junior-second|CS4017.01": "Minor",
-  "junior-summer|CS4029.01": "Minor",
+  "senior-first|011144.04": "Minor",
+  "senior-first|CS4018.01": "Minor",
+  "senior-first|CS4023.01": "Minor",
+  "senior-first|EE3004.01": "Minor",
   "junior-first|Null": "Micro-minor",
   "junior-second|Null": "Micro-minor",
-  "junior-second|EE3502.01": "TA",
   "junior-first|STAT2002.06": "TA",
+  "junior-second|EE3502.01": "TA",
+  "senior-first|MATH1006.10": "TA",
 };
 
 (function () {
@@ -170,7 +173,7 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                       <div class="time-info end-info">11:20</div>
                       <div class="course-container">
                         <div class="course-number">MATH1001.01 [6]</div>
-                        <div class="course-name">Mathematical Analysis (A1)</div>
+                        <div class="course-name">Mathematical Analysis A1</div>
                         <div class="instructor">Guangbin Ren</div>
                         <div class="location">5102</div>
                         <div class="weeks">2-4, 6-18 week(s)</div>
@@ -192,7 +195,7 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                       <div class="time-info end-info">11:20</div>
                       <div class="course-container">
                         <div class="course-number">MATH1001.01 [6]</div>
-                        <div class="course-name">Mathematical Analysis (A1)</div>
+                        <div class="course-name">Mathematical Analysis A1</div>
                         <div class="instructor">Guangbin Ren</div>
                         <div class="location">5102</div>
                         <div class="weeks">2, 4, 6, 7-18 week(s)</div>
@@ -214,7 +217,7 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                       <div class="time-info end-info">11:20</div>
                       <div class="course-container">
                         <div class="course-number">MATH1001.01 [6]</div>
-                        <div class="course-name">Mathematical Analysis (A1)</div>
+                        <div class="course-name">Mathematical Analysis A1</div>
                         <div class="instructor">Guangbin Ren</div>
                         <div class="location">5102</div>
                         <div class="weeks">2-3, 6-18 week(s)</div>
@@ -225,7 +228,7 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                       <div class="time-info end-info">11:20</div>
                       <div class="course-container">
                         <div class="course-number">MATH1001.01 [6]</div>
-                        <div class="course-name">Mathematical Analysis (A1)</div>
+                        <div class="course-name">Mathematical Analysis A1</div>
                         <div class="instructor">Guangbin Ren</div>
                         <div class="location">5102</div>
                         <div class="weeks">5 week(s)</div>
@@ -236,7 +239,7 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                       <div class="time-info end-info">11:20</div>
                       <div class="course-container">
                         <div class="course-number">MATH1001.01 [6]</div>
-                        <div class="course-name">Mathematical Analysis (A1)</div>
+                        <div class="course-name">Mathematical Analysis A1</div>
                         <div class="instructor">Guangbin Ren</div>
                         <div class="location">5102</div>
                         <div class="weeks">6 week(s)</div>
@@ -362,7 +365,7 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                       <div class="time-info end-info">17:30</div>
                       <div class="course-container">
                         <div class="course-number">MATH1001.01 [6]</div>
-                        <div class="course-name">Mathematical Analysis (A1)</div>
+                        <div class="course-name">Mathematical Analysis A1</div>
                         <div class="instructor">Guangbin Ren</div>
                         <div class="location">5201</div>
                         <div class="weeks">3 week(s)</div>
@@ -510,7 +513,7 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                   </tr>
                   <tr>
                     <td>MATH1001.01</td>
-                    <td>Mathematical Analysis (A1)</td>
+                    <td>Mathematical Analysis A1</td>
                     <td>Guangbin Ren.</td>
                     <td>1(3-4), 2-4,6-18 week(s);<br> 3(3-4), 2,4,6,7-18 week(s);<br> 5(3-4), 2-3,6-18 week(s);<br> 6(3-4), 5 week(s);<br> 7(3-4), 6 week(s);<br> 3(8-9), 3 week(s).</td>
                     <td>6</td>
@@ -622,7 +625,7 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                       <div class="time-info end-info">9:25</div>
                       <div class="course-container">
                         <div class="course-number">MATH1004.01 [5]</div>
-                        <div class="course-name">Linear Algebra (A1)</div>
+                        <div class="course-name">Linear Algebra A1</div>
                         <div class="instructor">Falai Chen</div>
                         <div class="location">5402</div>
                         <div class="weeks">1-18 week(s)</div>
@@ -694,7 +697,7 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                       <div class="time-info end-info">11:20</div>
                       <div class="course-container">
                         <div class="course-number">MATH1002.02 [6]</div>
-                        <div class="course-name">Mathematical Analysis (A2)</div>
+                        <div class="course-name">Mathematical Analysis A2</div>
                         <div class="instructor">Luo Luo</div>
                         <div class="location">5201</div>
                         <div class="weeks">1-15, 17-18 week(s)</div>
@@ -707,14 +710,14 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                       <div class="overlap-container">
                         <div class="overlap-course">
                           <div class="course-number">MATH1002.02 [6]</div>
-                          <div class="course-name">Mathematical Analysis (A2)</div>
+                          <div class="course-name">Mathematical Analysis A2</div>
                           <div class="instructor">Luo Luo</div>
                           <div class="location">1301</div>
                           <div class="weeks">16-17 week(s)</div>
                         </div>
                         <div class="overlap-course">
                           <div class="course-number">MATH1002.02</div>
-                          <div class="course-name">Mathematical Analysis (A2)</div>
+                          <div class="course-name">Mathematical Analysis A2</div>
                           <div class="instructor">Luo Luo</div>
                           <div class="location">5201</div>
                           <div class="weeks">1-9, 11-15, 18 week(s)</div>
@@ -726,7 +729,7 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                       <div class="time-info end-info">11:20</div>
                       <div class="course-container">
                         <div class="course-number">MATH1004.01 [5]</div>
-                        <div class="course-name">Linear Algebra (A1)</div>
+                        <div class="course-name">Linear Algebra A1</div>
                         <div class="instructor">Falai Chen</div>
                         <div class="location">5402</div>
                         <div class="weeks">1-5, 7-9, 11-18 week(s)</div>
@@ -737,7 +740,7 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                       <div class="time-info end-info">11:20</div>
                       <div class="course-container">
                         <div class="course-number">MATH1002.02 [6]</div>
-                        <div class="course-name">Mathematical Analysis (A2)</div>
+                        <div class="course-name">Mathematical Analysis A2</div>
                         <div class="instructor">Luo Luo</div>
                         <div class="location">5201</div>
                         <div class="weeks">1-5, 7-9, 11-18 week(s)</div>
@@ -748,7 +751,7 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                       <div class="time-info end-info">11:20</div>
                       <div class="course-container">
                         <div class="course-number">MATH1002.02</div>
-                        <div class="course-name">Mathematical Analysis (A2)</div>
+                        <div class="course-name">Mathematical Analysis A2</div>
                         <div class="instructor">Luo Luo</div>
                         <div class="location">5201</div>
                         <div class="weeks">11 week(s)</div>
@@ -760,14 +763,14 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                       <div class="overlap-container">
                         <div class="overlap-course">
                           <div class="course-number">MATH1004.01 [5]</div>
-                          <div class="course-name">Linear Algebra (A1)</div>
+                          <div class="course-name">Linear Algebra A1</div>
                           <div class="instructor">Falai Chen</div>
                           <div class="location">5402</div>
                           <div class="weeks">10 week(s)</div>
                         </div>
                         <div class="overlap-course">
                           <div class="course-number">MATH1002.02 [6]</div>
-                          <div class="course-name">Mathematical Analysis (A2)</div>
+                          <div class="course-name">Mathematical Analysis A2</div>
                           <div class="instructor">Luo Luo</div>
                           <div class="location">5201</div>
                           <div class="weeks">7 week(s)</div>
@@ -791,7 +794,7 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                       <div class="time-info end-info">12:10</div>
                       <div class="course-container">
                         <div class="course-number">MATH1004.01 [5]</div>
-                        <div class="course-name">Linear Algebra (A1)</div>
+                        <div class="course-name">Linear Algebra A1</div>
                         <div class="instructor">Falai Chen</div>
                         <div class="location">5402</div>
                         <div class="weeks">10 week(s)</div>
@@ -1078,7 +1081,7 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                   </tr>
                   <tr>
                     <td>MATH1002.02</td>
-                    <td>Mathematical Analysis (A2)</td>
+                    <td>Mathematical Analysis A2</td>
                     <td>Luo Luo.</td>
                     <td>1(3-4), 1-15,17-18 week(s);<br> 3(3-4), 1-9,11-18 week(s);<br> 5(3-4), 1-5,7-9,11-18 week(s);<br> 6(3-4), 11 week(s);<br> 7(3-4), 7 week(s).</td>
                     <td>6</td>
@@ -1134,7 +1137,7 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                   </tr>
                   <tr>
                     <td>MATH1004.01</td>
-                    <td>Linear Algebra (A1)</td>
+                    <td>Linear Algebra A1</td>
                     <td>Falai Chen.</td>
                     <td>2(1-2), 1-18 week(s);<br> 4(3-5), 1-5, 7-9, 11-18 week(s);<br> 7(3-5), 10 week(s).</td>
                     <td>5</td>
@@ -1366,7 +1369,7 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                       <div class="time-info end-info">9:25</div>
                       <div class="course-container">
                         <div class="course-number">MATH1005.01 [4]</div>
-                        <div class="course-name">Linear Algebra (A2)</div>
+                        <div class="course-name">Linear Algebra A2</div>
                         <div class="instructor">Falai Chen</div>
                         <div class="location">5302</div>
                         <div class="weeks">1-2, 4-5, 7-18 week(s)</div>
@@ -1379,7 +1382,7 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                       <div class="time-info end-info">9:25</div>
                       <div class="course-container">
                         <div class="course-number">MATH1003.01 [4]</div>
-                        <div class="course-name">Mathematical Analysis (A3)</div>
+                        <div class="course-name">Mathematical Analysis A3</div>
                         <div class="instructor">Dafeng Zuo</div>
                         <div class="location">5302</div>
                         <div class="weeks">1-4, 6-18 week(s)</div>
@@ -1401,7 +1404,7 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                       <div class="time-info end-info">9:25</div>
                       <div class="course-container">
                         <div class="course-number">MATH1005.01 [4]</div>
-                        <div class="course-name">Linear Algebra (A2)</div>
+                        <div class="course-name">Linear Algebra A2</div>
                         <div class="instructor">Falai Chen</div>
                         <div class="location">5302</div>
                         <div class="weeks">2 week(s)</div>
@@ -1433,7 +1436,7 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                       <div class="time-info end-info">11:20</div>
                       <div class="course-container">
                         <div class="course-number">MATH1003.01 [4]</div>
-                        <div class="course-name">Mathematical Analysis (A3)</div>
+                        <div class="course-name">Mathematical Analysis A3</div>
                         <div class="instructor">Dafeng Zuo</div>
                         <div class="location">5302</div>
                         <div class="weeks">1-2, 4, 6, 7-18 week(s)</div>
@@ -1444,7 +1447,7 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                       <div class="time-info end-info">11:20</div>
                       <div class="course-container">
                         <div class="course-number">MATH1005.01 [4]</div>
-                        <div class="course-name">Linear Algebra (A2)</div>
+                        <div class="course-name">Linear Algebra A2</div>
                         <div class="instructor">Falai Chen</div>
                         <div class="location">5302</div>
                         <div class="weeks">1-4, 6-17 week(s)</div>
@@ -1468,7 +1471,7 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                       <div class="overlap-container">
                         <div class="overlap-course">
                           <div class="course-number">MATH1005.01 [4]</div>
-                          <div class="course-name">Linear Algebra (A2)</div>
+                          <div class="course-name">Linear Algebra A2</div>
                           <div class="instructor">Falai Chen</div>
                           <div class="location">5302</div>
                           <div class="weeks">6 week(s)</div>
@@ -1487,7 +1490,7 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                       <div class="time-info end-info">11:20</div>
                       <div class="course-container">
                         <div class="course-number">MATH1003.01 [4]</div>
-                        <div class="course-name">Mathematical Analysis (A3)</div>
+                        <div class="course-name">Mathematical Analysis A3</div>
                         <div class="instructor">Dafeng Zuo</div>
                         <div class="location">5302</div>
                         <div class="weeks">5 week(s)</div>
@@ -1729,14 +1732,14 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                   </tr>
                   <tr>
                     <td>MATH1005.01</td>
-                    <td>Linear Algebra (A2)</td>
+                    <td>Linear Algebra A2</td>
                     <td>Falai Chen.</td>
                     <td>1(1-2), 1-2,4-5,7-18 week(s);<br> 3(3-4), 1-4,6-17 week(s);<br> 6(1-2), 2 week(s);<br> 6(3,4), 6 week(s).</td>
                     <td>4</td>
                   </tr>
                   <tr>
                     <td>MATH1003.01</td>
-                    <td>Mathematical Analysis (A3)</td>
+                    <td>Mathematical Analysis A3</td>
                     <td>Dafeng Zuo.</td>
                     <td>4(1-2), 1-4,6-18 week(s);<br> 2(3-4), 1-2,4,6,7-18 week(s);<br> 7(3-4), 5 week(s).</td>
                     <td>4</td>
@@ -3029,17 +3032,7 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                         <div class="weeks">1-12 week(s)</div>
                       </div>
                     </td>
-                    <td class="has-class event-cell" rowspan="2">
-                      <div class="time-info start-info">9:45</div>
-                      <div class="time-info end-info">11:20</div>
-                      <div class="course-container">
-                        <div class="course-number">017144.07 [2]</div>
-                        <div class="course-name">Stochastic Processes B</div>
-                        <div class="instructor">Weiwei Zhuang</div>
-                        <div class="location">3C204</div>
-                        <div class="weeks">1-8, 10-16 week(s)</div>
-                      </div>
-                    </td>
+                    <td></td>
                     <td class="has-class event-cell" rowspan="2">
                       <div class="time-info start-info">9:45</div>
                       <div class="time-info end-info">11:20</div>
@@ -3056,21 +3049,12 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                   <tr>
                     <td class="period-number">4</td>
                     <td></td>
+                    <td></td>
                   </tr>
                   <tr>
                     <td class="period-number">5</td>
                     <td></td>
-                    <td class="has-class event-cell" rowspan="1">
-                      <div class="time-info start-info">11:25</div>
-                      <div class="time-info end-info">12:10</div>
-                      <div class="course-container">
-                        <div class="course-number">017144.07 [2]</div>
-                        <div class="course-name">Stochastic Processes B</div>
-                        <div class="instructor">Weiwei Zhuang</div>
-                        <div class="location">3C204</div>
-                        <div class="weeks">2-16 (even) week(s)</div>
-                      </div>
-                    </td>
+                    <td></td>
                     <td></td>
                     <td></td>
                   </tr>
@@ -3373,13 +3357,6 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                     <td>Mathematical Logic</td>
                     <td>Yi Zhou.</td>
                     <td>2(3-5), 1-9, 11-14 week(s).</td>
-                    <td>2</td>
-                  </tr>
-                  <tr>
-                    <td>017144.07</td>
-                    <td>Stochastic Processes B</td>
-                    <td>Weiwei Zhuang.</td>
-                    <td>5(3-4), 1-8, 10-16 week(s);<br> 5(5), 2-16 (even) week(s).</td>
                     <td>2</td>
                   </tr>
                   <tr>
@@ -3876,28 +3853,29 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                   </tr>
                   <tr>
                     <td class="period-number">3</td>
-                    <td></td>
-                    <td class="has-class event-cell" rowspan="3">
+                    <td class="has-class event-cell" rowspan="2">
                       <div class="time-info start-info">9:45</div>
-                      <div class="time-info end-info">12:10</div>
-                      <div class="overlap-container">
-                        <div class="overlap-course">
-                          <div class="course-number">CS4008.01 [2.5]</div>
-                          <div class="course-name">Software Engineering Practice</div>
-                          <div class="instructor">Qing Ding</div>
-                          <div class="location">G2-B403</div>
-                          <div class="weeks">1-7 week(s)</div>
-                        </div>
-                        <div class="overlap-course">
-                          <div class="course-number">011187.01 [3.5]</div>
-                          <div class="course-name">Methodology, Ethics and Practice of Data privacy</div>
-                          <div class="instructor">Lan Zhang</div>
-                          <div class="location">GT-B212</div>
-                          <div class="weeks">1-18 week(s)</div>
-                        </div>
+                      <div class="time-info end-info">11:20</div>
+                      <div class="course-container">
+                        <div class="course-number">MATH1006.10 [6]</div>
+                        <div class="course-name">Mathematical Analysis B1</div>
+                        <div class="instructor">Mingmin Zhang</div>
+                        <div class="location">2210</div>
+                        <div class="weeks">2-18 week(s)</div>
                       </div>
                     </td>
                     <td></td>
+                    <td class="has-class event-cell" rowspan="2">
+                      <div class="time-info start-info">9:45</div>
+                      <div class="time-info end-info">11:20</div>
+                      <div class="course-container">
+                        <div class="course-number">MATH1006.10 [6]</div>
+                        <div class="course-name">Mathematical Analysis B1</div>
+                        <div class="instructor">Mingmin Zhang</div>
+                        <div class="location">2210</div>
+                        <div class="weeks">2-18 week(s)</div>
+                      </div>
+                    </td>
                     <td class="has-class event-cell" rowspan="2">
                       <div class="time-info start-info">9:45</div>
                       <div class="time-info end-info">11:20</div>
@@ -3909,7 +3887,17 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                         <div class="weeks">2-11 week(s)</div>
                       </div>
                     </td>
-                    <td></td>
+                    <td class="has-class event-cell" rowspan="2">
+                      <div class="time-info start-info">9:45</div>
+                      <div class="time-info end-info">11:20</div>
+                      <div class="course-container">
+                        <div class="course-number">MATH1006.10 [6]</div>
+                        <div class="course-name">Mathematical Analysis B1</div>
+                        <div class="instructor">Mingmin Zhang</div>
+                        <div class="location">2210</div>
+                        <div class="weeks">2-18 week(s)</div>
+                      </div>
+                    </td>
                     <td></td>
                     <td></td>
                   </tr>
@@ -3918,11 +3906,10 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td></td>
-                    <td></td>
                   </tr>
                   <tr>
                     <td class="period-number">5</td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -3950,17 +3937,7 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td class="has-class event-cell" rowspan="5">
-                      <div class="time-info start-info">14:00</div>
-                      <div class="time-info end-info">18:20</div>
-                      <div class="course-container">
-                        <div class="course-number">CS4008.01 [2.5]</div>
-                        <div class="course-name">Software Engineering Practice</div>
-                        <div class="instructor">Qing Ding</div>
-                        <div class="location">G2-B403</div>
-                        <div class="weeks">1-10 week(s)</div>
-                      </div>
-                    </td>
+                    <td></td>
                     <td></td>
                   </tr>
                   <tr>
@@ -3970,11 +3947,22 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                     <td></td>
                     <td></td>
                     <td></td>
+                    <td></td>
                   </tr>
                   <tr>
                     <td class="period-number">8</td>
                     <td></td>
-                    <td></td>
+                    <td class="has-class event-cell" rowspan="2">
+                      <div class="time-info start-info">15:55</div>
+                      <div class="time-info end-info">17:30</div>
+                      <div class="course-container">
+                        <div class="course-number">CS4023.01 [2]</div>
+                        <div class="course-name">Introduction to Data Science</div>
+                        <div class="instructor">Enhong Chen; Zhenya Huang.</div>
+                        <div class="location">GT-B212</div>
+                        <div class="weeks">1-18 week(s)</div>
+                      </div>
+                    </td>
                     <td></td>
                     <td></td>
                     <td class="has-class event-cell" rowspan="3">
@@ -3989,6 +3977,7 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                       </div>
                     </td>
                     <td></td>
+                    <td></td>
                   </tr>
                   <tr>
                     <td class="period-number">9</td>
@@ -4000,6 +3989,7 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                   </tr>
                   <tr>
                     <td class="period-number">10</td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -4065,13 +4055,6 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                     <td>3.5</td>
                   </tr>
                   <tr>
-                    <td>CS4008.01</td>
-                    <td>Software Engineering Practice</td>
-                    <td>Qing Ding.</td>
-                    <td>2(3-5), 1-7 week(s);<br> 6(6-10), 1-10 week(s).</td>
-                    <td>2.5</td>
-                  </tr>
-                  <tr>
                     <td>EE3004.01</td>
                     <td>Practice of Artificial Intelligence</td>
                     <td>Li Gu.</td>
@@ -4079,17 +4062,24 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                     <td>1</td>
                   </tr>
                   <tr>
-                    <td>011187.01</td>
-                    <td>Methodology, Ethics and Practice of Data privacy</td>
-                    <td>Lan Zhang.</td>
-                    <td>2(3-5), 1-18 week(s).</td>
-                    <td>3.5</td>
+                    <td>CS4023.01</td>
+                    <td>Introduction to Data Science</td>
+                    <td>Enhong Chen; Zhenya Huang.</td>
+                    <td>2(8-9), 1-18 week(s).</td>
+                    <td>2</td>
                   </tr>
                   <tr>
                     <td>011144.04</td>
                     <td>Computer Networks</td>
                     <td>Hao Zhou.</td>
                     <td>1(1-2), 1-15 week(s);<br> 3(1-2), 1-15 week(s).</td>
+                    <td>3.5</td>
+                  </tr>
+                  <tr>
+                    <td>MATH1006.10</td>
+                    <td>Mathematical Analysis B1</td>
+                    <td>Mingmin Zhang.</td>
+                    <td>1(3-4), 2-18 week(s);<br> 3(3-4), 2-18 week(s);<br> 5(3-4), 2-18 week(s).</td>
                     <td>3.5</td>
                   </tr>
                 </tbody>
