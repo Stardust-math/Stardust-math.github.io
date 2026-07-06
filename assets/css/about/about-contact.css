@@ -1,0 +1,338 @@
+/* =========================================================
+   About Contact
+   - Resume hero email disclosure layout
+   - Email row alignment
+   - Copy / send icon buttons
+   ========================================================= */
+
+.resume-email-block {
+  width: fit-content;
+  max-width: 100%;
+  color: var(--text);
+}
+
+.resume-email-toggle-line {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 18px;
+}
+
+.resume-email-title {
+  color: var(--text);
+  font-family: inherit;
+  font-size: 1.02em;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.resume-email-title-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 24px;
+  height: 24px;
+
+  color: var(--accent);
+  font-size: 1.02em;
+  line-height: 1;
+}
+
+.resume-email-title-icon i {
+  line-height: 1;
+}
+
+.resume-email-expander {
+  margin-left: 0;
+}
+
+.resume-email-expand {
+  width: 100%;
+}
+
+/*
+  Keep the global expander animation model:
+  - max-height
+  - padding-top
+  - border-color
+  - opacity
+  - transform
+
+  This file only adds a lower divider and makes its padding transition
+  follow the same timing as the global expander.
+*/
+.resume-email-content {
+  --expand-max-height: 250px;
+  --expand-open-duration: 0.52s;
+  --expand-close-duration: 0.32s;
+  --expand-ease-open: cubic-bezier(0.18, 0.72, 0.22, 1);
+  --expand-ease-close: cubic-bezier(0.4, 0, 0.2, 1);
+
+  box-sizing: border-box;
+
+  width: fit-content;
+  max-width: 100%;
+
+  padding-bottom: 0;
+  border-bottom: 1px dashed transparent;
+
+  transition:
+    max-height var(--expand-close-duration) var(--expand-ease-close),
+    padding-top 0.24s var(--expand-ease-close),
+    padding-bottom 0.24s var(--expand-ease-close),
+    border-color 0.16s ease,
+    opacity 0.16s ease,
+    transform 0.22s var(--expand-ease-close);
+}
+
+.resume-email-expand.is-open .resume-email-content {
+  padding-bottom: 10px;
+  border-bottom-color: color-mix(in srgb, var(--border) 80%, transparent);
+
+  transition:
+    max-height var(--expand-open-duration) var(--expand-ease-open),
+    padding-top 0.36s var(--expand-ease-open),
+    padding-bottom 0.36s var(--expand-ease-open),
+    border-color 0.22s ease,
+    opacity 0.26s ease 0.04s,
+    transform 0.34s var(--expand-ease-open);
+}
+
+.resume-email-list {
+  display: grid;
+  gap: 5px;
+  max-width: 100%;
+}
+
+.resume-email-row {
+  display: grid;
+  grid-template-columns: 92px minmax(210px, auto) minmax(0, auto) 78px;
+  column-gap: 14px;
+  align-items: center;
+
+  max-width: 100%;
+  color: var(--muted);
+  font-size: 0.95em;
+  line-height: 1.5;
+}
+
+.resume-email-label {
+  min-width: 0;
+  color: color-mix(in srgb, var(--muted) 88%, var(--accent));
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.resume-email-address,
+.resume-email-address:visited {
+  min-width: 0;
+  color: var(--text);
+  text-decoration: none;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  overflow-wrap: anywhere;
+}
+
+.resume-email-address:hover,
+.resume-email-address:focus-visible {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+.resume-email-note {
+  min-width: 0;
+  color: color-mix(in srgb, var(--accent) 62%, var(--muted));
+  font-size: 0.92em;
+  white-space: nowrap;
+}
+
+.resume-email-actions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+
+  width: 78px;
+  min-width: 78px;
+}
+
+/* Match SocialFriends .friends-icon-button */
+.resume-email-icon-btn,
+.resume-email-icon-btn:visited {
+  appearance: none;
+  -webkit-appearance: none;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 36px;
+  height: 36px;
+  padding: 0;
+
+  color: var(--accent);
+  font: inherit;
+  line-height: 1;
+  text-decoration: none;
+
+  border: 1px solid color-mix(in srgb, var(--border) 86%, var(--accent-weak));
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--surface) 88%, var(--accent-weak));
+  box-shadow: var(--shadow-xs);
+  cursor: pointer;
+
+  transition:
+    transform 0.18s ease,
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.resume-email-icon-btn:hover,
+.resume-email-icon-btn:focus-visible {
+  color: var(--accent-strong);
+  text-decoration: none;
+
+  background: var(--accent-weak);
+  border-color: color-mix(in srgb, var(--accent) 46%, var(--border));
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+}
+
+.resume-email-icon-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.resume-email-icon-btn.is-copied {
+  color: #1f8a4c;
+  border-color: color-mix(in srgb, #1f8a4c 52%, var(--border));
+  background: color-mix(in srgb, #1f8a4c 12%, var(--surface));
+}
+
+.resume-email-icon-btn.is-copy-failed {
+  color: var(--danger);
+  border-color: color-mix(in srgb, var(--danger) 45%, var(--border));
+  background: color-mix(in srgb, var(--danger) 10%, var(--surface));
+}
+
+.resume-email-copy-btn[disabled] {
+  cursor: default;
+}
+
+/* Fallback for browsers without color-mix support */
+@supports not (color: color-mix(in srgb, white, black)) {
+  .resume-email-expand.is-open .resume-email-content {
+    border-bottom-color: var(--border);
+  }
+
+  .resume-email-title-icon {
+    color: var(--accent);
+  }
+
+  .resume-email-label {
+    color: var(--muted);
+  }
+
+  .resume-email-note {
+    color: var(--accent);
+  }
+
+  .resume-email-address:hover,
+  .resume-email-address:focus-visible {
+    color: var(--accent);
+    text-decoration-color: var(--accent);
+  }
+
+  .resume-email-icon-btn,
+  .resume-email-icon-btn:visited {
+    color: var(--accent);
+    background: var(--surface);
+    border-color: var(--border);
+  }
+
+  .resume-email-icon-btn:hover,
+  .resume-email-icon-btn:focus-visible {
+    color: var(--accent-strong);
+    background: var(--accent-weak);
+    border-color: var(--accent);
+  }
+
+  .resume-email-icon-btn.is-copied {
+    color: #1f8a4c;
+    border-color: #1f8a4c;
+  }
+
+  .resume-email-icon-btn.is-copy-failed {
+    color: var(--danger);
+    border-color: var(--danger);
+  }
+}
+
+@media (max-width: 768px) {
+  .resume-email-block {
+    width: 100%;
+  }
+
+  .resume-email-content {
+    width: 100%;
+  }
+
+  .resume-email-row {
+    grid-template-columns: 88px minmax(0, 1fr) 78px;
+    row-gap: 1px;
+    column-gap: 12px;
+  }
+
+  .resume-email-note {
+    grid-column: 2 / 4;
+    white-space: normal;
+  }
+
+  .resume-email-actions {
+    grid-column: 3;
+    grid-row: 1 / span 2;
+  }
+}
+
+@media (max-width: 520px) {
+  .resume-email-row {
+    grid-template-columns: 1fr 78px;
+    gap: 0 10px;
+    padding: 2px 0;
+  }
+
+  .resume-email-label {
+    grid-column: 1 / 3;
+  }
+
+  .resume-email-address {
+    grid-column: 1;
+  }
+
+  .resume-email-note {
+    grid-column: 1 / 3;
+  }
+
+  .resume-email-actions {
+    grid-column: 2;
+    grid-row: 2;
+  }
+}
+
+/* Accessibility: respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .resume-email-content,
+  .resume-email-expand.is-open .resume-email-content {
+    transition: none;
+    transform: none;
+  }
+
+  .resume-email-icon-btn {
+    transition: none;
+  }
+}

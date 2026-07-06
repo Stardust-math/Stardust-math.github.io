@@ -14,10 +14,66 @@
         </div>
         <div class="resume-hero-body">
           <div class="resume-hero-name">Jinghao Chen</div>
-          <div class="resume-hero-chips">
-            <span class="contact-pill"><strong>Email 1:</strong><a href="mailto:chenjinghao@mail.ustc.edu.cn">chenjinghao@mail.ustc.edu.cn</a></span>
-            <span class="contact-pill"><strong>Email 2:</strong><a href="mailto:stardust.math26@gmail.com">stardust.math26@gmail.com</a></span>
+
+          <div class="resume-email-block">
+            <div class="resume-email-toggle-line">
+              <span class="resume-email-title resume-email-title-icon" aria-label="Email" title="Email">
+                <i class="fas fa-envelope" aria-hidden="true"></i>
+              </span>
+              <button class="expander resume-email-expander" type="button" data-expand-target="exp-hero-email" data-expand-key="hero-email" aria-expanded="false" aria-label="Expand email addresses">
+                <i class="fas fa-chevron-right"></i>
+              </button>
+            </div>
+
+            <div class="expand-row resume-email-expand" id="exp-hero-email" aria-hidden="true" style="display:none;">
+              <div class="expand-content resume-email-content">
+                <div class="resume-email-list">
+                  <div class="resume-email-row">
+                    <span class="resume-email-label">Academic</span>
+                    <a class="resume-email-address" href="mailto:chenjinghao@mail.ustc.edu.cn">chenjinghao@mail.ustc.edu.cn</a>
+                    <span class="resume-email-note"></span>
+                    <span class="resume-email-actions" aria-label="Academic email actions">
+                      <button class="resume-email-icon-btn resume-email-copy-btn" type="button" data-copy-email="chenjinghao@mail.ustc.edu.cn" aria-label="Copy academic email address" title="Copy">
+                        <i class="fas fa-copy" aria-hidden="true"></i>
+                      </button>
+                      <a class="resume-email-icon-btn resume-email-send-btn" href="mailto:chenjinghao@mail.ustc.edu.cn" aria-label="Send email to academic address" title="Send email">
+                        <i class="fas fa-paper-plane" aria-hidden="true"></i>
+                      </a>
+                    </span>
+                  </div>
+
+                  <div class="resume-email-row">
+                    <span class="resume-email-label">Personal</span>
+                    <a class="resume-email-address" href="mailto:stardust.math26@gmail.com">stardust.math26@gmail.com</a>
+                    <span class="resume-email-note"></span>
+                    <span class="resume-email-actions" aria-label="Personal email actions">
+                      <button class="resume-email-icon-btn resume-email-copy-btn" type="button" data-copy-email="stardust.math26@gmail.com" aria-label="Copy personal email address" title="Copy">
+                        <i class="fas fa-copy" aria-hidden="true"></i>
+                      </button>
+                      <a class="resume-email-icon-btn resume-email-send-btn" href="mailto:stardust.math26@gmail.com" aria-label="Send email to personal address" title="Send email">
+                        <i class="fas fa-paper-plane" aria-hidden="true"></i>
+                      </a>
+                    </span>
+                  </div>
+
+                  <div class="resume-email-row">
+                    <span class="resume-email-label">Temporary</span>
+                    <a class="resume-email-address" href="mailto:jinghao-chen@u.nus.edu">jinghao-chen@u.nus.edu</a>
+                    <span class="resume-email-note">Valid during Aug.--Oct. 2026</span>
+                    <span class="resume-email-actions" aria-label="Temporary email actions">
+                      <button class="resume-email-icon-btn resume-email-copy-btn" type="button" data-copy-email="jinghao-chen@u.nus.edu" aria-label="Copy temporary email address" title="Copy">
+                        <i class="fas fa-copy" aria-hidden="true"></i>
+                      </button>
+                      <a class="resume-email-icon-btn resume-email-send-btn" href="mailto:jinghao-chen@u.nus.edu" aria-label="Send email to temporary address" title="Send email">
+                        <i class="fas fa-paper-plane" aria-hidden="true"></i>
+                      </a>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
+
           <p class="resume-hero-intro">
           I am an undergraduate at the University of Science and Technology of China (USTC), majoring in Mathematics with a minor in Computer Science. My primary research interests lie in operations management and operations research, with a particular focus on supply chain analytics, stochastic modeling, and game theory.
           <br><br>

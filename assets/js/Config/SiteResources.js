@@ -257,12 +257,14 @@
         domId: 'resume',
         mountId: 'mount-resume',
         styles: [
-          A + 'css/about/about.css'
+          A + 'css/about/about.css',
+          A + 'css/about/about-contact.css'
         ],
         scripts: [
           A + 'js/Content/EN/about/resume_EN.js',
           A + 'js/Content/ZH/about/resume_ZH.js',
-          A + 'js/Functions/about/AboutResumeRender.js'
+          A + 'js/Functions/about/AboutResumeRender.js',
+          A + 'js/Functions/about/AboutContact.js'
         ]
       },
 

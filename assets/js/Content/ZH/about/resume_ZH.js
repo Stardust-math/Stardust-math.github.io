@@ -14,10 +14,66 @@
         </div>
         <div class="resume-hero-body">
           <div class="resume-hero-name">陈璟皓</div>
-          <div class="resume-hero-chips">
-            <span class="contact-pill"><strong>邮箱 1: </strong><a href="mailto:chenjinghao@mail.ustc.edu.cn">chenjinghao@mail.ustc.edu.cn</a></span>
-            <span class="contact-pill"><strong>邮箱 2: </strong><a href="mailto:stardust.math26@gmail.com">stardust.math26@gmail.com</a></span>
+
+          <div class="resume-email-block">
+            <div class="resume-email-toggle-line">
+              <span class="resume-email-title resume-email-title-icon" aria-label="邮箱" title="邮箱">
+                <i class="fas fa-envelope" aria-hidden="true"></i>
+              </span>
+              <button class="expander resume-email-expander" type="button" data-expand-target="exp-hero-email-zh" data-expand-key="hero-email" aria-expanded="false" aria-label="展开邮箱地址">
+                <i class="fas fa-chevron-right"></i>
+              </button>
+            </div>
+
+            <div class="expand-row resume-email-expand" id="exp-hero-email-zh" aria-hidden="true" style="display:none;">
+              <div class="expand-content resume-email-content">
+                <div class="resume-email-list">
+                  <div class="resume-email-row">
+                    <span class="resume-email-label">学术邮箱</span>
+                    <a class="resume-email-address" href="mailto:chenjinghao@mail.ustc.edu.cn">chenjinghao@mail.ustc.edu.cn</a>
+                    <span class="resume-email-note"></span>
+                    <span class="resume-email-actions" aria-label="学术邮箱操作">
+                      <button class="resume-email-icon-btn resume-email-copy-btn" type="button" data-copy-email="chenjinghao@mail.ustc.edu.cn" aria-label="复制学术邮箱地址" title="复制">
+                        <i class="fas fa-copy" aria-hidden="true"></i>
+                      </button>
+                      <a class="resume-email-icon-btn resume-email-send-btn" href="mailto:chenjinghao@mail.ustc.edu.cn" aria-label="发送邮件到学术邮箱" title="发送邮件">
+                        <i class="fas fa-paper-plane" aria-hidden="true"></i>
+                      </a>
+                    </span>
+                  </div>
+
+                  <div class="resume-email-row">
+                    <span class="resume-email-label">个人邮箱</span>
+                    <a class="resume-email-address" href="mailto:stardust.math26@gmail.com">stardust.math26@gmail.com</a>
+                    <span class="resume-email-note"></span>
+                    <span class="resume-email-actions" aria-label="个人邮箱操作">
+                      <button class="resume-email-icon-btn resume-email-copy-btn" type="button" data-copy-email="stardust.math26@gmail.com" aria-label="复制个人邮箱地址" title="复制">
+                        <i class="fas fa-copy" aria-hidden="true"></i>
+                      </button>
+                      <a class="resume-email-icon-btn resume-email-send-btn" href="mailto:stardust.math26@gmail.com" aria-label="发送邮件到个人邮箱" title="发送邮件">
+                        <i class="fas fa-paper-plane" aria-hidden="true"></i>
+                      </a>
+                    </span>
+                  </div>
+
+                  <div class="resume-email-row">
+                    <span class="resume-email-label">临时邮箱</span>
+                    <a class="resume-email-address" href="mailto:jinghao-chen@u.nus.edu">jinghao-chen@u.nus.edu</a>
+                    <span class="resume-email-note">有效期：2026年8月--10月</span>
+                    <span class="resume-email-actions" aria-label="临时邮箱操作">
+                      <button class="resume-email-icon-btn resume-email-copy-btn" type="button" data-copy-email="jinghao-chen@u.nus.edu" aria-label="复制临时邮箱地址" title="复制">
+                        <i class="fas fa-copy" aria-hidden="true"></i>
+                      </button>
+                      <a class="resume-email-icon-btn resume-email-send-btn" href="mailto:jinghao-chen@u.nus.edu" aria-label="发送邮件到临时邮箱" title="发送邮件">
+                        <i class="fas fa-paper-plane" aria-hidden="true"></i>
+                      </a>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
+
           <p class="resume-hero-intro">
           我是中国科学技术大学 (USTC) 数学专业本科生, 辅修计算机科学. 我主要研究运营管理与运筹学方向, 尤其关注供应链分析、随机建模与博弈论.
           <br><br>
