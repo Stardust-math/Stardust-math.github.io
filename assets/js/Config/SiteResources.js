@@ -23,6 +23,7 @@
     2. Detail files are loaded on demand when a visitor opens a specific moment.
   */
   const ACTIVITY_MOMENT_DATES = [
+    '2026_05_16',
     '2026_03_20',
     '2026_03_09',
     '2026_02_17',

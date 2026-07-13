@@ -14,6 +14,15 @@
 
     items: [
       {
+        dateKey: '2026_05_16',
+        dateISO: '2026-05-16',
+        dateLabel: '2026.05.16',
+        title: '科技活动周志愿服务',
+        location: '中国科学技术大学·西区',
+        cover: './assets/images/life/activities_moments/2026_05_16/cover.jpg',
+        summary: ''
+      },
+      {
         dateKey: '2026_03_20',
         dateISO: '2026-03-20',
         dateLabel: '2026.03.20',

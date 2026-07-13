@@ -14,6 +14,15 @@
 
     items: [
       {
+        dateKey: '2026_05_16',
+        dateISO: '2026-05-16',
+        dateLabel: '2026.05.16',
+        title: 'Volunteer Service for Science and Technology Week',
+        location: 'West Campus, University of Science and Technology of China',
+        cover: './assets/images/life/activities_moments/2026_05_16/cover.jpg',
+        summary: ''
+      },
+      {
         dateKey: '2026_03_20',
         dateISO: '2026-03-20',
         dateLabel: '2026.03.20',
