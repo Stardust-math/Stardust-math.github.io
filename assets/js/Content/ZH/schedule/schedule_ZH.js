@@ -296,6 +296,7 @@
     "West Campus Electrical Building (1F) Computer Lab (Hall 1)": "西区电一楼机房1厅",
     "West Campus Electrical Building (3F) 406, 408": "西区电三楼406、408",
     "West Campus Electrical Building (3F) 406": "西区电三楼406",
+    "The Artificial Intelligence Laboratory (Room 103) of the First Building of the High-tech Zone (Science and Technology)": "高新区学科一号楼人工智能实验室(103)",
   };
 
   // ====== Course Type (manual; defined in schedule_EN.js) ======

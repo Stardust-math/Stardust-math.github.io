@@ -3880,17 +3880,6 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                       <div class="time-info start-info">9:45</div>
                       <div class="time-info end-info">11:20</div>
                       <div class="course-container">
-                        <div class="course-number">EE3004.01 [1]</div>
-                        <div class="course-name">Practice of Artificial Intelligence</div>
-                        <div class="instructor">Li Gu</div>
-                        <div class="location">GT-A405</div>
-                        <div class="weeks">2-11 week(s)</div>
-                      </div>
-                    </td>
-                    <td class="has-class event-cell" rowspan="2">
-                      <div class="time-info start-info">9:45</div>
-                      <div class="time-info end-info">11:20</div>
-                      <div class="course-container">
                         <div class="course-number">MATH1006.10 [6]</div>
                         <div class="course-name">Mathematical Analysis B1</div>
                         <div class="instructor">Mingmin Zhang</div>
@@ -3900,9 +3889,11 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                     </td>
                     <td></td>
                     <td></td>
+                    <td></td>
                   </tr>
                   <tr>
                     <td class="period-number">4</td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -3922,14 +3913,14 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                   <tr>
                     <td rowspan="5" class="period-header">Afternoon</td>
                     <td class="period-number">6</td>
-                    <td class="has-class event-cell" rowspan="2">
+                    <td class="has-class event-cell" rowspan="4">
                       <div class="time-info start-info">14:00</div>
-                      <div class="time-info end-info">15:35</div>
+                      <div class="time-info end-info">17:30</div>
                       <div class="course-container">
                         <div class="course-number">EE3004.01 [1]</div>
                         <div class="course-name">Practice of Artificial Intelligence</div>
                         <div class="instructor">Li Gu</div>
-                        <div class="location">GT-A405</div>
+                        <div class="location">The Artificial Intelligence Laboratory (Room 103) of the First Building of the High-tech Zone (Science and Technology)</div>
                         <div class="weeks">2-11 week(s)</div>
                       </div>
                     </td>
@@ -3951,7 +3942,6 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                   </tr>
                   <tr>
                     <td class="period-number">8</td>
-                    <td></td>
                     <td class="has-class event-cell" rowspan="2">
                       <div class="time-info start-info">15:55</div>
                       <div class="time-info end-info">17:30</div>
@@ -3981,7 +3971,6 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                   </tr>
                   <tr>
                     <td class="period-number">9</td>
-                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -4058,7 +4047,7 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                     <td>EE3004.01</td>
                     <td>Practice of Artificial Intelligence</td>
                     <td>Li Gu.</td>
-                    <td>1(6-7), 2-11 week(s);<br> 4(3-4), 2-11 week(s).</td>
+                    <td>1(6-9), 2-11 week(s).</td>
                     <td>1</td>
                   </tr>
                   <tr>
