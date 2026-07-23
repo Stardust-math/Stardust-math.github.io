@@ -3876,6 +3876,7 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                         <div class="weeks">2-18 week(s)</div>
                       </div>
                     </td>
+                    <td></td>
                     <td class="has-class event-cell" rowspan="2">
                       <div class="time-info start-info">9:45</div>
                       <div class="time-info end-info">11:20</div>
@@ -3887,7 +3888,6 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                         <div class="weeks">2-18 week(s)</div>
                       </div>
                     </td>
-                    <td></td>
                     <td></td>
                     <td></td>
                   </tr>
