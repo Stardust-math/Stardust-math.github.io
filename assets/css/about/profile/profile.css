@@ -1,11 +1,10 @@
 /* =========================================================
-   About / Resume Page
-   - Resume heading
-   - Resume avatar and hero layout
-   - Resume text links
+   About / Profile Page
+   - Profile avatar and hero layout
+   - Profile text links
    - Award text links
    - Project action groups
-   - Resume layout utilities
+   - Profile layout utilities
    ========================================================= */
 
 .resume-heading {
@@ -21,7 +20,7 @@
   color: var(--muted);
 }
 
-/* Resume hero */
+/* Profile hero */
 .section.resume-hero {
   display: flex;
   align-items: stretch;
@@ -69,7 +68,7 @@
   line-height: 1.55;
 }
 
-/* Resume layout utilities */
+/* Profile layout utilities */
 .resume-degree-line {
   display: flex;
   justify-content: space-between;
@@ -89,19 +88,19 @@
   margin-left: 20px;
 }
 
-#resume table {
+#profile table {
   width: 100%;
 }
 
-#resume img {
+#profile img {
   max-width: 100%;
 }
 
-/* Resume and award text links */
-#resume .resume-link,
-#resume .resume-link:visited,
-#resume .award-link,
-#resume .award-link:visited {
+/* Profile and award text links */
+#profile .resume-link,
+#profile .resume-link:visited,
+#profile .award-link,
+#profile .award-link:visited {
   color: inherit;
   text-decoration: none;
   text-underline-offset: 3px;
@@ -109,10 +108,10 @@
   cursor: pointer;
 }
 
-#resume .resume-link:hover,
-#resume .resume-link:focus-visible,
-#resume .award-link:hover,
-#resume .award-link:focus-visible {
+#profile .resume-link:hover,
+#profile .resume-link:focus-visible,
+#profile .award-link:hover,
+#profile .award-link:focus-visible {
   color: inherit;
   text-decoration: underline;
   text-decoration-color: currentColor;

@@ -30,59 +30,32 @@
   }
 
   function normalizeLang(lang) {
-    return String(lang || '').toLowerCase() === 'zh'
-      ? 'zh'
-      : 'en';
+    const value = String(lang || '').toLowerCase();
+
+    return (
+      value === 'zh' ||
+      value.startsWith('zh-')
+    ) ? 'zh' : 'en';
   }
 
   function getTemplate(lang) {
     const normalized = normalizeLang(lang);
 
     if (normalized === 'zh') {
-      if (
-        typeof window.PROFILE_ZH_INNER_HTML ===
-          'string' &&
+      return (
+        typeof window.PROFILE_ZH_INNER_HTML === 'string' &&
         window.PROFILE_ZH_INNER_HTML.trim()
-      ) {
-        return window.PROFILE_ZH_INNER_HTML;
-      }
-
-      /*
-        仅用于迁移期间兼容。
-        两个内容文件完成变量改名后不会进入这里。
-      */
-      if (
-        typeof window.RESUME_ZH_INNER_HTML ===
-          'string' &&
-        window.RESUME_ZH_INNER_HTML.trim()
-      ) {
-        return window.RESUME_ZH_INNER_HTML;
-      }
-
-      return '';
+      )
+        ? window.PROFILE_ZH_INNER_HTML
+        : '';
     }
 
-    if (
-      typeof window.PROFILE_EN_INNER_HTML ===
-        'string' &&
+    return (
+      typeof window.PROFILE_EN_INNER_HTML === 'string' &&
       window.PROFILE_EN_INNER_HTML.trim()
-    ) {
-      return window.PROFILE_EN_INNER_HTML;
-    }
-
-    /*
-      仅用于迁移期间兼容。
-      两个内容文件完成变量改名后不会进入这里。
-    */
-    if (
-      typeof window.RESUME_EN_INNER_HTML ===
-        'string' &&
-      window.RESUME_EN_INNER_HTML.trim()
-    ) {
-      return window.RESUME_EN_INNER_HTML;
-    }
-
-    return '';
+    )
+      ? window.PROFILE_EN_INNER_HTML
+      : '';
   }
 
   function getMount() {
@@ -733,6 +706,14 @@
   }
 
   function handleLanguageChange(event) {
+    if (
+      event &&
+      event.detail &&
+      event.detail.scheduleExportOnly === true
+    ) {
+      return;
+    }
+
     const lang = normalizeLang(
       event && event.detail
         ? event.detail.lang
@@ -746,14 +727,17 @@
         ? event.detail.openKeys
         : null;
 
-    if (
-      !document.getElementById('about')
-    ) {
+    const about = document.getElementById('about');
+
+    if (!about) {
       pendingLang = lang;
       return;
     }
 
-    if (!isProfileActive()) {
+    if (
+      !about.classList.contains('visible') ||
+      !isProfileActive()
+    ) {
       pendingLang = lang;
       return;
     }
@@ -777,9 +761,9 @@
   window.ProfileRender = api;
 
   /*
-    Bootstrap.js 目前仍通过 AboutResumeRender
-    调用非阻塞头像预热。保留兼容别名可以避免修改
-    与本次模块拆分无关的 Bootstrap 主体。
+    Bootstrap.js currently uses AboutResumeRender as its
+    stable non-blocking image warm-up hook. Both names point
+    to the same implementation; no duplicate renderer exists.
   */
   window.AboutResumeRender = api;
 

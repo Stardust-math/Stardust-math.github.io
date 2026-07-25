@@ -30,7 +30,10 @@
       localStorage.removeItem(STORAGE_KEY);
     } catch (e) {}
 
-    document.documentElement.setAttribute("lang", l === LANG.ZH ? "zh-CN" : "en");
+    document.documentElement.setAttribute(
+      "lang",
+      l === LANG.ZH ? "zh-CN" : "en"
+    );
 
     if (document.body && document.body.dataset) {
       document.body.dataset.lang = l;
@@ -102,10 +105,6 @@
     return (dict && dict[key]) || (scoped.en && scoped.en[key]) || key;
   };
 
-  // ------------------------------
-  // Existing Translate.js behavior
-  // ------------------------------
-  let resumeEnInnerHTML = null;
   let meditationsEnInnerHTML = null;
 
   function ensureLangButtonMarkup(btn) {
@@ -124,6 +123,7 @@
           <span class="lang-token lang-right">ZH</span>
         </span>
       `;
+
       wrap = btn.querySelector(".top-nav-lang");
       left = wrap.querySelector(".lang-left");
       right = wrap.querySelector(".lang-right");
@@ -136,6 +136,7 @@
   function updateLangButton(lang) {
     const btn = document.getElementById("top-lang-btn");
     const parts = ensureLangButtonMarkup(btn);
+
     if (!btn || !parts) return;
 
     if (lang === LANG.ZH) {
@@ -151,19 +152,13 @@
     }
   }
 
-  function captureResumeEnglishTemplate() {
-    const resume = document.getElementById("resume");
-    if (!resume) return;
-    if (resumeEnInnerHTML == null) {
-      resumeEnInnerHTML = resume.innerHTML;
-    }
-  }
-
   function captureMeditationsEnglishTemplate() {
-    const m = document.getElementById("meditations");
-    if (!m) return;
+    const meditations = document.getElementById("meditations");
+
+    if (!meditations) return;
+
     if (meditationsEnInnerHTML == null) {
-      meditationsEnInnerHTML = m.innerHTML;
+      meditationsEnInnerHTML = meditations.innerHTML;
     }
   }
 
@@ -171,7 +166,10 @@
   // Stable asset root resolver
   // ------------------------------
   function getStableSiteRoot() {
-    if (typeof window.__SITE_ROOT__ === "string" && window.__SITE_ROOT__.trim()) {
+    if (
+      typeof window.__SITE_ROOT__ === "string" &&
+      window.__SITE_ROOT__.trim()
+    ) {
       return window.__SITE_ROOT__;
     }
 
@@ -197,9 +195,9 @@
     if (currentScriptRoot) return currentScriptRoot;
 
     const scripts = Array.from(document.scripts || []);
-    const matchedScript = scripts.find((s) => {
-      return typeof s.src === "string" &&
-        /\/assets\/js\/Functions\/(?:general\/)?Translate\.js(?:\?|#|$)/.test(s.src);
+    const matchedScript = scripts.find((script) => {
+      return typeof script.src === "string" &&
+        /\/assets\/js\/Functions\/(?:general\/)?Translate\.js(?:\?|#|$)/.test(script.src);
     });
 
     const matchedScriptRoot = matchedScript && matchedScript.src
@@ -215,6 +213,7 @@
     if (anyAssetEl) {
       const url = anyAssetEl.src || anyAssetEl.href;
       const assetRoot = rootFromAssetUrl(url);
+
       if (assetRoot) return assetRoot;
     }
 
@@ -243,77 +242,62 @@
       .replace(/(url\(\s*["']?)assets\//gi, `$1${assetBase}`);
   }
 
-  function applyResumeLanguage(lang) {
-    const resume = document.getElementById("resume");
-    if (!resume) return;
-
-    captureResumeEnglishTemplate();
-
-    const currentRenderedLang = resume.dataset.renderedLang || LANG.EN;
-
-    if (lang === LANG.ZH) {
-      if (typeof window.RESUME_ZH_INNER_HTML === "string" && window.RESUME_ZH_INNER_HTML.trim()) {
-        const nextHTML = absolutizeAssetPaths(window.RESUME_ZH_INNER_HTML);
-
-        if (currentRenderedLang !== LANG.ZH || resume.innerHTML !== nextHTML) {
-          resume.innerHTML = nextHTML;
-        }
-
-        resume.dataset.renderedLang = LANG.ZH;
-      }
-
-      return;
-    }
-
-    if (currentRenderedLang === LANG.ZH && typeof resumeEnInnerHTML === "string") {
-      const nextHTML = absolutizeAssetPaths(resumeEnInnerHTML);
-
-      if (resume.innerHTML !== nextHTML) {
-        resume.innerHTML = nextHTML;
-      }
-    }
-
-    resume.dataset.renderedLang = LANG.EN;
-  }
-
   function applyMeditationsLanguage(lang) {
-    const m = document.getElementById("meditations");
-    if (!m) return;
+    const meditations = document.getElementById("meditations");
+
+    if (!meditations) return;
 
     captureMeditationsEnglishTemplate();
 
-    const currentRenderedLang = m.dataset.renderedLang || LANG.EN;
+    const currentRenderedLang =
+      meditations.dataset.renderedLang || LANG.EN;
 
     if (lang === LANG.ZH) {
-      if (typeof window.MEDITATIONS_ZH_INNER_HTML === "string" && window.MEDITATIONS_ZH_INNER_HTML.trim()) {
-        const nextHTML = absolutizeAssetPaths(window.MEDITATIONS_ZH_INNER_HTML);
+      if (
+        typeof window.MEDITATIONS_ZH_INNER_HTML === "string" &&
+        window.MEDITATIONS_ZH_INNER_HTML.trim()
+      ) {
+        const nextHTML = absolutizeAssetPaths(
+          window.MEDITATIONS_ZH_INNER_HTML
+        );
 
-        if (currentRenderedLang !== LANG.ZH || m.innerHTML !== nextHTML) {
-          m.innerHTML = nextHTML;
+        if (
+          currentRenderedLang !== LANG.ZH ||
+          meditations.innerHTML !== nextHTML
+        ) {
+          meditations.innerHTML = nextHTML;
         }
 
-        m.dataset.renderedLang = LANG.ZH;
+        meditations.dataset.renderedLang = LANG.ZH;
       }
 
       return;
     }
 
-    if (currentRenderedLang === LANG.ZH && typeof meditationsEnInnerHTML === "string") {
-      const nextHTML = absolutizeAssetPaths(meditationsEnInnerHTML);
+    if (
+      currentRenderedLang === LANG.ZH &&
+      typeof meditationsEnInnerHTML === "string"
+    ) {
+      const nextHTML = absolutizeAssetPaths(
+        meditationsEnInnerHTML
+      );
 
-      if (m.innerHTML !== nextHTML) {
-        m.innerHTML = nextHTML;
+      if (meditations.innerHTML !== nextHTML) {
+        meditations.innerHTML = nextHTML;
       }
     }
 
-    m.dataset.renderedLang = LANG.EN;
+    meditations.dataset.renderedLang = LANG.EN;
   }
 
   /* ------------------------------
    * Toolkit I18N
    * ------------------------------ */
   function getToolkitEnDict() {
-    if (window.TOOLKIT_EN_I18N && typeof window.TOOLKIT_EN_I18N === "object") {
+    if (
+      window.TOOLKIT_EN_I18N &&
+      typeof window.TOOLKIT_EN_I18N === "object"
+    ) {
       return window.TOOLKIT_EN_I18N;
     }
 
@@ -326,7 +310,11 @@
   }
 
   function getToolkitDict(lang) {
-    if (lang === LANG.ZH && window.TOOLKIT_ZH_I18N && typeof window.TOOLKIT_ZH_I18N === "object") {
+    if (
+      lang === LANG.ZH &&
+      window.TOOLKIT_ZH_I18N &&
+      typeof window.TOOLKIT_ZH_I18N === "object"
+    ) {
       return window.TOOLKIT_ZH_I18N;
     }
 
@@ -335,23 +323,36 @@
 
   function applyToolkitI18N(lang) {
     const toolkit = document.getElementById("toolkit");
+
     if (!toolkit) return;
 
     const dict = getToolkitDict(lang);
 
-    toolkit.querySelectorAll("[data-i18n]").forEach((el) => {
-      const key = el.getAttribute("data-i18n");
+    toolkit.querySelectorAll("[data-i18n]").forEach((element) => {
+      const key = element.getAttribute("data-i18n");
+
       if (!key) return;
-      const val = dict[key];
-      if (typeof val === "string") el.textContent = val;
+
+      const value = dict[key];
+
+      if (typeof value === "string") {
+        element.textContent = value;
+      }
     });
 
-    toolkit.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
-      const key = el.getAttribute("data-i18n-placeholder");
-      if (!key) return;
-      const val = dict[key];
-      if (typeof val === "string") el.setAttribute("placeholder", val);
-    });
+    toolkit
+      .querySelectorAll("[data-i18n-placeholder]")
+      .forEach((element) => {
+        const key = element.getAttribute("data-i18n-placeholder");
+
+        if (!key) return;
+
+        const value = dict[key];
+
+        if (typeof value === "string") {
+          element.setAttribute("placeholder", value);
+        }
+      });
   }
 
   /* ------------------------------
@@ -361,24 +362,40 @@
     const zh = window.SOCIAL_ZH_I18N;
     const en = window.SOCIAL_EN_I18N;
 
-    if (lang === LANG.ZH && zh && typeof zh === "object") return zh;
-    if (en && typeof en === "object") return en;
+    if (
+      lang === LANG.ZH &&
+      zh &&
+      typeof zh === "object"
+    ) {
+      return zh;
+    }
+
+    if (en && typeof en === "object") {
+      return en;
+    }
 
     return null;
   }
 
   function applySocialI18N(lang) {
     const social = document.getElementById("social");
+
     if (!social) return;
 
     const dict = getSocialDict(lang);
+
     if (!dict) return;
 
-    social.querySelectorAll("[data-i18n]").forEach((el) => {
-      const key = el.getAttribute("data-i18n");
+    social.querySelectorAll("[data-i18n]").forEach((element) => {
+      const key = element.getAttribute("data-i18n");
+
       if (!key) return;
-      const val = dict[key];
-      if (typeof val === "string") el.textContent = val;
+
+      const value = dict[key];
+
+      if (typeof value === "string") {
+        element.textContent = value;
+      }
     });
   }
 
@@ -387,47 +404,80 @@
    * ------------------------------ */
   function applyTopNavI18N(lang) {
     const nav = document.getElementById("top-nav");
+
     if (!nav) return;
 
     const l = normalizeLang(lang);
     const labels = (l === LANG.ZH)
-      ? { resume: "关于", schedule: "日程", social: "社交", toolkit: "工具", life: "人生" }
-      : { resume: "About", schedule: "Schedule", social: "Social", toolkit: "Toolkit", life: "Life" };
+      ? {
+        resume: "关于",
+        schedule: "日程",
+        social: "社交",
+        toolkit: "工具",
+        life: "人生"
+      }
+      : {
+        resume: "About",
+        schedule: "Schedule",
+        social: "Social",
+        toolkit: "Toolkit",
+        life: "Life"
+      };
 
-    nav.querySelectorAll(".top-nav-link[data-page]").forEach((btn) => {
-      const page = btn.getAttribute("data-page");
-      if (!page) return;
+    nav
+      .querySelectorAll(".top-nav-link[data-page]")
+      .forEach((button) => {
+        const page = button.getAttribute("data-page");
 
-      const text = labels[page];
-      if (typeof text === "string") btn.textContent = text;
-    });
+        if (!page) return;
+
+        const text = labels[page];
+
+        if (typeof text === "string") {
+          button.textContent = text;
+        }
+      });
   }
 
   function getFallbackOpenKeys(scope) {
     try {
       const root = scope || document;
-      const btns = Array.prototype.slice.call(
-        root.querySelectorAll('button.expander[aria-expanded="true"]')
+      const buttons = Array.prototype.slice.call(
+        root.querySelectorAll(
+          'button.expander[aria-expanded="true"]'
+        )
       );
 
-      return btns.map(function (btn) {
-        const k = btn.getAttribute("data-expand-key");
-        if (k && String(k).trim()) return String(k).trim();
+      return buttons
+        .map((button) => {
+          const key = button.getAttribute("data-expand-key");
 
-        const t = btn.getAttribute("data-expand-target");
-        if (t && String(t).trim()) return String(t).trim();
+          if (key && String(key).trim()) {
+            return String(key).trim();
+          }
 
-        return null;
-      }).filter(Boolean);
+          const target = button.getAttribute("data-expand-target");
+
+          if (target && String(target).trim()) {
+            return String(target).trim();
+          }
+
+          return null;
+        })
+        .filter(Boolean);
     } catch (e) {
       return [];
     }
   }
 
-  function getResumeOpenKeys() {
+  function getOpenKeys() {
     try {
       const api = window.ResumeExpanders;
-      if (api && typeof api.getOpenKeys === "function") {
+
+      if (
+        api &&
+        typeof api.getOpenKeys === "function"
+      ) {
         return api.getOpenKeys(document);
       }
     } catch (e) {}
@@ -435,149 +485,134 @@
     return getFallbackOpenKeys(document);
   }
 
-  function restoreResumeOpenKeys(keys) {
-    try {
-      const api = window.ResumeExpanders;
-      const resume = document.getElementById("resume");
-
-      if (api && typeof api.init === "function") {
-        api.init(resume || document, { openKeys: Array.isArray(keys) ? keys : [] });
-      }
-    } catch (e) {}
-  }
-
   function restoreMeditationsOpenKeys(keys) {
     try {
       const api = window.ResumeExpanders;
-      const m = document.getElementById("meditations");
+      const meditations = document.getElementById("meditations");
 
-      if (api && typeof api.init === "function") {
-        api.init(m || document, { openKeys: Array.isArray(keys) ? keys : [], skipSave: true });
+      if (
+        api &&
+        typeof api.init === "function"
+      ) {
+        api.init(meditations || document, {
+          openKeys: Array.isArray(keys) ? keys : [],
+          skipSave: true
+        });
       }
     } catch (e) {}
   }
 
-  function isActuallyVisible(el) {
-    if (!el) return false;
+  function isActuallyVisible(element) {
+    if (!element) return false;
 
     try {
-      return !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
+      return !!(
+        element.offsetWidth ||
+        element.offsetHeight ||
+        element.getClientRects().length
+      );
     } catch (e) {
       return false;
     }
   }
 
   function dispatchSiteLangChange(lang, openKeys) {
+    const detail = {
+      lang,
+      openKeys: Array.isArray(openKeys) ? openKeys : []
+    };
+
     try {
-      window.dispatchEvent(new CustomEvent("site:langchange", {
-        detail: {
-          lang: lang,
-          openKeys: Array.isArray(openKeys) ? openKeys : []
-        }
-      }));
+      window.dispatchEvent(
+        new CustomEvent("site:langchange", {
+          detail
+        })
+      );
     } catch (e) {
       try {
-        const evt = document.createEvent("CustomEvent");
-        evt.initCustomEvent("site:langchange", false, false, {
-          lang: lang,
-          openKeys: Array.isArray(openKeys) ? openKeys : []
-        });
-        window.dispatchEvent(evt);
-      } catch (err) {}
+        const event = document.createEvent("CustomEvent");
+
+        event.initCustomEvent(
+          "site:langchange",
+          false,
+          false,
+          detail
+        );
+
+        window.dispatchEvent(event);
+      } catch (error) {}
     }
-  }
-
-  function smoothSwapResume(lang, openKeys) {
-    const resume = document.getElementById("resume");
-
-    if (!resume) {
-      applyResumeLanguage(lang);
-      return;
-    }
-
-    const prevH = resume.getBoundingClientRect().height;
-    if (prevH > 0) resume.style.minHeight = prevH + "px";
-
-    resume.style.transition = "opacity 120ms ease";
-    resume.style.opacity = "0";
-
-    requestAnimationFrame(() => {
-      applyResumeLanguage(lang);
-      restoreResumeOpenKeys(openKeys);
-
-      if (window.CustomCursorAPI && typeof window.CustomCursorAPI.refresh === "function") {
-        window.CustomCursorAPI.refresh(resume);
-      }
-
-      requestAnimationFrame(() => {
-        resume.style.opacity = "1";
-
-        const cleanup = () => {
-          resume.style.minHeight = "";
-          resume.removeEventListener("transitionend", cleanup);
-        };
-
-        resume.addEventListener("transitionend", cleanup);
-        setTimeout(cleanup, 250);
-      });
-    });
   }
 
   function smoothSwapMeditations(lang, openKeys) {
-    const m = document.getElementById("meditations");
+    const meditations = document.getElementById("meditations");
 
-    if (!m) {
+    if (!meditations) {
       applyMeditationsLanguage(lang);
       return;
     }
 
-    const prevH = m.getBoundingClientRect().height;
-    if (prevH > 0) m.style.minHeight = prevH + "px";
+    const previousHeight =
+      meditations.getBoundingClientRect().height;
 
-    m.style.transition = "opacity 120ms ease";
-    m.style.opacity = "0";
+    if (previousHeight > 0) {
+      meditations.style.minHeight = `${previousHeight}px`;
+    }
+
+    meditations.style.transition = "opacity 120ms ease";
+    meditations.style.opacity = "0";
 
     requestAnimationFrame(() => {
       applyMeditationsLanguage(lang);
       restoreMeditationsOpenKeys(openKeys);
 
-      if (window.CustomCursorAPI && typeof window.CustomCursorAPI.refresh === "function") {
-        window.CustomCursorAPI.refresh(m);
+      if (
+        window.CustomCursorAPI &&
+        typeof window.CustomCursorAPI.refresh === "function"
+      ) {
+        window.CustomCursorAPI.refresh(meditations);
       }
 
       requestAnimationFrame(() => {
-        m.style.opacity = "1";
+        meditations.style.opacity = "1";
 
         const cleanup = () => {
-          m.style.minHeight = "";
-          m.removeEventListener("transitionend", cleanup);
+          meditations.style.minHeight = "";
+          meditations.removeEventListener(
+            "transitionend",
+            cleanup
+          );
         };
 
-        m.addEventListener("transitionend", cleanup);
-        setTimeout(cleanup, 250);
+        meditations.addEventListener(
+          "transitionend",
+          cleanup
+        );
+
+        window.setTimeout(cleanup, 250);
       });
     });
   }
 
   function applyLanguage(lang, options) {
     const opts = options || {};
-    const shouldEmitLangChange = opts.emitLangChange === true;
-    const shouldSmoothSwap = shouldEmitLangChange === true;
+    const shouldEmitLangChange =
+      opts.emitLangChange === true;
 
     const l = setLang(lang);
     updateLangButton(l);
 
-    const openKeys = shouldEmitLangChange ? getResumeOpenKeys() : [];
-
-    const resume = document.getElementById("resume");
-    if (shouldSmoothSwap && resume && isActuallyVisible(resume)) {
-      smoothSwapResume(l, openKeys);
-    } else {
-      applyResumeLanguage(l);
-    }
+    const openKeys = shouldEmitLangChange
+      ? getOpenKeys()
+      : [];
 
     const meditations = document.getElementById("meditations");
-    if (shouldSmoothSwap && meditations && isActuallyVisible(meditations)) {
+
+    if (
+      shouldEmitLangChange &&
+      meditations &&
+      isActuallyVisible(meditations)
+    ) {
       smoothSwapMeditations(l, openKeys);
     } else {
       applyMeditationsLanguage(l);
@@ -595,14 +630,19 @@
   window.SiteLang.applyLanguage = applyLanguage;
 
   function bindLangToggle() {
-    const btn = document.getElementById("top-lang-btn");
-    if (!btn || btn.dataset.bound === "1") return;
+    const button = document.getElementById("top-lang-btn");
 
-    btn.dataset.bound = "1";
+    if (!button || button.dataset.bound === "1") {
+      return;
+    }
 
-    btn.addEventListener("click", function () {
-      const cur = getLang();
-      const next = (cur === LANG.EN) ? LANG.ZH : LANG.EN;
+    button.dataset.bound = "1";
+
+    button.addEventListener("click", () => {
+      const current = getLang();
+      const next = current === LANG.EN
+        ? LANG.ZH
+        : LANG.EN;
 
       applyLanguage(next, {
         emitLangChange: true
@@ -618,21 +658,38 @@
     bindLangToggle();
 
     let retry = 0;
-    const timer = setInterval(() => {
+
+    const timer = window.setInterval(() => {
       bindLangToggle();
       updateLangButton(getLang());
       retry += 1;
 
-      if (document.getElementById("top-lang-btn") && retry >= 3) clearInterval(timer);
-      if (retry >= 10) clearInterval(timer);
+      if (
+        document.getElementById("top-lang-btn") &&
+        retry >= 3
+      ) {
+        window.clearInterval(timer);
+      }
+
+      if (retry >= 10) {
+        window.clearInterval(timer);
+      }
     }, 200);
 
-    window.addEventListener("site:langchange", function (e) {
-      if (e && e.detail && e.detail.scheduleExportOnly === true) {
+    window.addEventListener("site:langchange", (event) => {
+      if (
+        event &&
+        event.detail &&
+        event.detail.scheduleExportOnly === true
+      ) {
         return;
       }
 
-      const l = normalizeLang(e && e.detail ? e.detail.lang : getLang());
+      const l = normalizeLang(
+        event && event.detail
+          ? event.detail.lang
+          : getLang()
+      );
 
       applyToolkitI18N(l);
       applySocialI18N(l);
@@ -642,7 +699,10 @@
   }
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init);
+    document.addEventListener(
+      "DOMContentLoaded",
+      init
+    );
   } else {
     init();
   }
