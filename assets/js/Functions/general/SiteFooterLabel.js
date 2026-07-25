@@ -23,8 +23,14 @@
     emblemPng: './assets/images/labels/USTC.png',
     ustcHome: 'https://www.ustc.edu.cn/',
 
+    /*
+      These are DOM element IDs, not internal page keys.
+
+      The internal Bootstrap page key remains "resume",
+      but the public About page root is now #about.
+    */
     targetPageIds: [
-      'resume',
+      'about',
       'schedule',
       'social',
       'toolkit',
@@ -54,7 +60,10 @@
       return;
     }
 
-    window.setTimeout(callback, Math.min(timeout || 600, 600));
+    window.setTimeout(
+      callback,
+      Math.min(timeout || 600, 600)
+    );
   }
 
   function loadStylesheet() {
@@ -62,14 +71,23 @@
 
     stylesheetLoaded = true;
 
-    if (document.querySelector('link[data-site-footer-label-style="1"]')) {
+    if (
+      document.querySelector(
+        'link[data-site-footer-label-style="1"]'
+      )
+    ) {
       return;
     }
 
     const link = document.createElement('link');
+
     link.rel = 'stylesheet';
     link.href = CONFIG.stylesheet;
-    link.setAttribute('data-site-footer-label-style', '1');
+
+    link.setAttribute(
+      'data-site-footer-label-style',
+      '1'
+    );
 
     document.head.appendChild(link);
   }
@@ -98,7 +116,10 @@
 
   function readCachedUpdate() {
     try {
-      const raw = localStorage.getItem(CONFIG.cacheKey);
+      const raw = localStorage.getItem(
+        CONFIG.cacheKey
+      );
+
       if (!raw) return '';
 
       const cached = JSON.parse(raw);
@@ -107,7 +128,8 @@
         !cached ||
         !cached.value ||
         !cached.savedAt ||
-        Date.now() - cached.savedAt > CONFIG.cacheTTL
+        Date.now() - cached.savedAt >
+          CONFIG.cacheTTL
       ) {
         return '';
       }
@@ -120,10 +142,13 @@
 
   function writeCachedUpdate(value) {
     try {
-      localStorage.setItem(CONFIG.cacheKey, JSON.stringify({
-        value,
-        savedAt: Date.now()
-      }));
+      localStorage.setItem(
+        CONFIG.cacheKey,
+        JSON.stringify({
+          value,
+          savedAt: Date.now()
+        })
+      );
     } catch (e) {}
   }
 
@@ -138,18 +163,28 @@
       return lastUpdatedPromise;
     }
 
-    lastUpdatedPromise = fetch(CONFIG.repositoryApi, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/vnd.github+json'
+    lastUpdatedPromise = fetch(
+      CONFIG.repositoryApi,
+      {
+        method: 'GET',
+        headers: {
+          Accept: 'application/vnd.github+json'
+        }
       }
-    })
+    )
       .then((response) => {
         if (!response.ok) return '';
+
         return response.json();
       })
       .then((data) => {
-        const value = formatDate(data && (data.pushed_at || data.updated_at));
+        const value = formatDate(
+          data &&
+          (
+            data.pushed_at ||
+            data.updated_at
+          )
+        );
 
         if (value) {
           writeCachedUpdate(value);
@@ -184,20 +219,28 @@
 
   function preloadEmblem() {
     if (emblemReadySrc) {
-      return Promise.resolve(emblemReadySrc);
+      return Promise.resolve(
+        emblemReadySrc
+      );
     }
 
     if (emblemPreloadPromise) {
       return emblemPreloadPromise;
     }
 
-    emblemPreloadPromise = testEmblemImage(CONFIG.emblemSvg)
+    emblemPreloadPromise = testEmblemImage(
+      CONFIG.emblemSvg
+    )
       .then((src) => {
         if (src) return src;
-        return testEmblemImage(CONFIG.emblemPng);
+
+        return testEmblemImage(
+          CONFIG.emblemPng
+        );
       })
       .then((src) => {
         emblemReadySrc = src || '';
+
         return emblemReadySrc;
       })
       .catch(() => '');
@@ -214,35 +257,62 @@
   }
 
   function createFooter() {
-    const footer = document.createElement('footer');
-    footer.className = 'site-footer-label';
-    footer.setAttribute('aria-label', 'Site footer');
+    const footer =
+      document.createElement('footer');
+
+    footer.className =
+      'site-footer-label';
+
+    footer.setAttribute(
+      'aria-label',
+      'Site footer'
+    );
+
     footer.dataset.siteFooterLabel = '1';
 
     footer.innerHTML = [
       '<div class="site-footer-label__left">',
+
       `  <a class="site-footer-label__emblem-link is-hidden" href="${CONFIG.ustcHome}" target="_blank" rel="noopener noreferrer" aria-label="Open University of Science and Technology of China website" aria-hidden="true" tabindex="-1">`,
+
       '    <img class="site-footer-label__emblem is-hidden" alt="School emblem" decoding="async" loading="lazy" fetchpriority="low" style="width:min(86vw,420px);max-width:100%;height:auto;visibility:hidden;">',
+
       '  </a>',
+
       '</div>',
 
       '<div class="site-footer-label__center">',
+
       `  <div class="site-footer-label__copyright">${escapeText(CONFIG.copyright)}</div>`,
+
       `  <div class="site-footer-label__quote">${escapeText(CONFIG.quote)}</div>`,
+
       '  <div class="site-footer-label__updated">Last updated: <span data-site-footer-updated>Loading...</span></div>',
+
       '</div>',
 
       '<div class="site-footer-label__right">',
+
       '  <div class="site-footer-label__links" aria-label="External profile links">',
+
       `    <a class="site-footer-label__profile-link site-footer-label__github-link" href="${CONFIG.githubProfile}" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub profile">`,
+
       `      ${githubIconSvg()}`,
+
       '      <span>GitHub</span>',
+
       '    </a>',
+
       `    <a class="site-footer-label__profile-link site-footer-label__orcid-link" href="${CONFIG.orcidProfile}" target="_blank" rel="me noopener noreferrer" aria-label="Open ORCID record 0009-0009-1961-6829">`,
+
       `      <img class="site-footer-label__orcid-icon" src="${CONFIG.orcidIcon}" alt="ORCID iD icon" loading="lazy" decoding="async">`,
+
       '      <span>ORCID</span>',
+
       '    </a>',
+
       '  </div>',
+
       '</div>'
     ].join('');
 
@@ -257,23 +327,31 @@
     if (!page) return;
 
     const host = getFooterHost(page);
+
     if (!host) return;
 
-    const existing = page.querySelector('.site-footer-label');
+    const existing = page.querySelector(
+      '.site-footer-label'
+    );
 
     if (existing) {
-      if (existing.parentElement !== host) {
+      if (
+        existing.parentElement !== host
+      ) {
         host.appendChild(existing);
       }
 
       page.dataset.footerLabelReady = '1';
+
       observeFooterVisibility(existing);
+
       return;
     }
 
     loadStylesheet();
 
     const footer = createFooter();
+
     host.appendChild(footer);
 
     page.dataset.footerLabelReady = '1';
@@ -283,7 +361,8 @@
 
   function ensureAllFooters() {
     CONFIG.targetPageIds.forEach((id) => {
-      const page = document.getElementById(id);
+      const page =
+        document.getElementById(id);
 
       if (page) {
         ensureFooterForPage(page);
@@ -296,28 +375,49 @@
       window.clearTimeout(ensureTimer);
     }
 
-    ensureTimer = window.setTimeout(() => {
-      ensureTimer = 0;
+    ensureTimer = window.setTimeout(
+      () => {
+        ensureTimer = 0;
 
-      runWhenIdle(() => {
-        ensureAllFooters();
-      }, 1000);
-    }, 120);
+        runWhenIdle(() => {
+          ensureAllFooters();
+        }, 1000);
+      },
+      120
+    );
   }
 
-  function setEmblemVisible(emblem, visible) {
-    const emblemLink = emblem && emblem.closest
-      ? emblem.closest('.site-footer-label__emblem-link')
-      : null;
+  function setEmblemVisible(
+    emblem,
+    visible
+  ) {
+    const emblemLink =
+      emblem &&
+      emblem.closest
+        ? emblem.closest(
+            '.site-footer-label__emblem-link'
+          )
+        : null;
 
     if (visible) {
-      emblem.classList.remove('is-hidden');
+      emblem.classList.remove(
+        'is-hidden'
+      );
+
       emblem.style.visibility = '';
 
       if (emblemLink) {
-        emblemLink.classList.remove('is-hidden');
-        emblemLink.removeAttribute('aria-hidden');
-        emblemLink.removeAttribute('tabindex');
+        emblemLink.classList.remove(
+          'is-hidden'
+        );
+
+        emblemLink.removeAttribute(
+          'aria-hidden'
+        );
+
+        emblemLink.removeAttribute(
+          'tabindex'
+        );
       }
 
       return;
@@ -327,16 +427,31 @@
     emblem.style.visibility = 'hidden';
 
     if (emblemLink) {
-      emblemLink.classList.add('is-hidden');
-      emblemLink.setAttribute('aria-hidden', 'true');
-      emblemLink.setAttribute('tabindex', '-1');
+      emblemLink.classList.add(
+        'is-hidden'
+      );
+
+      emblemLink.setAttribute(
+        'aria-hidden',
+        'true'
+      );
+
+      emblemLink.setAttribute(
+        'tabindex',
+        '-1'
+      );
     }
   }
 
   function hydrateEmblem(footer) {
-    const emblem = footer.querySelector('.site-footer-label__emblem');
+    const emblem = footer.querySelector(
+      '.site-footer-label__emblem'
+    );
 
-    if (!emblem || emblem.dataset.emblemHydrated === '1') {
+    if (
+      !emblem ||
+      emblem.dataset.emblemHydrated === '1'
+    ) {
       return;
     }
 
@@ -344,37 +459,63 @@
 
     preloadEmblem().then((src) => {
       if (!src) {
-        setEmblemVisible(emblem, false);
+        setEmblemVisible(
+          emblem,
+          false
+        );
+
         return;
       }
 
       emblem.onload = () => {
-        setEmblemVisible(emblem, true);
+        setEmblemVisible(
+          emblem,
+          true
+        );
       };
 
       emblem.onerror = () => {
-        setEmblemVisible(emblem, false);
+        setEmblemVisible(
+          emblem,
+          false
+        );
       };
 
       emblem.src = src;
 
-      if (emblem.complete && emblem.naturalWidth > 0) {
-        setEmblemVisible(emblem, true);
+      if (
+        emblem.complete &&
+        emblem.naturalWidth > 0
+      ) {
+        setEmblemVisible(
+          emblem,
+          true
+        );
       }
     });
   }
 
   function hydrateLastUpdated(footer) {
-    const updated = footer.querySelector('[data-site-footer-updated]');
+    const updated = footer.querySelector(
+      '[data-site-footer-updated]'
+    );
+
     if (!updated) return;
 
-    fetchLastUpdated().then((dateText) => {
-      updated.textContent = dateText || 'Unavailable';
-    });
+    fetchLastUpdated().then(
+      (dateText) => {
+        updated.textContent =
+          dateText ||
+          'Unavailable';
+      }
+    );
   }
 
   function hydrateFooter(footer) {
-    if (!footer || hydratedFooters.has(footer)) {
+    if (
+      !footer ||
+      hydratedFooters.has(footer)
+    ) {
       return;
     }
 
@@ -386,32 +527,47 @@
     }, 1200);
   }
 
-  function observeFooterVisibility(footer) {
+  function observeFooterVisibility(
+    footer
+  ) {
     if (!footer) return;
 
-    if (footer.dataset.footerVisibilityObserved === '1') {
+    if (
+      footer.dataset
+        .footerVisibilityObserved === '1'
+    ) {
       return;
     }
 
-    footer.dataset.footerVisibilityObserved = '1';
+    footer.dataset
+      .footerVisibilityObserved = '1';
 
-    if (typeof IntersectionObserver !== 'function') {
+    if (
+      typeof IntersectionObserver !==
+      'function'
+    ) {
       hydrateFooter(footer);
       return;
     }
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
+    const observer =
+      new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) {
+              return;
+            }
 
-        observer.disconnect();
-        hydrateFooter(footer);
-      });
-    }, {
-      root: null,
-      rootMargin: '420px 0px',
-      threshold: 0
-    });
+            observer.disconnect();
+            hydrateFooter(footer);
+          });
+        },
+        {
+          root: null,
+          rootMargin: '420px 0px',
+          threshold: 0
+        }
+      );
 
     observer.observe(footer);
   }
@@ -419,14 +575,19 @@
   function observePageCreation() {
     if (mutationObserver) return;
 
-    mutationObserver = new MutationObserver(() => {
-      scheduleEnsureAllFooters();
-    });
+    mutationObserver =
+      new MutationObserver(() => {
+        scheduleEnsureAllFooters();
+      });
 
-    mutationObserver.observe(document.body || document.documentElement, {
-      childList: true,
-      subtree: true
-    });
+    mutationObserver.observe(
+      document.body ||
+      document.documentElement,
+      {
+        childList: true,
+        subtree: true
+      }
+    );
   }
 
   function init() {
@@ -437,7 +598,10 @@
     scheduleEnsureAllFooters();
     observePageCreation();
 
-    window.addEventListener('site:langchange', scheduleEnsureAllFooters);
+    window.addEventListener(
+      'site:langchange',
+      scheduleEnsureAllFooters
+    );
   }
 
   window.SiteFooterLabel = {
@@ -448,9 +612,16 @@
     preloadEmblem
   };
 
-  if (!window.__SiteFooterLabelPreloadOnly) {
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', init);
+  if (
+    !window.__SiteFooterLabelPreloadOnly
+  ) {
+    if (
+      document.readyState === 'loading'
+    ) {
+      document.addEventListener(
+        'DOMContentLoaded',
+        init
+      );
     } else {
       init();
     }
