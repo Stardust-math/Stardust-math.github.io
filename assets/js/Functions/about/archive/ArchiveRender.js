@@ -500,19 +500,48 @@
       >
         <div class="archive-document-row">
           <div class="archive-document-copy">
-            <div
-              class="archive-document-title"
-              data-archive-document-title
-            >${renderDocumentTitle(
-              text
-            )}</div>
+            <div class="archive-document-title-line">
+              <div
+                class="archive-document-title"
+                data-archive-document-title
+              >${renderDocumentTitle(
+                text
+              )}</div>
 
-            <div
-              class="archive-document-meta"
-              data-archive-document-meta
-            >${escapeHtml(
-              text.meta
-            )}</div>
+              <button
+                class="expander archive-document-expander${
+                  isOpen ? ' is-open' : ''
+                }"
+                type="button"
+                data-expand-target="${escapeHtml(
+                  rowId
+                )}"
+                data-expand-key="${escapeHtml(
+                  documentItem.id
+                )}"
+                data-expand-group="about-archive-documents"
+                data-expand-exclusive="${
+                  exclusive ? 'true' : 'false'
+                }"
+                aria-controls="${escapeHtml(
+                  rowId
+                )}"
+                aria-expanded="${
+                  isOpen ? 'true' : 'false'
+                }"
+                aria-label="${escapeHtml(
+                  isOpen
+                    ? ui.collapse
+                    : ui.expand
+                )}"
+                data-cursor="help"
+              >
+                <i
+                  class="fas fa-chevron-right"
+                  aria-hidden="true"
+                ></i>
+              </button>
+            </div>
 
             <div
               class="archive-document-notice"
@@ -522,39 +551,12 @@
             )}</div>
           </div>
 
-          <button
-            class="expander archive-document-expander${
-              isOpen ? ' is-open' : ''
-            }"
-            type="button"
-            data-expand-target="${escapeHtml(
-              rowId
-            )}"
-            data-expand-key="${escapeHtml(
-              documentItem.id
-            )}"
-            data-expand-group="about-archive-documents"
-            data-expand-exclusive="${
-              exclusive ? 'true' : 'false'
-            }"
-            aria-controls="${escapeHtml(
-              rowId
-            )}"
-            aria-expanded="${
-              isOpen ? 'true' : 'false'
-            }"
-            aria-label="${escapeHtml(
-              isOpen
-                ? ui.collapse
-                : ui.expand
-            )}"
-            data-cursor="help"
-          >
-            <i
-              class="fas fa-chevron-right"
-              aria-hidden="true"
-            ></i>
-          </button>
+          <div
+            class="archive-document-meta"
+            data-archive-document-meta
+          >${escapeHtml(
+            text.meta
+          )}</div>
         </div>
 
         <div

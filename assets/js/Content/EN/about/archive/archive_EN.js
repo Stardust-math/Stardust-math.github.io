@@ -20,7 +20,7 @@
           authorsSuffix: '',
           suffix: ''
         }),
-        meta: '',
+        meta: 'July 2026',
         notice:
           'Personal compilation · Unofficial material'
       })

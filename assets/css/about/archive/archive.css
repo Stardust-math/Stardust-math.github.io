@@ -60,17 +60,22 @@ body[data-lang="zh"]
 }
 
 .archive-document-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1fr) auto;
+  align-items: start;
+  column-gap: 12px;
 
   padding: 15px 2px 14px;
 }
 
 .archive-document-copy {
-  flex: 1 1 auto;
   min-width: 0;
+}
+
+.archive-document-title-line {
+  min-width: 0;
+  line-height: 1.55;
 }
 
 /* =========================================================
@@ -82,6 +87,8 @@ body[data-lang="zh"]
   inherited serif family, accent colour and bold weight.
 */
 .archive-document-title {
+  display: inline;
+
   color: var(--accent);
   font-family: inherit;
   font-size: 1.03em;
@@ -150,8 +157,13 @@ body[data-lang="zh"]
 }
 
 .archive-document-meta {
-  margin-top: 4px;
+  align-self: start;
+
+  margin-top: 0;
+
   font-style: normal;
+  text-align: right;
+  white-space: nowrap;
 }
 
 .archive-document-meta:empty {
@@ -176,75 +188,15 @@ body[data-lang="zh"]
    ========================================================= */
 
 /*
-  The visible arrow inherits its shape, gradient,
-  shadow and animation from the global .expander rules.
+  The Archive arrow now participates in the same inline
+  text flow as Profile arrows.
 
-  Archive uses a slightly larger clickable area than
-  Profile because the control sits independently at
-  the far right of a long document title.
+  Its dimensions, spacing, gradient, shadow, baseline
+  adjustment and animation all come directly from the
+  shared .expander rules.
 */
 .archive-document-expander {
-  flex: 0 0 28px;
-  align-self: center;
-
-  width: 28px;
-  height: 28px;
-
-  margin: 0;
-  padding: 0;
-
-  border: none;
-  border-radius: 0;
-  background: transparent;
-
-  /*
-    Native fallback when custom cursor files are
-    unavailable.
-  */
   cursor: help;
-
-  /*
-    The Archive row already centres the control.
-    Remove the small baseline adjustment used when
-    Profile arrows appear inline with text.
-  */
-  transform: none;
-}
-
-/*
-  Keep the visible arrow close to Profile's original
-  visual scale while enlarging only the hit area.
-*/
-.archive-document-expander::before {
-  width: 15px;
-  height: 15px;
-}
-
-/*
-  The glossy overlay must match the visible arrow,
-  not fill the complete 28px button.
-*/
-.archive-document-expander::after {
-  inset: 6.5px;
-}
-
-/*
-  Do not add a circular background.
-
-  Profile indicates interaction through the arrow's
-  movement, brightness and shadow.
-*/
-.archive-document-expander:hover,
-.archive-document-expander:focus-visible {
-  background: transparent;
-}
-
-/*
-  Keep the same restrained keyboard-focus treatment
-  as the shared Profile expander.
-*/
-.archive-document-expander:focus-visible {
-  outline: none;
 }
 
 /* =========================================================
@@ -349,12 +301,16 @@ body[data-lang="zh"]
   }
 
   .archive-document-row {
-    gap: 9px;
+    column-gap: 9px;
     padding: 14px 0 13px;
   }
 
   .archive-document-title {
     font-size: 1em;
+    line-height: 1.5;
+  }
+
+  .archive-document-title-line {
     line-height: 1.5;
   }
 
@@ -364,20 +320,6 @@ body[data-lang="zh"]
     font-size: 0.92em;
   }
 
-  /*
-    Increase only the touch target on smaller screens.
-    The visible arrow remains 15px.
-  */
-  .archive-document-expander {
-    flex-basis: 32px;
-    width: 32px;
-    height: 32px;
-  }
-
-  .archive-document-expander::after {
-    inset: 8.5px;
-  }
-
   .archive-document-content {
     --expand-max-height: 920px;
   }
@@ -385,21 +327,12 @@ body[data-lang="zh"]
 
 @media (max-width: 480px) {
   .archive-document-row {
-    gap: 7px;
+    column-gap: 7px;
   }
 
-  .archive-document-title {
+  .archive-document-title,
+  .archive-document-title-line {
     line-height: 1.48;
-  }
-
-  .archive-document-expander {
-    flex-basis: 32px;
-    width: 32px;
-    height: 32px;
-  }
-
-  .archive-document-expander::after {
-    inset: 8.5px;
   }
 
   .archive-document-content {
