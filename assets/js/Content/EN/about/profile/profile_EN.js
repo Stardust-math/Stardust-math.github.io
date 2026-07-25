@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  window.RESUME_EN_INNER_HTML = `
+  window.PROFILE_EN_INNER_HTML = `
     <button id="toggle-btn">
       <span><i class="fas fa-sun"></i></span>
     </button>

@@ -3,24 +3,30 @@
 
   const A = './assets/';
 
-  const SITE_FONT_STYLES = window.SiteFonts && Array.isArray(window.SiteFonts.externalStyles)
-    ? window.SiteFonts.externalStyles
-    : [];
+  const SITE_FONT_STYLES =
+    window.SiteFonts &&
+    Array.isArray(window.SiteFonts.externalStyles)
+      ? window.SiteFonts.externalStyles
+      : [];
 
   /*
-    Add activity dates here after creating both language detail files.
+    Add activity dates here after creating
+    both language detail files.
 
     The list/index data is stored in:
     assets/js/Content/EN/life/activities_moments_EN.js
     assets/js/Content/ZH/life/activities_moments_ZH.js
 
     The detail data is stored in:
-    assets/js/Content/EN/life/activities_moments_2026_05_12.js
-    assets/js/Content/ZH/life/activities_moments_2026_05_12.js
+    assets/js/Content/EN/life/
+      activities_moments_2026_05_12.js
+    assets/js/Content/ZH/life/
+      activities_moments_2026_05_12.js
 
     Loading strategy:
     1. List/index files are critical Life resources.
-    2. Detail files are loaded on demand when a visitor opens a specific moment.
+    2. Detail files are loaded on demand when
+       a visitor opens a specific moment.
   */
   const ACTIVITY_MOMENT_DATES = [
     '2026_05_16',
@@ -45,26 +51,39 @@
     dates: ACTIVITY_MOMENT_DATES.slice(),
 
     detailScript(lang, dateKey) {
-      return A + 'js/Content/' + lang + '/life/activities_moments_' + dateKey + '.js';
+      return (
+        A +
+        'js/Content/' +
+        lang +
+        '/life/activities_moments_' +
+        dateKey +
+        '.js'
+      );
     },
 
     detailScripts(lang) {
-      return this.dates.map((dateKey) => this.detailScript(lang, dateKey));
+      return this.dates.map((dateKey) =>
+        this.detailScript(lang, dateKey)
+      );
     }
   };
 
   const FULL_CALENDAR = {
     styles: [
       {
-        href: 'https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css'
+        href:
+          'https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css'
       }
     ],
+
     scripts: [
       {
-        src: 'https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'
+        src:
+          'https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'
       },
       {
-        src: 'https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales-all.min.js'
+        src:
+          'https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales-all.min.js'
       }
     ]
   };
@@ -86,6 +105,7 @@
   window.SiteResources = {
     site: {
       title: 'Joker Chen',
+
       favicon: {
         href: A + 'images/favicon.png',
         type: 'image/png'
@@ -98,8 +118,11 @@
       scope: '/',
 
       /*
-        Register the offline fallback service worker only after the page has become quiet.
-        This keeps sw.js from competing with first-load resources and page warm-up scripts.
+        Register the offline fallback service worker
+        only after the page has become quiet.
+
+        This keeps sw.js from competing with first-load
+        resources and page warm-up scripts.
       */
       registerDelay: 2000,
       registerTimeout: 2000,
@@ -113,14 +136,16 @@
     activitiesMoments: ACTIVITIES_MOMENTS,
 
     /*
-      Cover video resources are derived from images.coverFiles.
+      Cover video resources are derived from
+      images.coverFiles.
 
       Naming rule:
       assets/images/cover/cover_1.webp
       assets/animation/cover/cover_1.mp4
 
-      The video file names are intentionally not listed again, so the cover
-      image list remains the single source of truth.
+      The video file names are intentionally not listed
+      again, so the cover image list remains the single
+      source of truth.
     */
     coverVideo: {
       enabled: true,
@@ -130,18 +155,38 @@
 
     navigation: {
       defaultPage: 'resume',
-      pages: ['resume', 'schedule', 'social', 'toolkit', 'life'],
+
+      pages: [
+        'resume',
+        'schedule',
+        'social',
+        'toolkit',
+        'life'
+      ],
 
       warmup: {
         /*
           Visitor-experience-first warm-up policy:
-          - The cover remains the first critical visual target.
-          - Once the cover background is ready, all main modules keep warming.
+          - The cover remains the first critical target.
+          - Once the cover background is ready, all main
+            modules keep warming.
           - Hidden/easter-egg pages are excluded.
-          - FullCalendar and Life moment details stay lazy-loaded.
+          - FullCalendar and Life moment details stay
+            lazy-loaded.
         */
-        afterCover: ['resume', 'schedule', 'social', 'life'],
-        afterFirstPage: ['resume', 'schedule', 'social', 'life'],
+        afterCover: [
+          'resume',
+          'schedule',
+          'social',
+          'life'
+        ],
+
+        afterFirstPage: [
+          'resume',
+          'schedule',
+          'social',
+          'life'
+        ],
 
         delayAfterCover: 250,
         delayAfterFirstPage: 600,
@@ -164,9 +209,11 @@
       analytics: [
         {
           src: 'https://gc.zgo.at/count.js',
+
           attrs: {
             async: true,
-            'data-goatcounter': 'https://stardust.goatcounter.com/count'
+            'data-goatcounter':
+              'https://stardust.goatcounter.com/count'
           }
         }
       ]
@@ -176,22 +223,49 @@
       fonts: {
         lifeDisplay: [
           {
-            href: A + 'fonts/Local_Display/HongLeiXingShuJianTi-2.woff2',
-            family: 'HongLeiXingShu Local',
-            type: 'font/woff2',
-            load: '1em "HongLeiXingShu Local"'
+            href:
+              A +
+              'fonts/Local_Display/' +
+              'HongLeiXingShuJianTi-2.woff2',
+
+            family:
+              'HongLeiXingShu Local',
+
+            type:
+              'font/woff2',
+
+            load:
+              '1em "HongLeiXingShu Local"'
           },
           {
-            href: A + 'fonts/Local_Display/Beautiful-ES-1.woff2',
-            family: 'Beautiful ES Local',
-            type: 'font/woff2',
-            load: '1em "Beautiful ES Local"'
+            href:
+              A +
+              'fonts/Local_Display/' +
+              'Beautiful-ES-1.woff2',
+
+            family:
+              'Beautiful ES Local',
+
+            type:
+              'font/woff2',
+
+            load:
+              '1em "Beautiful ES Local"'
           },
           {
-            href: A + 'fonts/Local_Display/Cataneo%20BT.woff2',
-            family: 'Cataneo BT Local',
-            type: 'font/woff2',
-            load: '1em "Cataneo BT Local"'
+            href:
+              A +
+              'fonts/Local_Display/' +
+              'Cataneo%20BT.woff2',
+
+            family:
+              'Cataneo BT Local',
+
+            type:
+              'font/woff2',
+
+            load:
+              '1em "Cataneo BT Local"'
           }
         ]
       }
@@ -241,52 +315,118 @@
       ],
 
       bootstrap: [
-        A + 'js/Functions/bootstrap/BootstrapRoutes.js',
-        A + 'js/Functions/bootstrap/BootstrapWarmup.js',
-        A + 'js/Functions/bootstrap/BootstrapCoverInput.js',
-        A + 'js/Functions/bootstrap/Bootstrap.js'
+        A +
+          'js/Functions/bootstrap/' +
+          'BootstrapRoutes.js',
+
+        A +
+          'js/Functions/bootstrap/' +
+          'BootstrapWarmup.js',
+
+        A +
+          'js/Functions/bootstrap/' +
+          'BootstrapCoverInput.js',
+
+        A +
+          'js/Functions/bootstrap/' +
+          'Bootstrap.js'
       ],
 
       optional: {
-        blog: A + 'js/Functions/blog/Blog.js'
+        blog:
+          A +
+          'js/Functions/blog/Blog.js'
       }
     },
 
     pages: {
       resume: {
         route: 'about',
-        domId: 'resume',
-        mountId: 'mount-resume',
+        domId: 'about',
+        mountId: 'mount-about',
+
         styles: [
-          A + 'css/about/about.css',
-          A + 'css/about/about-contact.css'
+            A + 'css/about/about.css',
+            A + 'css/about/profile/profile.css',
+            A + 'css/about/profile/profile-contact.css'
         ],
+
         scripts: [
-          A + 'js/Content/EN/about/resume_EN.js',
-          A + 'js/Content/ZH/about/resume_ZH.js',
-          A + 'js/Functions/about/AboutResumeRender.js',
-          A + 'js/Functions/about/AboutContact.js'
+            A +
+            'js/Content/EN/about/profile/' +
+            'profile_EN.js',
+
+            A +
+            'js/Content/ZH/about/profile/' +
+            'profile_ZH.js',
+
+            A +
+            'js/Functions/about/' +
+            'About.js',
+            
+            A +
+            'js/Functions/about/profile/' +
+            'ProfileRender.js',
+            
+            A +
+            'js/Functions/about/profile/' +
+            'ProfileContact.js',
+            
+            A +
+            'js/Functions/about/' +
+            'AboutRoutes.js'
         ]
-      },
+    },
 
       schedule: {
         route: 'schedule',
         domId: 'schedule',
         mountId: 'mount-schedule',
+
         styles: [
           ...SCHEDULE_STYLES
         ],
+
         scripts: [
-          A + 'js/Content/EN/schedule/schedule_EN.js',
-          A + 'js/Content/ZH/schedule/schedule_ZH.js',
-          A + 'js/Config/ScheduleSemesterConfig.js',
-          A + 'js/Functions/schedule/ScheduleUstcClasses.js',
-          A + 'js/Functions/schedule/ScheduleCalendarGeneral.js',
-          A + 'js/Functions/schedule/ScheduleCore.js',
-          A + 'js/Functions/schedule/ScheduleRoutes.js',
-          A + 'js/Functions/schedule/ScheduleExport.js',
-          A + 'js/Functions/schedule/ScheduleSemesterSelector.js',
-          A + 'js/Functions/schedule/ScheduleWeekSelector.js'
+          A +
+            'js/Content/EN/schedule/' +
+            'schedule_EN.js',
+
+          A +
+            'js/Content/ZH/schedule/' +
+            'schedule_ZH.js',
+
+          A +
+            'js/Config/' +
+            'ScheduleSemesterConfig.js',
+
+          A +
+            'js/Functions/schedule/' +
+            'ScheduleUstcClasses.js',
+
+          A +
+            'js/Functions/schedule/' +
+            'ScheduleCalendarGeneral.js',
+
+          A +
+            'js/Functions/schedule/' +
+            'ScheduleCore.js',
+
+          A +
+            'js/Functions/schedule/' +
+            'ScheduleRoutes.js',
+
+          A +
+            'js/Functions/schedule/' +
+            'ScheduleExport.js',
+
+          A +
+            'js/Functions/schedule/' +
+            'ScheduleSemesterSelector.js',
+
+          A +
+            'js/Functions/schedule/' +
+            'ScheduleWeekSelector.js'
         ]
       },
 
@@ -294,6 +434,7 @@
         route: 'social',
         domId: 'social',
         mountId: 'mount-social',
+
         styles: [
           A + 'css/social/social-shell.css',
           A + 'css/social/social-cards.css',
@@ -301,24 +442,63 @@
           A + 'css/social/social-comments.css',
           A + 'css/social/social-footprints.css'
         ],
+
         scripts: [
-          A + 'js/Content/EN/social/social_EN.js',
-          A + 'js/Content/ZH/social/social_ZH.js',
+          A +
+            'js/Content/EN/social/' +
+            'social_EN.js',
 
-          A + 'js/Config/SocialFriendsConfig.js',
-          A + 'js/Content/EN/social/friends_EN.js',
-          A + 'js/Content/ZH/social/friends_ZH.js',
+          A +
+            'js/Content/ZH/social/' +
+            'social_ZH.js',
 
-          A + 'js/Functions/social/SocialConstellationRender.js',
-          A + 'js/Functions/social/SocialIdentityRender.js',
-          A + 'js/Functions/social/SocialFootprintsRender.js',
-          A + 'js/Functions/social/SocialShell.js',
-          A + 'js/Functions/social/SocialRoutes.js',
-          A + 'js/Functions/social/SocialRender.js',
+          A +
+            'js/Config/' +
+            'SocialFriendsConfig.js',
 
-          A + 'js/Functions/social/SocialFriends.js',
-          A + 'js/Functions/social/SocialComments.js',
-          A + 'js/Functions/social/SocialStats.js'
+          A +
+            'js/Content/EN/social/' +
+            'friends_EN.js',
+
+          A +
+            'js/Content/ZH/social/' +
+            'friends_ZH.js',
+
+          A +
+            'js/Functions/social/' +
+            'SocialConstellationRender.js',
+
+          A +
+            'js/Functions/social/' +
+            'SocialIdentityRender.js',
+
+          A +
+            'js/Functions/social/' +
+            'SocialFootprintsRender.js',
+
+          A +
+            'js/Functions/social/' +
+            'SocialShell.js',
+
+          A +
+            'js/Functions/social/' +
+            'SocialRoutes.js',
+
+          A +
+            'js/Functions/social/' +
+            'SocialRender.js',
+
+          A +
+            'js/Functions/social/' +
+            'SocialFriends.js',
+
+          A +
+            'js/Functions/social/' +
+            'SocialComments.js',
+
+          A +
+            'js/Functions/social/' +
+            'SocialStats.js'
         ]
       },
 
@@ -326,13 +506,23 @@
         route: 'toolkit',
         domId: 'toolkit',
         mountId: 'mount-toolkit',
+
         styles: [
           A + 'css/toolkit/toolkit.css'
         ],
+
         scripts: [
-          A + 'js/Content/EN/toolkit/toolkit_EN.js',
-          A + 'js/Content/ZH/toolkit/toolkit_ZH.js',
-          A + 'js/Functions/toolkit/Toolkit.js'
+          A +
+            'js/Content/EN/toolkit/' +
+            'toolkit_EN.js',
+
+          A +
+            'js/Content/ZH/toolkit/' +
+            'toolkit_ZH.js',
+
+          A +
+            'js/Functions/toolkit/' +
+            'Toolkit.js'
         ]
       },
 
@@ -340,35 +530,76 @@
         route: 'life',
         domId: 'life',
         mountId: 'mount-life',
+
         styles: [
           A + 'css/life/life.css',
-          A + 'css/life/activities_moments-list.css',
-          A + 'css/life/activities_moments-detail.css',
-          A + 'css/life/meditations.css'
+
+          A +
+            'css/life/' +
+            'activities_moments-list.css',
+
+          A +
+            'css/life/' +
+            'activities_moments-detail.css',
+
+          A +
+            'css/life/' +
+            'meditations.css'
         ],
+
         scripts: [
-          A + 'js/Functions/life/Life.js',
+          A +
+            'js/Functions/life/' +
+            'Life.js',
 
-          A + 'js/Content/EN/life/activities_moments_EN.js',
-          A + 'js/Content/ZH/life/activities_moments_ZH.js',
+          A +
+            'js/Content/EN/life/' +
+            'activities_moments_EN.js',
 
-          A + 'js/Functions/life/ActivitiesMomentsUtils.js',
-          A + 'js/Functions/life/ActivitiesMomentsIndex.js',
-          A + 'js/Functions/life/ActivitiesMomentsRender.js',
-          A + 'js/Functions/life/ActivitiesMomentsMedia.js',
-          A + 'js/Functions/life/ActivitiesMoments.js',
+          A +
+            'js/Content/ZH/life/' +
+            'activities_moments_ZH.js',
 
-          A + 'js/Functions/life/LifeMeditations.js',
-          A + 'js/Functions/life/LifeRoutes.js'
+          A +
+            'js/Functions/life/' +
+            'ActivitiesMomentsUtils.js',
+
+          A +
+            'js/Functions/life/' +
+            'ActivitiesMomentsIndex.js',
+
+          A +
+            'js/Functions/life/' +
+            'ActivitiesMomentsRender.js',
+
+          A +
+            'js/Functions/life/' +
+            'ActivitiesMomentsMedia.js',
+
+          A +
+            'js/Functions/life/' +
+            'ActivitiesMoments.js',
+
+          A +
+            'js/Functions/life/' +
+            'LifeMeditations.js',
+
+          A +
+            'js/Functions/life/' +
+            'LifeRoutes.js'
         ]
       }
     },
 
     images: {
-      favicon: A + 'images/favicon.png',
-      avatar: A + 'images/avatar.jpg',
+      favicon:
+        A + 'images/favicon.png',
 
-      coverDir: A + 'images/cover/',
+      avatar:
+        A + 'images/avatar.jpg',
+
+      coverDir:
+        A + 'images/cover/',
 
       coverFiles: [
         'cover_1.webp',
@@ -386,20 +617,56 @@
       ],
 
       blog: {
-        background: A + 'images/blog/background.jpg',
-        backgroundPng: A + 'images/blog/background.png',
-        oldPaperTexture: A + 'images/blog/old-paper-texture.jpg',
-        scrollTexture: A + 'images/blog/scroll-texture.png',
-        fireAnimation: A + 'animation/blog/fire-animation.gif'
+        background:
+          A +
+          'images/blog/background.jpg',
+
+        backgroundPng:
+          A +
+          'images/blog/background.png',
+
+        oldPaperTexture:
+          A +
+          'images/blog/old-paper-texture.jpg',
+
+        scrollTexture:
+          A +
+          'images/blog/scroll-texture.png',
+
+        fireAnimation:
+          A +
+          'animation/blog/fire-animation.gif'
       },
 
       about: {
-        profile: A + 'images/about/profile.jpg',
-        educationBackground: A + 'images/about/Education_Background.png',
-        excellentStudentScholarship: A + 'images/about/Excellent_Student_Scholarship--Silver.jpg',
-        zhangZongzhiScholarship: A + 'images/about/Zhang_Zongzhi_Sci-Tech_Scholarship.jpg',
-        excellentFreshmanScholarship: A + 'images/about/Excellent_Freshman_Scholarship--Silver.jpg',
-        honorableMention: A + 'images/about/Honorable_Mention.jpg'
+        profile:
+          A +
+          'images/about/profile.jpg',
+
+        educationBackground:
+          A +
+          'images/about/' +
+          'Education_Background.png',
+
+        excellentStudentScholarship:
+          A +
+          'images/about/' +
+          'Excellent_Student_Scholarship--Silver.jpg',
+
+        zhangZongzhiScholarship:
+          A +
+          'images/about/' +
+          'Zhang_Zongzhi_Sci-Tech_Scholarship.jpg',
+
+        excellentFreshmanScholarship:
+          A +
+          'images/about/' +
+          'Excellent_Freshman_Scholarship--Silver.jpg',
+
+        honorableMention:
+          A +
+          'images/about/' +
+          'Honorable_Mention.jpg'
       }
     }
   };

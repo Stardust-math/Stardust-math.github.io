@@ -1,0 +1,180 @@
+/* =========================================================
+   About / Resume Page
+   - Resume heading
+   - Resume avatar and hero layout
+   - Resume text links
+   - Award text links
+   - Project action groups
+   - Resume layout utilities
+   ========================================================= */
+
+.resume-heading {
+  font-size: 2.6em;
+  text-align: center;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+.contact-info {
+  text-align: center;
+  margin-bottom: 20px;
+  color: var(--muted);
+}
+
+/* Resume hero */
+.section.resume-hero {
+  display: flex;
+  align-items: stretch;
+  gap: 22px;
+}
+
+.resume-hero-avatar {
+  flex: 0 0 clamp(120px, 16vw, 170px);
+  align-self: stretch;
+}
+
+.resume-hero-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+
+  border-radius: calc(var(--radius) + 2px);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: var(--shadow-xs);
+}
+
+.resume-hero-body {
+  flex: 1 1 auto;
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.resume-hero-name {
+  font-size: 2.2em;
+  font-weight: 700;
+  line-height: 1.08;
+  color: var(--accent);
+}
+
+.resume-hero-intro {
+  margin: 0;
+  color: var(--muted);
+  font-size: 1.02em;
+  line-height: 1.55;
+}
+
+/* Resume layout utilities */
+.resume-degree-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.resume-degree-line > span:first-child {
+  min-width: 0;
+}
+
+.resume-degree-line > span:last-child {
+  flex: 0 0 auto;
+  text-align: right;
+}
+
+.resume-advisor-list {
+  margin-left: 20px;
+}
+
+#resume table {
+  width: 100%;
+}
+
+#resume img {
+  max-width: 100%;
+}
+
+/* Resume and award text links */
+#resume .resume-link,
+#resume .resume-link:visited,
+#resume .award-link,
+#resume .award-link:visited {
+  color: inherit;
+  text-decoration: none;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  cursor: pointer;
+}
+
+#resume .resume-link:hover,
+#resume .resume-link:focus-visible,
+#resume .award-link:hover,
+#resume .award-link:focus-visible {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: currentColor;
+}
+
+.project-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.btn-ico {
+  width: 1em;
+  height: 1em;
+  flex: 0 0 1em;
+  display: inline-block;
+  margin-right: 0.1em;
+}
+
+.project-actions .expand-action-btn {
+  gap: 0.42em;
+}
+
+/* Responsive: stack photo above text on small screens */
+@media (max-width: 768px) {
+  .resume-heading {
+    font-size: 2.1em;
+  }
+
+  .section.resume-hero {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .resume-hero-avatar {
+    flex: 0 0 auto;
+    width: min(240px, 70vw);
+  }
+
+  .resume-hero-avatar img {
+    height: auto;
+    aspect-ratio: 4 / 5;
+  }
+
+  .resume-hero-name {
+    font-size: 1.95em;
+  }
+
+  .resume-degree-line {
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 4px;
+  }
+
+  .resume-degree-line > span:last-child {
+    text-align: left;
+  }
+
+  .resume-advisor-list {
+    margin-left: 0;
+    margin-top: 4px;
+  }
+}

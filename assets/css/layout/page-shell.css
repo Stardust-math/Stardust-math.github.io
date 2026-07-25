@@ -1,26 +1,44 @@
 /* =========================================================
    Shared Page Shell
-   - Resume / Social / Toolkit / Schedule page containers
+   - About / Social / Toolkit / Schedule page containers
    - Shared content cards and basic content typography
    ========================================================= */
 
-/* Shared content styling (Resume / Social / Toolkit / Schedule) */
-#resume, #social, #toolkit, #schedule {
+/* Shared content styling (About / Social / Toolkit / Schedule) */
+#about,
+#social,
+#toolkit,
+#schedule {
   position: relative;
   z-index: 1;
   display: none;
-  padding: calc(var(--topnav-height, 72px) + 40px) 20px 40px !important;
+  padding:
+    calc(var(--topnav-height, 72px) + 40px)
+    20px
+    40px !important;
+
   background:
-    radial-gradient(1200px 640px at 20% -10%, rgba(31, 78, 121, 0.07), transparent 60%),
-    linear-gradient(var(--page-overlay), var(--page-overlay)),
+    radial-gradient(
+      1200px 640px at 20% -10%,
+      rgba(31, 78, 121, 0.07),
+      transparent 60%
+    ),
+    linear-gradient(
+      var(--page-overlay),
+      var(--page-overlay)
+    ),
     var(--paper-texture);
+
   min-height: 100vh;
   overflow-y: auto;
   opacity: 0;
   transition: opacity 0.8s ease-in-out;
 }
 
-#resume.visible, #social.visible, #toolkit.visible, #schedule.visible {
+#about.visible,
+#social.visible,
+#toolkit.visible,
+#schedule.visible {
   display: block;
   opacity: 1;
 }
@@ -29,10 +47,14 @@
   max-width: 95%;
   margin: 0 auto;
 
-  /* Slight tint so inner cards (sections / grids) pop more */
+  /* Slight tint so inner cards pop more */
   background: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--surface) 92%, var(--surface-2)),
+    color-mix(
+      in srgb,
+      var(--surface) 92%,
+      var(--surface-2)
+    ),
     var(--surface-2)
   );
 
@@ -63,13 +85,27 @@ h2 {
   background: linear-gradient(
     180deg,
     var(--surface),
-    color-mix(in srgb, var(--surface) 70%, var(--surface-2))
+    color-mix(
+      in srgb,
+      var(--surface) 70%,
+      var(--surface-2)
+    )
   );
 
-  border: 1px solid color-mix(in srgb, var(--border) 85%, var(--accent-weak));
+  border:
+    1px solid
+    color-mix(
+      in srgb,
+      var(--border) 85%,
+      var(--accent-weak)
+    );
+
   box-shadow: var(--shadow-xs);
 
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
 }
 
 .section:hover {

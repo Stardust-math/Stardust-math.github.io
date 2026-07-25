@@ -1,180 +1,101 @@
 /* =========================================================
-   About / Resume Page
-   - Resume heading
-   - Resume avatar and hero layout
-   - Resume text links
-   - Award text links
-   - Project action groups
-   - Resume layout utilities
+   About Shell
+   - About heading and submodule navigation
+   - Profile and Archive panel visibility
+   - Archive intentionally contains no visible placeholder
    ========================================================= */
 
-.resume-heading {
-  font-size: 2.6em;
-  text-align: center;
-  color: var(--accent);
-  margin-bottom: 10px;
-}
+.about-header {
+  width: 95%;
+  max-width: 95%;
+  margin: 0 auto 20px;
+  padding: 24px 30px 18px;
 
-.contact-info {
-  text-align: center;
-  margin-bottom: 20px;
-  color: var(--muted);
-}
+  background: linear-gradient(
+    180deg,
+    color-mix(
+      in srgb,
+      var(--surface) 92%,
+      var(--surface-2)
+    ),
+    var(--surface-2)
+  );
 
-/* Resume hero */
-.section.resume-hero {
-  display: flex;
-  align-items: stretch;
-  gap: 22px;
-}
-
-.resume-hero-avatar {
-  flex: 0 0 clamp(120px, 16vw, 170px);
-  align-self: stretch;
-}
-
-.resume-hero-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-
-  border-radius: calc(var(--radius) + 2px);
   border: 1px solid var(--border);
-  background: var(--surface);
-  box-shadow: var(--shadow-xs);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
 }
 
-.resume-hero-body {
-  flex: 1 1 auto;
-  min-width: 0;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  gap: 10px;
-}
-
-.resume-hero-name {
-  font-size: 2.2em;
-  font-weight: 700;
-  line-height: 1.08;
+.about-heading {
+  margin: 0 0 18px;
   color: var(--accent);
+
+  font-family: var(--font-heading-serif);
+  font-size: 2.6em;
+  font-variant: small-caps;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  line-height: 1.15;
+  text-align: center;
 }
 
-.resume-hero-intro {
-  margin: 0;
-  color: var(--muted);
-  font-size: 1.02em;
-  line-height: 1.55;
+body[data-lang="zh"] .about-heading {
+  font-family: var(--font-zh-heading);
+  font-variant: normal;
+  letter-spacing: 0.8px;
 }
 
-/* Resume layout utilities */
-.resume-degree-line {
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
+.about-header .about-switcher {
+  margin-bottom: 0;
 }
 
-.resume-degree-line > span:first-child {
-  min-width: 0;
+.about-section[hidden] {
+  display: none !important;
 }
 
-.resume-degree-line > span:last-child {
-  flex: 0 0 auto;
-  text-align: right;
+.about-section.active {
+  display: block;
 }
 
-.resume-advisor-list {
-  margin-left: 20px;
+#about-profile-section,
+#about-archive-section {
+  scroll-margin-top:
+    calc(var(--topnav-height, 72px) + 14px);
 }
 
-#resume table {
-  width: 100%;
+/*
+  Archive 保持纯空白。
+  最小高度只用于防止页面高度跳变，
+  不会显示卡片、文字或占位符。
+*/
+#about-archive-section,
+#mount-about-archive:empty {
+  min-height:
+    calc(
+      100vh -
+      var(--topnav-height, 72px) -
+      190px
+    );
 }
 
-#resume img {
-  max-width: 100%;
-}
-
-/* Resume and award text links */
-#resume .resume-link,
-#resume .resume-link:visited,
-#resume .award-link,
-#resume .award-link:visited {
-  color: inherit;
-  text-decoration: none;
-  text-underline-offset: 3px;
-  text-decoration-thickness: 1px;
-  cursor: pointer;
-}
-
-#resume .resume-link:hover,
-#resume .resume-link:focus-visible,
-#resume .award-link:hover,
-#resume .award-link:focus-visible {
-  color: inherit;
-  text-decoration: underline;
-  text-decoration-color: currentColor;
-}
-
-.project-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.btn-ico {
-  width: 1em;
-  height: 1em;
-  flex: 0 0 1em;
-  display: inline-block;
-  margin-right: 0.1em;
-}
-
-.project-actions .expand-action-btn {
-  gap: 0.42em;
-}
-
-/* Responsive: stack photo above text on small screens */
 @media (max-width: 768px) {
-  .resume-heading {
+  .about-header {
+    width: 98%;
+    max-width: 98%;
+    padding: 20px;
+  }
+
+  .about-heading {
     font-size: 2.1em;
   }
 
-  .section.resume-hero {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 14px;
-  }
-
-  .resume-hero-avatar {
-    flex: 0 0 auto;
-    width: min(240px, 70vw);
-  }
-
-  .resume-hero-avatar img {
-    height: auto;
-    aspect-ratio: 4 / 5;
-  }
-
-  .resume-hero-name {
-    font-size: 1.95em;
-  }
-
-  .resume-degree-line {
-    flex-direction: column;
-    justify-content: flex-start;
-    gap: 4px;
-  }
-
-  .resume-degree-line > span:last-child {
-    text-align: left;
-  }
-
-  .resume-advisor-list {
-    margin-left: 0;
-    margin-top: 4px;
+  #about-archive-section,
+  #mount-about-archive:empty {
+    min-height:
+      calc(
+        100vh -
+        var(--topnav-height, 60px) -
+        170px
+      );
   }
 }

@@ -1,10 +1,11 @@
 /* =========================================================
    Shared Submodule Switcher
-   - Used by Schedule / Social / Life submodule navigation
+   - Used by About / Schedule / Social / Life navigation
    - Geometry follows Schedule
    - Visual tone follows Life
    ========================================================= */
 
+.about-switcher,
 .schedule-switcher,
 .social-switcher,
 .life-switcher {
@@ -13,16 +14,33 @@
   align-items: center;
   padding: 6px;
   gap: 6px;
-  margin-bottom: var(--submodule-switcher-margin-bottom, 18px);
+
+  margin-bottom:
+    var(--submodule-switcher-margin-bottom, 18px);
 
   border-radius: 999px;
-  background: color-mix(in srgb, var(--surface) 88%, var(--surface-2));
-  border: 1px solid color-mix(in srgb, var(--border) 85%, var(--accent-weak));
-  box-shadow: var(--shadow-xs);
 
+  background:
+    color-mix(
+      in srgb,
+      var(--surface) 88%,
+      var(--surface-2)
+    );
+
+  border:
+    1px solid
+    color-mix(
+      in srgb,
+      var(--border) 85%,
+      var(--accent-weak)
+    );
+
+  box-shadow: var(--shadow-xs);
   flex-wrap: wrap;
 }
 
+.about-switch-btn,
+.about-switcher a.about-switch-btn,
 .schedule-switch-btn,
 .schedule-switcher a.schedule-switch-btn,
 .social-switch-btn,
@@ -68,6 +86,8 @@
     box-shadow 0.16s ease;
 }
 
+.about-switch-btn:focus,
+.about-switcher a.about-switch-btn:focus,
 .schedule-switch-btn:focus,
 .schedule-switcher a.schedule-switch-btn:focus,
 .social-switch-btn:focus,
@@ -77,16 +97,27 @@
   outline: none;
 }
 
+.about-switch-btn:focus-visible,
+.about-switcher a.about-switch-btn:focus-visible,
 .schedule-switch-btn:focus-visible,
 .schedule-switcher a.schedule-switch-btn:focus-visible,
 .social-switch-btn:focus-visible,
 .social-switcher a.social-switch-btn:focus-visible,
 .life-switch-btn:focus-visible,
 .life-switcher a.life-switch-btn:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--border) 72%, var(--surface-3));
+  outline:
+    2px solid
+    color-mix(
+      in srgb,
+      var(--border) 72%,
+      var(--surface-3)
+    );
+
   outline-offset: 2px;
 }
 
+body[data-lang="zh"] .about-switch-btn,
+body[data-lang="zh"] .about-switcher a.about-switch-btn,
 body[data-lang="zh"] .schedule-switch-btn,
 body[data-lang="zh"] .schedule-switcher a.schedule-switch-btn,
 body[data-lang="zh"] .social-switch-btn,
@@ -98,6 +129,8 @@ body[data-lang="zh"] .life-switcher a.life-switch-btn {
   letter-spacing: 0.8px;
 }
 
+.about-switch-btn:hover,
+.about-switcher a.about-switch-btn:hover,
 .schedule-switch-btn:hover,
 .schedule-switcher a.schedule-switch-btn:hover,
 .social-switch-btn:hover,
@@ -107,13 +140,23 @@ body[data-lang="zh"] .life-switcher a.life-switch-btn {
   color: var(--accent);
   text-decoration: none;
   background: var(--accent-weak);
-  border-color: color-mix(in srgb, var(--border) 70%, var(--accent-weak));
+
+  border-color:
+    color-mix(
+      in srgb,
+      var(--border) 70%,
+      var(--accent-weak)
+    );
+
   box-shadow:
     0 3px 8px rgba(0, 0, 0, 0.045),
     inset 0 1px 0 rgba(255, 255, 255, 0.32);
+
   transform: translateY(-1px);
 }
 
+.about-switch-btn.active,
+.about-switch-btn[aria-selected="true"],
 .schedule-switch-btn.active,
 .schedule-switch-btn[aria-selected="true"],
 .social-switch-btn.active,
@@ -121,14 +164,24 @@ body[data-lang="zh"] .life-switcher a.life-switch-btn {
 .life-switch-btn.active,
 .life-switch-btn[aria-selected="true"] {
   color: var(--accent-strong);
-  background: color-mix(in srgb, var(--surface) 66%, var(--accent-weak));
+
+  background:
+    color-mix(
+      in srgb,
+      var(--surface) 66%,
+      var(--accent-weak)
+    );
+
   border-color: transparent;
+
   box-shadow:
     0 4px 12px rgba(0, 0, 0, 0.065),
     0 1px 3px rgba(0, 0, 0, 0.045),
     inset 0 1px 0 rgba(255, 255, 255, 0.38);
 }
 
+.about-switch-btn.active:hover,
+.about-switch-btn[aria-selected="true"]:hover,
 .schedule-switch-btn.active:hover,
 .schedule-switch-btn[aria-selected="true"]:hover,
 .social-switch-btn.active:hover,
@@ -136,8 +189,16 @@ body[data-lang="zh"] .life-switcher a.life-switch-btn {
 .life-switch-btn.active:hover,
 .life-switch-btn[aria-selected="true"]:hover {
   color: var(--accent-strong);
-  background: color-mix(in srgb, var(--surface) 60%, var(--accent-weak));
+
+  background:
+    color-mix(
+      in srgb,
+      var(--surface) 60%,
+      var(--accent-weak)
+    );
+
   border-color: transparent;
+
   box-shadow:
     0 5px 14px rgba(0, 0, 0, 0.075),
     0 1px 4px rgba(0, 0, 0, 0.05),
@@ -145,6 +206,8 @@ body[data-lang="zh"] .life-switcher a.life-switch-btn {
 }
 
 /* Dark-mode shared glow */
+body.dark-mode .about-switch-btn:hover,
+body.dark-mode .about-switcher a.about-switch-btn:hover,
 body.dark-mode .schedule-switch-btn:hover,
 body.dark-mode .schedule-switcher a.schedule-switch-btn:hover,
 body.dark-mode .social-switch-btn:hover,
@@ -156,29 +219,42 @@ body.dark-mode .life-switcher a.life-switch-btn:hover {
     0 2px 6px rgba(255, 255, 255, 0.055);
 }
 
+body.dark-mode .about-switch-btn.active,
+body.dark-mode
+.about-switch-btn[aria-selected="true"],
 body.dark-mode .schedule-switch-btn.active,
-body.dark-mode .schedule-switch-btn[aria-selected="true"],
+body.dark-mode
+.schedule-switch-btn[aria-selected="true"],
 body.dark-mode .social-switch-btn.active,
-body.dark-mode .social-switch-btn[aria-selected="true"],
+body.dark-mode
+.social-switch-btn[aria-selected="true"],
 body.dark-mode .life-switch-btn.active,
-body.dark-mode .life-switch-btn[aria-selected="true"] {
+body.dark-mode
+.life-switch-btn[aria-selected="true"] {
   box-shadow:
     0 -4px 11px rgba(255, 255, 255, 0.13),
     0 3px 8px rgba(255, 255, 255, 0.07);
 }
 
+body.dark-mode .about-switch-btn.active:hover,
+body.dark-mode
+.about-switch-btn[aria-selected="true"]:hover,
 body.dark-mode .schedule-switch-btn.active:hover,
-body.dark-mode .schedule-switch-btn[aria-selected="true"]:hover,
+body.dark-mode
+.schedule-switch-btn[aria-selected="true"]:hover,
 body.dark-mode .social-switch-btn.active:hover,
-body.dark-mode .social-switch-btn[aria-selected="true"]:hover,
+body.dark-mode
+.social-switch-btn[aria-selected="true"]:hover,
 body.dark-mode .life-switch-btn.active:hover,
-body.dark-mode .life-switch-btn[aria-selected="true"]:hover {
+body.dark-mode
+.life-switch-btn[aria-selected="true"]:hover {
   box-shadow:
     0 -5px 13px rgba(255, 255, 255, 0.145),
     0 4px 10px rgba(255, 255, 255, 0.08);
 }
 
 @media (max-width: 520px) {
+  .about-switcher,
   .schedule-switcher,
   .social-switcher,
   .life-switcher {
@@ -188,12 +264,14 @@ body.dark-mode .life-switch-btn[aria-selected="true"]:hover {
     scrollbar-width: none;
   }
 
+  .about-switcher::-webkit-scrollbar,
   .schedule-switcher::-webkit-scrollbar,
   .social-switcher::-webkit-scrollbar,
   .life-switcher::-webkit-scrollbar {
     display: none;
   }
 
+  .about-switch-btn,
   .schedule-switch-btn,
   .social-switch-btn,
   .life-switch-btn {
@@ -202,6 +280,7 @@ body.dark-mode .life-switch-btn[aria-selected="true"]:hover {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .about-switch-btn,
   .schedule-switch-btn,
   .social-switch-btn,
   .life-switch-btn {
