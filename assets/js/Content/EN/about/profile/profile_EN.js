@@ -294,7 +294,7 @@
         </div>
         <ul>
           <li>
-            Compiled detailed LaTeX solutions and reference answers based on the textbook by Baiqi Miu and Weiping Zhang; maintained an open-source repository for students:
+            Compiled detailed LaTeX solutions and reference answers based on the textbook by Baiqi Miao and Weiping Zhang; maintained an open-source repository for students:
             <a
               class="expand-action-btn"
               href="https://github.com/Stardust-math/Reference-Answer"
