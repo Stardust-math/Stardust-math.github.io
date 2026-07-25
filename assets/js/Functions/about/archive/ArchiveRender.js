@@ -115,10 +115,6 @@
       };
     }
 
-    /*
-      Backward-compatible fallback for any future
-      document that still uses a plain title string.
-    */
     return {
       prefix: '',
       bookTitle: '',
@@ -459,6 +455,8 @@
             rel="noopener noreferrer"
             data-pdf-direct-link
             data-archive-ui="directOpen"
+            data-cursor="link_select"
+            data-cursor-fallback="pointer"
           >${escapeHtml(
             ui.directOpen || ''
           )}</a><span
@@ -550,8 +548,7 @@
                 ? ui.collapse
                 : ui.expand
             )}"
-            data-cursor="precise_select"
-            data-cursor-fallback="pointer"
+            data-cursor="help"
           >
             <i
               class="fas fa-chevron-right"
@@ -687,26 +684,6 @@
     expanders.init(root, {
       skipSave: true
     });
-  }
-
-  function findDocumentElement(id) {
-    const root = getRoot();
-
-    if (!root) return null;
-
-    return (
-      Array.from(
-        root.querySelectorAll(
-          '[data-archive-document]'
-        )
-      ).find((element) => {
-        return (
-          element.getAttribute(
-            'data-archive-document-id'
-          ) === id
-        );
-      }) || null
-    );
   }
 
   function findReader(id) {
@@ -1273,8 +1250,8 @@
       Load only the small shared reader resources
       after Archive becomes visible.
 
-      The PDF iframe itself is still not loaded until
-      the visitor expands the corresponding document.
+      The PDF iframe itself remains unloaded until
+      the visitor expands the document.
     */
     prepareAllReaders(root);
 

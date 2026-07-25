@@ -1,43 +1,57 @@
 /* =========================================================
    About / Archive
+   - Typography aligned with About / Profile
    - Categorised document list
-   - Existing site expander arrow
+   - Profile-consistent expander arrow
    - Lazy shared PDF reader
    ========================================================= */
 
 #about-archive {
   width: 100%;
+  font-family: inherit;
 }
+
+body[data-lang="zh"] #about-archive {
+  font-family: var(--font-zh-regular);
+}
+
+/* =========================================================
+   Category
+   ========================================================= */
 
 .archive-category + .archive-category {
-  margin-top: 30px;
+  margin-top: 24px;
 }
 
+/*
+  The category title is an h2 element.
+
+  It therefore inherits the same typography as the
+  section headings on the Profile page.
+*/
 .archive-category-title {
-  margin: 0 0 8px;
-  color: var(--accent);
-  font-family: var(--font-heading-serif);
-  font-size: 1.42rem;
-  font-weight: 700;
-  line-height: 1.25;
+  margin-top: 0;
+  margin-bottom: 10px;
 }
 
 body[data-lang="zh"]
 .archive-category-title {
   font-family: var(--font-zh-heading);
+  font-variant: normal;
+  letter-spacing: 0;
 }
 
+/* =========================================================
+   Document list
+   ========================================================= */
+
 .archive-document-list {
-  border-top: 1px solid
-    color-mix(
-      in srgb,
-      var(--border) 88%,
-      transparent
-    );
+  width: 100%;
 }
 
 .archive-document {
-  border-bottom: 1px solid
+  border-bottom:
+    1px solid
     color-mix(
       in srgb,
       var(--border) 88%,
@@ -47,11 +61,11 @@ body[data-lang="zh"]
 
 .archive-document-row {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
-  gap: 18px;
+  gap: 12px;
 
-  padding: 17px 2px 16px;
+  padding: 15px 2px 14px;
 }
 
 .archive-document-copy {
@@ -59,82 +73,183 @@ body[data-lang="zh"]
   min-width: 0;
 }
 
+/* =========================================================
+   Document typography
+   ========================================================= */
+
+/*
+  Match Profile's .subheading-title:
+  inherited serif family, accent colour and bold weight.
+*/
 .archive-document-title {
-  color: var(--text);
-  font-family: var(--font-heading-serif);
-  font-size: 1.08rem;
+  color: var(--accent);
+  font-family: inherit;
+  font-size: 1.03em;
+  font-style: normal;
   font-weight: 700;
-  line-height: 1.45;
+  line-height: 1.55;
+  letter-spacing: 0;
 }
 
 /*
-  English book titles use the conventional
-  italic presentation.
+  English book titles retain the same serif family
+  and weight. Italics are the only distinction.
 */
 .archive-document-book-title {
+  font-family: inherit;
+  font-size: inherit;
   font-style: italic;
+  font-weight: inherit;
+  letter-spacing: inherit;
 }
 
 /*
-  Author names remain upright.
+  Author names stay upright while remaining part
+  of the same title line.
 */
 .archive-document-authors {
+  font-family: inherit;
+  font-size: inherit;
   font-style: normal;
+  font-weight: inherit;
+  letter-spacing: inherit;
 }
 
 body[data-lang="zh"]
 .archive-document-title {
   font-family: var(--font-zh-heading);
+  font-variant: normal;
+  letter-spacing: 0;
 }
 
-/*
-  Chinese book titles already use Chinese title marks,
-  so they should not be italicised.
-*/
 body[data-lang="zh"]
 .archive-document-book-title {
+  font-family: inherit;
   font-style: normal;
+  font-weight: inherit;
 }
+
+body[data-lang="zh"]
+.archive-document-authors {
+  font-family: inherit;
+  font-style: normal;
+  font-weight: inherit;
+}
+
+/* =========================================================
+   Supporting information
+   ========================================================= */
 
 .archive-document-meta,
 .archive-document-notice {
   color: var(--muted);
-  font-size: 0.9rem;
+  font-family: inherit;
+  font-size: 0.95em;
+  font-weight: 400;
   line-height: 1.55;
 }
 
 .archive-document-meta {
-  margin-top: 5px;
+  margin-top: 4px;
+  font-style: normal;
 }
 
 .archive-document-meta:empty {
   display: none;
 }
 
+/*
+  Match Profile's .subsubheading:
+  muted, slightly smaller and italic.
+*/
 .archive-document-notice {
-  margin-top: 1px;
+  margin-top: 3px;
   font-style: italic;
 }
 
-.archive-document-expander {
-  flex: 0 0 32px;
-
-  width: 32px;
-  height: 32px;
-  margin: 1px -8px 0 0;
-
-  border-radius: 999px;
+.archive-document-notice:empty {
+  display: none;
 }
 
+/* =========================================================
+   Expander
+   ========================================================= */
+
+/*
+  The visible arrow inherits its shape, gradient,
+  shadow and animation from the global .expander rules.
+
+  Archive uses a slightly larger clickable area than
+  Profile because the control sits independently at
+  the far right of a long document title.
+*/
+.archive-document-expander {
+  flex: 0 0 28px;
+  align-self: center;
+
+  width: 28px;
+  height: 28px;
+
+  margin: 0;
+  padding: 0;
+
+  border: none;
+  border-radius: 0;
+  background: transparent;
+
+  /*
+    Native fallback when custom cursor files are
+    unavailable.
+  */
+  cursor: help;
+
+  /*
+    The Archive row already centres the control.
+    Remove the small baseline adjustment used when
+    Profile arrows appear inline with text.
+  */
+  transform: none;
+}
+
+/*
+  Keep the visible arrow close to Profile's original
+  visual scale while enlarging only the hit area.
+*/
+.archive-document-expander::before {
+  width: 15px;
+  height: 15px;
+}
+
+/*
+  The glossy overlay must match the visible arrow,
+  not fill the complete 28px button.
+*/
+.archive-document-expander::after {
+  inset: 6.5px;
+}
+
+/*
+  Do not add a circular background.
+
+  Profile indicates interaction through the arrow's
+  movement, brightness and shadow.
+*/
 .archive-document-expander:hover,
 .archive-document-expander:focus-visible {
-  background:
-    color-mix(
-      in srgb,
-      var(--accent) 7%,
-      transparent
-    );
+  background: transparent;
 }
+
+/*
+  Keep the same restrained keyboard-focus treatment
+  as the shared Profile expander.
+*/
+.archive-document-expander:focus-visible {
+  outline: none;
+}
+
+/* =========================================================
+   Expanded document area
+   ========================================================= */
 
 .archive-document-expand {
   width: 100%;
@@ -144,23 +259,36 @@ body[data-lang="zh"]
   --expand-max-height: 1260px;
 
   width: 100%;
+
   grid-template-columns:
     minmax(0, 1fr) !important;
-  justify-items: stretch !important;
+
+  justify-items:
+    stretch !important;
+
   gap: 0;
 }
+
+/* =========================================================
+   Reader loading and fallback
+   ========================================================= */
 
 .archive-reader-status {
   margin: 0;
   padding: 18px 8px 24px;
+
   color: var(--muted);
+  font-family: inherit;
+  font-size: 0.95em;
+  line-height: 1.55;
   text-align: center;
-  line-height: 1.7;
 }
 
 .archive-reader-status a {
   margin-left: 0.35em;
+
   color: var(--accent);
+  font-family: inherit;
   text-decoration: none;
 }
 
@@ -169,33 +297,85 @@ body[data-lang="zh"]
   text-decoration: underline;
 }
 
+/* =========================================================
+   Shared PDF reader
+   ========================================================= */
+
 .archive-pdf-reader {
   width: 100%;
   min-width: 0;
   padding-bottom: 12px;
+  font-family: inherit;
 }
 
+/*
+  Fullscreen mode temporarily moves the reader under body,
+  so the Archive/Profile font family is stated explicitly.
+*/
+.archive-pdf-reader
+.pdf-reader-fullscreen-title {
+  font-family: var(--font-serif);
+  font-style: normal;
+  font-weight: 700;
+}
+
+body[data-lang="zh"]
+.archive-pdf-reader
+.pdf-reader-fullscreen-title {
+  font-family: var(--font-zh-heading);
+  font-variant: normal;
+}
+
+.archive-pdf-reader
+.pdf-reader-fullscreen-title
+.archive-document-book-title {
+  font-style: italic;
+}
+
+body[data-lang="zh"]
+.archive-pdf-reader
+.pdf-reader-fullscreen-title
+.archive-document-book-title {
+  font-style: normal;
+}
+
+/* =========================================================
+   Responsive
+   ========================================================= */
+
 @media (max-width: 768px) {
-  .archive-category-title {
-    font-size: 1.28rem;
+  .archive-category + .archive-category {
+    margin-top: 20px;
   }
 
   .archive-document-row {
-    gap: 12px;
-    padding: 15px 0 14px;
+    gap: 9px;
+    padding: 14px 0 13px;
   }
 
   .archive-document-title {
-    font-size: 1rem;
+    font-size: 1em;
+    line-height: 1.5;
   }
 
   .archive-document-meta,
-  .archive-document-notice {
-    font-size: 0.86rem;
+  .archive-document-notice,
+  .archive-reader-status {
+    font-size: 0.92em;
   }
 
+  /*
+    Increase only the touch target on smaller screens.
+    The visible arrow remains 15px.
+  */
   .archive-document-expander {
-    margin-right: -6px;
+    flex-basis: 32px;
+    width: 32px;
+    height: 32px;
+  }
+
+  .archive-document-expander::after {
+    inset: 8.5px;
   }
 
   .archive-document-content {
@@ -205,7 +385,21 @@ body[data-lang="zh"]
 
 @media (max-width: 480px) {
   .archive-document-row {
-    gap: 9px;
+    gap: 7px;
+  }
+
+  .archive-document-title {
+    line-height: 1.48;
+  }
+
+  .archive-document-expander {
+    flex-basis: 32px;
+    width: 32px;
+    height: 32px;
+  }
+
+  .archive-document-expander::after {
+    inset: 8.5px;
   }
 
   .archive-document-content {

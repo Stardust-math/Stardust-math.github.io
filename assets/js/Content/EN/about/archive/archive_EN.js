@@ -12,7 +12,7 @@
           prefix:
             'Reference Solutions to Exercises in ',
           bookTitle:
-            'Probability Theory and Mathematical Statistics',
+            '"Probability Theory and Mathematical Statistics"',
           authorsPrefix:
             ' by ',
           authors:
