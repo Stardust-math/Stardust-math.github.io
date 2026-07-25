@@ -1,42 +1,23 @@
 /* =========================================================
-   About Shell
+   About page shell
+   - One shared content card, matching Schedule / Social / Life
    - About heading and submodule navigation
    - Profile and Archive panel visibility
    - Archive intentionally contains no visible placeholder
    ========================================================= */
 
-.about-header {
-  width: 95%;
-  max-width: 95%;
-  margin: 0 auto 20px;
-  padding: 24px 30px 18px;
-
-  background: linear-gradient(
-    180deg,
-    color-mix(
-      in srgb,
-      var(--surface) 92%,
-      var(--surface-2)
-    ),
-    var(--surface-2)
-  );
-
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-lg);
+.about-container {
+  width: 100%;
 }
 
 .about-heading {
-  margin: 0 0 18px;
-  color: var(--accent);
-
-  font-family: var(--font-heading-serif);
-  font-size: 2.6em;
-  font-variant: small-caps;
-  font-weight: 700;
-  letter-spacing: 0.6px;
-  line-height: 1.15;
+  font-size: 2.4em;
   text-align: center;
+  color: var(--accent);
+  margin-bottom: 26px;
+  font-family: var(--font-heading-serif);
+  font-variant: small-caps;
+  letter-spacing: 0.6px;
 }
 
 body[data-lang="zh"] .about-heading {
@@ -45,12 +26,12 @@ body[data-lang="zh"] .about-heading {
   letter-spacing: 0.8px;
 }
 
-.about-header .about-switcher {
-  margin-bottom: 0;
+.about-shell {
+  width: 100%;
 }
 
-.about-section[hidden] {
-  display: none !important;
+.about-section {
+  display: none;
 }
 
 .about-section.active {
@@ -60,42 +41,26 @@ body[data-lang="zh"] .about-heading {
 #about-profile-section,
 #about-archive-section {
   scroll-margin-top:
-    calc(var(--topnav-height, 72px) + 14px);
-}
-
-/*
-  Archive 保持纯空白。
-  最小高度只用于防止页面高度跳变，
-  不会显示卡片、文字或占位符。
-*/
-#about-archive-section,
-#mount-about-archive:empty {
-  min-height:
     calc(
-      100vh -
-      var(--topnav-height, 72px) -
-      190px
+      var(--topnav-height, 72px) +
+      14px
     );
 }
 
-@media (max-width: 768px) {
-  .about-header {
-    width: 98%;
-    max-width: 98%;
-    padding: 20px;
-  }
+/*
+  Archive remains genuinely blank.
 
+  This minimum height only limits layout movement when
+  switching between Profile and Archive. It does not add
+  a card, text, placeholder, border, or background.
+*/
+#about-archive-section,
+#mount-about-archive:empty {
+  min-height: 220px;
+}
+
+@media (max-width: 768px) {
   .about-heading {
     font-size: 2.1em;
-  }
-
-  #about-archive-section,
-  #mount-about-archive:empty {
-    min-height:
-      calc(
-        100vh -
-        var(--topnav-height, 60px) -
-        170px
-      );
   }
 }

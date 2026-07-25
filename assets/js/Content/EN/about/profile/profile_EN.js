@@ -2,12 +2,6 @@
   'use strict';
 
   window.PROFILE_EN_INNER_HTML = `
-    <button id="toggle-btn">
-      <span><i class="fas fa-sun"></i></span>
-    </button>
-    <div id="clock">GMT+8 00:00</div>
-    <div class="container">
-
       <div class="section resume-hero" id="resume-hero">
         <div class="resume-hero-avatar">
           <img src="./assets/images/about/profile.jpg" alt="Profile photo">
@@ -83,7 +77,7 @@
           </p>
         </div>
       </div>
-      
+
       <div class="section">
         <h2>Research Interests</h2>
         <ul><li>Operations Management, Operations Research, Supply Chain, Stochastic Models, Game Theory.</li></ul>
@@ -118,7 +112,7 @@
           </div>
         </div>
       </div>
-      
+
       <div class="section">
         <h2>Honors & Awards</h2>
         <table width="100%">
@@ -191,10 +185,9 @@
               </div>
             </td>
           </tr>
-
         </table>
       </div>
-      
+
       <div class="section">
         <h2>Research Experience</h2>
         <div class="subheading">
@@ -227,7 +220,7 @@
           <li>Derived closed-form pooling and separating wholesale-price policies and profit expressions across no-sharing and retailer-sharing regimes.</li>
           <li>Established payoff equivalence between voluntary and mandatory information sharing, and characterized comparative statics showing how belief specifications (passive vs. linear) and inequality aversion reshape channel performance.</li>
         </ul>
-        
+
         <div class="subheading">
           <span class="subheading-title">Monopoly Firm's Bilateral Game Under Ship-then-Shop (STS) and Traditional Business Models</span>
           <span>Sep. 2024 -- Aug. 2025</span>
@@ -244,7 +237,7 @@
           <li>Characterized the firm's optimal pricing and proved that showrooming does not arise in equilibrium, even after relaxing assumptions on consumer type awareness and the distributions of consumer types and return costs.</li>
         </ul>
       </div>
-      
+
       <div class="section">
         <h2>Teaching Experience</h2>
         <div class="subheading">
@@ -516,7 +509,7 @@
           </li>
         </ul>
       </div>
-      
+
       <div class="section">
         <h2>Additional Information</h2>
         <ul>
@@ -532,8 +525,7 @@
           </li>
         </ul>
       </div>
-    </div>
-    
+
     <a href="#" class="back-btn" id="resume-back-btn">
       <i class="fas fa-arrow-left"></i>
     </a>

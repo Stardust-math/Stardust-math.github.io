@@ -31,6 +31,7 @@
 
   function normalizeView(view) {
     const key = String(view || '').trim().toLowerCase();
+
     return VIEW_ALIASES[key] || null;
   }
 
@@ -39,13 +40,17 @@
       window.SiteLang &&
       typeof window.SiteLang.getLang === 'function'
     ) {
-      return window.SiteLang.getLang() === 'zh' ? 'zh' : 'en';
+      return window.SiteLang.getLang() === 'zh'
+        ? 'zh'
+        : 'en';
     }
 
     return (
       document.body &&
       document.body.dataset.lang === 'zh'
-    ) ? 'zh' : 'en';
+    )
+      ? 'zh'
+      : 'en';
   }
 
   function getDict() {
@@ -53,7 +58,10 @@
   }
 
   function getMount() {
-    return document.getElementById(MOUNT_ID) || document.body;
+    return (
+      document.getElementById(MOUNT_ID) ||
+      document.body
+    );
   }
 
   function getRoot() {
@@ -65,74 +73,80 @@
 
     if (existing) {
       applyI18N();
+
       return existing;
     }
 
     const mount = getMount();
 
     mount.insertAdjacentHTML('beforeend', `
-      <div id="about" data-about-view="${DEFAULT_VIEW}">
-        <header class="about-header">
-          <h1
+      <div
+        id="about"
+        data-about-view="${DEFAULT_VIEW}"
+      >
+        <div class="container about-container">
+          <div
             class="about-heading"
             data-about-i18n="heading"
-          >About Me</h1>
+          >About Me</div>
 
-          <nav
-            class="about-switcher"
-            role="tablist"
-            aria-label="About sections"
-          >
-            <a
-              class="about-switch-btn active"
-              id="about-tab-profile"
-              href="./about/profile/"
+          <div class="about-shell">
+            <nav
+              class="about-switcher"
+              role="tablist"
+              aria-label="About sections"
+            >
+              <a
+                class="about-switch-btn active"
+                id="about-tab-profile"
+                href="./about/profile/"
+                data-view="profile"
+                role="tab"
+                aria-selected="true"
+                aria-controls="about-profile-section"
+                tabindex="0"
+                data-about-i18n="profile"
+                data-cursor="precise_select"
+                data-cursor-fallback="pointer"
+              >Profile</a>
+
+              <a
+                class="about-switch-btn"
+                id="about-tab-archive"
+                href="./about/archive/"
+                data-view="archive"
+                role="tab"
+                aria-selected="false"
+                aria-controls="about-archive-section"
+                tabindex="-1"
+                data-about-i18n="archive"
+                data-cursor="precise_select"
+                data-cursor-fallback="pointer"
+              >Archive</a>
+            </nav>
+
+            <section
+              class="about-section active"
+              id="about-profile-section"
               data-view="profile"
-              role="tab"
-              aria-selected="true"
-              aria-controls="about-profile-section"
-              tabindex="0"
-              data-about-i18n="profile"
-              data-cursor="precise_select"
-              data-cursor-fallback="pointer"
-            >Profile</a>
+              role="tabpanel"
+              aria-labelledby="about-tab-profile"
+            >
+              <div id="mount-about-profile"></div>
+            </section>
 
-            <a
-              class="about-switch-btn"
-              id="about-tab-archive"
-              href="./about/archive/"
+            <section
+              class="about-section about-archive-section"
+              id="about-archive-section"
               data-view="archive"
-              role="tab"
-              aria-selected="false"
-              aria-controls="about-archive-section"
-              tabindex="-1"
-              data-about-i18n="archive"
-              data-cursor="precise_select"
-              data-cursor-fallback="pointer"
-            >Archive</a>
-          </nav>
-        </header>
-
-        <section
-          class="about-section active"
-          id="about-profile-section"
-          data-view="profile"
-          role="tabpanel"
-          aria-labelledby="about-tab-profile"
-        >
-          <div id="mount-about-profile"></div>
-        </section>
-
-        <section
-          class="about-section about-archive-section"
-          id="about-archive-section"
-          data-view="archive"
-          role="tabpanel"
-          aria-labelledby="about-tab-archive"
-          hidden
-        >
-          <div id="mount-about-archive"></div>
-        </section>
+              role="tabpanel"
+              aria-labelledby="about-tab-archive"
+              hidden
+            >
+              <div id="mount-about-archive"></div>
+            </section>
+          </div>
+        </div>
       </div>
     `);
 
@@ -146,48 +160,101 @@
   function applyI18N() {
     const root = getRoot();
 
-    if (!root) return;
+    if (!root) {
+      return;
+    }
 
     const dict = getDict();
 
-    root.querySelectorAll('[data-about-i18n]').forEach((element) => {
-      const key = element.getAttribute('data-about-i18n');
+    root
+      .querySelectorAll('[data-about-i18n]')
+      .forEach((element) => {
+        const key = element.getAttribute(
+          'data-about-i18n'
+        );
 
-      if (!key || typeof dict[key] !== 'string') return;
+        if (
+          !key ||
+          typeof dict[key] !== 'string'
+        ) {
+          return;
+        }
 
-      element.textContent = dict[key];
-    });
+        element.textContent = dict[key];
+      });
 
-    const switcher = root.querySelector('.about-switcher');
+    const switcher = root.querySelector(
+      '.about-switcher'
+    );
 
     if (switcher) {
-      switcher.setAttribute('aria-label', dict.sectionsLabel);
+      switcher.setAttribute(
+        'aria-label',
+        dict.sectionsLabel
+      );
     }
   }
 
   function setView(view) {
-    const normalized = normalizeView(view) || DEFAULT_VIEW;
+    const normalized =
+      normalizeView(view) ||
+      DEFAULT_VIEW;
+
     const root = getRoot() || render();
 
     currentView = normalized;
     root.dataset.aboutView = normalized;
 
-    root.querySelectorAll('.about-switch-btn[data-view]').forEach((button) => {
-      const buttonView = normalizeView(button.dataset.view);
-      const active = buttonView === normalized;
+    root
+      .querySelectorAll(
+        '.about-switch-btn[data-view]'
+      )
+      .forEach((button) => {
+        const buttonView = normalizeView(
+          button.dataset.view
+        );
 
-      button.classList.toggle('active', active);
-      button.setAttribute('aria-selected', active ? 'true' : 'false');
-      button.setAttribute('tabindex', active ? '0' : '-1');
-    });
+        const active =
+          buttonView === normalized;
 
-    root.querySelectorAll('.about-section[data-view]').forEach((section) => {
-      const sectionView = normalizeView(section.dataset.view);
-      const active = sectionView === normalized;
+        button.classList.toggle(
+          'active',
+          active
+        );
 
-      section.classList.toggle('active', active);
-      section.toggleAttribute('hidden', !active);
-    });
+        button.setAttribute(
+          'aria-selected',
+          active ? 'true' : 'false'
+        );
+
+        button.setAttribute(
+          'tabindex',
+          active ? '0' : '-1'
+        );
+      });
+
+    root
+      .querySelectorAll(
+        '.about-section[data-view]'
+      )
+      .forEach((section) => {
+        const sectionView = normalizeView(
+          section.dataset.view
+        );
+
+        const active =
+          sectionView === normalized;
+
+        section.classList.toggle(
+          'active',
+          active
+        );
+
+        section.toggleAttribute(
+          'hidden',
+          !active
+        );
+      });
 
     refreshCursor();
 
@@ -204,7 +271,8 @@
     if (
       root &&
       window.CustomCursorAPI &&
-      typeof window.CustomCursorAPI.refresh === 'function'
+      typeof window.CustomCursorAPI.refresh ===
+        'function'
     ) {
       window.CustomCursorAPI.refresh(root);
     }
@@ -229,7 +297,10 @@
     refreshCursor
   };
 
-  window.addEventListener('site:langchange', () => {
-    applyI18N();
-  });
+  window.addEventListener(
+    'site:langchange',
+    () => {
+      applyI18N();
+    }
+  );
 })();

@@ -2,12 +2,6 @@
   'use strict';
 
   window.PROFILE_ZH_INNER_HTML = `
-    <button id="toggle-btn">
-      <span><i class="fas fa-sun"></i></span>
-    </button>
-    <div id="clock">GMT+8 00:00</div>
-    <div class="container">
-
       <div class="section resume-hero" id="resume-hero">
         <div class="resume-hero-avatar">
           <img src="./assets/images/about/profile.jpg" alt="Profile photo">
@@ -83,7 +77,7 @@
           </p>
         </div>
       </div>
-      
+
       <div class="section">
         <h2>研究兴趣</h2>
         <ul><li>运营管理、运筹学、供应链、随机模型、博弈论.</li></ul>
@@ -118,7 +112,7 @@
           </div>
         </div>
       </div>
-      
+
       <div class="section">
         <h2>荣誉与奖项</h2>
         <table width="100%">
@@ -191,10 +185,9 @@
               </div>
             </td>
           </tr>
-
         </table>
       </div>
-      
+
       <div class="section">
         <h2>科研经历</h2>
         <div class="subheading">
@@ -227,7 +220,7 @@
           <li>推导信息不共享与零售商共享两种机制下的闭式"混同/分离"批发价策略与利润表达式.</li>
           <li>证明自愿信息共享与强制信息共享在收益上的等价性, 并给出比较静态: 阐明不同信念设定（被动 vs. 线性）与不平等厌恶如何重塑渠道表现.</li>
         </ul>
-        
+
         <div class="subheading">
           <span class="subheading-title">垄断企业在"先发货后购物 (STS)"与传统商业模式下的双边博弈</span>
           <span>2024年9月 -- 2025年8月</span>
@@ -244,7 +237,7 @@
           <li>刻画企业最优定价, 并证明在均衡中不会出现"展厅效应 (showrooming)"; 该结论在放松消费者类型认知假设, 以及放宽消费者类型与退货成本分布假设后仍然成立.</li>
         </ul>
       </div>
-      
+
       <div class="section">
         <h2>教学经历</h2>
         <div class="subheading">
@@ -516,7 +509,7 @@
           </li>
         </ul>
       </div>
-      
+
       <div class="section">
         <h2>附加信息</h2>
         <ul>
@@ -532,8 +525,7 @@
           </li>
         </ul>
       </div>
-    </div>
-    
+
     <a href="#" class="back-btn" id="resume-back-btn">
       <i class="fas fa-arrow-left"></i>
     </a>
