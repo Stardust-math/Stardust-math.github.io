@@ -1,44 +1,91 @@
 ﻿(function () {
   'use strict';
 
-  var BASE = new URL('./assets/cursors/', document.baseURI).href;
+  var BASE = new URL(
+    './assets/cursors/',
+    document.baseURI
+  ).href;
 
   var CURSORS = {
     normal: 'normal.cur',
     unavailable: 'unavailable.cur',
-    vertical_resize: 'vertical_resize.cur',
-    background_run: 'background_run.cur',
+    vertical_resize:
+      'vertical_resize.cur',
+    background_run:
+      'background_run.cur',
     candidate: 'candidate.cur',
-    precise_select: 'precise_select.cur',
-    link_select: 'link_select.cur',
+    precise_select:
+      'precise_select.cur',
+    link_select:
+      'link_select.cur',
     busy: 'busy.cur',
-    handwriting: 'handwriting.cur',
-    horizontal_resize: 'horizontal_resize.cur',
-    text_select: 'text_select.cur',
-    diagonal1: 'diagonal_resize1.cur',
-    diagonal2: 'diagonal_resize2.cur',
+    handwriting:
+      'handwriting.cur',
+    horizontal_resize:
+      'horizontal_resize.cur',
+    text_select:
+      'text_select.cur',
+    diagonal1:
+      'diagonal_resize1.cur',
+    diagonal2:
+      'diagonal_resize2.cur',
     move: 'move.cur',
     help: 'help.cur'
   };
 
-  var STYLE_ID = 'custom-cursor-style';
-  var BUSY_CLASS = 'site-busy';
-  var CURSOR_OVERRIDE_VAR = '--site-cursor-override';
+  var STYLE_ID =
+    'custom-cursor-style';
 
-  function cursorValue(fileName, fallback) {
-    return 'url("' + BASE + fileName + '"), ' + (fallback || 'auto');
+  var BUSY_CLASS =
+    'site-busy';
+
+  var CURSOR_OVERRIDE_VAR =
+    '--site-cursor-override';
+
+  function cursorValue(
+    fileName,
+    fallback
+  ) {
+    return (
+      'url("' +
+      BASE +
+      fileName +
+      '"), ' +
+      (fallback || 'auto')
+    );
   }
 
-  function cursorCssValue(key, fallback) {
-    if (!CURSORS[key]) return '';
-    return 'var(' + CURSOR_OVERRIDE_VAR + ', ' + cursorValue(CURSORS[key], fallback) + ')';
+  function cursorCssValue(
+    key,
+    fallback
+  ) {
+    if (!CURSORS[key]) {
+      return '';
+    }
+
+    return (
+      'var(' +
+      CURSOR_OVERRIDE_VAR +
+      ', ' +
+      cursorValue(
+        CURSORS[key],
+        fallback
+      ) +
+      ')'
+    );
   }
 
-  function normalizeSelectors(selectors) {
-    if (!selectors) return [];
+  function normalizeSelectors(
+    selectors
+  ) {
+    if (!selectors) {
+      return [];
+    }
 
     if (Array.isArray(selectors)) {
-      return selectors.filter(Boolean);
+      return selectors.filter(
+        Boolean
+      );
     }
 
     return String(selectors)
@@ -49,47 +96,105 @@
       .filter(Boolean);
   }
 
-  function joinSelectors(selectors) {
-    return normalizeSelectors(selectors).join(',\n');
+  function joinSelectors(
+    selectors
+  ) {
+    return normalizeSelectors(
+      selectors
+    ).join(',\n');
   }
 
-  function withDescendants(selectors) {
+  function withDescendants(
+    selectors
+  ) {
     var expanded = [];
 
-    normalizeSelectors(selectors).forEach(function (selector) {
-      expanded.push(selector);
-      expanded.push(selector + ' *');
-    });
+    normalizeSelectors(
+      selectors
+    ).forEach(
+      function (selector) {
+        expanded.push(selector);
+        expanded.push(
+          selector + ' *'
+        );
+      }
+    );
 
     return expanded;
   }
 
-  function rule(selectors, key, fallback, important) {
-    var selectorText = joinSelectors(selectors);
-    var value = cursorCssValue(key, fallback);
+  function rule(
+    selectors,
+    key,
+    fallback,
+    important
+  ) {
+    var selectorText =
+      joinSelectors(selectors);
 
-    if (!selectorText || !value) return '';
+    var value =
+      cursorCssValue(
+        key,
+        fallback
+      );
 
-    return selectorText + ' {\n' +
-      '  cursor: ' + value + (important ? ' !important' : '') + ';\n' +
-      '}\n';
+    if (
+      !selectorText ||
+      !value
+    ) {
+      return '';
+    }
+
+    return (
+      selectorText +
+      ' {\n' +
+      '  cursor: ' +
+      value +
+      (
+        important
+          ? ' !important'
+          : ''
+      ) +
+      ';\n' +
+      '}\n'
+    );
   }
 
   function buildBusyStateCss() {
-    if (!CURSORS.busy) return '';
+    if (!CURSORS.busy) {
+      return '';
+    }
 
-    var busyValue = cursorValue(CURSORS.busy, 'wait');
+    var busyValue =
+      cursorValue(
+        CURSORS.busy,
+        'wait'
+      );
 
     return [
       'html.' + BUSY_CLASS + ' {',
-      '  ' + CURSOR_OVERRIDE_VAR + ': ' + busyValue + ';',
+      '  ' +
+        CURSOR_OVERRIDE_VAR +
+        ': ' +
+        busyValue +
+        ';',
       '}',
       '',
-      'html.' + BUSY_CLASS + ',',
-      'html.' + BUSY_CLASS + ' *,',
-      'html.' + BUSY_CLASS + ' *::before,',
-      'html.' + BUSY_CLASS + ' *::after {',
-      '  cursor: var(' + CURSOR_OVERRIDE_VAR + ') !important;',
+      'html.' +
+        BUSY_CLASS +
+        ',',
+      'html.' +
+        BUSY_CLASS +
+        ' *,',
+      'html.' +
+        BUSY_CLASS +
+        ' *::before,',
+      'html.' +
+        BUSY_CLASS +
+        ' *::after {',
+      '  cursor: var(' +
+        CURSOR_OVERRIDE_VAR +
+        ') !important;',
       '}'
     ].join('\n') + '\n';
   }
@@ -97,121 +202,353 @@
   function buildCursorCss() {
     var css = '';
 
-    function add(selectors, key, fallback, important) {
-      css += rule(selectors, key, fallback, important);
+    function add(
+      selectors,
+      key,
+      fallback,
+      important
+    ) {
+      css += rule(
+        selectors,
+        key,
+        fallback,
+        important
+      );
     }
 
-    function addWithChildren(selectors, key, fallback, important) {
-      add(withDescendants(selectors), key, fallback, important);
+    function addWithChildren(
+      selectors,
+      key,
+      fallback,
+      important
+    ) {
+      add(
+        withDescendants(
+          selectors
+        ),
+        key,
+        fallback,
+        important
+      );
     }
 
-    css += rule('html, body', 'normal', 'auto', false);
+    /* Default document cursor */
+    css += rule(
+      'html, body',
+      'normal',
+      'auto',
+      false
+    );
 
-    addWithChildren([
-      'a[href]',
-      'area[href]',
-      '[role="link"]'
-    ], 'link_select', 'pointer', true);
+    /* =====================================================
+       Links
+       ===================================================== */
 
-    addWithChildren([
-      'button:not(:disabled)',
-      '.btn:not(.disabled):not(.is-disabled)',
-      'input[type="button"]:not(:disabled)',
-      'input[type="submit"]:not(:disabled)',
-      'input[type="reset"]:not(:disabled)',
-      'input[type="checkbox"]:not(:disabled)',
-      'input[type="radio"]:not(:disabled)',
-      'select:not(:disabled)',
-      'summary',
-      'label[for]',
-      '[role="button"]:not([aria-disabled="true"])',
-      '[role="tab"]:not([aria-disabled="true"])',
-      '[role="switch"]:not([aria-disabled="true"])',
-      '[role="menuitem"]:not([aria-disabled="true"])',
-      '[role="option"]:not([aria-disabled="true"])'
-    ], 'precise_select', 'pointer', true);
+    addWithChildren(
+      [
+        'a[href]',
+        'area[href]',
+        '[role="link"]'
+      ],
+      'link_select',
+      'pointer',
+      true
+    );
 
-    add([
-      'input:not([type])',
-      'input[type="text"]',
-      'input[type="search"]',
-      'input[type="email"]',
-      'input[type="password"]',
-      'input[type="number"]',
-      'input[type="url"]',
-      'input[type="tel"]',
-      'textarea',
-      '[contenteditable="true"]'
-    ], 'text_select', 'text', true);
+    /* =====================================================
+       Ordinary controls
+       ===================================================== */
 
-    addWithChildren([
-      '[draggable="true"]',
-      '.draggable'
-    ], 'move', 'move', true);
+    addWithChildren(
+      [
+        'button:not(:disabled)',
+        '.btn:not(.disabled):not(.is-disabled)',
+        'input[type="button"]:not(:disabled)',
+        'input[type="submit"]:not(:disabled)',
+        'input[type="reset"]:not(:disabled)',
+        'input[type="checkbox"]:not(:disabled)',
+        'input[type="radio"]:not(:disabled)',
+        'select:not(:disabled)',
+        'summary',
+        'label[for]',
+        '[role="button"]:not([aria-disabled="true"])',
+        '[role="tab"]:not([aria-disabled="true"])',
+        '[role="switch"]:not([aria-disabled="true"])',
+        '[role="menuitem"]:not([aria-disabled="true"])',
+        '[role="option"]:not([aria-disabled="true"])'
+      ],
+      'precise_select',
+      'pointer',
+      true
+    );
 
-    addWithChildren('.resize-vertical', 'vertical_resize', 'ns-resize', true);
-    addWithChildren('.resize-horizontal', 'horizontal_resize', 'ew-resize', true);
-    addWithChildren('.resize-diag1', 'diagonal1', 'nwse-resize', true);
-    addWithChildren('.resize-diag2', 'diagonal2', 'nesw-resize', true);
+    /* =====================================================
+       Text input
+       ===================================================== */
 
-    addWithChildren([
-      '.help',
-      '[data-cursor="help"]',
-      '#resume button.expander[data-expand-target]'
-    ], 'help', 'help', true);
+    add(
+      [
+        'input:not([type])',
+        'input[type="text"]',
+        'input[type="search"]',
+        'input[type="email"]',
+        'input[type="password"]',
+        'input[type="number"]',
+        'input[type="url"]',
+        'input[type="tel"]',
+        'textarea',
+        '[contenteditable="true"]'
+      ],
+      'text_select',
+      'text',
+      true
+    );
 
-    addWithChildren([
-      '.busy',
-      '[data-busy]',
-      '[aria-busy="true"]'
-    ], 'busy', 'wait', true);
+    /* =====================================================
+       Drag and resize
+       ===================================================== */
 
-    addWithChildren([
-      '.handwriting',
-      '.scribble-area'
-    ], 'handwriting', 'crosshair', true);
+    addWithChildren(
+      [
+        '[draggable="true"]',
+        '.draggable'
+      ],
+      'move',
+      'move',
+      true
+    );
+
+    addWithChildren(
+      '.resize-vertical',
+      'vertical_resize',
+      'ns-resize',
+      true
+    );
+
+    addWithChildren(
+      '.resize-horizontal',
+      'horizontal_resize',
+      'ew-resize',
+      true
+    );
+
+    addWithChildren(
+      '.resize-diag1',
+      'diagonal1',
+      'nwse-resize',
+      true
+    );
+
+    addWithChildren(
+      '.resize-diag2',
+      'diagonal2',
+      'nesw-resize',
+      true
+    );
+
+    /* =====================================================
+       Help and expander controls
+       ===================================================== */
 
     /*
-      Explicit data-cursor declarations are the authoritative cursor semantics.
+      General expander rule.
 
-      These rules intentionally use !important because many page-level CSS files
-      still contain native cursor: pointer/default declarations. The scope is not
-      a business-class fallback list; it only applies where the element itself
-      explicitly declares data-cursor.
+      Every element that uses the site's standard
+      .expander class together with data-expand-target
+      represents an action for displaying additional
+      information.
 
-      The site-busy state is handled by --site-cursor-override, so these explicit
-      declarations keep their normal semantics while automatically resolving to
-      busy.cur whenever the document root has html.site-busy.
+      This applies consistently to:
+
+      - Profile expanders
+      - Profile email expanders
+      - Education and award expanders
+      - Project detail expanders
+      - Archive document expanders
+      - Future expanders on other pages
+
+      The selector has greater specificity than the
+      ordinary button:not(:disabled) rule, so help.cur
+      reliably replaces precise_select.cur.
     */
-    addWithChildren('[data-cursor][data-cursor="normal"]', 'normal', 'auto', true);
-    addWithChildren('[data-cursor][data-cursor="unavailable"]', 'unavailable', 'not-allowed', true);
-    addWithChildren('[data-cursor][data-cursor="vertical_resize"]', 'vertical_resize', 'ns-resize', true);
-    addWithChildren('[data-cursor][data-cursor="background_run"]', 'background_run', 'progress', true);
-    addWithChildren('[data-cursor][data-cursor="candidate"]', 'candidate', 'copy', true);
-    addWithChildren('[data-cursor][data-cursor="precise_select"]', 'precise_select', 'pointer', true);
-    addWithChildren('[data-cursor][data-cursor="link_select"]', 'link_select', 'pointer', true);
-    addWithChildren('[data-cursor][data-cursor="busy"]', 'busy', 'wait', true);
-    addWithChildren('[data-cursor][data-cursor="handwriting"]', 'handwriting', 'crosshair', true);
-    addWithChildren('[data-cursor][data-cursor="horizontal_resize"]', 'horizontal_resize', 'ew-resize', true);
-    addWithChildren('[data-cursor][data-cursor="text_select"]', 'text_select', 'text', true);
-    addWithChildren('[data-cursor][data-cursor="diagonal1"]', 'diagonal1', 'nwse-resize', true);
-    addWithChildren('[data-cursor][data-cursor="diagonal2"]', 'diagonal2', 'nesw-resize', true);
-    addWithChildren('[data-cursor][data-cursor="move"]', 'move', 'move', true);
+    addWithChildren(
+      [
+        '.help',
+        '[data-cursor="help"]',
+        '.expander[data-expand-target]'
+      ],
+      'help',
+      'help',
+      true
+    );
 
-    addWithChildren([
-      '[disabled]',
-      '[aria-disabled="true"]',
-      '.disabled',
-      '.is-disabled'
-    ], 'unavailable', 'not-allowed', true);
+    /* =====================================================
+       Busy and handwriting
+       ===================================================== */
+
+    addWithChildren(
+      [
+        '.busy',
+        '[data-busy]',
+        '[aria-busy="true"]'
+      ],
+      'busy',
+      'wait',
+      true
+    );
+
+    addWithChildren(
+      [
+        '.handwriting',
+        '.scribble-area'
+      ],
+      'handwriting',
+      'crosshair',
+      true
+    );
+
+    /* =====================================================
+       Explicit cursor semantics
+       ===================================================== */
 
     /*
-      Global busy is the highest-priority cursor state.
+      Explicit data-cursor declarations are authoritative.
 
-      The rule below is intentionally part of the cursor stylesheet itself rather
-      than a separate late override. It makes busy a first-class cursor state:
-      when SiteBusyState toggles html.site-busy, every cursor declaration produced
-      by this file resolves through --site-cursor-override to busy.cur.
+      The doubled attribute selectors deliberately provide
+      enough specificity to override broad rules such as
+      button:not(:disabled).
+
+      Descendant rules ensure that icons and spans inside
+      controls use the same cursor as their parent.
+    */
+
+    addWithChildren(
+      '[data-cursor][data-cursor="normal"]',
+      'normal',
+      'auto',
+      true
+    );
+
+    addWithChildren(
+      '[data-cursor][data-cursor="unavailable"]',
+      'unavailable',
+      'not-allowed',
+      true
+    );
+
+    addWithChildren(
+      '[data-cursor][data-cursor="vertical_resize"]',
+      'vertical_resize',
+      'ns-resize',
+      true
+    );
+
+    addWithChildren(
+      '[data-cursor][data-cursor="background_run"]',
+      'background_run',
+      'progress',
+      true
+    );
+
+    addWithChildren(
+      '[data-cursor][data-cursor="candidate"]',
+      'candidate',
+      'copy',
+      true
+    );
+
+    addWithChildren(
+      '[data-cursor][data-cursor="precise_select"]',
+      'precise_select',
+      'pointer',
+      true
+    );
+
+    addWithChildren(
+      '[data-cursor][data-cursor="link_select"]',
+      'link_select',
+      'pointer',
+      true
+    );
+
+    addWithChildren(
+      '[data-cursor][data-cursor="busy"]',
+      'busy',
+      'wait',
+      true
+    );
+
+    addWithChildren(
+      '[data-cursor][data-cursor="handwriting"]',
+      'handwriting',
+      'crosshair',
+      true
+    );
+
+    addWithChildren(
+      '[data-cursor][data-cursor="horizontal_resize"]',
+      'horizontal_resize',
+      'ew-resize',
+      true
+    );
+
+    addWithChildren(
+      '[data-cursor][data-cursor="text_select"]',
+      'text_select',
+      'text',
+      true
+    );
+
+    addWithChildren(
+      '[data-cursor][data-cursor="diagonal1"]',
+      'diagonal1',
+      'nwse-resize',
+      true
+    );
+
+    addWithChildren(
+      '[data-cursor][data-cursor="diagonal2"]',
+      'diagonal2',
+      'nesw-resize',
+      true
+    );
+
+    addWithChildren(
+      '[data-cursor][data-cursor="move"]',
+      'move',
+      'move',
+      true
+    );
+
+    addWithChildren(
+      '[data-cursor][data-cursor="help"]',
+      'help',
+      'help',
+      true
+    );
+
+    /* =====================================================
+       Disabled controls
+       ===================================================== */
+
+    addWithChildren(
+      [
+        '[disabled]',
+        '[aria-disabled="true"]',
+        '.disabled',
+        '.is-disabled'
+      ],
+      'unavailable',
+      'not-allowed',
+      true
+    );
+
+    /*
+      Global busy is the highest-priority state.
+
+      All cursor declarations resolve through
+      --site-cursor-override, so setting html.site-busy
+      changes every cursor to busy.cur.
     */
     css += buildBusyStateCss();
 
@@ -219,60 +556,108 @@
   }
 
   function injectCursorStyle() {
-    var existing = document.getElementById(STYLE_ID);
+    var existing =
+      document.getElementById(
+        STYLE_ID
+      );
 
     if (existing) {
-      existing.textContent = buildCursorCss();
+      existing.textContent =
+        buildCursorCss();
 
       /*
-        Keep the cursor stylesheet near the end of <head>.
-        This avoids being accidentally overridden by later lazy-loaded page CSS,
-        while the explicit data-cursor rules still remain narrowly scoped.
+        Keep the generated cursor stylesheet near the
+        end of head so lazy-loaded module styles cannot
+        accidentally override cursor semantics.
       */
-      if (existing.parentNode === document.head) {
-        document.head.appendChild(existing);
+      if (
+        existing.parentNode ===
+        document.head
+      ) {
+        document.head.appendChild(
+          existing
+        );
       }
 
       return existing;
     }
 
-    var style = document.createElement('style');
-    style.id = STYLE_ID;
-    style.textContent = buildCursorCss();
+    var style =
+      document.createElement(
+        'style'
+      );
 
-    document.head.appendChild(style);
+    style.id = STYLE_ID;
+    style.textContent =
+      buildCursorCss();
+
+    document.head.appendChild(
+      style
+    );
+
     return style;
   }
 
-  function applyCursorToElement(el, cursorKey, fallback) {
-    var value = cursorCssValue(cursorKey, fallback);
-    if (!el || !value) return;
+  function applyCursorToElement(
+    element,
+    cursorKey,
+    fallback
+  ) {
+    var value =
+      cursorCssValue(
+        cursorKey,
+        fallback
+      );
+
+    if (
+      !element ||
+      !value
+    ) {
+      return;
+    }
 
     try {
-      el.style.cursor = value;
-    } catch (e) { }
+      element.style.cursor =
+        value;
+    } catch (error) {
+      /*
+        Cursor failures must remain non-fatal.
+      */
+    }
   }
 
-  function setDefaultCursor(key, fallback) {
-    var value = cursorCssValue(key, fallback || 'auto');
-    if (!value) return;
+  function setDefaultCursor(
+    key,
+    fallback
+  ) {
+    var value =
+      cursorCssValue(
+        key,
+        fallback || 'auto'
+      );
+
+    if (!value) {
+      return;
+    }
 
     try {
-      document.documentElement.style.cursor = value;
-    } catch (e) { }
+      document.documentElement
+        .style.cursor = value;
+    } catch (error) {
+      /*
+        Cursor failures must remain non-fatal.
+      */
+    }
   }
 
   function refresh() {
     /*
-      Kept as a compatibility API.
+      Cursor rules are handled by one generated stylesheet
+      rather than repeated scanning of the complete DOM.
 
-      The old implementation scanned the DOM and wrote inline cursor styles.
-      That caused slow loading and slow page switching when large sections,
-      such as Schedule tables, were rendered.
-
-      Cursor rules are handled by one stylesheet. Refresh rebuilds and moves
-      that stylesheet to the end of <head> so late-loaded module CSS does not
-      override explicit cursor semantics.
+      Refresh rebuilds the stylesheet and moves it to the
+      end of head, ensuring that late-loaded modules use
+      the current cursor rules.
     */
     injectCursorStyle();
   }
@@ -281,14 +666,28 @@
     injectCursorStyle();
 
     window.CustomCursorAPI = {
-      setDefault: setDefaultCursor,
-      apply: applyCursorToElement,
-      refresh: refresh
+      setDefault:
+        setDefaultCursor,
+
+      apply:
+        applyCursorToElement,
+
+      refresh:
+        refresh
     };
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init, { once: true });
+  if (
+    document.readyState ===
+    'loading'
+  ) {
+    document.addEventListener(
+      'DOMContentLoaded',
+      init,
+      {
+        once: true
+      }
+    );
   } else {
     init();
   }

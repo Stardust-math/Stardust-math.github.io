@@ -3,22 +3,52 @@
    - Lazy iframe loading
    - Reader actions
    - Fullscreen reading
+   - Stable responsive sizing
    ========================================================= */
 
 body.pdf-reader-fullscreen-open {
   overflow: hidden;
 }
 
+/* =========================================================
+   Reader shell
+   ========================================================= */
+
 .pdf-reader {
   width: 100%;
+  max-width: 100%;
   min-width: 0;
 }
+
+/*
+  Every direct layout layer must be allowed to shrink.
+
+  This prevents the iframe or its action bar from
+  contributing an intrinsic width wider than the
+  Archive container.
+*/
+.pdf-reader,
+.pdf-reader-actions,
+.pdf-reader-frame-shell,
+.pdf-reader-frame,
+.pdf-reader-fallback {
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   Reader actions
+   ========================================================= */
 
 .pdf-reader-actions {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
   gap: 14px;
   margin: 0 auto 18px;
 
@@ -44,12 +74,15 @@ body[data-lang="zh"]
 
   min-height: 36px;
   padding: 7px 16px;
-  border: 1px solid
+
+  border:
+    1px solid
     color-mix(
       in srgb,
       var(--accent) 45%,
       transparent
     );
+
   border-radius: 999px;
 
   background: transparent;
@@ -76,22 +109,27 @@ body[data-lang="zh"]
 .pdf-reader-action:hover,
 .pdf-reader-action:focus-visible {
   color: var(--accent-strong);
+
   border-color:
     color-mix(
       in srgb,
       var(--accent-strong) 72%,
       transparent
     );
+
   background:
     color-mix(
       in srgb,
       var(--accent) 8%,
       transparent
     );
+
   box-shadow:
-    0 3px 8px rgba(0, 0, 0, 0.045),
+    0 3px 8px
+      rgba(0, 0, 0, 0.045),
     inset 0 1px 0
       rgba(255, 255, 255, 0.24);
+
   text-decoration: none;
   transform: translateY(-1px);
 }
@@ -99,36 +137,52 @@ body[data-lang="zh"]
 .pdf-reader-action:focus-visible,
 .pdf-reader-fullscreen-close:focus-visible,
 .pdf-reader-fullscreen-link:focus-visible {
-  outline: 2px solid
+  outline:
+    2px solid
     color-mix(
       in srgb,
       var(--accent) 45%,
       transparent
     );
+
   outline-offset: 3px;
 }
 
+/* =========================================================
+   Embedded PDF frame
+   ========================================================= */
+
 .pdf-reader-frame-shell {
   width: 100%;
-  height: min(
-    1040px,
-    max(800px, 58vw)
-  );
+  max-width: 100%;
+  min-width: 0;
+
+  height:
+    min(
+      1040px,
+      max(800px, 58vw)
+    );
+
   min-height: 780px;
 
   overflow: hidden;
-  border-top: 1px solid
+
+  border-top:
+    1px solid
     color-mix(
       in srgb,
       var(--text) 14%,
       transparent
     );
-  border-bottom: 1px solid
+
+  border-bottom:
+    1px solid
     color-mix(
       in srgb,
       var(--text) 14%,
       transparent
     );
+
   background:
     color-mix(
       in srgb,
@@ -139,14 +193,27 @@ body[data-lang="zh"]
 
 .pdf-reader-frame {
   display: block;
+
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
   height: 100%;
+
   border: 0;
   background: transparent;
 }
 
+/* =========================================================
+   Reader fallback
+   ========================================================= */
+
 .pdf-reader-fallback {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
   margin: 10px 0 0;
+
   text-align: center;
   color: var(--muted);
   font-size: 0.92rem;
@@ -163,9 +230,17 @@ body[data-lang="zh"]
   text-decoration: underline;
 }
 
+/* =========================================================
+   Fullscreen top bar
+   ========================================================= */
+
 .pdf-reader-fullscreen-bar {
   display: none;
 }
+
+/* =========================================================
+   Fullscreen reader
+   ========================================================= */
 
 .pdf-reader.is-fullscreen {
   position: fixed;
@@ -175,9 +250,24 @@ body[data-lang="zh"]
   display: flex;
   flex-direction: column;
 
-  width: 100vw;
-  height: 100vh;
+  /*
+    Do not use width: 100vw or height: 100vh here.
+
+    The inset values already stretch the fixed element
+    across the complete usable viewport. Using 100vw in
+    combination with a reserved scrollbar gutter can make
+    the reader wider than the visible area and crop its
+    right edge.
+  */
+  width: auto;
+  height: auto;
+
   max-width: none;
+  max-height: none;
+  min-width: 0;
+  min-height: 0;
+
+  overflow: hidden;
 
   background:
     color-mix(
@@ -200,16 +290,23 @@ body[data-lang="zh"]
   flex: 0 0 auto;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
 
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
+  gap: 16px;
   min-height: 48px;
   padding: 0 18px;
-  border-bottom: 1px solid
+
+  border-bottom:
+    1px solid
     color-mix(
       in srgb,
       var(--text) 16%,
       transparent
     );
+
   background:
     color-mix(
       in srgb,
@@ -219,13 +316,17 @@ body[data-lang="zh"]
 }
 
 .pdf-reader-fullscreen-title {
+  flex: 1 1 auto;
   min-width: 0;
+
   overflow: hidden;
+
   color: var(--accent);
   font-family: var(--font-heading-serif);
   font-size: 1.02rem;
   font-variant: small-caps;
   letter-spacing: 0.45px;
+
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -239,8 +340,10 @@ body[data-lang="zh"]
 
 .pdf-reader-fullscreen-actions {
   flex: 0 0 auto;
+
   display: inline-flex;
   align-items: center;
+
   gap: 14px;
 
   font-family: var(--font-nav-serif);
@@ -274,6 +377,7 @@ body[data-lang="zh"]
 
   width: 34px;
   height: 34px;
+
   border: 0;
   border-radius: 999px;
 
@@ -295,21 +399,35 @@ body[data-lang="zh"]
 
 .pdf-reader-fullscreen-close:hover {
   color: var(--accent-strong);
+
   background:
     color-mix(
       in srgb,
       var(--accent) 9%,
       transparent
     );
+
   transform: rotate(4deg);
 }
+
+/* =========================================================
+   Fullscreen frame
+   ========================================================= */
 
 .pdf-reader.is-fullscreen
 .pdf-reader-frame-shell {
   flex: 1 1 auto;
+
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
   height: auto;
   min-height: 0;
+
+  overflow: hidden;
   border: 0;
+
   background:
     color-mix(
       in srgb,
@@ -320,6 +438,9 @@ body[data-lang="zh"]
 
 .pdf-reader.is-fullscreen
 .pdf-reader-frame {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   height: 100%;
 }
 
@@ -332,6 +453,10 @@ body[data-lang="zh"]
       transparent
     );
 }
+
+/* =========================================================
+   Responsive
+   ========================================================= */
 
 @media (max-width: 768px) {
   .pdf-reader-actions {
@@ -385,6 +510,10 @@ body[data-lang="zh"]
     display: none;
   }
 }
+
+/* =========================================================
+   Reduced motion
+   ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
   .pdf-reader-action,
