@@ -1,0 +1,214 @@
+/* =========================================================
+   About / Archive
+   - Categorised document list
+   - Existing site expander arrow
+   - Lazy shared PDF reader
+   ========================================================= */
+
+#about-archive {
+  width: 100%;
+}
+
+.archive-category + .archive-category {
+  margin-top: 30px;
+}
+
+.archive-category-title {
+  margin: 0 0 8px;
+  color: var(--accent);
+  font-family: var(--font-heading-serif);
+  font-size: 1.42rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+body[data-lang="zh"]
+.archive-category-title {
+  font-family: var(--font-zh-heading);
+}
+
+.archive-document-list {
+  border-top: 1px solid
+    color-mix(
+      in srgb,
+      var(--border) 88%,
+      transparent
+    );
+}
+
+.archive-document {
+  border-bottom: 1px solid
+    color-mix(
+      in srgb,
+      var(--border) 88%,
+      transparent
+    );
+}
+
+.archive-document-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+
+  padding: 17px 2px 16px;
+}
+
+.archive-document-copy {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.archive-document-title {
+  color: var(--text);
+  font-family: var(--font-heading-serif);
+  font-size: 1.08rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+/*
+  English book titles use the conventional
+  italic presentation.
+*/
+.archive-document-book-title {
+  font-style: italic;
+}
+
+/*
+  Author names remain upright.
+*/
+.archive-document-authors {
+  font-style: normal;
+}
+
+body[data-lang="zh"]
+.archive-document-title {
+  font-family: var(--font-zh-heading);
+}
+
+/*
+  Chinese book titles already use Chinese title marks,
+  so they should not be italicised.
+*/
+body[data-lang="zh"]
+.archive-document-book-title {
+  font-style: normal;
+}
+
+.archive-document-meta,
+.archive-document-notice {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.archive-document-meta {
+  margin-top: 5px;
+}
+
+.archive-document-meta:empty {
+  display: none;
+}
+
+.archive-document-notice {
+  margin-top: 1px;
+  font-style: italic;
+}
+
+.archive-document-expander {
+  flex: 0 0 32px;
+
+  width: 32px;
+  height: 32px;
+  margin: 1px -8px 0 0;
+
+  border-radius: 999px;
+}
+
+.archive-document-expander:hover,
+.archive-document-expander:focus-visible {
+  background:
+    color-mix(
+      in srgb,
+      var(--accent) 7%,
+      transparent
+    );
+}
+
+.archive-document-expand {
+  width: 100%;
+}
+
+.archive-document-content {
+  --expand-max-height: 1260px;
+
+  width: 100%;
+  grid-template-columns:
+    minmax(0, 1fr) !important;
+  justify-items: stretch !important;
+  gap: 0;
+}
+
+.archive-reader-status {
+  margin: 0;
+  padding: 18px 8px 24px;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.7;
+}
+
+.archive-reader-status a {
+  margin-left: 0.35em;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.archive-reader-status a:hover {
+  color: var(--accent-strong);
+  text-decoration: underline;
+}
+
+.archive-pdf-reader {
+  width: 100%;
+  min-width: 0;
+  padding-bottom: 12px;
+}
+
+@media (max-width: 768px) {
+  .archive-category-title {
+    font-size: 1.28rem;
+  }
+
+  .archive-document-row {
+    gap: 12px;
+    padding: 15px 0 14px;
+  }
+
+  .archive-document-title {
+    font-size: 1rem;
+  }
+
+  .archive-document-meta,
+  .archive-document-notice {
+    font-size: 0.86rem;
+  }
+
+  .archive-document-expander {
+    margin-right: -6px;
+  }
+
+  .archive-document-content {
+    --expand-max-height: 920px;
+  }
+}
+
+@media (max-width: 480px) {
+  .archive-document-row {
+    gap: 9px;
+  }
+
+  .archive-document-content {
+    --expand-max-height: 840px;
+  }
+}

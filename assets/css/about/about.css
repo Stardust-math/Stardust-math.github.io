@@ -1,9 +1,8 @@
 /* =========================================================
    About page shell
-   - One shared content card, matching Schedule / Social / Life
+   - One shared content card
    - About heading and submodule navigation
    - Profile and Archive panel visibility
-   - Archive intentionally contains no visible placeholder
    ========================================================= */
 
 .about-container {
@@ -48,11 +47,8 @@ body[data-lang="zh"] .about-heading {
 }
 
 /*
-  Archive remains genuinely blank.
-
-  This minimum height only limits layout movement when
-  switching between Profile and Archive. It does not add
-  a card, text, placeholder, border, or background.
+  Preserve a stable minimum panel height while the
+  Archive renderer is preparing its first content.
 */
 #about-archive-section,
 #mount-about-archive:empty {

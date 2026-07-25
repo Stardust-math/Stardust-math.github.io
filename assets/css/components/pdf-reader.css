@@ -1,0 +1,394 @@
+/* =========================================================
+   Shared PDF.js reader
+   - Lazy iframe loading
+   - Reader actions
+   - Fullscreen reading
+   ========================================================= */
+
+body.pdf-reader-fullscreen-open {
+  overflow: hidden;
+}
+
+.pdf-reader {
+  width: 100%;
+  min-width: 0;
+}
+
+.pdf-reader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  margin: 0 auto 18px;
+
+  font-family: var(--font-nav-serif);
+  font-variant: small-caps;
+  letter-spacing: 0.45px;
+}
+
+body[data-lang="zh"]
+.pdf-reader-actions {
+  font-family: var(--font-zh-heading);
+  font-variant: normal;
+  letter-spacing: 0.8px;
+}
+
+.pdf-reader-action {
+  appearance: none;
+  -webkit-appearance: none;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 36px;
+  padding: 7px 16px;
+  border: 1px solid
+    color-mix(
+      in srgb,
+      var(--accent) 45%,
+      transparent
+    );
+  border-radius: 999px;
+
+  background: transparent;
+  color: var(--accent);
+
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.2;
+
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+
+  transition:
+    color 160ms ease,
+    border-color 160ms ease,
+    background-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.pdf-reader-action:hover,
+.pdf-reader-action:focus-visible {
+  color: var(--accent-strong);
+  border-color:
+    color-mix(
+      in srgb,
+      var(--accent-strong) 72%,
+      transparent
+    );
+  background:
+    color-mix(
+      in srgb,
+      var(--accent) 8%,
+      transparent
+    );
+  box-shadow:
+    0 3px 8px rgba(0, 0, 0, 0.045),
+    inset 0 1px 0
+      rgba(255, 255, 255, 0.24);
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+
+.pdf-reader-action:focus-visible,
+.pdf-reader-fullscreen-close:focus-visible,
+.pdf-reader-fullscreen-link:focus-visible {
+  outline: 2px solid
+    color-mix(
+      in srgb,
+      var(--accent) 45%,
+      transparent
+    );
+  outline-offset: 3px;
+}
+
+.pdf-reader-frame-shell {
+  width: 100%;
+  height: min(
+    1040px,
+    max(800px, 58vw)
+  );
+  min-height: 780px;
+
+  overflow: hidden;
+  border-top: 1px solid
+    color-mix(
+      in srgb,
+      var(--text) 14%,
+      transparent
+    );
+  border-bottom: 1px solid
+    color-mix(
+      in srgb,
+      var(--text) 14%,
+      transparent
+    );
+  background:
+    color-mix(
+      in srgb,
+      var(--surface) 96%,
+      var(--surface-2)
+    );
+}
+
+.pdf-reader-frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: transparent;
+}
+
+.pdf-reader-fallback {
+  margin: 10px 0 0;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.7;
+}
+
+.pdf-reader-fallback a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.pdf-reader-fallback a:hover {
+  color: var(--accent-strong);
+  text-decoration: underline;
+}
+
+.pdf-reader-fullscreen-bar {
+  display: none;
+}
+
+.pdf-reader.is-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  flex-direction: column;
+
+  width: 100vw;
+  height: 100vh;
+  max-width: none;
+
+  background:
+    color-mix(
+      in srgb,
+      var(--surface) 96%,
+      #000 4%
+    );
+}
+
+.pdf-reader.is-fullscreen
+.pdf-reader-actions,
+.pdf-reader.is-fullscreen
+.pdf-reader-fallback {
+  display: none;
+}
+
+.pdf-reader.is-fullscreen
+.pdf-reader-fullscreen-bar {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  min-height: 48px;
+  padding: 0 18px;
+  border-bottom: 1px solid
+    color-mix(
+      in srgb,
+      var(--text) 16%,
+      transparent
+    );
+  background:
+    color-mix(
+      in srgb,
+      var(--surface) 94%,
+      var(--surface-2)
+    );
+}
+
+.pdf-reader-fullscreen-title {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--accent);
+  font-family: var(--font-heading-serif);
+  font-size: 1.02rem;
+  font-variant: small-caps;
+  letter-spacing: 0.45px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+body[data-lang="zh"]
+.pdf-reader-fullscreen-title {
+  font-family: var(--font-zh-heading);
+  font-variant: normal;
+  letter-spacing: 0.6px;
+}
+
+.pdf-reader-fullscreen-actions {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+
+  font-family: var(--font-nav-serif);
+  font-variant: small-caps;
+  letter-spacing: 0.45px;
+}
+
+body[data-lang="zh"]
+.pdf-reader-fullscreen-actions {
+  font-family: var(--font-zh-heading);
+  font-variant: normal;
+  letter-spacing: 0.8px;
+}
+
+.pdf-reader-fullscreen-link {
+  color: var(--accent);
+  font-size: 0.92rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.pdf-reader-fullscreen-link:hover {
+  color: var(--accent-strong);
+  text-decoration: underline;
+}
+
+.pdf-reader-fullscreen-close {
+  appearance: none;
+  -webkit-appearance: none;
+
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 999px;
+
+  background: transparent;
+  color: var(--text);
+
+  font-family: var(--font-nav-serif);
+  font-size: 1.65rem;
+  font-weight: 600;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    transform 160ms ease;
+}
+
+.pdf-reader-fullscreen-close:hover {
+  color: var(--accent-strong);
+  background:
+    color-mix(
+      in srgb,
+      var(--accent) 9%,
+      transparent
+    );
+  transform: rotate(4deg);
+}
+
+.pdf-reader.is-fullscreen
+.pdf-reader-frame-shell {
+  flex: 1 1 auto;
+  height: auto;
+  min-height: 0;
+  border: 0;
+  background:
+    color-mix(
+      in srgb,
+      var(--surface) 98%,
+      #000 2%
+    );
+}
+
+.pdf-reader.is-fullscreen
+.pdf-reader-frame {
+  height: 100%;
+}
+
+.pdf-reader.is-css-fullscreen-fallback {
+  box-shadow:
+    0 0 0 9999px
+    color-mix(
+      in srgb,
+      #000 48%,
+      transparent
+    );
+}
+
+@media (max-width: 768px) {
+  .pdf-reader-actions {
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .pdf-reader-action {
+    min-height: 34px;
+    padding: 7px 13px;
+    font-size: 0.92rem;
+  }
+
+  .pdf-reader-frame-shell {
+    height: 78vh;
+    min-height: 560px;
+  }
+
+  .pdf-reader.is-fullscreen
+  .pdf-reader-fullscreen-bar {
+    min-height: 46px;
+    padding: 0 12px;
+  }
+
+  .pdf-reader-fullscreen-title {
+    font-size: 0.96rem;
+  }
+
+  .pdf-reader-fullscreen-actions {
+    gap: 10px;
+  }
+
+  .pdf-reader-fullscreen-link {
+    font-size: 0.86rem;
+  }
+
+  .pdf-reader-fullscreen-close {
+    width: 32px;
+    height: 32px;
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .pdf-reader-frame-shell {
+    height: 74vh;
+    min-height: 500px;
+  }
+
+  .pdf-reader-fullscreen-link {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pdf-reader-action,
+  .pdf-reader-fullscreen-close {
+    transition: none;
+  }
+}

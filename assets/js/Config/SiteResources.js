@@ -291,7 +291,17 @@
       ],
 
       optional: {
-        blog: A + 'css/blog/blog.css'
+        blog:
+          A + 'css/blog/blog.css',
+
+        /*
+          Loaded only when Archive or Meditations
+          actually needs an embedded PDF reader.
+        */
+        pdfReader:
+          A +
+          'css/components/' +
+          'pdf-reader.css'
       }
     },
 
@@ -335,7 +345,16 @@
       optional: {
         blog:
           A +
-          'js/Functions/blog/Blog.js'
+          'js/Functions/blog/Blog.js',
+
+        /*
+          Loaded on demand together with the matching
+          optional stylesheet above.
+        */
+        pdfReader:
+          A +
+          'js/Functions/general/' +
+          'PdfReader.js'
       }
     },
 
@@ -346,37 +365,54 @@
         mountId: 'mount-about',
 
         styles: [
-            A + 'css/about/about.css',
-            A + 'css/about/profile/profile.css',
-            A + 'css/about/profile/profile-contact.css'
+          A + 'css/about/about.css',
+          A + 'css/about/profile/profile.css',
+          A + 'css/about/profile/profile-contact.css',
+          A + 'css/about/archive/archive.css'
         ],
 
         scripts: [
-            A +
+          A +
             'js/Content/EN/about/profile/' +
             'profile_EN.js',
 
-            A +
+          A +
             'js/Content/ZH/about/profile/' +
             'profile_ZH.js',
 
-            A +
+          A +
+            'js/Config/' +
+            'AboutArchiveConfig.js',
+
+          A +
+            'js/Content/EN/about/archive/' +
+            'archive_EN.js',
+
+          A +
+            'js/Content/ZH/about/archive/' +
+            'archive_ZH.js',
+
+          A +
             'js/Functions/about/' +
             'About.js',
-            
-            A +
+
+          A +
             'js/Functions/about/profile/' +
             'ProfileRender.js',
-            
-            A +
+
+          A +
             'js/Functions/about/profile/' +
             'ProfileContact.js',
-            
-            A +
+
+          A +
+            'js/Functions/about/archive/' +
+            'ArchiveRender.js',
+
+          A +
             'js/Functions/about/' +
             'AboutRoutes.js'
         ]
-    },
+      },
 
       schedule: {
         route: 'schedule',

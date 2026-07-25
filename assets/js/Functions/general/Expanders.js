@@ -1,76 +1,122 @@
 (function () {
-  "use strict";
+  'use strict';
 
-  const STORAGE_KEY = "resume_expanders_open_keys_v1";
+  const STORAGE_KEY =
+    'resume_expanders_open_keys_v1';
+
   const ANIMATION_MS = 280;
 
   try {
     sessionStorage.removeItem(STORAGE_KEY);
-  } catch (e) {}
+  } catch (error) {}
 
-  function qsAll(sel, root) {
-    return Array.prototype.slice.call((root || document).querySelectorAll(sel));
+  function qsAll(selector, root) {
+    return Array.prototype.slice.call(
+      (root || document).querySelectorAll(
+        selector
+      )
+    );
   }
 
   function prefersReducedMotion() {
     try {
-      return (
+      return !!(
         window.matchMedia &&
-        window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        window.matchMedia(
+          '(prefers-reduced-motion: reduce)'
+        ).matches
       );
-    } catch (e) {
+    } catch (error) {
       return false;
     }
   }
 
-  function getOpenDisplay(el) {
-    if (!el) return "";
+  function getOpenDisplay(element) {
+    if (!element) return '';
 
-    if (el.tagName && el.tagName.toLowerCase() === "tr") {
-      return "table-row";
+    if (
+      element.tagName &&
+      element.tagName.toLowerCase() ===
+        'tr'
+    ) {
+      return 'table-row';
     }
 
-    return "block";
+    return 'block';
   }
 
-  function setDisplay(el, open) {
-    if (!el) return;
-    el.style.display = open ? getOpenDisplay(el) : "none";
+  function setDisplay(element, open) {
+    if (!element) return;
+
+    element.style.display = open
+      ? getOpenDisplay(element)
+      : 'none';
   }
 
   function clearMotionTimer(row) {
-    if (!row || !row.dataset.expandTimer) return;
+    if (
+      !row ||
+      !row.dataset.expandTimer
+    ) {
+      return;
+    }
 
     try {
-      clearTimeout(Number(row.dataset.expandTimer));
-    } catch (e) {}
+      clearTimeout(
+        Number(row.dataset.expandTimer)
+      );
+    } catch (error) {}
 
     delete row.dataset.expandTimer;
   }
 
-  function finishAnimationLater(row, callback) {
+  function finishAnimationLater(
+    row,
+    callback
+  ) {
     if (!row) return;
 
     clearMotionTimer(row);
 
-    const delay = prefersReducedMotion() ? 0 : ANIMATION_MS + 60;
+    const delay = prefersReducedMotion()
+      ? 0
+      : ANIMATION_MS + 60;
 
-    const timer = window.setTimeout(function () {
-      clearMotionTimer(row);
-      callback();
-    }, delay);
+    const timer = window.setTimeout(
+      function () {
+        clearMotionTimer(row);
+        callback();
+      },
+      delay
+    );
 
-    row.dataset.expandTimer = String(timer);
+    row.dataset.expandTimer =
+      String(timer);
   }
 
-  function setInstantRowState(row, open) {
+  function setInstantRowState(
+    row,
+    open
+  ) {
     if (!row) return;
 
     clearMotionTimer(row);
 
-    row.classList.remove("is-animating", "is-closing");
-    row.classList.toggle("is-open", open);
-    row.setAttribute("aria-hidden", open ? "false" : "true");
+    row.classList.remove(
+      'is-animating',
+      'is-closing'
+    );
+
+    row.classList.toggle(
+      'is-open',
+      open
+    );
+
+    row.setAttribute(
+      'aria-hidden',
+      open ? 'false' : 'true'
+    );
+
     setDisplay(row, open);
   }
 
@@ -79,18 +125,38 @@
 
     clearMotionTimer(row);
 
-    row.classList.remove("is-closing");
-    row.classList.add("is-animating");
-    row.setAttribute("aria-hidden", "false");
+    row.classList.remove(
+      'is-closing'
+    );
+
+    row.classList.add(
+      'is-animating'
+    );
+
+    row.setAttribute(
+      'aria-hidden',
+      'false'
+    );
+
     setDisplay(row, true);
 
-    requestAnimationFrame(function () {
-      row.classList.add("is-open");
+    requestAnimationFrame(
+      function () {
+        row.classList.add(
+          'is-open'
+        );
 
-      finishAnimationLater(row, function () {
-        row.classList.remove("is-animating", "is-closing");
-      });
-    });
+        finishAnimationLater(
+          row,
+          function () {
+            row.classList.remove(
+              'is-animating',
+              'is-closing'
+            );
+          }
+        );
+      }
+    );
   }
 
   function animateRowClose(row) {
@@ -98,27 +164,63 @@
 
     clearMotionTimer(row);
 
-    row.classList.add("is-animating", "is-closing");
-    row.setAttribute("aria-hidden", "true");
+    row.classList.add(
+      'is-animating',
+      'is-closing'
+    );
 
-    requestAnimationFrame(function () {
-      row.classList.remove("is-open");
+    row.setAttribute(
+      'aria-hidden',
+      'true'
+    );
 
-      finishAnimationLater(row, function () {
-        row.classList.remove("is-animating", "is-closing");
-        setDisplay(row, false);
-      });
-    });
+    requestAnimationFrame(
+      function () {
+        row.classList.remove(
+          'is-open'
+        );
+
+        finishAnimationLater(
+          row,
+          function () {
+            row.classList.remove(
+              'is-animating',
+              'is-closing'
+            );
+
+            setDisplay(row, false);
+          }
+        );
+      }
+    );
   }
 
-  function getBtnKey(btn) {
-    if (!btn) return null;
+  function getBtnKey(button) {
+    if (!button) return null;
 
-    const k = btn.getAttribute("data-expand-key");
-    if (k && String(k).trim()) return String(k).trim();
+    const key =
+      button.getAttribute(
+        'data-expand-key'
+      );
 
-    const t = btn.getAttribute("data-expand-target");
-    if (t && String(t).trim()) return String(t).trim();
+    if (
+      key &&
+      String(key).trim()
+    ) {
+      return String(key).trim();
+    }
+
+    const target =
+      button.getAttribute(
+        'data-expand-target'
+      );
+
+    if (
+      target &&
+      String(target).trim()
+    ) {
+      return String(target).trim();
+    }
 
     return null;
   }
@@ -126,96 +228,286 @@
   function saveState(scope) {
     try {
       const root = scope || document;
-      const open = qsAll('button.expander[aria-expanded="true"]', root)
+
+      const openKeys = qsAll(
+        'button.expander' +
+        '[aria-expanded="true"]',
+        root
+      )
         .map(getBtnKey)
         .filter(Boolean);
 
-      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(open));
-    } catch (e) {}
+      sessionStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(openKeys)
+      );
+    } catch (error) {}
   }
 
   function loadState() {
     try {
-      const raw = sessionStorage.getItem(STORAGE_KEY);
+      const raw =
+        sessionStorage.getItem(
+          STORAGE_KEY
+        );
+
       if (!raw) return [];
 
-      const arr = JSON.parse(raw);
-      return Array.isArray(arr) ? arr.map(String) : [];
-    } catch (e) {
+      const values = JSON.parse(raw);
+
+      return Array.isArray(values)
+        ? values.map(String)
+        : [];
+    } catch (error) {
       return [];
     }
   }
 
-  function setOpen(btn, open, options) {
-    if (!btn) return;
-
+  function dispatchChange(
+    button,
+    row,
+    open,
+    options
+  ) {
     const opts = options || {};
-    const animate = opts.animate === true;
 
-    const targetId = btn.getAttribute("data-expand-target");
-    if (!targetId) return;
-
-    const row = document.getElementById(targetId);
-    if (!row) return;
-
-    btn.setAttribute("aria-expanded", open ? "true" : "false");
-    btn.classList.toggle("is-open", open);
-
-    if (!animate || prefersReducedMotion()) {
-      setInstantRowState(row, open);
+    if (
+      opts.emit === false ||
+      typeof CustomEvent !== 'function'
+    ) {
       return;
     }
 
-    if (open) {
+    document.dispatchEvent(
+      new CustomEvent(
+        'site:expanderchange',
+        {
+          detail: {
+            button,
+            target: row,
+            key: getBtnKey(button),
+            expanded: open,
+            userInitiated:
+              opts.userInitiated === true
+          }
+        }
+      )
+    );
+  }
+
+  function closeExclusivePeers(
+    button,
+    options
+  ) {
+    if (!button) return;
+
+    if (
+      button.getAttribute(
+        'data-expand-exclusive'
+      ) !== 'true'
+    ) {
+      return;
+    }
+
+    const group =
+      button.getAttribute(
+        'data-expand-group'
+      );
+
+    if (!group) return;
+
+    const opts = options || {};
+    const root = opts.scope || document;
+
+    qsAll(
+      'button.expander' +
+      '[data-expand-group]' +
+      '[aria-expanded="true"]',
+      root
+    ).forEach((peer) => {
+      if (peer === button) return;
+
+      if (
+        peer.getAttribute(
+          'data-expand-group'
+        ) !== group
+      ) {
+        return;
+      }
+
+      setOpen(
+        peer,
+        false,
+        {
+          animate:
+            opts.animate === true,
+          userInitiated: false,
+          skipExclusive: true,
+          scope: root
+        }
+      );
+    });
+  }
+
+  function setOpen(
+    button,
+    open,
+    options
+  ) {
+    if (!button) return false;
+
+    const opts = options || {};
+
+    const targetId =
+      button.getAttribute(
+        'data-expand-target'
+      );
+
+    if (!targetId) return false;
+
+    const row =
+      document.getElementById(
+        targetId
+      );
+
+    if (!row) return false;
+
+    const alreadyOpen =
+      button.getAttribute(
+        'aria-expanded'
+      ) === 'true';
+
+    if (
+      alreadyOpen === open &&
+      opts.force !== true
+    ) {
+      return false;
+    }
+
+    if (
+      open &&
+      opts.skipExclusive !== true
+    ) {
+      closeExclusivePeers(
+        button,
+        opts
+      );
+    }
+
+    button.setAttribute(
+      'aria-expanded',
+      open ? 'true' : 'false'
+    );
+
+    button.classList.toggle(
+      'is-open',
+      open
+    );
+
+    const animate =
+      opts.animate === true;
+
+    if (
+      !animate ||
+      prefersReducedMotion()
+    ) {
+      setInstantRowState(
+        row,
+        open
+      );
+    } else if (open) {
       animateRowOpen(row);
     } else {
       animateRowClose(row);
     }
+
+    dispatchChange(
+      button,
+      row,
+      open,
+      opts
+    );
+
+    return true;
   }
 
-  function toggle(btn) {
-    if (!btn) return;
+  function toggle(button) {
+    if (!button) return false;
 
-    const isOpen = btn.getAttribute("aria-expanded") === "true";
-    setOpen(btn, !isOpen, { animate: true });
-    saveState(document);
-  }
+    const isOpen =
+      button.getAttribute(
+        'aria-expanded'
+      ) === 'true';
 
-  function bindOne(btn) {
-    if (!btn || btn.dataset.bound === "1") return;
+    const changed = setOpen(
+      button,
+      !isOpen,
+      {
+        animate: true,
+        userInitiated: true
+      }
+    );
 
-    btn.dataset.bound = "1";
+    if (changed) {
+      saveState(document);
+    }
 
-    btn.addEventListener("click", function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      toggle(btn);
-    });
+    return changed;
   }
 
   function normalizeRows(scope) {
     const root = scope || document;
 
-    qsAll(".expand-row[id]", root).forEach(function (row) {
+    qsAll(
+      '.expand-row[id]',
+      root
+    ).forEach((row) => {
       const isOpen =
-        row.classList.contains("is-open") ||
-        row.getAttribute("aria-hidden") === "false";
+        row.classList.contains(
+          'is-open'
+        ) ||
+        row.getAttribute(
+          'aria-hidden'
+        ) === 'false';
 
-      setInstantRowState(row, isOpen);
+      setInstantRowState(
+        row,
+        isOpen
+      );
     });
   }
 
   function markExpandLayouts(scope) {
     const root = scope || document;
 
-    qsAll(".expand-content", root).forEach(function (box) {
-      const items = box.querySelectorAll(".expand-item");
-      const n = items ? items.length : 0;
+    qsAll(
+      '.expand-content',
+      root
+    ).forEach((box) => {
+      const items =
+        box.querySelectorAll(
+          '.expand-item'
+        );
 
-      box.classList.remove("is-single", "is-multi");
+      const number =
+        items ? items.length : 0;
 
-      if (n === 1) box.classList.add("is-single");
-      if (n > 1) box.classList.add("is-multi");
+      box.classList.remove(
+        'is-single',
+        'is-multi'
+      );
+
+      if (number === 1) {
+        box.classList.add(
+          'is-single'
+        );
+      }
+
+      if (number > 1) {
+        box.classList.add(
+          'is-multi'
+        );
+      }
     });
   }
 
@@ -223,130 +515,250 @@
     try {
       const root = scope || document;
 
-      return qsAll('button.expander[aria-expanded="true"]', root)
+      return qsAll(
+        'button.expander' +
+        '[aria-expanded="true"]',
+        root
+      )
         .map(getBtnKey)
         .filter(Boolean);
-    } catch (e) {
+    } catch (error) {
       return [];
     }
   }
 
-  function applyOpenKeys(keys, scope) {
+  function applyOpenKeys(
+    keys,
+    scope
+  ) {
     const root = scope || document;
-    const wanted = Array.isArray(keys) ? keys.map(String) : [];
 
-    const btns = qsAll('button.expander[data-expand-target]', root);
+    const wantedKeys =
+      Array.isArray(keys)
+        ? keys.map(String)
+        : [];
 
-    const wantSet = Object.create(null);
-    wanted.forEach(function (k) {
-      wantSet[String(k)] = true;
+    const wantedSet =
+      Object.create(null);
+
+    wantedKeys.forEach((key) => {
+      wantedSet[String(key)] = true;
     });
 
-    btns.forEach(function (btn) {
-      const k = getBtnKey(btn);
-      const shouldOpen = !!(k && wantSet[String(k)]);
+    qsAll(
+      'button.expander' +
+      '[data-expand-target]',
+      root
+    ).forEach((button) => {
+      const key = getBtnKey(button);
 
-      setOpen(btn, shouldOpen, { animate: false });
+      const shouldOpen = !!(
+        key &&
+        wantedSet[String(key)]
+      );
+
+      setOpen(
+        button,
+        shouldOpen,
+        {
+          animate: false,
+          emit: false,
+          scope: root
+        }
+      );
     });
   }
 
   function restoreState(scope) {
-    const root = scope || document;
     const keys = loadState();
 
-    if (!keys || keys.length === 0) return;
+    if (!keys.length) return;
 
-    applyOpenKeys(keys, root);
+    applyOpenKeys(
+      keys,
+      scope || document
+    );
   }
 
-  function init(root, opts) {
+  function init(root, options) {
     const scope = root || document;
-    const options = opts || {};
+    const opts = options || {};
 
     normalizeRows(scope);
     markExpandLayouts(scope);
-    qsAll("button.expander[data-expand-target]", scope).forEach(bindOne);
 
-    if (Array.isArray(options.openKeys) && options.openKeys.length > 0) {
-      applyOpenKeys(options.openKeys, scope);
+    if (
+      Array.isArray(opts.openKeys) &&
+      opts.openKeys.length > 0
+    ) {
+      applyOpenKeys(
+        opts.openKeys,
+        scope
+      );
     } else {
       restoreState(scope);
     }
 
-    if (!options.skipSave) saveState(scope);
+    if (!opts.skipSave) {
+      saveState(scope);
+    }
   }
 
   function setupDelegatedClickOnce() {
-    if (document.documentElement.dataset.expanderDelegation === "1") return;
+    if (
+      document.documentElement.dataset
+        .expanderDelegation === '1'
+    ) {
+      return;
+    }
 
-    document.documentElement.dataset.expanderDelegation = "1";
+    document.documentElement.dataset
+      .expanderDelegation = '1';
 
     document.addEventListener(
-      "click",
-      function (e) {
-        const btn = e.target && e.target.closest
-          ? e.target.closest("button.expander[data-expand-target]")
-          : null;
+      'click',
+      function (event) {
+        const button =
+          event.target &&
+          typeof event.target.closest ===
+            'function'
+            ? event.target.closest(
+                'button.expander' +
+                '[data-expand-target]'
+              )
+            : null;
 
-        if (!btn) return;
+        if (!button) return;
 
-        e.preventDefault();
-        e.stopPropagation();
+        event.preventDefault();
+        event.stopPropagation();
 
-        toggle(btn);
+        toggle(button);
       },
       true
     );
   }
 
   function setupMeditationsRowClickOnce() {
-    if (document.documentElement.dataset.meditRowClick === "1") return;
+    if (
+      document.documentElement.dataset
+        .meditRowClick === '1'
+    ) {
+      return;
+    }
 
-    document.documentElement.dataset.meditRowClick = "1";
+    document.documentElement.dataset
+      .meditRowClick = '1';
 
     document.addEventListener(
-      "click",
-      function (e) {
-        const t = e.target;
+      'click',
+      function (event) {
+        const target = event.target;
 
-        const row = t && t.closest ? t.closest("#meditations .medit-row") : null;
+        const row =
+          target &&
+          typeof target.closest ===
+            'function'
+            ? target.closest(
+                '#meditations .medit-row'
+              )
+            : null;
+
         if (!row) return;
 
-        if (t && t.closest && t.closest("button.expander")) return;
-        if (t && t.closest && t.closest("a, button, input, textarea, select, label")) return;
+        if (
+          target &&
+          typeof target.closest ===
+            'function' &&
+          target.closest(
+            'button.expander'
+          )
+        ) {
+          return;
+        }
 
-        const btn = row.querySelector('button.expander[data-expand-target]');
-        if (!btn) return;
+        if (
+          target &&
+          typeof target.closest ===
+            'function' &&
+          target.closest(
+            'a, button, input, ' +
+            'textarea, select, label'
+          )
+        ) {
+          return;
+        }
 
-        toggle(btn);
+        const button =
+          row.querySelector(
+            'button.expander' +
+            '[data-expand-target]'
+          );
+
+        if (button) {
+          toggle(button);
+        }
       },
       true
     );
   }
 
-  window.ResumeExpanders = window.ResumeExpanders || {};
-  window.ResumeExpanders.init = init;
-  window.ResumeExpanders.getOpenKeys = getOpenKeys;
-  window.ResumeExpanders.applyOpenKeys = applyOpenKeys;
-  window.ResumeExpanders.saveState = saveState;
+  const api = {
+    init,
+    getOpenKeys,
+    applyOpenKeys,
+    saveState,
+    setOpen,
+    toggle
+  };
+
+  /*
+    ContentExpanders is the new generic name.
+
+    ResumeExpanders remains available so existing
+    Profile code continues to work unchanged.
+  */
+  window.ContentExpanders = api;
+  window.ResumeExpanders = api;
 
   setupDelegatedClickOnce();
   setupMeditationsRowClickOnce();
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", function () {
-      init(document);
-    });
+  if (
+    document.readyState === 'loading'
+  ) {
+    document.addEventListener(
+      'DOMContentLoaded',
+      function () {
+        init(document);
+      }
+    );
   } else {
     init(document);
   }
 
-  window.addEventListener("site:langchange", function (e) {
-    const openKeys =
-      e && e.detail && Array.isArray(e.detail.openKeys) ? e.detail.openKeys : null;
+  window.addEventListener(
+    'site:langchange',
+    function (event) {
+      const openKeys =
+        event &&
+        event.detail &&
+        Array.isArray(
+          event.detail.openKeys
+        )
+          ? event.detail.openKeys
+          : null;
 
-    requestAnimationFrame(function () {
-      init(document, openKeys ? { openKeys: openKeys } : undefined);
-    });
-  });
+      requestAnimationFrame(
+        function () {
+          init(
+            document,
+            openKeys
+              ? { openKeys }
+              : undefined
+          );
+        }
+      );
+    }
+  );
 })();

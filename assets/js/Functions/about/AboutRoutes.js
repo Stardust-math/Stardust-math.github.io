@@ -17,19 +17,29 @@
   });
 
   function normalizeView(view) {
-    const key = String(view || '').trim().toLowerCase();
+    const key = String(
+      view || ''
+    )
+      .trim()
+      .toLowerCase();
+
     return SLUG_TO_VIEW[key] || null;
   }
 
   function getSiteRootPath() {
     if (
       window.BootstrapRoutes &&
-      typeof window.BootstrapRoutes.getSiteRootPath === 'function'
+      typeof window.BootstrapRoutes
+        .getSiteRootPath === 'function'
     ) {
-      return window.BootstrapRoutes.getSiteRootPath();
+      return window.BootstrapRoutes
+        .getSiteRootPath();
     }
 
-    const base = new URL('./', document.baseURI);
+    const base = new URL(
+      './',
+      document.baseURI
+    );
 
     return base.pathname.endsWith('/')
       ? base.pathname
@@ -37,26 +47,37 @@
   }
 
   function getRoute(view) {
-    const normalized = normalizeView(view) || DEFAULT_VIEW;
+    const normalized =
+      normalizeView(view) ||
+      DEFAULT_VIEW;
+
     const slug =
       VIEW_TO_SLUG[normalized] ||
       VIEW_TO_SLUG[DEFAULT_VIEW];
 
     const root = getSiteRootPath();
 
-    return `${root}about/${slug}/`
-      .replace(/\/{2,}/g, '/');
+    return (
+      root +
+      'about/' +
+      slug +
+      '/'
+    ).replace(/\/{2,}/g, '/');
   }
 
   function normalizePath(pathname) {
-    return String(pathname || '/')
-      .replace(/index\.html$/, '')
-      .replace(/\/+$/, '') || '/';
+    return (
+      String(pathname || '/')
+        .replace(/index\.html$/, '')
+        .replace(/\/+$/, '') ||
+      '/'
+    );
   }
 
   function isAboutPath(pathname) {
     const parts = normalizePath(
-      pathname || window.location.pathname
+      pathname ||
+      window.location.pathname
     )
       .split('/')
       .filter(Boolean);
@@ -66,17 +87,23 @@
 
   function resolveViewFromPath(pathname) {
     const parts = normalizePath(
-      pathname || window.location.pathname
+      pathname ||
+      window.location.pathname
     )
       .split('/')
       .filter(Boolean);
 
-    const aboutIndex = parts.indexOf('about');
+    const aboutIndex =
+      parts.indexOf('about');
 
-    if (aboutIndex < 0) return null;
+    if (aboutIndex < 0) {
+      return null;
+    }
 
     return (
-      normalizeView(parts[aboutIndex + 1]) ||
+      normalizeView(
+        parts[aboutIndex + 1]
+      ) ||
       DEFAULT_VIEW
     );
   }
@@ -84,43 +111,100 @@
   function enhanceSubnav() {
     document
       .querySelectorAll(
-        '.about-switcher .about-switch-btn[data-view]'
+        '.about-switcher ' +
+        '.about-switch-btn[data-view]'
       )
       .forEach((control) => {
-        const view = normalizeView(control.dataset.view);
+        const view =
+          normalizeView(
+            control.dataset.view
+          );
 
         if (!view) return;
 
-        control.setAttribute('href', getRoute(view));
-        control.setAttribute('role', 'tab');
+        control.setAttribute(
+          'href',
+          getRoute(view)
+        );
+
+        control.setAttribute(
+          'role',
+          'tab'
+        );
       });
   }
 
   function enterProfile() {
     if (
       window.ProfileRender &&
-      typeof window.ProfileRender.enter === 'function'
+      typeof window.ProfileRender.enter ===
+        'function'
     ) {
       window.ProfileRender.enter();
     }
   }
 
+  function enterArchive() {
+    if (
+      window.ArchiveRender &&
+      typeof window.ArchiveRender.enter ===
+        'function'
+    ) {
+      window.ArchiveRender.enter();
+    }
+  }
+
+  function leaveArchive() {
+    if (
+      window.ArchiveRender &&
+      typeof window.ArchiveRender.leave ===
+        'function'
+    ) {
+      window.ArchiveRender.leave();
+    }
+  }
+
   function activateView(view, options) {
     const opts = options || {};
-    const normalized = normalizeView(view) || DEFAULT_VIEW;
+
+    const normalized =
+      normalizeView(view) ||
+      DEFAULT_VIEW;
+
+    let previousView = null;
 
     if (
       window.About &&
-      typeof window.About.init === 'function'
+      typeof window.About
+        .getCurrentView === 'function'
+    ) {
+      previousView =
+        window.About.getCurrentView();
+    }
+
+    if (
+      previousView === 'archive' &&
+      normalized !== 'archive'
+    ) {
+      leaveArchive();
+    }
+
+    if (
+      window.About &&
+      typeof window.About.init ===
+        'function'
     ) {
       window.About.init();
     }
 
     if (
       window.About &&
-      typeof window.About.setView === 'function'
+      typeof window.About.setView ===
+        'function'
     ) {
-      window.About.setView(normalized);
+      window.About.setView(
+        normalized
+      );
     }
 
     enhanceSubnav();
@@ -129,22 +213,32 @@
       enterProfile();
     }
 
+    if (normalized === 'archive') {
+      enterArchive();
+    }
+
     if (
       opts.updateHistory === true &&
       window.history &&
-      typeof window.history.pushState === 'function'
+      typeof window.history.pushState ===
+        'function'
     ) {
-      const route = getRoute(normalized);
-      const current = normalizePath(
-        window.location.pathname
-      );
+      const route =
+        getRoute(normalized);
 
-      const next = normalizePath(route);
+      const current =
+        normalizePath(
+          window.location.pathname
+        );
+
+      const next =
+        normalizePath(route);
 
       if (current !== next) {
-        const method = opts.replaceHistory
-          ? 'replaceState'
-          : 'pushState';
+        const method =
+          opts.replaceHistory
+            ? 'replaceState'
+            : 'pushState';
 
         window.history[method](
           { path: route },
@@ -155,11 +249,16 @@
     }
 
     if (opts.scroll === true) {
-      const root = document.getElementById('about');
+      const root =
+        document.getElementById(
+          'about'
+        );
 
       if (root) {
         root.scrollIntoView({
-          behavior: opts.scrollBehavior || 'smooth',
+          behavior:
+            opts.scrollBehavior ||
+            'smooth',
           block: 'start'
         });
       }
@@ -170,56 +269,80 @@
 
   function enterFromLocation() {
     const view =
-      resolveViewFromPath(window.location.pathname) ||
+      resolveViewFromPath(
+        window.location.pathname
+      ) ||
       DEFAULT_VIEW;
 
-    return activateView(view, {
-      updateHistory: false,
-      scroll: false
-    });
+    return activateView(
+      view,
+      {
+        updateHistory: false,
+        scroll: false
+      }
+    );
   }
 
   function isPlainLeftClick(event) {
-    return !!event &&
+    return !!(
+      event &&
       event.button === 0 &&
       !event.metaKey &&
       !event.ctrlKey &&
       !event.shiftKey &&
       !event.altKey &&
-      !event.defaultPrevented;
+      !event.defaultPrevented
+    );
   }
 
   function handleClick(event) {
     const control =
       event.target &&
-      typeof event.target.closest === 'function'
+      typeof event.target.closest ===
+        'function'
         ? event.target.closest(
-          '.about-switcher .about-switch-btn[data-view]'
-        )
+            '.about-switcher ' +
+            '.about-switch-btn' +
+            '[data-view]'
+          )
         : null;
 
-    if (!control || !isPlainLeftClick(event)) return;
+    if (
+      !control ||
+      !isPlainLeftClick(event)
+    ) {
+      return;
+    }
 
-    const view = normalizeView(control.dataset.view);
+    const view =
+      normalizeView(
+        control.dataset.view
+      );
 
     if (!view) return;
 
     event.preventDefault();
     event.stopImmediatePropagation();
 
-    activateView(view, {
-      updateHistory: true,
-      scroll: false
-    });
+    activateView(
+      view,
+      {
+        updateHistory: true,
+        scroll: false
+      }
+    );
   }
 
   function handleKeydown(event) {
     const control =
       event.target &&
-      typeof event.target.closest === 'function'
+      typeof event.target.closest ===
+        'function'
         ? event.target.closest(
-          '.about-switcher .about-switch-btn[data-view]'
-        )
+            '.about-switcher ' +
+            '.about-switch-btn' +
+            '[data-view]'
+          )
         : null;
 
     if (!control) return;
@@ -235,13 +358,16 @@
 
     const buttons = Array.from(
       document.querySelectorAll(
-        '.about-switcher .about-switch-btn[data-view]'
+        '.about-switcher ' +
+        '.about-switch-btn' +
+        '[data-view]'
       )
     );
 
     if (!buttons.length) return;
 
-    const currentIndex = buttons.indexOf(control);
+    const currentIndex =
+      buttons.indexOf(control);
 
     if (currentIndex < 0) return;
 
@@ -252,43 +378,59 @@
 
     if (event.key === 'Home') {
       nextIndex = 0;
-    } else if (event.key === 'End') {
-      nextIndex = buttons.length - 1;
+    } else if (
+      event.key === 'End'
+    ) {
+      nextIndex =
+        buttons.length - 1;
     } else {
       const direction =
-        event.key === 'ArrowRight' ? 1 : -1;
+        event.key === 'ArrowRight'
+          ? 1
+          : -1;
 
-      nextIndex = (
-        currentIndex +
-        direction +
-        buttons.length
-      ) % buttons.length;
+      nextIndex =
+        (
+          currentIndex +
+          direction +
+          buttons.length
+        ) %
+        buttons.length;
     }
 
     const next = buttons[nextIndex];
-    const view = normalizeView(next.dataset.view);
+
+    const view =
+      normalizeView(
+        next.dataset.view
+      );
 
     if (!view) return;
 
     next.focus();
 
-    activateView(view, {
-      updateHistory: true,
-      scroll: false
-    });
+    activateView(
+      view,
+      {
+        updateHistory: true,
+        scroll: false
+      }
+    );
   }
 
   function initPage() {
     if (
       window.About &&
-      typeof window.About.init === 'function'
+      typeof window.About.init ===
+        'function'
     ) {
       window.About.init();
     }
 
     if (
       window.ProfileContact &&
-      typeof window.ProfileContact.init === 'function'
+      typeof window.ProfileContact
+        .init === 'function'
     ) {
       window.ProfileContact.init();
     }
@@ -296,35 +438,58 @@
     enhanceSubnav();
   }
 
-  document.addEventListener('click', handleClick, true);
-  document.addEventListener('keydown', handleKeydown, true);
+  document.addEventListener(
+    'click',
+    handleClick,
+    true
+  );
 
-  window.addEventListener('popstate', () => {
-    window.setTimeout(() => {
-      if (isAboutPath(window.location.pathname)) {
-        enterFromLocation();
-      }
-    }, 0);
-  });
+  document.addEventListener(
+    'keydown',
+    handleKeydown,
+    true
+  );
+
+  window.addEventListener(
+    'popstate',
+    function () {
+      window.setTimeout(
+        function () {
+          if (
+            isAboutPath(
+              window.location.pathname
+            )
+          ) {
+            enterFromLocation();
+          }
+        },
+        0
+      );
+    }
+  );
 
   if (
     window.SitePages &&
-    typeof window.SitePages.register === 'function'
+    typeof window.SitePages.register ===
+      'function'
   ) {
-    window.SitePages.register(PAGE_KEY, {
-      init() {
-        initPage();
-      },
+    window.SitePages.register(
+      PAGE_KEY,
+      {
+        init() {
+          initPage();
+        },
 
-      enter() {
-        enterFromLocation();
-      },
+        enter() {
+          enterFromLocation();
+        },
 
-      refresh() {
-        initPage();
-        enterFromLocation();
+        refresh() {
+          initPage();
+          enterFromLocation();
+        }
       }
-    });
+    );
   }
 
   window.AboutRoutes = {

@@ -1,369 +1,128 @@
+/* =========================================================
+   Life / Meditations
+   - Meditations typography
+   - Meditations page layout
+   - Shared PDF reader styling lives in:
+     assets/css/components/pdf-reader.css
+   ========================================================= */
+
 #meditations {
-  --medit-en-body: var(--font-medit-en-body);
-  --medit-en-title: var(--font-medit-en-title);
+  --medit-en-body:
+    var(--font-medit-en-body);
 
-  --medit-zh-body: var(--font-medit-zh-body);
-  --medit-zh-title: var(--font-medit-zh-title);
+  --medit-en-title:
+    var(--font-medit-en-title);
 
-  font-family: var(--medit-en-body);
+  --medit-zh-body:
+    var(--font-medit-zh-body);
+
+  --medit-zh-title:
+    var(--font-medit-zh-title);
+
+  font-family:
+    var(--medit-en-body);
 }
 
-body[data-lang="zh"] #meditations {
-  font-family: var(--medit-zh-body);
+body[data-lang="zh"]
+#meditations {
+  font-family:
+    var(--medit-zh-body);
 }
 
 /* Page title */
 #meditations .resume-heading {
-  font-size: 2.4em;
-  text-align: center;
-  color: var(--accent);
   margin-bottom: 18px;
-  font-family: var(--font-medit-heading-en);
+
+  color: var(--accent);
+  font-family:
+    var(--font-medit-heading-en);
+  font-size: 2.4em;
   font-variant: small-caps;
   letter-spacing: 0.6px;
+  text-align: center;
 }
 
-body[data-lang="zh"] #meditations .resume-heading {
-  font-family: var(--font-medit-heading-zh);
+body[data-lang="zh"]
+#meditations .resume-heading {
+  font-family:
+    var(--font-medit-heading-zh);
   font-variant: normal;
 }
 
-/* Layout */
+/* Reader page width */
 #meditations .medit-pdf-page {
-  max-width: min(1280px, calc(100vw - 48px));
+  max-width:
+    min(
+      1280px,
+      calc(100vw - 48px)
+    );
 }
 
-/* Reader actions */
-#meditations .medit-readerbar {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 14px;
-  margin: 0 auto 18px;
+/*
+  These selectors are deliberately not scoped through
+  #meditations.
 
-  font-family: var(--font-nav-serif);
-  font-variant: small-caps;
-  letter-spacing: 0.45px;
+  During fullscreen mode the shared PdfReader temporarily
+  moves .medit-pdf-reader under document.body to prevent
+  ancestor overflow and transforms from clipping it.
+*/
+.medit-pdf-reader {
+  font-family:
+    var(--font-medit-en-body);
 }
 
-body[data-lang="zh"] #meditations .medit-readerbar {
-  font-family: var(--font-zh-heading);
+body[data-lang="zh"]
+.medit-pdf-reader {
+  font-family:
+    var(--font-medit-zh-body);
+}
+
+.medit-pdf-reader
+.pdf-reader-fullscreen-title {
+  font-family:
+    var(--font-medit-heading-en);
+}
+
+body[data-lang="zh"]
+.medit-pdf-reader
+.pdf-reader-fullscreen-title {
+  font-family:
+    var(--font-medit-heading-zh);
   font-variant: normal;
-  letter-spacing: 0.8px;
 }
 
-#meditations .medit-reader-action {
-  appearance: none;
-  -webkit-appearance: none;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  min-height: 36px;
-  padding: 7px 16px;
-  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
-  border-radius: 999px;
-
-  background: transparent;
-  color: var(--accent);
-
-  font: inherit;
-  font-size: 0.95rem;
-  font-weight: 700;
-  line-height: 1.2;
-
-  text-decoration: none;
-  cursor: pointer;
-  user-select: none;
-  white-space: nowrap;
-
-  transition:
-    color 160ms ease,
-    border-color 160ms ease,
-    background-color 160ms ease,
-    box-shadow 160ms ease,
-    transform 160ms ease;
-}
-
-#meditations .medit-reader-action:hover,
-#meditations .medit-reader-action:focus-visible {
-  color: var(--accent-strong);
-  border-color: color-mix(in srgb, var(--accent-strong) 72%, transparent);
-  background: color-mix(in srgb, var(--accent) 8%, transparent);
-  box-shadow:
-    0 3px 8px rgba(0, 0, 0, 0.045),
-    inset 0 1px 0 rgba(255, 255, 255, 0.24);
-  text-decoration: none;
-  transform: translateY(-1px);
-}
-
-#meditations .medit-reader-action:focus-visible,
-#meditations .medit-fullscreen-close:focus-visible,
-#meditations .medit-fullscreen-link:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--accent) 45%, transparent);
-  outline-offset: 3px;
-}
-
-/* PDF.js preview */
-#meditations .medit-pdfjs-shell {
-  width: 100%;
-
-  /*
-    Desktop reading height for the default two-page view:
-    - PDF.js opens the outline sidebar by default.
-    - The PDF itself is fit to page width.
-    - The spread mode is two-page view, so the required height is lower
-      than the previous single-page preview.
-    - If the browser viewport is shorter, the page itself scrolls while
-      the PDF preview frame keeps a stable reading height.
-  */
-  height: min(1040px, max(800px, 58vw));
-  min-height: 780px;
-
-  overflow: hidden;
-  border-top: 1px solid color-mix(in srgb, var(--text) 14%, transparent);
-  border-bottom: 1px solid color-mix(in srgb, var(--text) 14%, transparent);
-  background: color-mix(in srgb, var(--surface) 96%, var(--surface-2));
-}
-
-#meditations .medit-pdfjs-frame {
-  display: block;
-  width: 100%;
-  height: 100%;
-  border: 0;
-  background: transparent;
-}
-
-#meditations .medit-pdfjs-fallback {
-  margin: 10px 0 0;
-  text-align: center;
-  color: var(--muted);
-  font-size: 0.92rem;
-  line-height: 1.7;
-}
-
-#meditations .medit-pdfjs-fallback a {
-  color: var(--accent);
-  text-decoration: none;
-}
-
-#meditations .medit-pdfjs-fallback a:hover {
-  color: var(--accent-strong);
-  text-decoration: underline;
-}
-
-#meditations .medit-loading {
+.medit-loading {
   margin: 0;
-  text-align: center;
   color: var(--muted);
   line-height: 1.8;
+  text-align: center;
 }
 
-/* Fullscreen reading mode */
-body.medit-pdf-fullscreen-open {
-  overflow: hidden;
-}
-
-#meditations .medit-fullscreen-topbar {
-  display: none;
-}
-
-#meditations.is-fullscreen {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  display: flex;
-  flex-direction: column;
-  width: 100vw;
-  height: 100vh;
-  max-width: none;
-  background: color-mix(in srgb, var(--surface) 96%, #000 4%);
-}
-
-#meditations.is-fullscreen .medit-pdf-page {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  max-width: none;
-  height: 100%;
-  padding: 0;
-}
-
-#meditations.is-fullscreen .resume-heading,
-#meditations.is-fullscreen .medit-readerbar,
-#meditations.is-fullscreen .medit-pdfjs-fallback {
-  display: none;
-}
-
-#meditations.is-fullscreen .medit-fullscreen-topbar {
-  display: flex;
-  flex: 0 0 auto;
-  align-items: center;
-  justify-content: space-between;
-  min-height: 48px;
-  padding: 0 18px;
-  border-bottom: 1px solid color-mix(in srgb, var(--text) 16%, transparent);
-  background: color-mix(in srgb, var(--surface) 94%, var(--surface-2));
-}
-
-#meditations .medit-fullscreen-title {
+.medit-loading a {
   color: var(--accent);
-  font-family: var(--font-medit-heading-en);
-  font-size: 1.05rem;
-  font-variant: small-caps;
-  letter-spacing: 0.5px;
-  white-space: nowrap;
-}
-
-body[data-lang="zh"] #meditations .medit-fullscreen-title {
-  font-family: var(--font-medit-heading-zh);
-  font-variant: normal;
-}
-
-#meditations .medit-fullscreen-actions {
-  display: inline-flex;
-  align-items: center;
-  gap: 14px;
-
-  font-family: var(--font-nav-serif);
-  font-variant: small-caps;
-  letter-spacing: 0.45px;
-}
-
-body[data-lang="zh"] #meditations .medit-fullscreen-actions {
-  font-family: var(--font-zh-heading);
-  font-variant: normal;
-  letter-spacing: 0.8px;
-}
-
-#meditations .medit-fullscreen-link {
-  color: var(--accent);
-  font-size: 0.92rem;
-  font-weight: 700;
   text-decoration: none;
-  white-space: nowrap;
 }
 
-#meditations .medit-fullscreen-link:hover {
+.medit-loading a:hover {
   color: var(--accent-strong);
   text-decoration: underline;
 }
 
-#meditations .medit-fullscreen-close {
-  appearance: none;
-  -webkit-appearance: none;
-
-  width: 34px;
-  height: 34px;
-  border: 0;
-  border-radius: 999px;
-
-  background: transparent;
-  color: var(--text);
-
-  font-family: var(--font-nav-serif);
-  font-size: 1.65rem;
-  font-weight: 600;
-  line-height: 1;
-
-  cursor: pointer;
-
-  transition:
-    color 160ms ease,
-    background-color 160ms ease,
-    transform 160ms ease;
-}
-
-body[data-lang="zh"] #meditations .medit-fullscreen-close {
-  font-family: var(--font-zh-heading);
-}
-
-#meditations .medit-fullscreen-close:hover {
-  color: var(--accent-strong);
-  background: color-mix(in srgb, var(--accent) 9%, transparent);
-  transform: rotate(4deg);
-}
-
-#meditations.is-fullscreen .medit-pdfjs-shell {
-  flex: 1 1 auto;
-  height: auto;
-  min-height: 0;
-  border: 0;
-  background: color-mix(in srgb, var(--surface) 98%, #000 2%);
-}
-
-#meditations.is-fullscreen .medit-pdfjs-frame {
-  height: 100%;
-}
-
-#meditations.is-css-fullscreen-fallback {
-  box-shadow: 0 0 0 9999px color-mix(in srgb, #000 48%, transparent);
-}
-
-/* Responsive */
 @media (max-width: 768px) {
   #meditations .medit-pdf-page {
-    max-width: calc(100vw - 24px);
+    max-width:
+      calc(100vw - 24px);
   }
 
   #meditations .resume-heading {
+    margin-bottom: 14px;
     font-size: 2.05em;
-    margin-bottom: 14px;
-  }
-
-  #meditations .medit-readerbar {
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 14px;
-  }
-
-  #meditations .medit-reader-action {
-    min-height: 34px;
-    padding: 7px 13px;
-    font-size: 0.92rem;
-  }
-
-  #meditations .medit-pdfjs-shell {
-    height: 78vh;
-    min-height: 560px;
-  }
-
-  #meditations.is-fullscreen .medit-fullscreen-topbar {
-    min-height: 46px;
-    padding: 0 12px;
-  }
-
-  #meditations .medit-fullscreen-title {
-    font-size: 0.98rem;
-  }
-
-  #meditations .medit-fullscreen-actions {
-    gap: 10px;
-  }
-
-  #meditations .medit-fullscreen-link {
-    font-size: 0.86rem;
-  }
-
-  #meditations .medit-fullscreen-close {
-    width: 32px;
-    height: 32px;
-    font-size: 1.5rem;
   }
 }
 
 @media (max-width: 480px) {
   #meditations .medit-pdf-page {
-    max-width: calc(100vw - 18px);
-  }
-
-  #meditations .medit-pdfjs-shell {
-    height: 74vh;
-    min-height: 500px;
-  }
-
-  #meditations .medit-fullscreen-link {
-    display: none;
+    max-width:
+      calc(100vw - 18px);
   }
 }
