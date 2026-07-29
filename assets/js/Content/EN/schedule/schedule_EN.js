@@ -3864,7 +3864,17 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                         <div class="weeks">2-18 week(s)</div>
                       </div>
                     </td>
-                    <td></td>
+                    <td class="has-class event-cell" rowspan="3">
+                      <div class="time-info start-info">9:45</div>
+                      <div class="time-info end-info">12:10</div>
+                      <div class="course-container">
+                        <div class="course-number">011187.01 [3.5]</div>
+                        <div class="course-name">Methodology, Ethics and Practice of Data privacy</div>
+                        <div class="instructor">Lan Zhang</div>
+                        <div class="location">GT-B212</div>
+                        <div class="weeks">1-18 week(s)</div>
+                      </div>
+                    </td>
                     <td class="has-class event-cell" rowspan="2">
                       <div class="time-info start-info">9:45</div>
                       <div class="time-info end-info">11:20</div>
@@ -3896,11 +3906,9 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td></td>
                   </tr>
                   <tr>
                     <td class="period-number">5</td>
-                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -3913,17 +3921,7 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                   <tr>
                     <td rowspan="5" class="period-header">Afternoon</td>
                     <td class="period-number">6</td>
-                    <td class="has-class event-cell" rowspan="4">
-                      <div class="time-info start-info">14:00</div>
-                      <div class="time-info end-info">17:30</div>
-                      <div class="course-container">
-                        <div class="course-number">EE3004.01 [1]</div>
-                        <div class="course-name">Practice of Artificial Intelligence</div>
-                        <div class="instructor">Li Gu</div>
-                        <div class="location">The Artificial Intelligence Laboratory (Room 103) of the First Building of the High-tech Zone (Science and Technology)</div>
-                        <div class="weeks">2-11 week(s)</div>
-                      </div>
-                    </td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -3939,20 +3937,12 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                     <td></td>
                     <td></td>
                     <td></td>
+                    <td></td>
                   </tr>
                   <tr>
                     <td class="period-number">8</td>
-                    <td class="has-class event-cell" rowspan="2">
-                      <div class="time-info start-info">15:55</div>
-                      <div class="time-info end-info">17:30</div>
-                      <div class="course-container">
-                        <div class="course-number">CS4023.01 [2]</div>
-                        <div class="course-name">Introduction to Data Science</div>
-                        <div class="instructor">Enhong Chen; Zhenya Huang.</div>
-                        <div class="location">GT-B212</div>
-                        <div class="weeks">1-18 week(s)</div>
-                      </div>
-                    </td>
+                    <td></td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td class="has-class event-cell" rowspan="3">
@@ -3971,6 +3961,8 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                   </tr>
                   <tr>
                     <td class="period-number">9</td>
+                    <td></td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -4037,25 +4029,18 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
                 </thead>
                 <tbody>
                   <tr>
+                    <td>011187.01</td>
+                    <td>Methodology, Ethics and Practice of Data privacy</td>
+                    <td>Lan Zhang.</td>
+                    <td>2(3-5), 1-18 week(s).</td>
+                    <td>3.5</td>
+                  </tr>
+                  <tr>
                     <td>CS4018.01</td>
                     <td>Quantum Computing and Machine Learning</td>
                     <td>Wei Yang.</td>
                     <td>5(8-10), 1-18 week(s).</td>
                     <td>3.5</td>
-                  </tr>
-                  <tr>
-                    <td>EE3004.01</td>
-                    <td>Practice of Artificial Intelligence</td>
-                    <td>Li Gu.</td>
-                    <td>1(6-9), 2-11 week(s).</td>
-                    <td>1</td>
-                  </tr>
-                  <tr>
-                    <td>CS4023.01</td>
-                    <td>Introduction to Data Science</td>
-                    <td>Enhong Chen; Zhenya Huang.</td>
-                    <td>2(8-9), 1-18 week(s).</td>
-                    <td>2</td>
                   </tr>
                   <tr>
                     <td>011144.04</td>

@@ -134,7 +134,6 @@
     "Introduction to Artificial Intelligence (AI+X Micro-minor Foundation Course)": "人工智能导论 (AI+X 微专业基础课程)",
     "Introduction to Brain and Cognition Science": "脑与认知科学导论",
     "Introduction to Computer Science": "计算机导论",
-    "Introduction to Data Science": "数据科学导论",
     "Introduction to Differential Equations": "微分方程引论",
     "Introduction to Frontiers in Mathematics": "数学前沿课程",
     "Introduction to Mao Zedong Thought and Theoretical System of Socialism with Chinese Characteristics": "毛泽东思想和中国特色社会主义理论体系概论",
@@ -158,6 +157,7 @@
     "Mathematical Software": "符号计算软件",
     "Mechanics B": "力学 B",
     "Meteorology and Photography": "气象与摄影",
+    "Methodology, Ethics and Practice of Data privacy": "数据隐私的方法伦理和实践",
     "Military Skills": "军事技能",
     "Military Theory": "军事理论",
     "Natural Language Processing (AI+X Micro-minor Core Course)": "自然语言处理 (AI+X 微专业核心课程)",
@@ -167,7 +167,6 @@
     "Operations Research": "运筹学",
     "Optics B": "光学 B",
     "Outward Development II": "拓展训练 II",
-    "Practice of Artificial Intelligence": "人工智能实践",
     "Practice on Chinese Important Thoughts": "思想政治理论课实践",
     "Probability Theory": "概率论",
     "Probability Theory and Mathematical Statistics": "概率论与数理统计",
@@ -196,7 +195,6 @@
     "Dafeng Zuo": "左达峰",
     "Dangzheng Liu": "刘党政",
     "Dongqing Wang": "王冬青",
-    "Enhong Chen": "陈恩红",
     "Falai Chen": "陈发来",
     "Fei Wu": "吴飞",
     "Guangbin Ren": "任广斌",
@@ -215,8 +213,8 @@
     "Junfei Dai": "戴俊飞",
     "Junxia Zhang": "张俊霞",
     "Junyan Zhang": "章俊彦",
+    "Lan Zhang": "张兰",
     "Lei Zhang": "张磊",
-    "Li Gu": "顾理",
     "Li Tang": "唐莉",
     "Li Xiao": "肖力",
     "Liang Wan": "万亮",
@@ -281,7 +279,6 @@
     "Yunfei Fu": "傅云飞",
     "Zhihui Li": "李志慧",
     "Zhengxing Huang": "黄正行",
-    "Zhenya Huang": "黄振亚",
     "Ziqi Yang": "杨子祺",
     "……": "……",
   };
@@ -296,7 +293,6 @@
     "West Campus Electrical Building (1F) Computer Lab (Hall 1)": "西区电一楼机房1厅",
     "West Campus Electrical Building (3F) 406, 408": "西区电三楼406、408",
     "West Campus Electrical Building (3F) 406": "西区电三楼406",
-    "The Artificial Intelligence Laboratory (Room 103) of the First Building of the High-tech Zone (Science and Technology)": "高新区学科一号楼人工智能实验室(103)",
   };
 
   // ====== Course Type (manual; defined in schedule_EN.js) ======
