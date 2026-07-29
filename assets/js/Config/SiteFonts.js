@@ -74,7 +74,27 @@
       : 'en';
   }
 
+  /*
+    SiteFonts.js is also evaluated by scripts/check_fonts.js
+    inside a minimal Node VM sandbox.
+
+    Browser-only lifecycle code must therefore run only when
+    the required DOM APIs are actually available.
+  */
+  function hasBrowserEnvironment() {
+    return !!(
+      typeof document !== 'undefined' &&
+      document &&
+      typeof window.addEventListener ===
+        'function'
+    );
+  }
+
   function getCurrentLang() {
+    if (!hasBrowserEnvironment()) {
+      return 'en';
+    }
+
     const bodyLang =
       document.body &&
       document.body.dataset
@@ -85,10 +105,19 @@
       return normalizeLang(bodyLang);
     }
 
+    const documentElement =
+      document.documentElement;
+
+    if (
+      !documentElement ||
+      typeof documentElement.getAttribute !==
+        'function'
+    ) {
+      return 'en';
+    }
+
     return normalizeLang(
-      document.documentElement.getAttribute(
-        'lang'
-      )
+      documentElement.getAttribute('lang')
     );
   }
 
@@ -119,6 +148,10 @@
           const loaded =
             links.every(Boolean);
 
+          /*
+            Permit a later retry when every configured
+            stylesheet candidate failed to load.
+          */
           if (!loaded) {
             chineseFontStylesPromise = null;
           }
@@ -149,6 +182,13 @@
     return ensureChineseFontStyles();
   }
 
+  /*
+    Export the declarative font configuration before
+    initializing any browser-only lifecycle behavior.
+
+    This allows the Node font checker to evaluate the
+    file and inspect its resource configuration safely.
+  */
   window.SiteFonts = {
     googleFontStyles:
       GOOGLE_FONT_STYLES,
@@ -174,49 +214,61 @@
     ensureForLanguage
   };
 
-  /*
-    Translate.js emits this event after it has updated
-    html[lang] and body[data-lang].
+  function bindBrowserLifecycle() {
+    if (!hasBrowserEnvironment()) {
+      return;
+    }
 
-    Listening here keeps language-specific font loading
-    inside the centralized font configuration layer.
-  */
-  window.addEventListener(
-    'site:langchange',
-    (event) => {
-      const detail =
-        event && event.detail
-          ? event.detail
-          : {};
+    /*
+      Translate.js emits this event after it has updated
+      html[lang] and body[data-lang].
 
+      Listening here keeps language-specific font loading
+      inside the centralized font configuration layer.
+    */
+    window.addEventListener(
+      'site:langchange',
+      (event) => {
+        const detail =
+          event && event.detail
+            ? event.detail
+            : {};
+
+        ensureForLanguage(
+          detail.lang ||
+          getCurrentLang()
+        );
+      }
+    );
+
+    /*
+      This also supports a future configuration in which
+      the initial document language may already be Chinese.
+    */
+    function initializeCurrentLanguage() {
       ensureForLanguage(
-        detail.lang ||
         getCurrentLang()
       );
     }
-  );
 
-  /*
-    This also supports a future configuration in which
-    the initial document language may already be Chinese.
-  */
-  function initializeCurrentLanguage() {
-    ensureForLanguage(
-      getCurrentLang()
-    );
-  }
+    if (
+      document.readyState === 'loading' &&
+      typeof document.addEventListener ===
+        'function'
+    ) {
+      document.addEventListener(
+        'DOMContentLoaded',
+        initializeCurrentLanguage,
+        {
+          once: true
+        }
+      );
 
-  if (
-    document.readyState === 'loading'
-  ) {
-    document.addEventListener(
-      'DOMContentLoaded',
-      initializeCurrentLanguage,
-      {
-        once: true
-      }
-    );
-  } else {
+      return;
+    }
+
     initializeCurrentLanguage();
   }
+
+  bindBrowserLifecycle();
 })();
