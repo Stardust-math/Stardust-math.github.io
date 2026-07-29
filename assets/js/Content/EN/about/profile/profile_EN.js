@@ -197,7 +197,7 @@
         <div class="subsubheading">
           <div>Advisor:</div>
           <div class="resume-advisor-list">
-            <div><strong><a class="resume-link" href="https://cde.nus.edu.sg/isem/staff/li-xiaobo/" target="_blank" rel="noopener noreferrer">Prof. Xiaobo Li</a></strong></div>
+            <div><strong><a class="resume-link" href="https://cde.nus.edu.sg/isem/staff/li-xiaobo/" target="_blank" rel="noopener noreferrer">Prof. Xiaobo Li</a></strong> (<a class="resume-link" href="https://cde.nus.edu.sg/isem/" target="_blank" rel="noopener noreferrer">Department of Industrial Systems Engineering and Management, National University of Singapore</a>)</div>
           </div>
         </div>
         <ul>
