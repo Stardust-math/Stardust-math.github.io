@@ -107,79 +107,230 @@
 
 :root {
   /*
-    Chinese system font policy:
-    - Ordinary Chinese text: HuaWen Kaiti / STKaiti.
-    - General Chinese titles: HuaWen Xinwei / STXinwei.
+    Chinese typography policy:
+    - Keep the current desktop system fonts as the first choices.
+    - Use LXGW WenKai GB Screen as the cross-platform web fallback.
+    - The segmented webfont stylesheet is loaded on demand by SiteFonts.js
+      only after the site enters Chinese mode.
 
-    No new external font link is introduced here.
-    No new font file is downloaded here.
-
-    Dedicated display fonts under assets/fonts/ are kept unchanged,
-    especially Activities & Moments date/title fonts, Cover fonts, and Blog fonts.
+    Dedicated display fonts under assets/fonts/ remain unchanged,
+    especially Activities & Moments date/title fonts, Cover fonts,
+    and Blog fonts.
   */
 
-  --font-zh-regular: "STKaiti", "华文楷体", "KaiTi", "Kaiti SC", "楷体", serif;
-  --font-zh-heading: "STXinwei", "华文新魏", "STKaiti", "华文楷体", "KaiTi", "Kaiti SC", "楷体", serif;
+  --font-zh-regular:
+    "STKaiti",
+    "华文楷体",
+    "LXGW WenKai GB Screen",
+    "Kaiti SC",
+    "KaiTi",
+    "楷体",
+    serif;
+
+  --font-zh-heading:
+    "STXinwei",
+    "华文新魏",
+    "STKaiti",
+    "华文楷体",
+    "LXGW WenKai GB Screen",
+    "Kaiti SC",
+    "KaiTi",
+    "楷体",
+    serif;
 
   /* System families */
-  --font-serif: "Georgia", "Times New Roman", "Noto Serif", "STKaiti", "华文楷体", "KaiTi", "Kaiti SC", "楷体", serif;
-  --font-sans: Arial, "Helvetica Neue", Helvetica, sans-serif;
-  --font-zh-serif: var(--font-zh-regular);
-  --font-zh-kai: var(--font-zh-regular);
-  --font-zh-fangsong: var(--font-zh-regular);
-  --font-emoji: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+  --font-serif:
+    "Georgia",
+    "Times New Roman",
+    "STKaiti",
+    "华文楷体",
+    "LXGW WenKai GB Screen",
+    "Noto Serif",
+    "Kaiti SC",
+    "KaiTi",
+    "楷体",
+    serif;
+
+  --font-sans:
+    Arial,
+    "Helvetica Neue",
+    Helvetica,
+    sans-serif;
+
+  --font-zh-serif:
+    var(--font-zh-regular);
+
+  --font-zh-kai:
+    var(--font-zh-regular);
+
+  --font-zh-fangsong:
+    var(--font-zh-regular);
+
+  --font-emoji:
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Noto Color Emoji",
+    sans-serif;
 
   /* Common semantic families */
-  --font-heading-serif: var(--font-serif);
-  --font-body-serif: var(--font-serif);
-  --font-body-sans: var(--font-sans);
-  --font-number-sans: var(--font-sans);
+  --font-heading-serif:
+    var(--font-serif);
+
+  --font-body-serif:
+    var(--font-serif);
+
+  --font-body-sans:
+    var(--font-sans);
+
+  --font-number-sans:
+    var(--font-sans);
 
   /* Navigation */
-  --font-nav-serif: "Palatino Linotype", Palatino, "Book Antiqua",
-                    "Times New Roman", "Noto Serif", "STKaiti", "华文楷体", "KaiTi", "Kaiti SC", "楷体", serif;
+  --font-nav-serif:
+    "Palatino Linotype",
+    Palatino,
+    "Book Antiqua",
+    "Times New Roman",
+    "STKaiti",
+    "华文楷体",
+    "LXGW WenKai GB Screen",
+    "Noto Serif",
+    "Kaiti SC",
+    "KaiTi",
+    "楷体",
+    serif;
 
   /*
     External families are loaded through SiteFonts.js.
-    Local families are fallback copies stored under assets/fonts/Google_Fonts/.
+    Local families are fallback copies stored under
+    assets/fonts/Google_Fonts/.
   */
-  --font-script-external: "Great Vibes", "Great Vibes Local", "Allura", "Allura Local", cursive;
-  --font-display-cinzel: "Cinzel", "Cinzel Local", Georgia, serif;
-  --font-display-medieval: "MedievalSharp", "MedievalSharp Local", Georgia, serif;
-  --font-display-gothic: "UnifrakturMaguntia", "UnifrakturMaguntia Local", Georgia, serif;
+  --font-script-external:
+    "Great Vibes",
+    "Great Vibes Local",
+    "Allura",
+    "Allura Local",
+    cursive;
 
-  /* Cover: keep dedicated assets/fonts display fonts unchanged */
-  --font-cover-name: "CygnetRound Local", "Great Vibes", "Great Vibes Local", cursive;
-  --font-cover-slogan: "Allura", "Allura Local", "Great Vibes", "Great Vibes Local", cursive;
-  --font-cover-scroll: var(--font-display-cinzel);
+  --font-display-cinzel:
+    "Cinzel",
+    "Cinzel Local",
+    Georgia,
+    serif;
 
-  /* Activities & Moments: keep dedicated assets/fonts display fonts unchanged */
-  --font-activities-date: "Beautiful ES Local", "Great Vibes", "Great Vibes Local", "Allura", "Allura Local", cursive;
-  --font-activities-title-en: "Cataneo BT Local", "Cataneo BT", Georgia, serif;
-  --font-activities-title-zh: "HongLeiXingShu Local", "KaiTi", "STKaiti", serif;
+  --font-display-medieval:
+    "MedievalSharp",
+    "MedievalSharp Local",
+    Georgia,
+    serif;
 
-  /* Blog: keep dedicated assets/fonts display fonts unchanged */
-  --font-blog-title: var(--font-script-external);
-  --font-blog-heading: var(--font-display-cinzel);
-  --font-blog-body: var(--font-serif);
+  --font-display-gothic:
+    "UnifrakturMaguntia",
+    "UnifrakturMaguntia Local",
+    Georgia,
+    serif;
 
-  /* Blog easter-egg scroll: keep dedicated assets/fonts display fonts unchanged */
-  --font-blog-scroll-heading: var(--font-display-cinzel);
-  --font-blog-scroll-body: var(--font-display-cinzel);
+  /*
+    Cover:
+    keep dedicated assets/fonts display fonts unchanged.
+  */
+  --font-cover-name:
+    "CygnetRound Local",
+    "Great Vibes",
+    "Great Vibes Local",
+    cursive;
+
+  --font-cover-slogan:
+    "Allura",
+    "Allura Local",
+    "Great Vibes",
+    "Great Vibes Local",
+    cursive;
+
+  --font-cover-scroll:
+    var(--font-display-cinzel);
+
+  /*
+    Activities & Moments:
+    keep dedicated assets/fonts display fonts unchanged.
+  */
+  --font-activities-date:
+    "Beautiful ES Local",
+    "Great Vibes",
+    "Great Vibes Local",
+    "Allura",
+    "Allura Local",
+    cursive;
+
+  --font-activities-title-en:
+    "Cataneo BT Local",
+    "Cataneo BT",
+    Georgia,
+    serif;
+
+  /*
+    HongLeiXingShu remains the normal first choice.
+
+    The shared Chinese title stack is used only if the
+    dedicated display font cannot be loaded.
+  */
+  --font-activities-title-zh:
+    "HongLeiXingShu Local",
+    var(--font-zh-heading);
+
+  /* Blog: keep dedicated display fonts unchanged */
+  --font-blog-title:
+    var(--font-script-external);
+
+  --font-blog-heading:
+    var(--font-display-cinzel);
+
+  --font-blog-body:
+    var(--font-serif);
+
+  /*
+    Blog easter-egg scroll:
+    keep dedicated display fonts unchanged.
+  */
+  --font-blog-scroll-heading:
+    var(--font-display-cinzel);
+
+  --font-blog-scroll-body:
+    var(--font-display-cinzel);
 
   /* Social */
-  --font-social-heading: var(--font-heading-serif);
-  --font-social-number: var(--font-number-sans);
-  --font-social-action: var(--font-body-sans);
+  --font-social-heading:
+    var(--font-heading-serif);
+
+  --font-social-number:
+    var(--font-number-sans);
+
+  --font-social-action:
+    var(--font-body-sans);
 
   /* Meditations */
-  --font-medit-en-body: "Times New Roman", Times, serif;
-  --font-medit-en-title: var(--font-display-cinzel);
-  --font-medit-zh-body: var(--font-zh-regular);
-  --font-medit-zh-title: var(--font-zh-heading);
-  --font-medit-zh-subtitle: var(--font-zh-regular);
-  --font-medit-heading-en: var(--font-heading-serif);
-  --font-medit-heading-zh: var(--font-medit-zh-title);
+  --font-medit-en-body:
+    "Times New Roman",
+    Times,
+    serif;
+
+  --font-medit-en-title:
+    var(--font-display-cinzel);
+
+  --font-medit-zh-body:
+    var(--font-zh-regular);
+
+  --font-medit-zh-title:
+    var(--font-zh-heading);
+
+  --font-medit-zh-subtitle:
+    var(--font-zh-regular);
+
+  --font-medit-heading-en:
+    var(--font-heading-serif);
+
+  --font-medit-heading-zh:
+    var(--font-medit-zh-title);
 }
 
 /* =========================================================
@@ -223,22 +374,33 @@ body[data-lang="zh"] #schedule .week-title,
 body[data-lang="zh"] #schedule .event-modal-title,
 body[data-lang="zh"] #schedule .modal-title,
 body[data-lang="zh"] #schedule .course-modal-title {
-  font-family: var(--font-zh-heading) !important;
-  font-variant: normal;
+  font-family:
+    var(--font-zh-heading) !important;
+
+  font-variant:
+    normal;
 }
 
 body[data-lang="zh"] .top-nav-link,
 body[data-lang="zh"] .life-switch-btn,
 body[data-lang="zh"] .schedule-switch-btn {
-  letter-spacing: 0.8px;
+  letter-spacing:
+    0.8px;
 }
 
 /*
   Ordinary Chinese text.
 
-  This changes ordinary Songti / Kaiti / Fangsong-like Chinese text to HuaWen Kaiti,
-  while avoiding direct overrides on dedicated display-font elements such as:
-  .am-card-date, .am-card-title, .am-card-meta, .am-detail-date, .am-detail-title.
+  This changes ordinary Songti / Kaiti / Fangsong-like
+  Chinese text to the shared cross-platform Chinese
+  stack, while avoiding direct overrides on dedicated
+  display-font elements such as:
+
+  .am-card-date
+  .am-card-title
+  .am-card-meta
+  .am-detail-date
+  .am-detail-title
 */
 body[data-lang="zh"] #resume,
 body[data-lang="zh"] #social,
@@ -250,8 +412,12 @@ body[data-lang="zh"] .life-container,
 body[data-lang="zh"] #meditations,
 body[data-lang="zh"] #meditations p,
 body[data-lang="zh"] #meditations .medit-body,
-body[data-lang="zh"] #meditations .medit-row-small .medit-title {
-  font-family: var(--font-zh-regular);
+body[data-lang="zh"]
+#meditations
+.medit-row-small
+.medit-title {
+  font-family:
+    var(--font-zh-regular);
 }
 
 /*
@@ -262,31 +428,43 @@ body[data-lang="zh"] #meditations .medit-row-small .medit-title {
   - 展示页
   - 代码
 
-  These buttons are styled in main.css with var(--font-sans), so they need
-  a stronger Chinese-mode rule here.
+  These buttons are styled with var(--font-sans),
+  so they need a stronger Chinese-mode rule here.
 */
-body[data-lang="zh"] #resume .expand-action-btn,
-body[data-lang="zh"] #resume .expand-action-btn span,
-body[data-lang="zh"] #resume .project-actions,
-body[data-lang="zh"] #resume .project-actions .expand-action-btn,
-body[data-lang="zh"] #resume .project-actions .expand-action-btn span {
-  font-family: var(--font-zh-regular) !important;
+body[data-lang="zh"]
+#resume
+.expand-action-btn,
+body[data-lang="zh"]
+#resume
+.expand-action-btn span,
+body[data-lang="zh"]
+#resume
+.project-actions,
+body[data-lang="zh"]
+#resume
+.project-actions
+.expand-action-btn,
+body[data-lang="zh"]
+#resume
+.project-actions
+.expand-action-btn span {
+  font-family:
+    var(--font-zh-regular) !important;
 }
 
 /*
   Schedule ordinary controls and content.
 
   Explicitly covers:
-  - 选择学期
-  - 大一上（2023年秋季学期）等学期下拉项
-  - 下拉框下面同步显示的大一上（2023年秋季学期）等当前学期标题
-  - 添加事件
-  - event form labels / inputs / buttons
+  - semester controls
+  - current semester title
+  - add event controls
+  - event form labels, inputs and buttons
   - timetable cells
-  - course names / instructors / locations
+  - course names, instructors and locations
   - FullCalendar ordinary buttons and event text
 
-  Modal titles such as 添加课程/事件 are handled in the title block above.
+  Modal titles are handled in the title block above.
 */
 body[data-lang="zh"] #schedule .fc,
 body[data-lang="zh"] #schedule .fc-button,
@@ -313,19 +491,33 @@ body[data-lang="zh"] #schedule .semester-option,
 body[data-lang="zh"] #schedule .semester-label,
 body[data-lang="zh"] #schedule .semester-select,
 body[data-lang="zh"] #schedule .semester-timetable-container,
-body[data-lang="zh"] #schedule .semester-timetable-container > h3,
+body[data-lang="zh"]
+#schedule
+.semester-timetable-container > h3,
 body[data-lang="zh"] #schedule .semester-title,
-body[data-lang="zh"] #schedule .my-classes-container h3,
-body[data-lang="zh"] #schedule .ustc-classes-container h3,
+body[data-lang="zh"]
+#schedule
+.my-classes-container h3,
+body[data-lang="zh"]
+#schedule
+.ustc-classes-container h3,
 body[data-lang="zh"] #schedule .add-event-btn,
-body[data-lang="zh"] #schedule .event-form-group label,
+body[data-lang="zh"]
+#schedule
+.event-form-group label,
 body[data-lang="zh"] #schedule .event-form-control,
 body[data-lang="zh"] #schedule .event-form-btn,
-body[data-lang="zh"] #schedule .days-container label,
-body[data-lang="zh"] #schedule .week-checkbox label,
+body[data-lang="zh"]
+#schedule
+.days-container label,
+body[data-lang="zh"]
+#schedule
+.week-checkbox label,
 body[data-lang="zh"] #schedule .weeks-title,
 body[data-lang="zh"] #schedule .week-display,
-body[data-lang="zh"] #schedule .ustc-local-save-hint,
+body[data-lang="zh"]
+#schedule
+.ustc-local-save-hint,
 body[data-lang="zh"] #schedule .course-number,
 body[data-lang="zh"] #schedule .course-name,
 body[data-lang="zh"] #schedule .course-code,
@@ -334,13 +526,15 @@ body[data-lang="zh"] #schedule .credits-inline,
 body[data-lang="zh"] #schedule .instructor,
 body[data-lang="zh"] #schedule .location,
 body[data-lang="zh"] #schedule .weeks {
-  font-family: var(--font-zh-regular) !important;
+  font-family:
+    var(--font-zh-regular) !important;
 }
 
 /*
-  Schedule modal / form ordinary text.
+  Schedule modal and form ordinary text.
 
-  This catches dynamically generated course/event dialog body text.
+  This catches dynamically generated course and event
+  dialog body text.
 */
 body[data-lang="zh"] #schedule .event-modal,
 body[data-lang="zh"] #schedule .event-modal-content,
@@ -355,8 +549,11 @@ body[data-lang="zh"] #schedule .modal-footer,
 body[data-lang="zh"] #schedule input,
 body[data-lang="zh"] #schedule select,
 body[data-lang="zh"] #schedule textarea,
-body[data-lang="zh"] #schedule button:not(.schedule-switch-btn) {
-  font-family: var(--font-zh-regular) !important;
+body[data-lang="zh"]
+#schedule
+button:not(.schedule-switch-btn) {
+  font-family:
+    var(--font-zh-regular) !important;
 }
 
 /*
@@ -368,7 +565,8 @@ body[data-lang="zh"] .social-link,
 body[data-lang="zh"] .stats-metric-label,
 body[data-lang="zh"] .stats-note,
 body[data-lang="zh"] .stats-link {
-  font-family: var(--font-zh-regular);
+  font-family:
+    var(--font-zh-regular);
 }
 
 /*
@@ -380,7 +578,8 @@ body[data-lang="zh"] .toolkit-link,
 body[data-lang="zh"] .filter-btn,
 body[data-lang="zh"] .search-input,
 body[data-lang="zh"] .no-results {
-  font-family: var(--font-zh-regular);
+  font-family:
+    var(--font-zh-regular);
 }
 
 /*
@@ -394,19 +593,23 @@ body[data-lang="zh"] .no-results {
   - .am-detail-title
   - .am-detail-meta
 
-  These are dedicated Activities & Moments display-font elements.
+  These are dedicated Activities & Moments
+  display-font elements.
 */
 body[data-lang="zh"] .am-card-summary,
 body[data-lang="zh"] .am-card-action,
 body[data-lang="zh"] .am-detail-back,
 body[data-lang="zh"] .am-detail-body,
 body[data-lang="zh"] .am-detail-body p {
-  font-family: var(--font-zh-regular);
+  font-family:
+    var(--font-zh-regular);
 }
 
 /*
   Blog ordinary Chinese body text only.
-  Dedicated blog headings and title fonts remain unchanged.
+
+  Dedicated Blog headings and title fonts remain
+  unchanged.
 */
 body[data-lang="zh"] .blog-card-excerpt,
 body[data-lang="zh"] .blog-card-meta,
@@ -415,5 +618,6 @@ body[data-lang="zh"] .blog-author,
 body[data-lang="zh"] .detail-body,
 body[data-lang="zh"] .detail-meta,
 body[data-lang="zh"] .detail-footer {
-  font-family: var(--font-zh-regular);
+  font-family:
+    var(--font-zh-regular);
 }
