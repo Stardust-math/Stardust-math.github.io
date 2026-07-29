@@ -4,65 +4,106 @@
   /*
     Stardust PDF.js defaults.
 
-    This script only applies defaults when the PDF.js viewer is opened or refreshed.
+    Wide readers preserve the current desktop experience:
+    - outline sidebar open
+    - odd spread (two-page) layout
+
+    Compact readers use a mobile-friendly layout:
+    - sidebar closed
+    - single-page layout
+
+    The profile is selected from the PDF viewer iframe's own viewport,
+    so Archive and Meditations share the same responsive behaviour.
     Visitors can still change the reading mode during the current session.
   */
 
-  const DEFAULTS = Object.freeze({
-    page: 1,
-    zoom: 'page-width',
-
-    /*
-      SidebarView:
-      NONE        = 0
-      THUMBS      = 1
-      OUTLINE     = 2
-      ATTACHMENTS = 3
-      LAYERS      = 4
-    */
-    sidebarView: 2,
-
-    /*
-      ScrollMode:
-      VERTICAL   = 0
-      HORIZONTAL = 1
-      WRAPPED    = 2
-      PAGE       = 3
-    */
-    scrollMode: 0,
-
-    /*
-      SpreadMode:
-      NONE = 0  -> single-page view
-      ODD  = 1  -> two-page view
-      EVEN = 2  -> book view
-    */
-    spreadMode: 1,
-
-    /*
-      CursorTool:
-      SELECT = 0
-      HAND   = 1
-      ZOOM   = 2
-    */
-    cursorTool: 0,
-
-    rotation: 0
+  const SIDEBAR_VIEW = Object.freeze({
+    NONE: 0,
+    THUMBS: 1,
+    OUTLINE: 2,
+    ATTACHMENTS: 3,
+    LAYERS: 4
   });
+
+  const SCROLL_MODE = Object.freeze({
+    VERTICAL: 0,
+    HORIZONTAL: 1,
+    WRAPPED: 2,
+    PAGE: 3
+  });
+
+  const SPREAD_MODE = Object.freeze({
+    NONE: 0,
+    ODD: 1,
+    EVEN: 2
+  });
+
+  const CURSOR_TOOL = Object.freeze({
+    SELECT: 0,
+    HAND: 1,
+    ZOOM: 2
+  });
+
+  const VIEW_PROFILES = Object.freeze({
+    wide: Object.freeze({
+      key: 'wide',
+      page: 1,
+      zoom: 'page-width',
+      sidebarView: SIDEBAR_VIEW.OUTLINE,
+      scrollMode: SCROLL_MODE.VERTICAL,
+      spreadMode: SPREAD_MODE.ODD,
+      cursorTool: CURSOR_TOOL.SELECT,
+      rotation: 0,
+      spreadButtonId: 'spreadOdd'
+    }),
+
+    compact: Object.freeze({
+      key: 'compact',
+      page: 1,
+      zoom: 'page-width',
+      sidebarView: SIDEBAR_VIEW.NONE,
+      scrollMode: SCROLL_MODE.VERTICAL,
+      spreadMode: SPREAD_MODE.NONE,
+      cursorTool: CURSOR_TOOL.SELECT,
+      rotation: 0,
+      spreadButtonId: 'spreadNone'
+    })
+  });
+
+  /*
+    A normal narrow desktop window should also receive the compact layout.
+    Coarse-pointer devices receive a slightly wider allowance so phones in
+    landscape and common tablets do not fall back to a two-page spread.
+  */
+  const COMPACT_MAX_WIDTH = 840;
+  const COARSE_POINTER_MAX_WIDTH = 1024;
 
   const RETRY_LIMIT = 36;
   const RETRY_DELAY = 220;
+  const LAYOUT_SYNC_DELAYS = Object.freeze([
+    120,
+    520
+  ]);
 
   let retryCount = 0;
   let retryTimer = null;
   let applied = false;
+  let activeProfileKey = '';
+  let resizeFrame = null;
+  let layoutTimers = [];
 
   function getApp() {
-    return window.PDFViewerApplication || null;
+    return (
+      window.PDFViewerApplication ||
+      null
+    );
   }
 
   function getOptions() {
-    return window.PDFViewerApplicationOptions || null;
+    return (
+      window.PDFViewerApplicationOptions ||
+      null
+    );
   }
 
   function safeCall(fn) {
@@ -73,109 +114,350 @@
     }
   }
 
+  function callMethod(
+    target,
+    methodName,
+    args
+  ) {
+    if (
+      !target ||
+      typeof target[methodName] !==
+        'function'
+    ) {
+      return false;
+    }
+
+    try {
+      target[methodName].apply(
+        target,
+        Array.isArray(args)
+          ? args
+          : []
+      );
+
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
+
+  function getViewportWidth() {
+    const documentWidth =
+      document.documentElement &&
+      document.documentElement.clientWidth
+        ? document.documentElement.clientWidth
+        : 0;
+
+    if (documentWidth > 0) {
+      return documentWidth;
+    }
+
+    return Math.max(
+      0,
+      Number(window.innerWidth) || 0
+    );
+  }
+
+  function hasCoarsePointer() {
+    return !!(
+      typeof window.matchMedia ===
+        'function' &&
+      window
+        .matchMedia('(pointer: coarse)')
+        .matches
+    );
+  }
+
+  function getViewProfile() {
+    const width =
+      getViewportWidth();
+
+    /*
+      If the iframe has not received a measurable width yet,
+      keep the existing desktop profile until PDF.js lays it out.
+    */
+    if (width <= 0) {
+      return VIEW_PROFILES.wide;
+    }
+
+    const compact =
+      width <= COMPACT_MAX_WIDTH ||
+      (
+        hasCoarsePointer() &&
+        width <=
+          COARSE_POINTER_MAX_WIDTH
+      );
+
+    return compact
+      ? VIEW_PROFILES.compact
+      : VIEW_PROFILES.wide;
+  }
+
   function setOption(name, value) {
     const options = getOptions();
 
-    if (!options || typeof options.set !== 'function') {
+    if (
+      !options ||
+      typeof options.set !== 'function'
+    ) {
       return;
     }
 
-    safeCall(() => options.set(name, value));
+    safeCall(() => {
+      options.set(name, value);
+    });
   }
 
-  function applyOptionsBeforeViewerRun() {
+  function applyOptionsBeforeViewerRun(
+    profile
+  ) {
+    const selected =
+      profile || getViewProfile();
+
     /*
       These options are read by PDF.js during startup.
-      They help avoid first rendering the old remembered preferences.
+
+      They prevent remembered desktop preferences from
+      shrinking pages when the same viewer is opened in
+      a compact iframe.
     */
-    setOption('defaultZoomValue', DEFAULTS.zoom);
-    setOption('sidebarViewOnLoad', DEFAULTS.sidebarView);
-    setOption('scrollModeOnLoad', DEFAULTS.scrollMode);
-    setOption('spreadModeOnLoad', DEFAULTS.spreadMode);
-    setOption('cursorToolOnLoad', DEFAULTS.cursorTool);
+    setOption(
+      'defaultZoomValue',
+      selected.zoom
+    );
+
+    setOption(
+      'sidebarViewOnLoad',
+      selected.sidebarView
+    );
+
+    setOption(
+      'scrollModeOnLoad',
+      selected.scrollMode
+    );
+
+    setOption(
+      'spreadModeOnLoad',
+      selected.spreadMode
+    );
+
+    setOption(
+      'cursorToolOnLoad',
+      selected.cursorTool
+    );
+  }
+
+  function isToggled(button) {
+    return !!(
+      button &&
+      (
+        button.classList.contains(
+          'toggled'
+        ) ||
+        button.getAttribute(
+          'aria-checked'
+        ) === 'true' ||
+        button.getAttribute(
+          'aria-selected'
+        ) === 'true'
+      )
+    );
   }
 
   function clickIfNotToggled(id) {
-    const button = document.getElementById(id);
+    const button =
+      document.getElementById(id);
 
-    if (!button || typeof button.click !== 'function') {
+    if (
+      !button ||
+      typeof button.click !==
+        'function' ||
+      isToggled(button)
+    ) {
       return;
     }
 
-    const toggled =
-      button.classList.contains('toggled') ||
-      button.getAttribute('aria-checked') === 'true' ||
-      button.getAttribute('aria-selected') === 'true';
+    button.click();
+  }
 
-    if (!toggled) {
-      button.click();
+  function isViewsManagerOpen() {
+    const sidebar =
+      document.getElementById(
+        'viewsManager'
+      );
+
+    const toggle =
+      document.getElementById(
+        'viewsManagerToggleButton'
+      );
+
+    if (
+      toggle &&
+      toggle.getAttribute(
+        'aria-expanded'
+      ) === 'true'
+    ) {
+      return true;
+    }
+
+    return !!(
+      sidebar &&
+      sidebar.hidden === false
+    );
+  }
+
+  function closeViewsManager(app) {
+    const viewsManager =
+      app && app.viewsManager;
+
+    /*
+      Prefer the public PDF.js manager API.
+    */
+    if (
+      callMethod(
+        viewsManager,
+        'close'
+      )
+    ) {
+      return;
+    }
+
+    /*
+      Markup fallback for PDF.js builds that do not
+      expose viewsManager.close().
+    */
+    const toggle =
+      document.getElementById(
+        'viewsManagerToggleButton'
+      );
+
+    if (
+      isViewsManagerOpen() &&
+      toggle &&
+      typeof toggle.click ===
+        'function'
+    ) {
+      toggle.click();
     }
   }
 
   function openOutlineSidebar(app) {
-    const viewsManager = app && app.viewsManager;
+    const viewsManager =
+      app && app.viewsManager;
 
-    if (viewsManager) {
-      safeCall(() => {
-        if (typeof viewsManager.switchView === 'function') {
-          viewsManager.switchView(DEFAULTS.sidebarView, true);
-        }
-      });
+    callMethod(
+      viewsManager,
+      'switchView',
+      [
+        SIDEBAR_VIEW.OUTLINE,
+        true
+      ]
+    );
 
-      safeCall(() => {
-        if (typeof viewsManager.open === 'function') {
-          viewsManager.open();
-        }
-      });
-    }
+    callMethod(
+      viewsManager,
+      'open'
+    );
 
     /*
-      Fallback based on current PDF.js viewer markup.
+      Fallback based on the current PDF.js viewer markup.
     */
-    const sidebar = document.getElementById('viewsManager');
-    const toggle = document.getElementById('viewsManagerToggleButton');
-    const outlineButton = document.getElementById('outlinesViewMenu');
+    const sidebar =
+      document.getElementById(
+        'viewsManager'
+      );
 
-    if (sidebar && sidebar.hidden && toggle && typeof toggle.click === 'function') {
+    const toggle =
+      document.getElementById(
+        'viewsManagerToggleButton'
+      );
+
+    const outlineButton =
+      document.getElementById(
+        'outlinesViewMenu'
+      );
+
+    if (
+      sidebar &&
+      sidebar.hidden &&
+      toggle &&
+      typeof toggle.click ===
+        'function'
+    ) {
       toggle.click();
     }
 
-    if (outlineButton && typeof outlineButton.click === 'function') {
-      const selected =
-        outlineButton.classList.contains('toggled') ||
-        outlineButton.getAttribute('aria-checked') === 'true' ||
-        outlineButton.getAttribute('aria-selected') === 'true';
+    if (
+      outlineButton &&
+      typeof outlineButton.click ===
+        'function' &&
+      !isToggled(outlineButton)
+    ) {
+      outlineButton.click();
+    }
+  }
 
-      if (!selected) {
-        outlineButton.click();
-      }
+  function syncSidebar(
+    app,
+    profile
+  ) {
+    if (
+      profile.sidebarView ===
+      SIDEBAR_VIEW.NONE
+    ) {
+      closeViewsManager(app);
+      return;
+    }
+
+    if (
+      profile.sidebarView ===
+      SIDEBAR_VIEW.OUTLINE
+    ) {
+      openOutlineSidebar(app);
     }
   }
 
   function expandOutlineTree() {
     const outlineRoot =
-      document.getElementById('outlinesView') ||
-      document.getElementById('outlineView');
+      document.getElementById(
+        'outlinesView'
+      ) ||
+      document.getElementById(
+        'outlineView'
+      );
 
     if (!outlineRoot) {
       return;
     }
 
     /*
-      This complements the TeX setting:
+      This complements the TeX settings:
       bookmarksopen=true, bookmarksopenlevel=2.
-      It is safe even when the PDF already opens bookmarks by itself.
     */
-    const togglers = outlineRoot.querySelectorAll('.treeItemToggler.treeItemsHidden');
+    const togglers =
+      outlineRoot.querySelectorAll(
+        '.treeItemToggler.treeItemsHidden'
+      );
 
-    togglers.forEach((toggler) => {
-      toggler.classList.remove('treeItemsHidden');
-      toggler.setAttribute('aria-expanded', 'true');
-    });
+    togglers.forEach(
+      (toggler) => {
+        toggler.classList.remove(
+          'treeItemsHidden'
+        );
+
+        toggler.setAttribute(
+          'aria-expanded',
+          'true'
+        );
+      }
+    );
   }
 
   function resetScrollPosition() {
-    const viewerContainer = document.getElementById('viewerContainer');
+    const viewerContainer =
+      document.getElementById(
+        'viewerContainer'
+      );
 
     if (!viewerContainer) {
       return;
@@ -185,98 +467,265 @@
     viewerContainer.scrollLeft = 0;
   }
 
-  function forceDefaults() {
+  function clearLayoutTimers() {
+    layoutTimers.forEach(
+      (timer) => {
+        window.clearTimeout(timer);
+      }
+    );
+
+    layoutTimers = [];
+  }
+
+  function syncToolbar(profile) {
+    clickIfNotToggled(
+      'scrollVertical'
+    );
+
+    clickIfNotToggled(
+      profile.spreadButtonId
+    );
+
+    clickIfNotToggled(
+      'cursorSelectTool'
+    );
+  }
+
+  function applyScaleAndPage(
+    app,
+    viewer,
+    profile,
+    options
+  ) {
+    const opts = options || {};
+
+    safeCall(() => {
+      viewer.currentScaleValue =
+        profile.zoom;
+    });
+
+    if (opts.resetPage !== true) {
+      return;
+    }
+
+    safeCall(() => {
+      viewer.currentPageNumber =
+        profile.page;
+    });
+
+    safeCall(() => {
+      app.page = profile.page;
+    });
+  }
+
+  function scheduleLayoutSync(
+    app,
+    viewer,
+    profile,
+    options
+  ) {
+    const opts = options || {};
+
+    clearLayoutTimers();
+
+    LAYOUT_SYNC_DELAYS.forEach(
+      (delay, index) => {
+        const timer =
+          window.setTimeout(
+            () => {
+              /*
+                Keep the visible controls synchronized
+                with the direct PDF.js API assignments.
+              */
+              syncToolbar(profile);
+
+              /*
+                Toolbar mode changes can affect layout,
+                so assert the sidebar profile before
+                recalculating page-width.
+              */
+              syncSidebar(
+                app,
+                profile
+              );
+
+              applyScaleAndPage(
+                app,
+                viewer,
+                profile,
+                {
+                  resetPage:
+                    opts.resetPage ===
+                      true &&
+                    index === 0
+                }
+              );
+
+              if (
+                profile.sidebarView ===
+                SIDEBAR_VIEW.OUTLINE
+              ) {
+                expandOutlineTree();
+              }
+
+              if (
+                opts.resetScroll ===
+                  true &&
+                index === 0
+              ) {
+                resetScrollPosition();
+              }
+            },
+            delay
+          );
+
+        layoutTimers.push(timer);
+      }
+    );
+  }
+
+  function applyViewerProfile(
+    profile,
+    options
+  ) {
     const app = getApp();
 
-    if (!app || !app.pdfViewer) {
+    if (
+      !app ||
+      !app.pdfViewer
+    ) {
       return false;
     }
 
-    const viewer = app.pdfViewer;
+    const viewer =
+      app.pdfViewer;
+
+    const selected =
+      profile || getViewProfile();
+
+    const opts =
+      options || {};
 
     safeCall(() => {
-      if ('pagesRotation' in viewer) {
-        viewer.pagesRotation = DEFAULTS.rotation;
+      if (
+        'pagesRotation' in viewer
+      ) {
+        viewer.pagesRotation =
+          selected.rotation;
       }
     });
 
     safeCall(() => {
-      viewer.scrollMode = DEFAULTS.scrollMode;
+      viewer.scrollMode =
+        selected.scrollMode;
     });
 
     safeCall(() => {
-      viewer.spreadMode = DEFAULTS.spreadMode;
+      viewer.spreadMode =
+        selected.spreadMode;
     });
 
     safeCall(() => {
-      viewer.currentScaleValue = DEFAULTS.zoom;
-    });
-
-    safeCall(() => {
-      viewer.currentPageNumber = DEFAULTS.page;
-    });
-
-    safeCall(() => {
-      app.page = DEFAULTS.page;
-    });
-
-    safeCall(() => {
-      if (app.pdfCursorTools && typeof app.pdfCursorTools.switchTool === 'function') {
-        app.pdfCursorTools.switchTool(DEFAULTS.cursorTool);
+      if (
+        app.pdfCursorTools &&
+        typeof app.pdfCursorTools
+          .switchTool === 'function'
+      ) {
+        app.pdfCursorTools.switchTool(
+          selected.cursorTool
+        );
       }
     });
-
-    openOutlineSidebar(app);
 
     /*
-      Synchronize visible toolbar/menu state after PDF.js updates its UI.
-      The current viewer menu contains scroll mode buttons and spread mode buttons.
+      Sidebar and spread mode change the usable page width.
+
+      Apply them before page-width so PDF.js measures
+      the final document area instead of the old layout.
     */
-    window.setTimeout(() => {
-      clickIfNotToggled('scrollVertical');
-      clickIfNotToggled('spreadOdd');
-      clickIfNotToggled('cursorSelectTool');
+    syncSidebar(
+      app,
+      selected
+    );
 
-      safeCall(() => {
-        viewer.currentScaleValue = DEFAULTS.zoom;
-        viewer.currentPageNumber = DEFAULTS.page;
-      });
+    applyScaleAndPage(
+      app,
+      viewer,
+      selected,
+      {
+        resetPage:
+          opts.resetPage === true
+      }
+    );
 
-      openOutlineSidebar(app);
+    if (
+      selected.sidebarView ===
+      SIDEBAR_VIEW.OUTLINE
+    ) {
       expandOutlineTree();
-      resetScrollPosition();
-    }, 120);
+    }
 
-    window.setTimeout(() => {
-      safeCall(() => {
-        viewer.currentScaleValue = DEFAULTS.zoom;
-        viewer.currentPageNumber = DEFAULTS.page;
-      });
-
-      openOutlineSidebar(app);
-      expandOutlineTree();
+    if (
+      opts.resetScroll === true
+    ) {
       resetScrollPosition();
-    }, 520);
+    }
+
+    scheduleLayoutSync(
+      app,
+      viewer,
+      selected,
+      opts
+    );
+
+    activeProfileKey =
+      selected.key;
 
     return true;
   }
 
+  function forceDefaults() {
+    const profile =
+      getViewProfile();
+
+    applyOptionsBeforeViewerRun(
+      profile
+    );
+
+    return applyViewerProfile(
+      profile,
+      {
+        resetPage: true,
+        resetScroll: true
+      }
+    );
+  }
+
   function scheduleApply(force) {
-    applyOptionsBeforeViewerRun();
+    applyOptionsBeforeViewerRun(
+      getViewProfile()
+    );
 
     if (retryTimer) {
-      window.clearTimeout(retryTimer);
+      window.clearTimeout(
+        retryTimer
+      );
+
       retryTimer = null;
     }
 
-    if (applied && !force) {
+    if (
+      applied &&
+      !force
+    ) {
       return;
     }
 
     retryCount = 0;
 
     function run() {
-      const ok = forceDefaults();
+      const ok =
+        forceDefaults();
 
       if (ok) {
         applied = true;
@@ -285,45 +734,141 @@
 
       retryCount += 1;
 
-      if (retryCount <= RETRY_LIMIT) {
-        retryTimer = window.setTimeout(run, RETRY_DELAY);
+      if (
+        retryCount <= RETRY_LIMIT
+      ) {
+        retryTimer =
+          window.setTimeout(
+            run,
+            RETRY_DELAY
+          );
       }
     }
 
     run();
   }
 
-  /*
-    PDF.js dispatches "webviewerloaded" before PDFViewerApplication.run(config).
-    In an iframe it dispatches to parent.document, so listen there when possible.
-  */
-  try {
-    parent.document.addEventListener('webviewerloaded', () => {
-      scheduleApply(true);
-    }, true);
-  } catch (err) {
-    document.addEventListener('webviewerloaded', () => {
-      scheduleApply(true);
-    }, true);
+  function handleViewportChange() {
+    if (
+      !applied ||
+      resizeFrame !== null
+    ) {
+      return;
+    }
+
+    resizeFrame =
+      window.requestAnimationFrame(
+        () => {
+          resizeFrame = null;
+
+          const profile =
+            getViewProfile();
+
+          if (
+            profile.key ===
+            activeProfileKey
+          ) {
+            return;
+          }
+
+          /*
+            Preserve the current page and scroll position
+            when the reader crosses the responsive
+            breakpoint.
+
+            Only the layout profile and page-width are
+            recalculated.
+          */
+          applyViewerProfile(
+            profile,
+            {
+              resetPage: false,
+              resetScroll: false
+            }
+          );
+        }
+      );
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
-    scheduleApply(true);
-  }, { once: true });
+  /*
+    PDF.js dispatches "webviewerloaded" before
+    PDFViewerApplication.run(config).
 
-  window.addEventListener('load', () => {
-    scheduleApply(true);
-  }, { once: true });
+    In an iframe it may dispatch to the parent document,
+    so listen there when possible.
+  */
+  try {
+    parent.document.addEventListener(
+      'webviewerloaded',
+      () => {
+        scheduleApply(true);
+      },
+      true
+    );
+  } catch (err) {
+    document.addEventListener(
+      'webviewerloaded',
+      () => {
+        scheduleApply(true);
+      },
+      true
+    );
+  }
+
+  document.addEventListener(
+    'DOMContentLoaded',
+    () => {
+      scheduleApply(true);
+    },
+    {
+      once: true
+    }
+  );
+
+  window.addEventListener(
+    'load',
+    () => {
+      scheduleApply(true);
+    },
+    {
+      once: true
+    }
+  );
 
   /*
-    These DOM events may not exist in every PDF.js build, but listening for them
-    is harmless and helps if the viewer forwards them.
-  */
-  document.addEventListener('documentloaded', () => {
-    scheduleApply(true);
-  });
+    These events are emitted during the initial PDF load
+    in supported builds.
 
-  document.addEventListener('pagesloaded', () => {
-    scheduleApply(true);
-  });
+    Reapplying here ensures the final page canvas uses
+    the selected responsive profile.
+  */
+  document.addEventListener(
+    'documentloaded',
+    () => {
+      scheduleApply(true);
+    }
+  );
+
+  document.addEventListener(
+    'pagesloaded',
+    () => {
+      scheduleApply(true);
+    }
+  );
+
+  /*
+    This listener performs no PDF work during ordinary
+    resizing. It only applies a new profile when the
+    iframe crosses from wide to compact, or vice versa.
+
+    requestAnimationFrame coalesces repeated browser
+    resize events into a single check.
+  */
+  window.addEventListener(
+    'resize',
+    handleViewportChange,
+    {
+      passive: true
+    }
+  );
 })();
