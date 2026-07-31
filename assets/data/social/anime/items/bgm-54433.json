@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-54433",
+  "subjectId": 54433,
+  "slug": "bgm-54433",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/54433",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ss1539"
+  },
+  "api": {
+    "titleOriginal": "やはり俺の青春ラブコメはまちがっている。",
+    "titleZH": "我的青春恋爱物语果然有问题",
+    "titleEN": "My Teen Romantic Comedy SNAFU",
+    "summary": "别扭、没有朋友、没有女朋友，并对讴歌青春的同学抱持怀疑的比企谷八幡，被生活指导老师带到学校第一美少女雪之下雪乃所属的侍奉部。由此开始的，是一段围绕青春、人际关系与所谓“真物”展开的校园故事。",
+    "coverRemote": "https://api.bgm.tv/v0/subjects/54433/image?type=large",
+    "coverFallback": "./assets/images/social/anime/fallback/bgm-54433.jpg",
+    "status": "",
+    "progress": null,
+    "totalEpisodes": 13,
+    "airDate": "2013-04-04",
+    "year": 2013,
+    "studio": "Brain's Base",
+    "genres": [
+      "校园",
+      "恋爱",
+      "青春",
+      "轻小说改"
+    ],
+    "bangumiRating": 7.5,
+    "personalRating": null,
+    "updatedAt": "2026-08-01T00:00:00.000Z"
+  },
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

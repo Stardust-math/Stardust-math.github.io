@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="900" viewBox="0 0 600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Anime cover unavailable</title>
+  <desc id="desc">A neutral placeholder used when both remote and local anime covers are unavailable.</desc>
+
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#eef3f8"></stop>
+      <stop offset="1" stop-color="#dfe8f1"></stop>
+    </linearGradient>
+
+    <radialGradient id="glow" cx="50%" cy="38%" r="48%">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.9"></stop>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"></stop>
+    </radialGradient>
+  </defs>
+
+  <rect width="600" height="900" fill="url(#background)"></rect>
+  <rect width="600" height="900" fill="url(#glow)"></rect>
+
+  <g fill="none" stroke="#1f4e79" stroke-opacity="0.23">
+    <circle cx="300" cy="355" r="126" stroke-width="2"></circle>
+    <ellipse cx="300" cy="355" rx="205" ry="82" transform="rotate(-18 300 355)" stroke-width="2"></ellipse>
+    <path d="M142 219L228 300L338 221L452 327" stroke-width="2"></path>
+  </g>
+
+  <g fill="#1f4e79">
+    <circle cx="142" cy="219" r="6" opacity="0.55"></circle>
+    <circle cx="228" cy="300" r="8" opacity="0.66"></circle>
+    <circle cx="338" cy="221" r="5" opacity="0.48"></circle>
+    <circle cx="452" cy="327" r="7" opacity="0.58"></circle>
+
+    <path d="M300 279l10 25 26 2-20 17 6 26-22-14-22 14 6-26-20-17 26-2z" opacity="0.78"></path>
+  </g>
+
+  <text x="300" y="570" text-anchor="middle" fill="#163a5c" font-family="Georgia, serif" font-size="34" letter-spacing="2">ANIME</text>
+
+  <text x="300" y="615" text-anchor="middle" fill="#667085" font-family="Georgia, serif" font-size="20">Cover unavailable</text>
+</svg>

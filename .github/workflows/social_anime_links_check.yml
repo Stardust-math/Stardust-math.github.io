@@ -1,0 +1,48 @@
+name: Social Anime link report
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "assets/data/social/anime/items/**"
+      - "scripts/lib/social_anime_data.js"
+      - "scripts/check_social_anime_links.js"
+      - ".github/workflows/social_anime_links_check.yml"
+
+  schedule:
+    - cron: "47 19 * * *"
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: social-anime-link-report
+  cancel-in-progress: true
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Check Anime external links
+        continue-on-error: true
+        run: node scripts/check_social_anime_links.js
+
+      - name: Finish informational report
+        if: always()
+        run: |
+          echo "External-link results are informational only."
+          echo "This workflow does not block site deployment."

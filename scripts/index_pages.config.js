@@ -94,6 +94,10 @@ module.exports = {
       route: 'social/footprints/',
       routeEntry: true
     },
+    {
+      route: 'social/anime/',
+      routeEntry: true
+    },
 
     {
       route: 'life/activities_moments/',
@@ -114,6 +118,7 @@ module.exports = {
   */
   activityMomentDetailEntries: {
     enabled: true,
-    baseRoute: 'life/activities_moments'
+    baseRoute:
+      'life/activities_moments'
   }
 };

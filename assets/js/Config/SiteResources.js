@@ -476,7 +476,8 @@
           A + 'css/social/social-cards.css',
           A + 'css/social/social-friends.css',
           A + 'css/social/social-comments.css',
-          A + 'css/social/social-footprints.css'
+          A + 'css/social/social-footprints.css',
+          A + 'css/social/social-anime.css'
         ],
 
         scripts: [
@@ -491,6 +492,10 @@
           A +
             'js/Config/' +
             'SocialFriendsConfig.js',
+
+          A +
+            'js/Config/' +
+            'SocialAnimeConfig.js',
 
           A +
             'js/Content/EN/social/' +
@@ -514,11 +519,19 @@
 
           A +
             'js/Functions/social/' +
+            'SocialAnimeRender.js',
+
+          A +
+            'js/Functions/social/' +
             'SocialShell.js',
 
           A +
             'js/Functions/social/' +
             'SocialRoutes.js',
+
+          A +
+            'js/Functions/social/' +
+            'SocialAnime.js',
 
           A +
             'js/Functions/social/' +

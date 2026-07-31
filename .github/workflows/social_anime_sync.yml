@@ -1,0 +1,72 @@
+name: Social Anime sync
+
+on:
+  workflow_run:
+    workflows:
+      - Generate index pages
+    types:
+      - completed
+
+  schedule:
+    - cron: "17 19 * * *"
+
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: social-anime-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    if: >-
+      github.event_name != 'workflow_run' ||
+      (
+        github.event.workflow_run.conclusion == 'success' &&
+        github.event.workflow_run.actor.login != 'github-actions[bot]'
+      )
+
+    runs-on: ubuntu-latest
+
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout current main branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Synchronize Bangumi data and fallback covers
+        env:
+          BANGUMI_ACCESS_TOKEN: ${{ secrets.BANGUMI_ACCESS_TOKEN }}
+        run: node scripts/update_social_anime.js
+
+      - name: Check Anime data and generated files
+        run: node scripts/check_social_anime.js
+
+      - name: Commit synchronized Anime files
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add \
+            assets/data/social/anime \
+            assets/images/social/anime/fallback
+
+          if git diff --cached --quiet; then
+            echo "No Anime synchronization changes."
+            exit 0
+          fi
+
+          git commit -m "chore(anime): sync Bangumi data"
+          git pull --rebase origin main
+          git push origin HEAD:main

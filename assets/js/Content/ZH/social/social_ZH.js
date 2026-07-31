@@ -8,6 +8,7 @@
     social_tab_constellation: "星群",
     social_tab_identity: "身份",
     social_tab_footprints: "足迹",
+    social_tab_anime: "番剧",
 
     youtube_title: "YouTube",
     youtube_desc: "我的视频内容与播放列表",
@@ -60,16 +61,46 @@
     comments_guest_user: "未登录用户",
     comments_identity_guest: "点击后在评论框中登录 GitHub",
     comments_identity_user: "已登录为 {user}",
-    comments_login_status: "请在下方评论框中点击 GitHub 登录后留言。",
-    comments_hint_intro: "欢迎留下问候、建议或学术交流信息。",
-    comments_hint_exchange: "也欢迎您在此留下个人主页或其他适宜公开的信息，以便交流互鉴、共同进步；请确保相关内容合法、合规且得体。",
+    comments_login_status:
+      "请在下方评论框中点击 GitHub 登录后留言。",
+    comments_hint_intro:
+      "欢迎留下问候、建议或学术交流信息。",
+    comments_hint_exchange:
+      "也欢迎您在此留下个人主页或其他适宜公开的信息，以便交流互鉴、共同进步；请确保相关内容合法、合规且得体。",
     comments_hint_support: "评论支持 ",
     comments_hint_markdown: "GitHub Flavored Markdown",
     comments_hint_and: " 和 ",
     comments_hint_math: "数学公式",
-    comments_hint_suffix: "；未登录用户可点击 GitHub 登录后留言。",
+    comments_hint_suffix:
+      "；未登录用户可点击 GitHub 登录后留言。",
     comments_loading: "正在加载留言...",
-    comments_failed: "留言加载失败，可以在 GitHub 中打开讨论页。",
-    comments_open_github: "在 GitHub 中打开讨论页"
+    comments_failed:
+      "留言加载失败，可以在 GitHub 中打开讨论页。",
+    comments_open_github: "在 GitHub 中打开讨论页",
+
+    anime_heading: "我的番剧星册",
+
+    anime_filter_label: "状态",
+    anime_filter_all: "全部",
+    anime_filter_watching: "在看",
+    anime_filter_planned: "想看",
+    anime_filter_completed: "看过",
+
+    anime_status_watching: "在看",
+    anime_status_planned: "想看",
+    anime_status_completed: "看过",
+
+    anime_loading: "正在加载番剧数据……",
+    anime_load_failed: "番剧数据加载失败。",
+    anime_empty: "当前分类中没有番剧记录。",
+
+    anime_open_bangumi: "在 Bangumi 中打开",
+    anime_watch: "观看",
+
+    anime_year: "年份",
+    anime_episodes: "集数",
+    anime_studio: "动画制作",
+    anime_rating: "评分",
+    anime_personal_note: "个人短评"
   };
 })();

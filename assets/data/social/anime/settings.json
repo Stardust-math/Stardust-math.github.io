@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "bangumiUsername": "",
+  "syncCollection": false,
+  "allowedStatuses": [
+    "watching",
+    "planned",
+    "completed"
+  ],
+  "coverBackup": {
+    "enabled": true,
+    "directory": "assets/images/social/anime/fallback"
+  }
+}
