@@ -752,6 +752,13 @@ body[data-lang="zh"]
   line-height: 1.5;
 }
 
+.anime-meta-row-studio {
+  grid-column:
+    1 / -1;
+
+  align-items: start;
+}
+
 .anime-meta-label {
   color:
     var(--muted);
@@ -776,6 +783,20 @@ body[data-lang="zh"]
 
   white-space:
     nowrap;
+}
+
+.anime-meta-row-studio
+.anime-meta-value {
+  overflow: visible;
+
+  overflow-wrap:
+    anywhere;
+
+  text-overflow:
+    clip;
+
+  white-space:
+    normal;
 }
 
 .anime-card-footer {
@@ -1090,11 +1111,6 @@ body.dark-mode
   .anime-card-note p {
     font-size:
       0.9rem;
-  }
-
-  .anime-card-meta {
-    grid-template-columns:
-      1fr;
   }
 }
 

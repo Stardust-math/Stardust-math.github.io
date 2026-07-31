@@ -960,7 +960,8 @@
 
   function metadataRow(
     label,
-    value
+    value,
+    modifierClass
   ) {
     if (
       !hasText(
@@ -974,8 +975,20 @@
       return '';
     }
 
+    const modifier =
+      hasText(
+        modifierClass
+      )
+        ? (
+            ' ' +
+            escapeAttr(
+              modifierClass
+            )
+          )
+        : '';
+
     return `
-      <div class="anime-meta-row">
+      <div class="anime-meta-row${modifier}">
         <span class="anime-meta-label">
           ${escapeHtml(label)}
         </span>
@@ -1211,18 +1224,19 @@
 
       metadataRow(
         text(
-          'anime_studio',
-          'Studio'
-        ),
-        item.studio
-      ),
-
-      metadataRow(
-        text(
           'anime_episodes',
           'Episodes'
         ),
         episodeValue
+      ),
+
+      metadataRow(
+        text(
+          'anime_studio',
+          'Studio'
+        ),
+        item.studio,
+        'anime-meta-row-studio'
       )
     ]
       .filter(Boolean)
