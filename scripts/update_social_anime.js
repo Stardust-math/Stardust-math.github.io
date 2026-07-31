@@ -328,6 +328,19 @@ function infoboxValueToText(value) {
     .join(' / ');
 }
 
+function normalizeInfoboxKey(value) {
+  return asString(value)
+    .toLowerCase()
+    .replace(
+      /[：:]\s*$/,
+      ''
+    )
+    .replace(
+      /\s+/g,
+      ' '
+    );
+}
+
 function findInfoboxValue(
   subject,
   keys
@@ -339,10 +352,8 @@ function findInfoboxValue(
       ? subject.infobox
       : [];
 
-  const normalizedKeys =
-    keys.map((key) =>
-      key.toLowerCase()
-    );
+  const valuesByKey =
+    new Map();
 
   for (
     const entry of infobox
@@ -356,21 +367,35 @@ function findInfoboxValue(
     }
 
     const key =
-      asString(
+      normalizeInfoboxKey(
         entry.key
-      ).toLowerCase();
-
-    if (
-      !normalizedKeys.includes(
-        key
-      )
-    ) {
-      continue;
-    }
+      );
 
     const value =
       infoboxValueToText(
         entry.value
+      );
+
+    if (
+      key &&
+      value &&
+      !valuesByKey.has(key)
+    ) {
+      valuesByKey.set(
+        key,
+        value
+      );
+    }
+  }
+
+  for (
+    const key of keys
+  ) {
+    const value =
+      valuesByKey.get(
+        normalizeInfoboxKey(
+          key
+        )
       );
 
     if (value) {
@@ -413,7 +438,16 @@ function extractStudio(subject) {
       '动画制作公司',
       '動畫製作公司',
       'アニメーション制作',
-      '制作会社'
+      'アニメーション制作会社',
+      'アニメ制作',
+      '制作会社',
+      'animation production',
+      'animation studio',
+      'studio',
+      '制作',
+      '製作',
+      '开发',
+      '開發'
     ]
   );
 }
