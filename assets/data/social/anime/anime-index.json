@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-01T00:00:00.000Z",
+  "generatedAt": "2026-07-31T20:04:33.284Z",
   "items": [
     {
       "id": "bgm-54433",
@@ -10,11 +10,11 @@
       "titles": {
         "original": "やはり俺の青春ラブコメはまちがっている。",
         "zh": "我的青春恋爱物语果然有问题",
-        "en": "My Teen Romantic Comedy SNAFU"
+        "en": ""
       },
-      "summary": "别扭、没有朋友、没有女朋友，并对讴歌青春的同学抱持怀疑的比企谷八幡，被生活指导老师带到学校第一美少女雪之下雪乃所属的侍奉部。由此开始的，是一段围绕青春、人际关系与所谓“真物”展开的校园故事。",
+      "summary": "别扭的，没有朋友，没有女朋友，对着那些讴歌青春的同学吐槽着“他们都是骗子，都在说谎，快点爆发把我”的男主角的爱情物语，将来的梦想是“不工作”——\r\n　　这样的高中生八幡被生活指导老师的带到了学校第一美少女雪乃所属的“侍奉部”，与美少女意想不到的相遇……怎么想都是恋爱故事的展开吧！？\r\n　　但是雪乃却无论如何都原谅不了八幡那令人残念的糟糕性格！\r\n　　不断轮回着的充满问题的青春——我的青春，到底怎么了！？",
       "cover": {
-        "remote": "https://api.bgm.tv/v0/subjects/54433/image?type=large",
+        "remote": "https://lain.bgm.tv/pic/cover/l/1e/f1/54433_JZ99l.jpg",
         "fallback": "./assets/images/social/anime/fallback/bgm-54433.jpg"
       },
       "links": {
@@ -26,12 +26,16 @@
         "total": 13
       },
       "year": 2013,
-      "studio": "Brain's Base",
+      "studio": "",
       "genres": [
-        "校园",
         "恋爱",
-        "青春",
-        "轻小说改"
+        "轻小说改",
+        "校园",
+        "我的青春恋爱物语果然有问题",
+        "2013年4月",
+        "大老师",
+        "TV",
+        "BrainsBase"
       ],
       "ratings": {
         "bangumi": 7.5,
@@ -42,17 +46,9 @@
         "en": ""
       },
       "dates": {
-        "air": "2013-04-04",
-        "started": "",
-        "completed": ""
+        "air": "2013-04-04"
       },
-      "searchAliases": [
-        "俺ガイル",
-        "春物",
-        "Oregairu",
-        "Yahari Ore no Seishun Lovecome wa Machigatte Iru"
-      ],
-      "updatedAt": "2026-08-01T00:00:00.000Z"
+      "updatedAt": "2026-07-31T20:04:33.284Z"
     }
   ]
 }
