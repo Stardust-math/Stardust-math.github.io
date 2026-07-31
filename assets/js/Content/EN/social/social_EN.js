@@ -82,8 +82,8 @@
     anime_filter_label: "Status",
     anime_filter_all: "All",
     anime_filter_watching: "Watching",
-    anime_filter_planned: "Planned",
-    anime_filter_completed: "Completed",
+    anime_filter_planned: "Queue",
+    anime_filter_completed: "Finished",
 
     anime_status_watching: "Watching",
     anime_status_planned: "Planned",

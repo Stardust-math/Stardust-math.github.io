@@ -55,7 +55,10 @@
   function text(key, fallback) {
     const dict = getDict();
 
-    return Object.prototype.hasOwnProperty.call(dict, key)
+    return Object.prototype.hasOwnProperty.call(
+      dict,
+      key
+    )
       ? dict[key]
       : fallback;
   }
@@ -65,15 +68,18 @@
       value == null
         ? ''
         : value
-    ).replace(/[&<>"']/g, function (character) {
-      return {
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#39;'
-      }[character];
-    });
+    ).replace(
+      /[&<>"']/g,
+      function (character) {
+        return {
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#39;'
+        }[character];
+      }
+    );
   }
 
   function escapeAttr(value) {
@@ -97,7 +103,8 @@
       return null;
     }
 
-    const number = Number(value);
+    const number =
+      Number(value);
 
     return Number.isFinite(number)
       ? number
@@ -105,9 +112,10 @@
   }
 
   function normalizeStatus(value) {
-    const status = String(value || '')
-      .trim()
-      .toLowerCase();
+    const status =
+      String(value || '')
+        .trim()
+        .toLowerCase();
 
     return [
       'watching',
@@ -168,10 +176,13 @@
         : {};
 
     return {
-      id: String(item.id || ''),
+      id:
+        String(item.id || ''),
 
       subjectId:
-        finiteNumber(item.subjectId),
+        finiteNumber(
+          item.subjectId
+        ),
 
       slug:
         String(
@@ -181,44 +192,74 @@
         ),
 
       status:
-        normalizeStatus(item.status),
+        normalizeStatus(
+          item.status
+        ),
 
       titles: {
         original:
-          String(titles.original || ''),
+          String(
+            titles.original ||
+            ''
+          ),
 
         zh:
-          String(titles.zh || ''),
+          String(
+            titles.zh ||
+            ''
+          ),
 
         en:
-          String(titles.en || '')
+          String(
+            titles.en ||
+            ''
+          )
       },
 
       summary:
-        String(item.summary || ''),
+        String(
+          item.summary ||
+          ''
+        ),
 
       cover: {
         remote:
-          String(cover.remote || ''),
+          String(
+            cover.remote ||
+            ''
+          ),
 
         fallback:
-          String(cover.fallback || '')
+          String(
+            cover.fallback ||
+            ''
+          )
       },
 
       links: {
         watch:
-          String(links.watch || ''),
+          String(
+            links.watch ||
+            ''
+          ),
 
         bangumi:
-          String(links.bangumi || '')
+          String(
+            links.bangumi ||
+            ''
+          )
       },
 
       progress: {
         current:
-          finiteNumber(progress.current),
+          finiteNumber(
+            progress.current
+          ),
 
         total:
-          finiteNumber(progress.total)
+          finiteNumber(
+            progress.total
+          )
       },
 
       year:
@@ -227,10 +268,15 @@
           : String(item.year),
 
       studio:
-        String(item.studio || ''),
+        String(
+          item.studio ||
+          ''
+        ),
 
       genres:
-        Array.isArray(item.genres)
+        Array.isArray(
+          item.genres
+        )
           ? item.genres
               .map(String)
               .filter(hasText)
@@ -238,27 +284,43 @@
 
       ratings: {
         bangumi:
-          finiteNumber(ratings.bangumi),
+          finiteNumber(
+            ratings.bangumi
+          ),
 
         personal:
-          finiteNumber(ratings.personal)
+          finiteNumber(
+            ratings.personal
+          )
       },
 
       notes: {
         zh:
-          String(notes.zh || ''),
+          String(
+            notes.zh ||
+            ''
+          ),
 
         en:
-          String(notes.en || '')
+          String(
+            notes.en ||
+            ''
+          )
       },
 
       dates: {
         air:
-          String(dates.air || '')
+          String(
+            dates.air ||
+            ''
+          )
       },
 
       updatedAt:
-        String(item.updatedAt || '')
+        String(
+          item.updatedAt ||
+          ''
+        )
     };
   }
 
@@ -270,32 +332,43 @@
         : {};
 
     const items =
-      Array.isArray(source.items)
+      Array.isArray(
+        source.items
+      )
         ? source.items
             .map(normalizeItem)
-            .filter(function (item) {
-              return (
-                hasText(item.id) &&
-                hasText(item.slug) &&
-                hasText(item.status) &&
-                hasText(item.links.bangumi)
-              );
-            })
+            .filter(
+              function (item) {
+                return (
+                  hasText(item.id) &&
+                  hasText(item.slug) &&
+                  hasText(item.status) &&
+                  hasText(
+                    item.links.bangumi
+                  )
+                );
+              }
+            )
         : [];
 
     return {
       schemaVersion:
-        source.schemaVersion || 1,
+        source.schemaVersion ||
+        1,
 
       generatedAt:
-        String(source.generatedAt || ''),
+        String(
+          source.generatedAt ||
+          ''
+        ),
 
       items
     };
   }
 
   function setBusy(busy) {
-    const app = getApp();
+    const app =
+      getApp();
 
     if (!app) {
       return;
@@ -310,7 +383,8 @@
   }
 
   function renderLoading() {
-    const app = getApp();
+    const app =
+      getApp();
 
     if (!app) {
       return;
@@ -338,7 +412,8 @@
   }
 
   function renderError(error) {
-    const app = getApp();
+    const app =
+      getApp();
 
     if (!app) {
       return;
@@ -369,7 +444,8 @@
 
     if (
       window.console &&
-      typeof window.console.error === 'function'
+      typeof window.console.error ===
+        'function'
     ) {
       window.console.error(
         '[SocialAnime] Failed to load anime data.',
@@ -380,64 +456,84 @@
 
   function loadData() {
     if (state.data) {
-      return Promise.resolve(state.data);
+      return Promise.resolve(
+        state.data
+      );
     }
 
     if (state.dataPromise) {
       return state.dataPromise;
     }
 
-    const config = getConfig();
+    const config =
+      getConfig();
 
     const dataUrl =
       config.dataUrl ||
       './assets/data/social/anime/anime-index.json';
 
-    state.dataPromise = fetch(
-      dataUrl,
-      {
-        credentials: 'same-origin',
-        cache: 'no-cache'
-      }
-    )
-      .then(function (response) {
-        if (!response.ok) {
-          throw new Error(
-            'HTTP ' +
-            response.status +
-            ' while loading ' +
-            dataUrl
-          );
+    state.dataPromise =
+      fetch(
+        dataUrl,
+        {
+          credentials:
+            'same-origin',
+
+          cache:
+            'no-cache'
         }
+      )
+        .then(
+          function (response) {
+            if (!response.ok) {
+              throw new Error(
+                'HTTP ' +
+                response.status +
+                ' while loading ' +
+                dataUrl
+              );
+            }
 
-        return response.json();
-      })
-      .then(function (raw) {
-        state.data =
-          normalizeData(raw);
+            return response.json();
+          }
+        )
+        .then(
+          function (raw) {
+            state.data =
+              normalizeData(raw);
 
-        return state.data;
-      })
-      .catch(function (error) {
-        state.dataPromise = null;
-        throw error;
-      });
+            return state.data;
+          }
+        )
+        .catch(
+          function (error) {
+            state.dataPromise =
+              null;
+
+            throw error;
+          }
+        );
 
     return state.dataPromise;
   }
 
   function allowedFilters() {
-    const config = getConfig();
+    const config =
+      getConfig();
 
-    return Array.isArray(config.filters)
-      ? config.filters.filter(function (filter) {
-          return [
-            'all',
-            'watching',
-            'planned',
-            'completed'
-          ].includes(filter);
-        })
+    return Array.isArray(
+      config.filters
+    )
+      ? config.filters.filter(
+          function (filter) {
+            return [
+              'all',
+              'watching',
+              'planned',
+              'completed'
+            ].includes(filter);
+          }
+        )
       : [
           'all',
           'watching',
@@ -456,19 +552,24 @@
       const status =
         params.get('status');
 
-      return allowedFilters().includes(status)
-        ? status
-        : '';
+      return allowedFilters()
+        .includes(status)
+          ? status
+          : '';
     } catch (error) {
       return '';
     }
   }
 
   function readStoredFilter() {
-    const config = getConfig();
-    const filters = allowedFilters();
+    const config =
+      getConfig();
 
-    const fromQuery = queryFilter();
+    const filters =
+      allowedFilters();
+
+    const fromQuery =
+      queryFilter();
 
     if (fromQuery) {
       return fromQuery;
@@ -476,65 +577,83 @@
 
     try {
       const stored =
-        window.sessionStorage.getItem(
-          config.storageKey ||
-          'stardust-social-anime-filter'
-        );
+        window.sessionStorage
+          .getItem(
+            config.storageKey ||
+            'stardust-social-anime-filter'
+          );
 
-      if (filters.includes(stored)) {
+      if (
+        filters.includes(
+          stored
+        )
+      ) {
         return stored;
       }
     } catch (error) {
       // sessionStorage is optional.
     }
 
-    return filters.includes(config.defaultFilter)
+    return filters.includes(
+      config.defaultFilter
+    )
       ? config.defaultFilter
       : 'all';
   }
 
   function storeFilter(filter) {
-    const config = getConfig();
+    const config =
+      getConfig();
 
     try {
-      window.sessionStorage.setItem(
-        config.storageKey ||
-          'stardust-social-anime-filter',
-        filter
-      );
+      window.sessionStorage
+        .setItem(
+          config.storageKey ||
+            'stardust-social-anime-filter',
+          filter
+        );
     } catch (error) {
       // sessionStorage is optional.
     }
   }
 
-  function updateFilterQuery(filter) {
+  function updateFilterQuery(
+    filter
+  ) {
     if (
       !window.history ||
-      typeof window.history.replaceState !== 'function'
+      typeof window.history
+        .replaceState !==
+        'function'
     ) {
       return;
     }
 
     try {
       const url =
-        new URL(window.location.href);
+        new URL(
+          window.location.href
+        );
 
       if (filter === 'all') {
-        url.searchParams.delete('status');
+        url.searchParams
+          .delete('status');
       } else {
-        url.searchParams.set(
-          'status',
-          filter
-        );
+        url.searchParams
+          .set(
+            'status',
+            filter
+          );
       }
 
-      window.history.replaceState(
-        window.history.state,
-        '',
-        url.pathname +
-        url.search +
-        url.hash
-      );
+      window.history
+        .replaceState(
+          window.history.state,
+          '',
+          url.pathname +
+          url.search +
+          url.hash
+        );
     } catch (error) {
       // Query synchronization is optional.
     }
@@ -579,31 +698,27 @@
       planned:
         text(
           'anime_filter_planned',
-          'Planned'
+          'Queue'
         ),
 
       completed:
         text(
           'anime_filter_completed',
-          'Completed'
+          'Finished'
         )
     }[filter] || filter;
   }
 
   function displayTitle(item) {
-    if (getLang() === 'zh') {
-      return (
-        item.titles.zh ||
-        item.titles.en ||
-        item.titles.original ||
-        item.id
-      );
-    }
-
     return (
-      item.titles.en ||
-      item.titles.zh ||
       item.titles.original ||
+      (
+        getLang() === 'zh'
+          ? item.titles.zh
+          : item.titles.en
+      ) ||
+      item.titles.zh ||
+      item.titles.en ||
       item.id
     );
   }
@@ -612,27 +727,34 @@
     const primary =
       displayTitle(item);
 
-    const candidates = [
-      item.titles.original,
-
+    const candidates =
       getLang() === 'zh'
-        ? item.titles.en
-        : item.titles.zh
-    ];
+        ? [
+            item.titles.zh,
+            item.titles.en
+          ]
+        : [
+            item.titles.en,
+            item.titles.zh
+          ];
 
     return (
-      candidates.find(function (candidate) {
-        return (
-          hasText(candidate) &&
-          candidate !== primary
-        );
-      }) ||
+      candidates.find(
+        function (candidate) {
+          return (
+            hasText(candidate) &&
+            candidate !== primary
+          );
+        }
+      ) ||
       ''
     );
   }
 
   function personalNote(item) {
-    if (getLang() === 'zh') {
+    if (
+      getLang() === 'zh'
+    ) {
       return (
         item.notes.zh ||
         item.notes.en ||
@@ -658,18 +780,27 @@
       'all';
 
     if (filter === 'all') {
-      return items.filter(function (item) {
-        return [
-          'watching',
-          'planned',
-          'completed'
-        ].includes(item.status);
-      });
+      return items.filter(
+        function (item) {
+          return [
+            'watching',
+            'planned',
+            'completed'
+          ].includes(
+            item.status
+          );
+        }
+      );
     }
 
-    return items.filter(function (item) {
-      return item.status === filter;
-    });
+    return items.filter(
+      function (item) {
+        return (
+          item.status ===
+          filter
+        );
+      }
+    );
   }
 
   function countByStatus(status) {
@@ -679,23 +810,33 @@
         : [];
 
     if (status === 'all') {
-      return items.filter(function (item) {
-        return [
-          'watching',
-          'planned',
-          'completed'
-        ].includes(item.status);
-      }).length;
+      return items.filter(
+        function (item) {
+          return [
+            'watching',
+            'planned',
+            'completed'
+          ].includes(
+            item.status
+          );
+        }
+      ).length;
     }
 
-    return items.filter(function (item) {
-      return item.status === status;
-    }).length;
+    return items.filter(
+      function (item) {
+        return (
+          item.status ===
+          status
+        );
+      }
+    ).length;
   }
 
   function filterButton(filter) {
     const active =
-      filter === state.filter;
+      filter ===
+      state.filter;
 
     return `
       <button
@@ -723,7 +864,8 @@
   }
 
   function renderListShell() {
-    const app = getApp();
+    const app =
+      getApp();
 
     if (!app) {
       return;
@@ -755,19 +897,23 @@
           class="anime-mobile-filter"
         >
           ${filters
-            .map(function (filter) {
-              return `
-                <option
-                  value="${escapeAttr(filter)}"
-                  ${filter === state.filter ? 'selected' : ''}
-                >
-                  ${escapeHtml(
-                    filterLabel(filter)
-                  )}
-                  (${countByStatus(filter)})
-                </option>
-              `;
-            })
+            .map(
+              function (filter) {
+                return `
+                  <option
+                    value="${escapeAttr(filter)}"
+                    ${filter === state.filter ? 'selected' : ''}
+                  >
+                    ${escapeHtml(
+                      filterLabel(
+                        filter
+                      )
+                    )}
+                    (${countByStatus(filter)})
+                  </option>
+                `;
+              }
+            )
             .join('')}
         </select>
       </div>
@@ -784,7 +930,9 @@
         >
           <div class="anime-filter-panel">
             ${filters
-              .map(filterButton)
+              .map(
+                filterButton
+              )
               .join('')}
           </div>
         </aside>
@@ -810,7 +958,10 @@
     refreshCursor(app);
   }
 
-  function metadataRow(label, value) {
+  function metadataRow(
+    label,
+    value
+  ) {
     if (
       !hasText(
         String(
@@ -844,7 +995,8 @@
       item.progress.total;
 
     if (
-      item.status !== 'watching' ||
+      item.status !==
+        'watching' ||
       current == null ||
       current < 0
     ) {
@@ -861,14 +1013,18 @@
             0,
             Math.min(
               100,
-              current / total * 100
+              current /
+                total *
+                100
             )
           )
         : 0;
 
     const value =
       hasTotal
-        ? current + ' / ' + total
+        ? current +
+          ' / ' +
+          total
         : String(current);
 
     return `
@@ -934,21 +1090,94 @@
   }
 
   function genreTags(item) {
-    if (!item.genres.length) {
+    if (
+      !item.genres.length
+    ) {
       return '';
     }
 
     return `
       <div class="anime-genre-list">
         ${item.genres
-          .map(function (genre) {
-            return `
-              <span class="anime-genre-tag">
-                ${escapeHtml(genre)}
-              </span>
-            `;
-          })
+          .map(
+            function (genre) {
+              return `
+                <span class="anime-genre-tag">
+                  ${escapeHtml(genre)}
+                </span>
+              `;
+            }
+          )
           .join('')}
+      </div>
+    `;
+  }
+
+  function watchButton(
+    item,
+    title
+  ) {
+    if (
+      !hasText(
+        item.links.watch
+      )
+    ) {
+      return '';
+    }
+
+    return `
+      <a
+        class="anime-watch-button"
+        href="${escapeAttr(item.links.watch)}"
+        target="_blank"
+        rel="noopener noreferrer"
+        title="${escapeAttr(
+          text(
+            'anime_watch',
+            'Watch'
+          )
+        )}"
+        aria-label="${escapeAttr(
+          text(
+            'anime_watch',
+            'Watch'
+          ) +
+          ': ' +
+          title
+        )}"
+      >
+        <i
+          class="fas fa-play"
+          aria-hidden="true"
+        ></i>
+      </a>
+    `;
+  }
+
+  function cardFooter(
+    item,
+    title
+  ) {
+    const tags =
+      genreTags(item);
+
+    const action =
+      watchButton(
+        item,
+        title
+      );
+
+    if (
+      !tags &&
+      !action
+    ) {
+      return '';
+    }
+
+    return `
+      <div class="anime-card-footer">
+        ${tags}
+        ${action}
       </div>
     `;
   }
@@ -966,7 +1195,9 @@
     const episodeValue =
       item.progress.total != null &&
       item.progress.total > 0
-        ? String(item.progress.total)
+        ? String(
+            item.progress.total
+          )
         : '';
 
     const metadata = [
@@ -1000,7 +1231,8 @@
     const remoteCover =
       item.cover.remote ||
       item.cover.fallback ||
-      getConfig().placeholderCover ||
+      getConfig()
+        .placeholderCover ||
       '';
 
     const bangumiUrl =
@@ -1026,6 +1258,8 @@
           <a
             class="anime-bangumi-link anime-cover-link"
             href="${escapeAttr(bangumiUrl)}"
+            target="_blank"
+            rel="noopener noreferrer"
             aria-label="${escapeAttr(
               text(
                 'anime_open_bangumi',
@@ -1039,9 +1273,7 @@
               class="anime-cover-image"
               src="${escapeAttr(remoteCover)}"
               data-anime-cover
-              data-fallback-src="${escapeAttr(
-                item.cover.fallback
-              )}"
+              data-fallback-src="${escapeAttr(item.cover.fallback)}"
               alt="${escapeAttr(title)}"
               loading="lazy"
               decoding="async"
@@ -1052,18 +1284,18 @@
               aria-hidden="true"
             >
               <span class="anime-cover-open-icon">
-                <i class="fas fa-arrow-up-right-from-square"></i>
+                <i class="fas fa-compass"></i>
               </span>
             </span>
           </a>
 
           <span
-            class="anime-status-badge anime-status-${escapeAttr(
-              item.status
-            )}"
+            class="anime-status-badge anime-status-${escapeAttr(item.status)}"
           >
             ${escapeHtml(
-              statusLabel(item.status)
+              statusLabel(
+                item.status
+              )
             )}
           </span>
 
@@ -1078,6 +1310,8 @@
                 <a
                   class="anime-bangumi-link"
                   href="${escapeAttr(bangumiUrl)}"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   ${escapeHtml(title)}
                 </a>
@@ -1096,11 +1330,11 @@
           </div>
 
           ${
-            hasText(item.summary)
+            hasText(
+              item.summary
+            )
               ? `
-                <p class="anime-card-summary">
-                  ${escapeHtml(item.summary)}
-                </p>
+                <p class="anime-card-summary">${escapeHtml(item.summary)}</p>
               `
               : ''
           }
@@ -1115,7 +1349,10 @@
               : ''
           }
 
-          ${genreTags(item)}
+          ${cardFooter(
+            item,
+            title
+          )}
 
           ${
             hasText(note)
@@ -1131,40 +1368,6 @@
                   </span>
 
                   <p>${escapeHtml(note)}</p>
-                </div>
-              `
-              : ''
-          }
-
-          ${
-            hasText(item.links.watch)
-              ? `
-                <div class="anime-card-actions">
-                  <a
-                    class="anime-watch-button"
-                    href="${escapeAttr(item.links.watch)}"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title="${escapeAttr(
-                      text(
-                        'anime_watch',
-                        'Watch'
-                      )
-                    )}"
-                    aria-label="${escapeAttr(
-                      text(
-                        'anime_watch',
-                        'Watch'
-                      ) +
-                      ': ' +
-                      title
-                    )}"
-                  >
-                    <i
-                      class="fas fa-play"
-                      aria-hidden="true"
-                    ></i>
-                  </a>
                 </div>
               `
               : ''
@@ -1191,11 +1394,14 @@
       Math.max(
         1,
         Number(
-          getConfig().batchSize
+          getConfig()
+            .batchSize
         ) || 8
       );
 
-    if (items.length === 0) {
+    if (
+      items.length === 0
+    ) {
       list.innerHTML = `
         <div class="anime-state anime-state-empty">
           <i
@@ -1224,11 +1430,15 @@
     const end =
       Math.min(
         items.length,
-        start + batchSize
+        start +
+          batchSize
       );
 
     const slice =
-      items.slice(start, end);
+      items.slice(
+        start,
+        end
+      );
 
     if (!slice.length) {
       hideSentinel();
@@ -1242,10 +1452,16 @@
         .join('')
     );
 
-    state.visibleCount = end;
+    state.visibleCount =
+      end;
 
-    bindCoverFallbacks(list);
-    refreshCursor(list);
+    bindCoverFallbacks(
+      list
+    );
+
+    refreshCursor(
+      list
+    );
 
     if (
       state.visibleCount >=
@@ -1262,7 +1478,8 @@
       );
 
     if (sentinel) {
-      sentinel.hidden = true;
+      sentinel.hidden =
+        true;
     }
 
     disconnectObserver();
@@ -1289,7 +1506,8 @@
     ) {
       while (
         state.visibleCount <
-        getFilteredItems().length
+        getFilteredItems()
+          .length
       ) {
         appendNextBatch();
       }
@@ -1304,7 +1522,9 @@
         function (entries) {
           entries.forEach(
             function (entry) {
-              if (entry.isIntersecting) {
+              if (
+                entry.isIntersecting
+              ) {
                 appendNextBatch();
               }
             }
@@ -1323,81 +1543,103 @@
 
   function disconnectObserver() {
     if (state.observer) {
-      state.observer.disconnect();
-      state.observer = null;
+      state.observer
+        .disconnect();
+
+      state.observer =
+        null;
     }
   }
 
-  function bindCoverFallbacks(scope) {
+  function bindCoverFallbacks(
+    scope
+  ) {
     const root =
       scope ||
       document;
 
     const placeholder =
-      getConfig().placeholderCover ||
+      getConfig()
+        .placeholderCover ||
       '';
 
     root
       .querySelectorAll(
         'img[data-anime-cover]'
       )
-      .forEach(function (image) {
-        if (
-          image.dataset.animeFallbackBound === 'true'
-        ) {
-          return;
-        }
-
-        image.dataset.animeFallbackBound = 'true';
-        image.dataset.animeFallbackStage = 'remote';
-
-        image.addEventListener(
-          'error',
-          function () {
-            const stage =
-              image.dataset.animeFallbackStage ||
-              'remote';
-
-            const fallback =
-              image.dataset.fallbackSrc ||
-              '';
-
-            if (
-              stage === 'remote' &&
-              fallback &&
-              image.src !==
-                new URL(
-                  fallback,
-                  document.baseURI
-                ).href
-            ) {
-              image.dataset.animeFallbackStage =
-                'local';
-
-              image.src =
-                fallback;
-
-              return;
-            }
-
-            if (
-              stage !== 'placeholder' &&
-              placeholder
-            ) {
-              image.dataset.animeFallbackStage =
-                'placeholder';
-
-              image.src =
-                placeholder;
-
-              return;
-            }
-
-            image.dataset.animeFallbackStage =
-              'done';
+      .forEach(
+        function (image) {
+          if (
+            image.dataset
+              .animeFallbackBound ===
+              'true'
+          ) {
+            return;
           }
-        );
-      });
+
+          image.dataset
+            .animeFallbackBound =
+            'true';
+
+          image.dataset
+            .animeFallbackStage =
+            'remote';
+
+          image.addEventListener(
+            'error',
+            function () {
+              const stage =
+                image.dataset
+                  .animeFallbackStage ||
+                'remote';
+
+              const fallback =
+                image.dataset
+                  .fallbackSrc ||
+                '';
+
+              if (
+                stage ===
+                  'remote' &&
+                fallback &&
+                image.src !==
+                  new URL(
+                    fallback,
+                    document.baseURI
+                  ).href
+              ) {
+                image.dataset
+                  .animeFallbackStage =
+                  'local';
+
+                image.src =
+                  fallback;
+
+                return;
+              }
+
+              if (
+                stage !==
+                  'placeholder' &&
+                placeholder
+              ) {
+                image.dataset
+                  .animeFallbackStage =
+                  'placeholder';
+
+                image.src =
+                  placeholder;
+
+                return;
+              }
+
+              image.dataset
+                .animeFallbackStage =
+                'done';
+            }
+          );
+        }
+      );
   }
 
   function setFilter(filter) {
@@ -1405,33 +1647,46 @@
       allowedFilters();
 
     if (
-      !filters.includes(filter) ||
-      state.filter === filter
+      !filters.includes(
+        filter
+      ) ||
+      state.filter ===
+        filter
     ) {
       return;
     }
 
-    state.filter = filter;
+    state.filter =
+      filter;
 
     storeFilter(filter);
-    updateFilterQuery(filter);
+    updateFilterQuery(
+      filter
+    );
     renderListShell();
   }
 
-  function navigateToBangumi(url) {
+  function openBangumi(url) {
     if (!hasText(url)) {
       return;
     }
 
-    window.location.assign(url);
+    window.open(
+      url,
+      '_blank',
+      'noopener,noreferrer'
+    );
   }
 
   function handleClick(event) {
-    const app = getApp();
+    const app =
+      getApp();
 
     if (
       !app ||
-      !app.contains(event.target)
+      !app.contains(
+        event.target
+      )
     ) {
       return;
     }
@@ -1445,7 +1700,8 @@
       event.preventDefault();
 
       setFilter(
-        filterButton.dataset.animeFilter ||
+        filterButton.dataset
+          .animeFilter ||
         'all'
       );
 
@@ -1472,15 +1728,20 @@
       return;
     }
 
-    navigateToBangumi(
-      card.dataset.animeBangumiUrl
+    openBangumi(
+      card.dataset
+        .animeBangumiUrl
     );
   }
 
-  function handleKeydown(event) {
+  function handleKeydown(
+    event
+  ) {
     if (
-      event.key !== 'Enter' &&
-      event.key !== ' '
+      event.key !==
+        'Enter' &&
+      event.key !==
+        ' '
     ) {
       return;
     }
@@ -1501,12 +1762,15 @@
 
     event.preventDefault();
 
-    navigateToBangumi(
-      card.dataset.animeBangumiUrl
+    openBangumi(
+      card.dataset
+        .animeBangumiUrl
     );
   }
 
-  function handleChange(event) {
+  function handleChange(
+    event
+  ) {
     const target =
       event.target;
 
@@ -1551,10 +1815,13 @@
       handleChange
     );
 
-    state.bound = true;
+    state.bound =
+      true;
   }
 
-  function refreshCursor(scope) {
+  function refreshCursor(
+    scope
+  ) {
     const root =
       scope ||
       getSection();
@@ -1576,25 +1843,38 @@
           '.anime-watch-button *'
         ].join(', ')
       )
-      .forEach(function (element) {
-        if (!element.dataset) {
-          return;
+      .forEach(
+        function (element) {
+          if (
+            !element.dataset
+          ) {
+            return;
+          }
+
+          element.dataset
+            .cursor =
+            element.dataset
+              .cursor ||
+            'precise_select';
+
+          element.dataset
+            .cursorFallback =
+            element.dataset
+              .cursorFallback ||
+            'pointer';
         }
-
-        element.dataset.cursor =
-          element.dataset.cursor ||
-          'precise_select';
-
-        element.dataset.cursorFallback =
-          element.dataset.cursorFallback ||
-          'pointer';
-      });
+      );
 
     if (
       window.CustomCursorAPI &&
-      typeof window.CustomCursorAPI.refresh === 'function'
+      typeof window
+        .CustomCursorAPI
+        .refresh ===
+        'function'
     ) {
-      window.CustomCursorAPI.refresh(root);
+      window
+        .CustomCursorAPI
+        .refresh(root);
     }
   }
 
@@ -1614,9 +1894,12 @@
     if (
       !section ||
       section.hidden ||
-      !section.classList.contains('active')
+      !section.classList
+        .contains('active')
     ) {
-      return Promise.resolve(false);
+      return Promise.resolve(
+        false
+      );
     }
 
     bindEvents();
@@ -1626,14 +1909,22 @@
     }
 
     return loadData()
-      .then(function () {
-        renderList();
-        return true;
-      })
-      .catch(function (error) {
-        renderError(error);
-        return false;
-      });
+      .then(
+        function () {
+          renderList();
+
+          return true;
+        }
+      )
+      .catch(
+        function (error) {
+          renderError(
+            error
+          );
+
+          return false;
+        }
+      );
   }
 
   function refreshLanguage() {
@@ -1647,7 +1938,8 @@
     if (
       !section ||
       section.hidden ||
-      !section.classList.contains('active')
+      !section.classList
+        .contains('active')
     ) {
       return;
     }

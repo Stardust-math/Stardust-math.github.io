@@ -52,15 +52,48 @@ jobs:
       - name: Check Anime data and generated files
         run: node scripts/check_social_anime.js
 
+      - name: Verify synchronization output scope
+        shell: bash
+        run: |
+          mapfile -t changed_paths < <(
+            {
+              git diff --name-only
+              git ls-files --others --exclude-standard
+            } | sort -u
+          )
+
+          unexpected=0
+
+          for path in "${changed_paths[@]}"; do
+            case "$path" in
+              assets/data/social/anime/items/bgm-*.json|\
+              assets/data/social/anime/anime-index.json|\
+              assets/data/social/anime/CATALOG.md|\
+              assets/images/social/anime/fallback/bgm-*)
+                ;;
+              *)
+                echo "::error file=${path}::Unexpected Anime synchronization output."
+                unexpected=1
+                ;;
+            esac
+          done
+
+          if (( unexpected != 0 )); then
+            echo "Anime synchronization produced files outside the allowed scope."
+            exit 1
+          fi
+
       - name: Commit synchronized Anime files
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add \
-            assets/data/social/anime \
-            assets/images/social/anime/fallback
+          git add -A -- \
+            ':(glob)assets/data/social/anime/items/bgm-*.json' \
+            assets/data/social/anime/anime-index.json \
+            assets/data/social/anime/CATALOG.md \
+            ':(glob)assets/images/social/anime/fallback/bgm-*'
 
           if git diff --cached --quiet; then
             echo "No Anime synchronization changes."
