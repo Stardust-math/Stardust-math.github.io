@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-260680",
+  "subjectId": 260680,
+  "slug": "bgm-260680",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/260680",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ss28965?theme=movie&spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

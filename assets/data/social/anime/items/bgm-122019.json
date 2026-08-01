@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-122019",
+  "subjectId": 122019,
+  "slug": "bgm-122019",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/122019",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep284234?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "completed",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-105951",
+  "subjectId": 105951,
+  "slug": "bgm-105951",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/105951",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep86036?from_spmid=united.player-video-detail.0.0&plat_id=481&share_from=ogv_new&share_medium=iphone&share_plat=ios&share_session_id=7011099A-0505-4B16-9955-EF716507F011&share_source=WEIXIN&share_tag=s_i&spmid=united.player-video-detail.0.0&timestamp=1785614630&unique_k=hURsdhY"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

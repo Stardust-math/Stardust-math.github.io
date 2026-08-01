@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-172498",
+  "subjectId": 172498,
+  "slug": "bgm-172498",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/172498",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep103917?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "completed",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

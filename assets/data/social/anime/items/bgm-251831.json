@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-251831",
+  "subjectId": 251831,
+  "slug": "bgm-251831",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/251831",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep258942?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

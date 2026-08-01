@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-185001",
+  "subjectId": 185001,
+  "slug": "bgm-185001",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/185001",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep90822?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

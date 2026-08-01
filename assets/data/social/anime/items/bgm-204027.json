@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-204027",
+  "subjectId": 204027,
+  "slug": "bgm-204027",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/204027",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep173262?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

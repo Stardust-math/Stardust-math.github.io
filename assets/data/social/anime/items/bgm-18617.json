@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-18617",
+  "subjectId": 18617,
+  "slug": "bgm-18617",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/18617",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ss42652?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-110648",
+  "subjectId": 110648,
+  "slug": "bgm-110648",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/110648",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep63841?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

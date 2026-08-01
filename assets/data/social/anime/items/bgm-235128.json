@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-235128",
+  "subjectId": 235128,
+  "slug": "bgm-235128",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/235128",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep250611?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "watching",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

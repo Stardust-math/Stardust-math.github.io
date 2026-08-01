@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-82777",
+  "subjectId": 82777,
+  "slug": "bgm-82777",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/82777",
+    "watchUrl": "https://www.bilibili.com/video/BV1ts411D7XD?spm_id_from=333.788.videopod.episodes&vd_source=456327cceb8485f0938e565e584e68a8&p=13"
+  },
+  "api": {},
+  "custom": {
+    "status": "completed",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

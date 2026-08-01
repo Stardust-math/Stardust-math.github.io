@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-130131",
+  "subjectId": 130131,
+  "slug": "bgm-130131",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/130131",
+    "watchUrl": "https://www.bilibili.com/video/BV1bKoyBjEYP/?spm_id_from=333.337.search-card.all.click&vd_source=456327cceb8485f0938e565e584e68a8"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

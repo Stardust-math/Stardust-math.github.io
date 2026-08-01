@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-261805",
+  "subjectId": 261805,
+  "slug": "bgm-261805",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/261805",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ss31151?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

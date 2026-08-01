@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-281271",
+  "subjectId": 281271,
+  "slug": "bgm-281271",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/281271",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep82733?spm_id_from=333.337.0.0&from_spmid=666.25.episode.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "completed",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

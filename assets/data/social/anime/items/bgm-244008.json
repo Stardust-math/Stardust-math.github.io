@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-244008",
+  "subjectId": 244008,
+  "slug": "bgm-244008",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/244008",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep203922?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "completed",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-548940",
+  "subjectId": 548940,
+  "slug": "bgm-548940",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/548940",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep1983610?spm_id_from=333.337.0.0&from_spmid=666.25.episode.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

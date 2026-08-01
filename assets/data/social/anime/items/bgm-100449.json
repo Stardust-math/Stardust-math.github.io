@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-100449",
+  "subjectId": 100449,
+  "slug": "bgm-100449",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/100449",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep770?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

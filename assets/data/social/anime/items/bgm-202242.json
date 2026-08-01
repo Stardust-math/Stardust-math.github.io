@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-202242",
+  "subjectId": 202242,
+  "slug": "bgm-202242",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/202242",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ss32934?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "completed",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

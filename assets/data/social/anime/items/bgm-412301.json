@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-412301",
+  "subjectId": 412301,
+  "slug": "bgm-412301",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/412301",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep710210?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

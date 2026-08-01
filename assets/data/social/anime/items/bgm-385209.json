@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-385209",
+  "subjectId": 385209,
+  "slug": "bgm-385209",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/385209",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep780629?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

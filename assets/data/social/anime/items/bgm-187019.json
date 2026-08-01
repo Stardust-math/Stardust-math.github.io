@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-187019",
+  "subjectId": 187019,
+  "slug": "bgm-187019",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/187019",
+    "watchUrl": "https://www.bilibili.com/video/BV1TXJ3zLErA/?spm_id_from=333.337.search-card.all.click&vd_source=456327cceb8485f0938e565e584e68a8"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

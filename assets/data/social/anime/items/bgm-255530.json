@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-255530",
+  "subjectId": 255530,
+  "slug": "bgm-255530",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/255530",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ss44910?theme=movie&spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

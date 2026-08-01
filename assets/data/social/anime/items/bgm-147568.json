@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-147568",
+  "subjectId": 147568,
+  "slug": "bgm-147568",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/147568",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep90821?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-309056",
+  "subjectId": 309056,
+  "slug": "bgm-309056",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/309056",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep409581?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

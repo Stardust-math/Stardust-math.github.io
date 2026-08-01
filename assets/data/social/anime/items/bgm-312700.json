@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-312700",
+  "subjectId": 312700,
+  "slug": "bgm-312700",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/312700",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep374151?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

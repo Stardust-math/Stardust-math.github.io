@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-54433",
+  "subjectId": 54433,
+  "slug": "bgm-54433",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/54433",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ss1539"
+  },
+  "api": {
+    "titleOriginal": "やはり俺の青春ラブコメはまちがっている。",
+    "titleZH": "我的青春恋爱物语果然有问题",
+    "titleEN": "",
+    "summary": "别扭的，没有朋友，没有女朋友，对着那些讴歌青春的同学吐槽着“他们都是骗子，都在说谎，快点爆发把我”的男主角的爱情物语，将来的梦想是“不工作”——\r\n　　这样的高中生八幡被生活指导老师的带到了学校第一美少女雪乃所属的“侍奉部”，与美少女意想不到的相遇……怎么想都是恋爱故事的展开吧！？\r\n　　但是雪乃却无论如何都原谅不了八幡那令人残念的糟糕性格！\r\n　　不断轮回着的充满问题的青春——我的青春，到底怎么了！？",
+    "coverRemote": "https://lain.bgm.tv/pic/cover/l/1e/f1/54433_JZ99l.jpg",
+    "coverFallback": "./assets/images/social/anime/fallback/bgm-54433.jpg",
+    "status": "",
+    "progress": null,
+    "totalEpisodes": 13,
+    "airDate": "2013-04-04",
+    "year": 2013,
+    "studio": "やはりこの製作委員会はまちがっている。（TBS、マーベラス、NBCユニバーサル・エンターテイメント、ムービック）",
+    "genres": [
+      "恋爱",
+      "轻小说改",
+      "校园",
+      "我的青春恋爱物语果然有问题",
+      "2013年4月",
+      "大老师",
+      "TV",
+      "BrainsBase",
+      "2013",
+      "早见纱织",
+      "轻改",
+      "青春",
+      "小说改",
+      "悠木碧",
+      "日本",
+      "日常",
+      "党争",
+      "后宫",
+      "渡航",
+      "小松未可子",
+      "东山奈央",
+      "搞笑",
+      "吉村爱",
+      "吉村愛",
+      "2013年",
+      "春物"
+    ],
+    "bangumiRating": 7.5,
+    "personalRating": null,
+    "updatedAt": "2026-08-01T13:01:35.768Z"
+  },
+  "custom": {
+    "status": "completed",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

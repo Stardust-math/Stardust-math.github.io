@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-395782",
+  "subjectId": 395782,
+  "slug": "bgm-395782",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/395782",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep703876?spm_id_from=333.337.0.0&from_spmid=666.25.episode.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "watching",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

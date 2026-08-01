@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-10639",
+  "subjectId": 10639,
+  "slug": "bgm-10639",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/10639",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep29919?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

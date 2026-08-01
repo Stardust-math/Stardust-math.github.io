@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-240038",
+  "subjectId": 240038,
+  "slug": "bgm-240038",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/240038",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep251076?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "completed",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-285130",
+  "subjectId": 285130,
+  "slug": "bgm-285130",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/285130",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep285961?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

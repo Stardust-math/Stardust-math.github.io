@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-405211",
+  "subjectId": 405211,
+  "slug": "bgm-405211",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/405211",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep815162?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

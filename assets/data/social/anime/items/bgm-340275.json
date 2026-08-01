@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-340275",
+  "subjectId": 340275,
+  "slug": "bgm-340275",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/340275",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep408029?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

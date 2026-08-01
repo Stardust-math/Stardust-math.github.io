@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-19393",
+  "subjectId": 19393,
+  "slug": "bgm-19393",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/19393",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ss42653?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-74628",
+  "subjectId": 74628,
+  "slug": "bgm-74628",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/74628",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep29064?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

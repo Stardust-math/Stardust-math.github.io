@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-12426",
+  "subjectId": 12426,
+  "slug": "bgm-12426",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/12426",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ss1175?theme=movie&spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

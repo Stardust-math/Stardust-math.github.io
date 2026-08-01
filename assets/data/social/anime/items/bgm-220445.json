@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-220445",
+  "subjectId": 220445,
+  "slug": "bgm-220445",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/220445",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ss29109?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

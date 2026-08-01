@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-350795",
+  "subjectId": 350795,
+  "slug": "bgm-350795",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/350795",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep604262?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-100444",
+  "subjectId": 100444,
+  "slug": "bgm-100444",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/100444",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep80016?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-130250",
+  "subjectId": 130250,
+  "slug": "bgm-130250",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/130250",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep70866?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "completed",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

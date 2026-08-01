@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-283643",
+  "subjectId": 283643,
+  "slug": "bgm-283643",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/283643",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep819314?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

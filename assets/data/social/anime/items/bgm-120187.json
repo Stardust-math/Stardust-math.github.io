@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-120187",
+  "subjectId": 120187,
+  "slug": "bgm-120187",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/120187",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep63860?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "completed",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

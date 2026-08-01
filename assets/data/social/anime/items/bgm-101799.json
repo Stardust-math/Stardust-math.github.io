@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-101799",
+  "subjectId": 101799,
+  "slug": "bgm-101799",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/101799",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep429322?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "completed",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

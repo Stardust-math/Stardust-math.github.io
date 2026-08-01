@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-152092",
+  "subjectId": 152092,
+  "slug": "bgm-152092",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/152092",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep292361?theme=movie&spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

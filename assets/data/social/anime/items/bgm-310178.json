@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-310178",
+  "subjectId": 310178,
+  "slug": "bgm-310178",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/310178",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep371560?spm_id_from=333.337.0.0&from_spmid=666.25.episode.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

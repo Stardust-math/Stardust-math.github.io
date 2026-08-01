@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-29323",
+  "subjectId": 29323,
+  "slug": "bgm-29323",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/29323",
+    "watchUrl": "https://www.bilibili.com/video/BV11X9vBGEbf/?spm_id_from=333.337.search-card.all.click&vd_source=456327cceb8485f0938e565e584e68a8"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

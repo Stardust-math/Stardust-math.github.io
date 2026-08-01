@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-211089",
+  "subjectId": 211089,
+  "slug": "bgm-211089",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/211089",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ss28950?theme=movie&spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

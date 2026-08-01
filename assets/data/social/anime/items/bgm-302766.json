@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-302766",
+  "subjectId": 302766,
+  "slug": "bgm-302766",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/302766",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep719408?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

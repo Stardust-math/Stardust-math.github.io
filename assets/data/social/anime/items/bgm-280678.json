@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-280678",
+  "subjectId": 280678,
+  "slug": "bgm-280678",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/280678",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep317858?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

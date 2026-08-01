@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-11304",
+  "subjectId": 11304,
+  "slug": "bgm-11304",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/11304",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep396095?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "completed",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-90772",
+  "subjectId": 90772,
+  "slug": "bgm-90772",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/90772",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ss3075?spm_id_from=333.337.0.0&from_spmid=666.25.series.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

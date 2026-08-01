@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-23383",
+  "subjectId": 23383,
+  "slug": "bgm-23383",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/23383",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ss104504?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "completed",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

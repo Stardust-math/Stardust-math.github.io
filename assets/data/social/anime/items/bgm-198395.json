@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-198395",
+  "subjectId": 198395,
+  "slug": "bgm-198395",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/198395",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep100615?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

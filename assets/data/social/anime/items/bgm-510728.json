@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-510728",
+  "subjectId": 510728,
+  "slug": "bgm-510728",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/510728",
+    "watchUrl": "https://www.bilibili.com/video/BV1iCRSBBEGL?spm_id_from=333.788.videopod.sections&vd_source=456327cceb8485f0938e565e584e68a8&p=9"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

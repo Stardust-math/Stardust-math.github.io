@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-123815",
+  "subjectId": 123815,
+  "slug": "bgm-123815",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/123815",
+    "watchUrl": "https://www.bilibili.com/video/BV1DxyPYmEfM?spm_id_from=333.788.videopod.sections&vd_source=456327cceb8485f0938e565e584e68a8"
+  },
+  "api": {},
+  "custom": {
+    "status": "completed",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

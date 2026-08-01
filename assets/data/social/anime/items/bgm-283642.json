@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-283642",
+  "subjectId": 283642,
+  "slug": "bgm-283642",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/283642",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep275897?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

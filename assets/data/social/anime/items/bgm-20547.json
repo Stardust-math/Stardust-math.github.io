@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-20547",
+  "subjectId": 20547,
+  "slug": "bgm-20547",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/20547",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep15566?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

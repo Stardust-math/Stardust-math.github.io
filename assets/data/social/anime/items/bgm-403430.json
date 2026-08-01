@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-403430",
+  "subjectId": 403430,
+  "slug": "bgm-403430",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/403430",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep720223?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

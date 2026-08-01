@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-515880",
+  "subjectId": 515880,
+  "slug": "bgm-515880",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/515880",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep1938328?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

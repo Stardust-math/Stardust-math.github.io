@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-61339",
+  "subjectId": 61339,
+  "slug": "bgm-61339",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/61339",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep93414?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "completed",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

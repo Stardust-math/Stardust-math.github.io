@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-37874",
+  "subjectId": 37874,
+  "slug": "bgm-37874",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/37874",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ss1180?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

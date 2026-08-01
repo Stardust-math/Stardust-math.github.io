@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-281277",
+  "subjectId": 281277,
+  "slug": "bgm-281277",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/281277",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep102081?spm_id_from=333.337.0.0&from_spmid=666.25.episode.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "completed",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-55770",
+  "subjectId": 55770,
+  "slug": "bgm-55770",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/55770",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep379656?plat_id=481&share_from=ogv_new&share_medium=iphone&share_plat=ios&share_session_id=51BD1F1B-BE30-4D05-8CDE-99A113523FE8&share_source=WEIXIN&share_tag=s_i&spmid=united.player-video-detail.0.0&timestamp=1785611059&unique_k=62dUS7u"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}
