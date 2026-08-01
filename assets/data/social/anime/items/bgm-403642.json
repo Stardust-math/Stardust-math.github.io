@@ -7,7 +7,36 @@
     "bangumiUrl": "https://bgm.tv/subject/403642",
     "watchUrl": "https://www.bilibili.com/video/BV1qr4y1S7zs/?spm_id_from=333.337.search-card.all.click&vd_source=456327cceb8485f0938e565e584e68a8"
   },
-  "api": {},
+  "api": {
+    "titleOriginal": "兔子帮",
+    "titleZH": "兔子帮",
+    "titleEN": "",
+    "summary": "在一个名为玉兔村的村落裡，生活着一群兔子。有一天，玉兔村陷入了能源危机，为解决能源危机，玉兔村的村长派出兔子「白枝」前往人类社会寻找失踪多年的「嫦娥娘娘」。初到人类社会的白枝并不了解人类的生活习惯，到处碰壁。在一次偶然的事件中，白枝在无意间从流氓手中救下一位名为「小中」的人类小孩。为了报答白枝的解救之恩，小中将无处可去的白枝收留在自己家中。虽然白枝的到来为小中家增添了不少生气，但是他们不知道的是，有一股黑势力正渐渐以小中家为中心聚拢了起来……",
+    "coverRemote": "https://lain.bgm.tv/pic/cover/l/c6/e3/403642_JW9ok.jpg",
+    "coverFallback": "./assets/images/social/anime/fallback/bgm-403642.jpg",
+    "status": "",
+    "progress": null,
+    "totalEpisodes": 52,
+    "airDate": "2012-09-21",
+    "year": 2012,
+    "studio": "",
+    "genres": [
+      "童年",
+      "国产",
+      "中国",
+      "TV",
+      "国漫",
+      "童年回忆",
+      "漫画改",
+      "战斗",
+      "2012",
+      "TVA-02",
+      "未看完"
+    ],
+    "bangumiRating": 6.4,
+    "personalRating": null,
+    "updatedAt": "2026-08-01T23:40:54.493Z"
+  },
   "custom": {
     "status": "completed",
     "noteZH": "",

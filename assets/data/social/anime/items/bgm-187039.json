@@ -7,7 +7,31 @@
     "bangumiUrl": "https://bgm.tv/subject/187039",
     "watchUrl": "https://www.bilibili.com/bangumi/play/ep93414?spm_id_from=333.337.0.0"
   },
-  "api": {},
+  "api": {
+    "titleOriginal": "虹猫蓝兔七侠传",
+    "titleZH": "虹猫蓝兔七侠传",
+    "titleEN": "",
+    "summary": "这是一个充满中国特色的功夫传奇故事。 公元347年，风景秀丽的张家界，以黑心虎为首的魔教放火烧山，荼毒生灵，企图抢夺森林灵兽玉麒麟，称霸武林。危难之际，虹猫的父亲联合蓝兔的母亲等七人，七剑合璧，打败黑心虎，维护了森林的安宁与和谐。 五十年后，黑心虎带领魔教卷土重来。而唯一能够阻止黑心虎的只有七剑再次合璧，但此时的七剑，除了虹猫的父亲，其他六剑早已不在人世。一场血战，虹猫的父亲终因寡不敌众，英勇牺牲。少侠虹猫谨遵父亲遗命，肩负起拯救森林和平的重任，含愤下山寻找其他六剑传人…… 经过一系列惊心动魄的斗智斗勇，七剑终于再次合璧，大败黑心虎，彻底铲除了魔教，美丽的森林王国从此又恢复了昔日的和谐与安宁。",
+    "coverRemote": "https://lain.bgm.tv/pic/cover/l/f5/4f/187039_0dJfF.jpg",
+    "coverFallback": "./assets/images/social/anime/fallback/bgm-187039.jpg",
+    "status": "",
+    "progress": null,
+    "totalEpisodes": 0,
+    "airDate": "",
+    "year": null,
+    "studio": "",
+    "genres": [
+      "国漫",
+      "童年",
+      "武侠",
+      "漫画",
+      "2006",
+      "中国"
+    ],
+    "bangumiRating": 7.8,
+    "personalRating": null,
+    "updatedAt": "2026-08-01T23:38:48.920Z"
+  },
   "custom": {
     "status": "completed",
     "noteZH": "",
