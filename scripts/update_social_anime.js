@@ -475,7 +475,7 @@ function extractGenres(subject) {
           : '';
       })
       .filter(Boolean)
-      .slice(0, 8)
+      .slice(0, 16)
   );
 }
 
