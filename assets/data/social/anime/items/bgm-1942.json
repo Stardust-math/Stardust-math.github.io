@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-1942",
+  "subjectId": 1942,
+  "slug": "bgm-1942",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/1942",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ss3860?theme=movie&spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

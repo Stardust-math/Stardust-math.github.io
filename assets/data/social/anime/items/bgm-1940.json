@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-1940",
+  "subjectId": 1940,
+  "slug": "bgm-1940",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/1940",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep86200?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

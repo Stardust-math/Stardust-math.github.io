@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-3375",
+  "subjectId": 3375,
+  "slug": "bgm-3375",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/3375",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep71827?theme=movie&spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

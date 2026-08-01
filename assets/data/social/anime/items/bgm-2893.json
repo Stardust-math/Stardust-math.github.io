@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-2893",
+  "subjectId": 2893,
+  "slug": "bgm-2893",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/2893",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ss2853?theme=movie&spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

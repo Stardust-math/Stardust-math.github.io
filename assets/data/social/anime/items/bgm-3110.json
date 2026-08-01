@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-3110",
+  "subjectId": 3110,
+  "slug": "bgm-3110",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/3110",
+    "watchUrl": "https://www.bilibili.com/video/BV1WEAhznE5N?spm_id_from=333.788.videopod.sections&vd_source=456327cceb8485f0938e565e584e68a8&p=51"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

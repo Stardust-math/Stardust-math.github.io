@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-1606",
+  "subjectId": 1606,
+  "slug": "bgm-1606",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/1606",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep18915?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-1862",
+  "subjectId": 1862,
+  "slug": "bgm-1862",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/1862",
+    "watchUrl": "https://www.bilibili.com/video/BV1WEAhznE5N?spm_id_from=333.788.videopod.sections&vd_source=456327cceb8485f0938e565e584e68a8&p=26"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

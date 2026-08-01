@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-2785",
+  "subjectId": 2785,
+  "slug": "bgm-2785",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/2785",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep289960?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-3021",
+  "subjectId": 3021,
+  "slug": "bgm-3021",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/3021",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep105892?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "completed",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

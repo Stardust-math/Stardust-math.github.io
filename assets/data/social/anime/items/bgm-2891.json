@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-2891",
+  "subjectId": 2891,
+  "slug": "bgm-2891",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/2891",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep27351?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "planned",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}

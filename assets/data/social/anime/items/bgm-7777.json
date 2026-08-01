@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "bgm-7777",
+  "subjectId": 7777,
+  "slug": "bgm-7777",
+  "source": {
+    "bangumiUrl": "https://bgm.tv/subject/7777",
+    "watchUrl": "https://www.bilibili.com/bangumi/play/ep468949?spm_id_from=333.337.0.0"
+  },
+  "api": {},
+  "custom": {
+    "status": "completed",
+    "noteZH": "",
+    "noteEN": ""
+  }
+}
