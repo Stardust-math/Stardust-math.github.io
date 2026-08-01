@@ -483,7 +483,8 @@ function checkRouteDirectory(errors) {
 
 function checkFallbackCovers(
   items,
-  errors
+  errors,
+  warnings
 ) {
   const usedPaths =
     new Map();
@@ -630,9 +631,10 @@ function checkFallbackCovers(
           ratio < 0.55 ||
           ratio > 0.8
         ) {
-          errors.push(
+          warnings.push(
             `${itemLabel}: fallback cover ratio ${ratio.toFixed(3)} is not ` +
-            `close to a portrait cover: ${fallbackPath}.`
+            `close to a portrait cover and will be cropped by the ` +
+            `frontend: ${fallbackPath}.`
           );
         }
       }
@@ -680,6 +682,30 @@ function checkFallbackCovers(
   });
 }
 
+function printMessages(
+  heading,
+  messages,
+  writer
+) {
+  if (!messages.length) {
+    return;
+  }
+
+  writer('');
+  writer(heading);
+  writer(
+    '-'.repeat(
+      heading.length
+    )
+  );
+
+  messages.forEach((message) => {
+    writer(
+      `- ${message}`
+    );
+  });
+}
+
 function main() {
   const items =
     loadItems();
@@ -690,6 +716,7 @@ function main() {
     );
 
   const errors = [];
+  const warnings = [];
 
   checkGeneratedFile(
     INDEX_FILE,
@@ -713,7 +740,8 @@ function main() {
 
   checkFallbackCovers(
     items,
-    errors
+    errors,
+    warnings
   );
 
   console.log(
@@ -728,23 +756,43 @@ function main() {
     `Items: ${items.length}`
   );
 
-  if (errors.length) {
-    console.error('');
-    console.error('Problems');
-    console.error('--------');
-
-    errors.forEach((message) => {
-      console.error(
-        `- ${message}`
+  printMessages(
+    'Warnings',
+    warnings,
+    (message) => {
+      console.warn(
+        message
       );
-    });
+    }
+  );
+
+  if (errors.length) {
+    printMessages(
+      'Problems',
+      errors,
+      (message) => {
+        console.error(
+          message
+        );
+      }
+    );
 
     process.exitCode = 1;
     return;
   }
 
+  console.log('');
+
   console.log(
-    'All Anime data, generated files, routes, and fallback covers are valid.'
+    warnings.length
+      ? (
+          'All Anime data, generated files, routes, and fallback covers ' +
+          'are valid. Non-portrait covers were accepted with warnings.'
+        )
+      : (
+          'All Anime data, generated files, routes, and fallback covers ' +
+          'are valid.'
+        )
   );
 }
 
