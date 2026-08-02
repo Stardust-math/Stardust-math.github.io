@@ -8,7 +8,7 @@ on:
       - completed
 
   schedule:
-    - cron: "17 19 * * *"
+    - cron: "17 19 * * 0"
 
   workflow_dispatch:
 
@@ -27,7 +27,6 @@ jobs:
         github.event.workflow_run.conclusion == 'success' &&
         github.event.workflow_run.actor.login != 'github-actions[bot]'
       )
-
     runs-on: ubuntu-latest
 
     timeout-minutes: 20
@@ -44,10 +43,36 @@ jobs:
         with:
           node-version: 20
 
-      - name: Synchronize Bangumi data and fallback covers
+      - name: Select synchronization mode
+        id: sync_mode
+        shell: bash
+        run: |
+          if [[ "$GITHUB_EVENT_NAME" == "workflow_run" ]]; then
+            echo "mode=dynamic" >> "$GITHUB_OUTPUT"
+            echo "commit_message=chore(anime): sync dynamic Bangumi data" >> "$GITHUB_OUTPUT"
+          else
+            echo "mode=full" >> "$GITHUB_OUTPUT"
+            echo "commit_message=chore(anime): sync full Bangumi data" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Synchronize Bangumi data
         env:
           BANGUMI_ACCESS_TOKEN: ${{ secrets.BANGUMI_ACCESS_TOKEN }}
-        run: node scripts/update_social_anime.js
+          SYNC_MODE: ${{ steps.sync_mode.outputs.mode }}
+        shell: bash
+        run: |
+          case "$SYNC_MODE" in
+            dynamic)
+              node scripts/update_social_anime_dynamic.js
+              ;;
+            full)
+              node scripts/update_social_anime.js
+              ;;
+            *)
+              echo "::error::Unknown Anime synchronization mode: $SYNC_MODE"
+              exit 1
+              ;;
+          esac
 
       - name: Check Anime data and generated files
         run: node scripts/check_social_anime.js
@@ -63,7 +88,6 @@ jobs:
           )
 
           unexpected=0
-
           for path in "${changed_paths[@]}"; do
             case "$path" in
               assets/data/social/anime/items/bgm-*.json|\
@@ -84,6 +108,8 @@ jobs:
           fi
 
       - name: Commit synchronized Anime files
+        env:
+          COMMIT_MESSAGE: ${{ steps.sync_mode.outputs.commit_message }}
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
@@ -100,6 +126,6 @@ jobs:
             exit 0
           fi
 
-          git commit -m "chore(anime): sync Bangumi data"
+          git commit -m "$COMMIT_MESSAGE"
           git pull --rebase origin main
           git push origin HEAD:main
