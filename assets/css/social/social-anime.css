@@ -1,6 +1,6 @@
 .social-anime-section {
   --anime-card-cover-width: 228px;
-  --anime-card-min-height: 370px;
+  --anime-card-height: 440px;
   --anime-sidebar-width: 164px;
 }
 
@@ -273,9 +273,10 @@ body[data-lang="zh"]
     var(--anime-card-cover-width)
     minmax(0, 1fr);
 
+  width: 100%;
   min-width: 0;
-  min-height:
-    var(--anime-card-min-height);
+  height:
+    var(--anime-card-height);
 
   overflow: hidden;
 
@@ -307,7 +308,7 @@ body[data-lang="zh"]
 
   contain-intrinsic-size:
     1px
-    var(--anime-card-min-height);
+    var(--anime-card-height);
 }
 
 .anime-card:hover {
@@ -335,8 +336,9 @@ body[data-lang="zh"]
 .anime-card-cover-wrap {
   position: relative;
 
-  min-height:
-    var(--anime-card-min-height);
+  width: 100%;
+  height: 100%;
+  min-height: 0;
 
   overflow: hidden;
 
@@ -641,7 +643,14 @@ body[data-lang="zh"]
   display: flex;
   flex-direction: column;
 
+  box-sizing: border-box;
+
+  width: 100%;
+  height: 100%;
   min-width: 0;
+  min-height: 0;
+
+  overflow: hidden;
 
   padding:
     24px
@@ -653,6 +662,8 @@ body[data-lang="zh"]
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+
+  flex: 0 0 auto;
 
   gap: 16px;
 }
@@ -699,12 +710,17 @@ body[data-lang="zh"]
 }
 
 .anime-card-summary {
-  display: block;
+  display:
+    -webkit-box;
+
+  flex: 0 1 auto;
+
+  min-height: 0;
 
   margin:
     14px 0 13px;
 
-  overflow: visible;
+  overflow: hidden;
 
   color:
     var(--text);
@@ -718,6 +734,14 @@ body[data-lang="zh"]
 
   white-space:
     pre-line;
+
+  -webkit-box-orient:
+    vertical;
+
+  -webkit-line-clamp:
+    4;
+  line-clamp:
+    4;
 }
 
 .anime-card-meta {
@@ -728,6 +752,8 @@ body[data-lang="zh"]
       2,
       minmax(0, 1fr)
     );
+
+  flex: 0 0 auto;
 
   gap:
     6px
@@ -807,6 +833,7 @@ body[data-lang="zh"]
     auto;
 
   align-items: end;
+  flex: 0 0 auto;
   gap: 14px;
 
   margin-top: 16px;
@@ -926,6 +953,8 @@ body[data-lang="zh"]
 }
 
 .anime-card-note {
+  flex: 0 0 auto;
+
   margin-top: 17px;
   padding-top: 15px;
 
@@ -1074,8 +1103,8 @@ body.dark-mode
     --anime-card-cover-width:
       176px;
 
-    --anime-card-min-height:
-      264px;
+    --anime-card-height:
+      500px;
 
     --anime-sidebar-width:
       150px;
@@ -1111,6 +1140,13 @@ body.dark-mode
   .anime-card-note p {
     font-size:
       0.9rem;
+  }
+
+  .anime-card-summary {
+    -webkit-line-clamp:
+      3;
+    line-clamp:
+      3;
   }
 }
 
@@ -1199,11 +1235,13 @@ body.dark-mode
   .anime-card {
     display: block;
 
+    height: auto;
     min-height: 0;
   }
 
   .anime-card-cover-wrap {
     width: 100%;
+    height: auto;
     min-height: 0;
 
     aspect-ratio:
@@ -1211,6 +1249,11 @@ body.dark-mode
   }
 
   .anime-card-content {
+    height: auto;
+    min-height: 0;
+
+    overflow: visible;
+
     padding:
       20px
       19px
@@ -1239,6 +1282,13 @@ body.dark-mode
   .anime-card-note p {
     line-height:
       0.9rem;
+  }
+
+  .anime-card-summary {
+    line-clamp:
+      4;
+    -webkit-line-clamp:
+      4;
   }
 
   .anime-card-footer {
