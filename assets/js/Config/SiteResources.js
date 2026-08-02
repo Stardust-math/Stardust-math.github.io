@@ -16,13 +16,11 @@
     The list/index data is stored in:
     assets/js/Content/EN/life/activities_moments_EN.js
     assets/js/Content/ZH/life/activities_moments_ZH.js
-
     The detail data is stored in:
     assets/js/Content/EN/life/
       activities_moments_2026_05_12.js
     assets/js/Content/ZH/life/
       activities_moments_2026_05_12.js
-
     Loading strategy:
     1. List/index files are critical Life resources.
     2. Detail files are loaded on demand when
@@ -46,7 +44,6 @@
     '2024_02_20',
     '2024_01_15'
   ];
-
   const ACTIVITIES_MOMENTS = {
     dates: ACTIVITY_MOMENT_DATES.slice(),
 
@@ -67,7 +64,6 @@
       );
     }
   };
-
   const FULL_CALENDAR = {
     styles: [
       {
@@ -87,7 +83,6 @@
       }
     ]
   };
-
   const SCHEDULE_STYLES = [
     A + 'css/schedule/schedule-shell.css',
     A + 'css/schedule/schedule-calendar.css',
@@ -96,7 +91,6 @@
     A + 'css/schedule/schedule-ustc-base.css',
     A + 'css/schedule/schedule-course-cells.css',
     A + 'css/schedule/schedule-semester-controls.css',
-
     A + 'css/schedule/schedule-export-toolbar.css',
     A + 'css/schedule/schedule-export-print.css',
     A + 'css/schedule/schedule-week-selector.css'
@@ -116,7 +110,6 @@
       enabled: true,
       serviceWorker: '/sw.js',
       scope: '/',
-
       /*
         Register the offline fallback service worker
         only after the page has become quiet.
@@ -134,7 +127,6 @@
     },
 
     activitiesMoments: ACTIVITIES_MOMENTS,
-
     /*
       Cover video resources are derived from
       images.coverFiles.
@@ -155,7 +147,6 @@
 
     navigation: {
       defaultPage: 'resume',
-
       pages: [
         'resume',
         'schedule',
@@ -163,7 +154,6 @@
         'toolkit',
         'life'
       ],
-
       warmup: {
         /*
           Visitor-experience-first warm-up policy:
@@ -180,7 +170,6 @@
           'social',
           'life'
         ],
-
         afterFirstPage: [
           'resume',
           'schedule',
@@ -205,7 +194,6 @@
       libraries: {
         fullCalendar: FULL_CALENDAR
       },
-
       analytics: [
         {
           src: 'https://gc.zgo.at/count.js',
@@ -230,7 +218,6 @@
 
             family:
               'HongLeiXingShu Local',
-
             type:
               'font/woff2',
 
@@ -248,7 +235,6 @@
 
             type:
               'font/woff2',
-
             load:
               '1em "Beautiful ES Local"'
           },
@@ -274,7 +260,6 @@
     styles: {
       core: [
         A + 'css/fonts.css',
-
         A + 'css/base/core.css',
         A + 'css/base/site-zoom.css',
         A + 'css/layout/page-shell.css',
@@ -289,7 +274,6 @@
         A + 'css/cover/cover-identity.css',
         A + 'css/cover/cover-enter.css'
       ],
-
       optional: {
         blog:
           A + 'css/blog/blog.css',
@@ -308,12 +292,10 @@
     scripts: {
       core: [
         A + 'js/Functions/Top-nav.js',
-
         A + 'js/Functions/cover/CoverBackground.js',
         A + 'js/Functions/cover/CoverDepthMotion.js',
         A + 'js/Functions/cover/CoverEnterHint.js',
         A + 'js/Functions/cover/Cover.js',
-
         A + 'js/Functions/general/Clock.js',
         A + 'js/Functions/general/Theme.js',
         A + 'js/Functions/general/Translate.js',
@@ -328,7 +310,6 @@
         A +
           'js/Functions/bootstrap/' +
           'BootstrapRoutes.js',
-
         A +
           'js/Functions/bootstrap/' +
           'BootstrapWarmup.js',
@@ -346,7 +327,6 @@
         blog:
           A +
           'js/Functions/blog/Blog.js',
-
         /*
           Loaded on demand together with the matching
           optional stylesheet above.
@@ -363,7 +343,6 @@
         route: 'about',
         domId: 'about',
         mountId: 'mount-about',
-
         styles: [
           A + 'css/about/about.css',
           A + 'css/about/profile/profile.css',
@@ -383,7 +362,6 @@
           A +
             'js/Config/' +
             'AboutArchiveConfig.js',
-
           A +
             'js/Content/EN/about/archive/' +
             'archive_EN.js',
@@ -403,7 +381,6 @@
           A +
             'js/Functions/about/profile/' +
             'ProfileContact.js',
-
           A +
             'js/Functions/about/archive/' +
             'ArchiveRender.js',
@@ -427,7 +404,6 @@
           A +
             'js/Content/EN/schedule/' +
             'schedule_EN.js',
-
           A +
             'js/Content/ZH/schedule/' +
             'schedule_ZH.js',
@@ -447,7 +423,6 @@
           A +
             'js/Functions/schedule/' +
             'ScheduleCore.js',
-
           A +
             'js/Functions/schedule/' +
             'ScheduleRoutes.js',
@@ -470,7 +445,6 @@
         route: 'social',
         domId: 'social',
         mountId: 'mount-social',
-
         styles: [
           A + 'css/social/social-shell.css',
           A + 'css/social/social-cards.css',
@@ -478,6 +452,10 @@
           A + 'css/social/social-comments.css',
           A + 'css/social/social-footprints.css',
           A + 'css/social/social-anime.css'
+        ],
+
+        warmupStyles: [
+          A + 'css/social/social-anime-search.css'
         ],
 
         scripts: [
@@ -488,7 +466,6 @@
           A +
             'js/Content/ZH/social/' +
             'social_ZH.js',
-
           A +
             'js/Config/' +
             'SocialFriendsConfig.js',
@@ -512,7 +489,6 @@
           A +
             'js/Functions/social/' +
             'SocialIdentityRender.js',
-
           A +
             'js/Functions/social/' +
             'SocialFootprintsRender.js',
@@ -536,7 +512,6 @@
           A +
             'js/Functions/social/' +
             'SocialRender.js',
-
           A +
             'js/Functions/social/' +
             'SocialFriends.js',
@@ -548,6 +523,12 @@
           A +
             'js/Functions/social/' +
             'SocialStats.js'
+        ],
+
+        warmupScripts: [
+          A +
+            'js/Functions/social/' +
+            'SocialAnimeSearch.js'
         ]
       },
 
@@ -559,7 +540,6 @@
         styles: [
           A + 'css/toolkit/toolkit.css'
         ],
-
         scripts: [
           A +
             'js/Content/EN/toolkit/' +
@@ -586,7 +566,6 @@
           A +
             'css/life/' +
             'activities_moments-list.css',
-
           A +
             'css/life/' +
             'activities_moments-detail.css',
@@ -608,7 +587,6 @@
           A +
             'js/Content/ZH/life/' +
             'activities_moments_ZH.js',
-
           A +
             'js/Functions/life/' +
             'ActivitiesMomentsUtils.js',
@@ -628,7 +606,6 @@
           A +
             'js/Functions/life/' +
             'ActivitiesMoments.js',
-
           A +
             'js/Functions/life/' +
             'LifeMeditations.js',
@@ -649,7 +626,6 @@
 
       coverDir:
         A + 'images/cover/',
-
       coverFiles: [
         'cover_1.webp',
         'cover_2.webp',
@@ -673,7 +649,6 @@
         backgroundPng:
           A +
           'images/blog/background.png',
-
         oldPaperTexture:
           A +
           'images/blog/old-paper-texture.jpg',
@@ -696,7 +671,6 @@
           A +
           'images/about/' +
           'Education_Background.png',
-
         excellentStudentScholarship:
           A +
           'images/about/' +
@@ -711,7 +685,6 @@
           A +
           'images/about/' +
           'Excellent_Freshman_Scholarship--Silver.jpg',
-
         honorableMention:
           A +
           'images/about/' +

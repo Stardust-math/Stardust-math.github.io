@@ -1,0 +1,352 @@
+.anime-search-root {
+  width: 100%;
+  min-width: 0;
+
+  margin: 0 0 12px;
+}
+
+.anime-search {
+  width: 100%;
+  min-width: 0;
+}
+
+.anime-search-field {
+  position: relative;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr);
+
+  align-items: start;
+
+  width: 100%;
+  min-width: 0;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius:
+    var(--radius-sm, 10px);
+
+  background:
+    var(--surface);
+
+  box-shadow:
+    var(
+      --shadow-xs,
+      0 2px 10px rgba(17, 24, 39, 0.06)
+    );
+
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    background-color 0.18s ease;
+}
+
+.anime-search-field:hover {
+  border-color:
+    var(--accent);
+}
+
+.anime-search-field:focus-within {
+  border-color:
+    var(--accent);
+
+  box-shadow:
+    0 0 0 3px
+    var(--accent-weak);
+}
+
+.anime-search-icon {
+  position: absolute;
+
+  top: 12px;
+  left: 11px;
+
+  z-index: 1;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 16px;
+  height: 16px;
+
+  color:
+    var(--muted);
+
+  font-size: 0.78rem;
+
+  pointer-events: none;
+
+  transition:
+    color 0.18s ease;
+}
+
+.anime-search-field:focus-within
+.anime-search-icon,
+.anime-search.is-active
+.anime-search-icon {
+  color:
+    var(--accent);
+}
+
+.anime-search-input {
+  appearance: none;
+  -webkit-appearance: none;
+
+  display: block;
+
+  box-sizing: border-box;
+
+  width: 100%;
+  min-width: 0;
+  min-height: 40px;
+  max-height: 94px;
+
+  margin: 0;
+  padding:
+    10px
+    31px
+    9px
+    32px;
+
+  overflow-x: hidden;
+  overflow-y: hidden;
+
+  border: 0;
+  border-radius: inherit;
+  outline: 0;
+
+  resize: none;
+
+  background:
+    transparent;
+
+  color:
+    var(--text);
+
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 600;
+  line-height: 1.42;
+
+  overflow-wrap:
+    anywhere;
+
+  word-break:
+    normal;
+}
+
+.anime-search-input::placeholder {
+  color:
+    var(--muted);
+
+  font-weight: 500;
+
+  opacity: 0.88;
+}
+
+.anime-search-clear {
+  appearance: none;
+  -webkit-appearance: none;
+
+  position: absolute;
+
+  top: 7px;
+  right: 6px;
+
+  z-index: 2;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 26px;
+  height: 26px;
+
+  padding: 0;
+
+  border: 0;
+  border-radius: 50%;
+
+  background:
+    transparent;
+
+  color:
+    var(--muted);
+
+  cursor: pointer;
+
+  transition:
+    color 0.18s ease,
+    background-color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.anime-search-clear[hidden] {
+  display: none;
+}
+
+.anime-search-clear:hover {
+  background:
+    var(--accent-weak);
+
+  color:
+    var(--accent-strong);
+
+  transform:
+    scale(1.04);
+}
+
+.anime-search-clear:focus-visible {
+  outline:
+    2px solid
+    var(--accent);
+
+  outline-offset: 1px;
+}
+
+.anime-search-result {
+  min-height: 1.2em;
+
+  margin-top: 6px;
+  padding: 0 2px;
+
+  color:
+    var(--muted);
+
+  font-size: 0.73rem;
+  font-weight: 700;
+  font-variant-numeric:
+    tabular-nums;
+  letter-spacing: 0.02em;
+  line-height: 1.35;
+  text-align: right;
+}
+
+.anime-search-result[hidden] {
+  display: none;
+}
+
+.anime-search.is-active
+.anime-search-result {
+  color:
+    var(--accent);
+}
+
+.anime-search-empty-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 12px;
+}
+
+.anime-search-empty-clear {
+  appearance: none;
+  -webkit-appearance: none;
+
+  min-height: 34px;
+
+  padding:
+    6px
+    13px;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius:
+    999px;
+
+  background:
+    var(--surface);
+
+  color:
+    var(--accent-strong);
+
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.18s ease,
+    background-color 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.anime-search-empty-clear:hover {
+  border-color:
+    var(--accent);
+
+  background:
+    var(--accent-weak);
+
+  color:
+    var(--accent);
+
+  transform:
+    translateY(-1px);
+}
+
+.anime-search-empty-clear:focus-visible {
+  outline:
+    2px solid
+    var(--accent);
+
+  outline-offset: 2px;
+}
+
+body.dark-mode
+.anime-search-field {
+  box-shadow:
+    0 2px 12px
+    rgba(0, 0, 0, 0.18);
+}
+
+@media (max-width: 760px) {
+  .anime-search-root {
+    margin: 0;
+  }
+
+  .anime-search-input {
+    min-height: 42px;
+    max-height: 102px;
+
+    padding-top: 11px;
+    padding-bottom: 10px;
+
+    font-size: 0.9rem;
+  }
+
+  .anime-search-icon {
+    top: 13px;
+  }
+
+  .anime-search-clear {
+    top: 8px;
+  }
+
+  .anime-search-result {
+    padding-right: 4px;
+
+    font-size: 0.76rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anime-search-field,
+  .anime-search-icon,
+  .anime-search-clear,
+  .anime-search-empty-clear {
+    transition: none;
+  }
+}

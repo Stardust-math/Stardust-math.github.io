@@ -18,7 +18,6 @@
 
     rednote_title: "小红书",
     rednote_desc: "生活方式与知识分享",
-
     quora_title: "Quora",
     quora_desc: "问答与观点分享",
 
@@ -36,7 +35,6 @@
 
     steam_title: "Steam",
     steam_desc: "游戏主页与库",
-
     link_channel: "频道",
     link_handle: "账号",
     link_profile: "主页",
@@ -56,7 +54,6 @@
     metric_page: "当前页面",
     dashboard_title: "GoatCounter 面板",
     visitor_map: "访客地图",
-
     comments_title: "留言板",
     comments_guest_user: "未登录用户",
     comments_identity_guest: "点击后在评论框中登录 GitHub",
@@ -77,7 +74,6 @@
     comments_failed:
       "留言加载失败，可以在 GitHub 中打开讨论页。",
     comments_open_github: "在 GitHub 中打开讨论页",
-
     anime_heading: "我的番剧星册",
 
     anime_filter_label: "状态",
@@ -90,13 +86,21 @@
     anime_status_planned: "想看",
     anime_status_completed: "看过",
 
+    anime_search_label: "搜索番剧",
+    anime_search_placeholder: "搜索番剧……",
+    anime_search_clear: "清空搜索",
+    anime_search_result_one: "匹配 1 部",
+    anime_search_result_many: "匹配 {count} 部",
+    anime_search_result_empty: "没有匹配",
+    anime_search_empty: "当前状态下没有找到与“{query}”匹配的番剧。",
+    anime_search_empty_clear: "清空搜索",
+
     anime_loading: "正在加载番剧数据……",
     anime_load_failed: "番剧数据加载失败。",
     anime_empty: "当前分类中没有番剧记录。",
 
     anime_open_bangumi: "在 Bangumi 中打开",
     anime_watch: "观看",
-
     anime_year: "年份",
     anime_episodes: "集数",
     anime_studio: "动画制作",

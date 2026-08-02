@@ -14,6 +14,16 @@
     dataPromise: null,
     itemById: new Map(),
     filter: null,
+    searchQuery: '',
+    searchController: null,
+    searchMatchedItems: [],
+    filteredItems: [],
+    statusCounts: {
+      all: 0,
+      watching: 0,
+      planned: 0,
+      completed: 0
+    },
     visibleCount: 0,
     observer: null,
     summaryObserver: null,
@@ -35,6 +45,10 @@
 
   function getSection() {
     return document.getElementById(SECTION_ID);
+  }
+
+  function getSearchApi() {
+    return window.SocialAnimeSearch || null;
   }
 
   function isSectionActive() {
@@ -79,6 +93,25 @@
     return Object.prototype.hasOwnProperty.call(dict, key)
       ? dict[key]
       : fallback;
+  }
+
+  function formatText(template, values) {
+    const replacements =
+      values && typeof values === 'object'
+        ? values
+        : {};
+
+    return String(template || '').replace(
+      /\{([a-zA-Z0-9_]+)\}/g,
+      function (match, key) {
+        return Object.prototype.hasOwnProperty.call(
+          replacements,
+          key
+        )
+          ? String(replacements[key])
+          : match;
+      }
+    );
   }
 
   function escapeHtml(value) {
@@ -308,6 +341,7 @@
       return;
     }
 
+    destroySearchController();
     clearPendingSummaryLayouts();
     setBusy(true);
 
@@ -337,6 +371,7 @@
       return;
     }
 
+    destroySearchController();
     clearPendingSummaryLayouts();
     setBusy(false);
 
@@ -372,6 +407,46 @@
     }
   }
 
+  function prepareSearchItems() {
+    const searchApi = getSearchApi();
+
+    if (
+      !state.data ||
+      !searchApi ||
+      typeof searchApi.prepareItems !==
+      'function'
+    ) {
+      return;
+    }
+
+    searchApi.prepareItems(state.data.items);
+  }
+
+  function ensureSearchAssets() {
+    if (getSearchApi()) {
+      prepareSearchItems();
+      return Promise.resolve(true);
+    }
+
+    const loader = window.SiteResourceLoader;
+
+    if (
+      !loader ||
+      typeof loader.warmPageExtras !==
+      'function'
+    ) {
+      return Promise.resolve(false);
+    }
+
+    return loader.warmPageExtras(
+      'social',
+      'anime-search-entry'
+    ).then(function () {
+      prepareSearchItems();
+      return Boolean(getSearchApi());
+    });
+  }
+
   function loadData() {
     if (state.data) {
       return Promise.resolve(state.data);
@@ -405,6 +480,8 @@
       .then(function (raw) {
         state.data = normalizeData(raw);
         indexItems(state.data.items);
+
+        prepareSearchItems();
 
         return state.data;
       })
@@ -602,45 +679,111 @@
     );
   }
 
-  function getFilteredItems() {
+  function validAnimeItems() {
     const items = state.data
       ? state.data.items
       : [];
-    const filter = state.filter || 'all';
-
-    if (filter === 'all') {
-      return items.filter(function (item) {
-        return [
-          'watching',
-          'planned',
-          'completed'
-        ].includes(item.status);
-      });
-    }
 
     return items.filter(function (item) {
-      return item.status === filter;
+      return [
+        'watching',
+        'planned',
+        'completed'
+      ].includes(item.status);
     });
   }
 
-  function countByStatus(status) {
-    const items = state.data
-      ? state.data.items
-      : [];
+  function rebuildResultState() {
+    const items = validAnimeItems();
+    const searchApi = getSearchApi();
 
-    if (status === 'all') {
-      return items.filter(function (item) {
-        return [
-          'watching',
-          'planned',
-          'completed'
-        ].includes(item.status);
-      }).length;
+    state.searchMatchedItems =
+      searchApi &&
+      typeof searchApi.filterItems === 'function'
+        ? searchApi.filterItems(
+            items,
+            state.searchQuery
+          )
+        : items.slice();
+
+    state.statusCounts = {
+      all: state.searchMatchedItems.length,
+      watching: 0,
+      planned: 0,
+      completed: 0
+    };
+
+    state.searchMatchedItems.forEach(function (item) {
+      if (
+        Object.prototype.hasOwnProperty.call(
+          state.statusCounts,
+          item.status
+        )
+      ) {
+        state.statusCounts[item.status] += 1;
+      }
+    });
+
+    const filter = state.filter || 'all';
+
+    state.filteredItems = filter === 'all'
+      ? state.searchMatchedItems.slice()
+      : state.searchMatchedItems.filter(
+          function (item) {
+            return item.status === filter;
+          }
+        );
+  }
+
+  function getFilteredItems() {
+    return state.filteredItems;
+  }
+
+  function countByStatus(status) {
+    return Number(
+      state.statusCounts[status]
+    ) || 0;
+  }
+
+  function searchResultText(count) {
+    if (count === 0) {
+      return text(
+        'anime_search_result_empty',
+        'No matches'
+      );
     }
 
-    return items.filter(function (item) {
-      return item.status === status;
-    }).length;
+    if (
+      getLang() === 'en' &&
+      count === 1
+    ) {
+      return text(
+        'anime_search_result_one',
+        '1 match'
+      );
+    }
+
+    return formatText(
+      text(
+        'anime_search_result_many',
+        '{count} matches'
+      ),
+      { count }
+    );
+  }
+
+  function displaySearchQuery() {
+    const query = String(
+      state.searchQuery || ''
+    )
+      .trim()
+      .replace(/\s+/g, ' ');
+
+    if (query.length <= 80) {
+      return query;
+    }
+
+    return query.slice(0, 79) + '…';
   }
 
   function filterButton(filter) {
@@ -669,6 +812,178 @@
     `;
   }
 
+  function mobileFilterOptions() {
+    return allowedFilters().map(function (filter) {
+      return `
+        <option
+          value="${escapeAttr(filter)}"
+          ${filter === state.filter ? 'selected' : ''}
+        >
+          ${escapeHtml(filterLabel(filter))}
+          (${countByStatus(filter)})
+        </option>
+      `;
+    }).join('');
+  }
+
+  function destroySearchController() {
+    if (!state.searchController) {
+      return;
+    }
+
+    if (
+      typeof state.searchController.destroy ===
+      'function'
+    ) {
+      state.searchController.destroy();
+    }
+
+    state.searchController = null;
+  }
+
+  function mountSearchController() {
+    const mount = document.getElementById(
+      'anime-search-root'
+    );
+    const searchApi = getSearchApi();
+
+    destroySearchController();
+
+    if (!mount) {
+      return;
+    }
+
+    if (
+      !searchApi ||
+      typeof searchApi.createController !==
+      'function'
+    ) {
+      mount.hidden = true;
+      return;
+    }
+
+    mount.hidden = false;
+
+    state.searchController =
+      searchApi.createController({
+        mount,
+        initialQuery: state.searchQuery,
+        label: text(
+          'anime_search_label',
+          'Search anime'
+        ),
+        placeholder: text(
+          'anime_search_placeholder',
+          'Search anime...'
+        ),
+        clearLabel: text(
+          'anime_search_clear',
+          'Clear search'
+        ),
+        debounceMs: 120,
+        formatResult: searchResultText,
+        onChange(query) {
+          if (query === state.searchQuery) {
+            return;
+          }
+
+          state.searchQuery = query;
+          refreshResults();
+        }
+      });
+  }
+
+  function syncFilterControls() {
+    const app = getApp();
+
+    if (!app) {
+      return;
+    }
+
+    app.querySelectorAll(
+      '[data-anime-filter]'
+    ).forEach(function (button) {
+      const filter =
+        button.dataset.animeFilter ||
+        'all';
+      const active = filter === state.filter;
+      const count = button.querySelector(
+        '.anime-filter-count'
+      );
+
+      button.classList.toggle(
+        'active',
+        active
+      );
+      button.setAttribute(
+        'aria-pressed',
+        active ? 'true' : 'false'
+      );
+
+      if (count) {
+        count.textContent = String(
+          countByStatus(filter)
+        );
+      }
+    });
+
+    const mobileFilter = document.getElementById(
+      'anime-mobile-filter'
+    );
+
+    if (mobileFilter) {
+      mobileFilter.innerHTML =
+        mobileFilterOptions();
+      mobileFilter.value = state.filter || 'all';
+    }
+
+    if (
+      state.searchController &&
+      typeof state.searchController.setResult ===
+      'function'
+    ) {
+      state.searchController.setResult(
+        countByStatus('all')
+      );
+    }
+  }
+
+  function resetCardResults() {
+    const app = getApp();
+    const list = document.getElementById(
+      'anime-card-list'
+    );
+    const sentinel = document.getElementById(
+      'anime-list-sentinel'
+    );
+
+    if (!list) {
+      return;
+    }
+
+    state.visibleCount = 0;
+
+    clearPendingSummaryLayouts();
+    disconnectObserver();
+    disconnectSummaryObserver();
+
+    list.textContent = '';
+
+    if (sentinel) {
+      sentinel.hidden = false;
+    }
+
+    syncFilterControls();
+    appendNextBatch();
+    observeSentinel();
+    refreshCursor(app);
+  }
+
+  function refreshResults() {
+    rebuildResultState();
+    resetCardResults();
+  }
+
   function renderListShell() {
     const app = getApp();
 
@@ -678,10 +993,11 @@
 
     const filters = allowedFilters();
 
-    state.visibleCount = 0;
+    destroySearchController();
     clearPendingSummaryLayouts();
     disconnectObserver();
     disconnectSummaryObserver();
+    rebuildResultState();
 
     app.innerHTML = `
       <div class="anime-mobile-filter-wrap">
@@ -701,17 +1017,7 @@
           id="anime-mobile-filter"
           class="anime-mobile-filter"
         >
-          ${filters.map(function (filter) {
-            return `
-              <option
-                value="${escapeAttr(filter)}"
-                ${filter === state.filter ? 'selected' : ''}
-              >
-                ${escapeHtml(filterLabel(filter))}
-                (${countByStatus(filter)})
-              </option>
-            `;
-          }).join('')}
+          ${mobileFilterOptions()}
         </select>
       </div>
 
@@ -725,6 +1031,11 @@
             )
           )}"
         >
+          <div
+            id="anime-search-root"
+            class="anime-search-root"
+          ></div>
+
           <div class="anime-filter-panel">
             ${filters.map(filterButton).join('')}
           </div>
@@ -745,11 +1056,10 @@
       </div>
     `;
 
+    mountSearchController();
     setBusy(false);
-    appendNextBatch();
-    observeSentinel();
     observeSummaryContainer();
-    refreshCursor(app);
+    resetCardResults();
   }
 
   function metadataRow(label, value, modifierClass) {
@@ -1123,25 +1433,53 @@
     );
 
     if (items.length === 0) {
+      const query = displaySearchQuery();
+      const hasQuery = hasText(query);
+      const message = hasQuery
+        ? formatText(
+            text(
+              'anime_search_empty',
+              'No anime in this status matched “{query}”.'
+            ),
+            { query }
+          )
+        : text(
+            'anime_empty',
+            'No anime entries in this category.'
+          );
+
       list.innerHTML = `
         <div class="anime-state anime-state-empty">
-          <i
-            class="fas fa-folder-open"
-            aria-hidden="true"
-          ></i>
+          <div class="anime-search-empty-content">
+            <i
+              class="fas fa-folder-open"
+              aria-hidden="true"
+            ></i>
 
-          <span>
-            ${escapeHtml(
-              text(
-                'anime_empty',
-                'No anime entries in this category.'
-              )
-            )}
-          </span>
+            <span>
+              ${escapeHtml(message)}
+            </span>
+
+            ${hasQuery ? `
+              <button
+                class="anime-search-empty-clear"
+                type="button"
+                data-anime-clear-search
+              >
+                ${escapeHtml(
+                  text(
+                    'anime_search_empty_clear',
+                    'Clear search'
+                  )
+                )}
+              </button>
+            ` : ''}
+          </div>
         </div>
       `;
 
       hideSentinel();
+      refreshCursor(list);
       return;
     }
 
@@ -1692,7 +2030,7 @@
     state.filter = filter;
     storeFilter(filter);
     updateFilterQuery(filter);
-    renderListShell();
+    refreshResults();
   }
 
   function openBangumi(url) {
@@ -1714,6 +2052,26 @@
       !app ||
       !app.contains(event.target)
     ) {
+      return;
+    }
+
+    const clearSearchButton = event.target.closest(
+      '[data-anime-clear-search]'
+    );
+
+    if (clearSearchButton) {
+      event.preventDefault();
+
+      if (
+        state.searchController &&
+        typeof state.searchController.clear ===
+        'function'
+      ) {
+        state.searchController.clear({
+          focus: true
+        });
+      }
+
       return;
     }
 
@@ -1818,7 +2176,11 @@
       '.anime-bangumi-link',
       '.anime-bangumi-link *',
       '.anime-watch-button',
-      '.anime-watch-button *'
+      '.anime-watch-button *',
+      '.anime-search-clear',
+      '.anime-search-clear *',
+      '.anime-search-empty-clear',
+      '.anime-search-empty-clear *'
     ].join(', ')).forEach(function (element) {
       if (!element.dataset) {
         return;
@@ -1860,7 +2222,10 @@
       renderLoading();
     }
 
-    return loadData()
+    return Promise.all([
+      loadData(),
+      ensureSearchAssets()
+    ])
       .then(function () {
         renderList();
         return true;
