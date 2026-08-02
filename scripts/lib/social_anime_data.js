@@ -950,26 +950,10 @@ function resolveFinalItem(item) {
   };
 }
 
-function statusRank(status) {
-  return {
-    watching: 0,
-    planned: 1,
-    completed: 2
-  }[status] ?? 9;
-}
-
 function compareFinalItems(
   left,
   right
 ) {
-  const statusDifference =
-    statusRank(left.status) -
-    statusRank(right.status);
-
-  if (statusDifference !== 0) {
-    return statusDifference;
-  }
-
   const leftTitle =
     left.titles.zh ||
     left.titles.en ||
