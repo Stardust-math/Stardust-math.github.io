@@ -3,14 +3,26 @@
 
   const APP_ID = 'social-anime-app';
   const SECTION_ID = 'social-anime-section';
+  const SUMMARY_SELECTOR = '[data-anime-summary]';
+  const SUMMARY_PARAGRAPH_CLASS =
+    'anime-card-summary-paragraph';
+  const SUMMARY_ELLIPSIS = '…';
+  const SUMMARY_OVERFLOW_TOLERANCE = 1;
 
   const state = {
     data: null,
     dataPromise: null,
+    itemById: new Map(),
     filter: null,
     visibleCount: 0,
     observer: null,
-    bound: false
+    summaryObserver: null,
+    summaryResizeObserver: null,
+    summaryObservedWidth: null,
+    summaryLayoutFrame: 0,
+    pendingSummaries: new Set(),
+    bound: false,
+    summaryWatchersBound: false
   };
 
   function getConfig() {
@@ -25,6 +37,16 @@
     return document.getElementById(SECTION_ID);
   }
 
+  function isSectionActive() {
+    const section = getSection();
+
+    return Boolean(
+      section &&
+      !section.hidden &&
+      section.classList.contains('active')
+    );
+  }
+
   function getLang() {
     if (
       window.SiteLang &&
@@ -36,8 +58,7 @@
     }
 
     const bodyLang =
-      document.body &&
-      document.body.dataset
+      document.body && document.body.dataset
         ? document.body.dataset.lang
         : '';
 
@@ -55,20 +76,13 @@
   function text(key, fallback) {
     const dict = getDict();
 
-    return Object.prototype.hasOwnProperty.call(
-      dict,
-      key
-    )
+    return Object.prototype.hasOwnProperty.call(dict, key)
       ? dict[key]
       : fallback;
   }
 
   function escapeHtml(value) {
-    return String(
-      value == null
-        ? ''
-        : value
-    ).replace(
+    return String(value == null ? '' : value).replace(
       /[&<>"']/g,
       function (character) {
         return {
@@ -83,8 +97,7 @@
   }
 
   function escapeAttr(value) {
-    return escapeHtml(value)
-      .replace(/`/g, '&#96;');
+    return escapeHtml(value).replace(/`/g, '&#96;');
   }
 
   function hasText(value) {
@@ -103,8 +116,7 @@
       return null;
     }
 
-    const number =
-      Number(value);
+    const number = Number(value);
 
     return Number.isFinite(number)
       ? number
@@ -112,10 +124,9 @@
   }
 
   function normalizeStatus(value) {
-    const status =
-      String(value || '')
-        .trim()
-        .toLowerCase();
+    const status = String(value || '')
+      .trim()
+      .toLowerCase();
 
     return [
       'watching',
@@ -126,140 +137,90 @@
       : '';
   }
 
+  function normalizeSummaryParagraphs(value) {
+    return String(value == null ? '' : value)
+      .replace(/\r\n?/g, '\n')
+      .split(/\n+/)
+      .map(function (paragraph) {
+        return paragraph.trim();
+      })
+      .filter(hasText);
+  }
+
   function normalizeItem(raw) {
     const item =
-      raw &&
-      typeof raw === 'object'
+      raw && typeof raw === 'object'
         ? raw
         : {};
 
     const titles =
-      item.titles &&
-      typeof item.titles === 'object'
+      item.titles && typeof item.titles === 'object'
         ? item.titles
         : {};
 
     const cover =
-      item.cover &&
-      typeof item.cover === 'object'
+      item.cover && typeof item.cover === 'object'
         ? item.cover
         : {};
 
     const links =
-      item.links &&
-      typeof item.links === 'object'
+      item.links && typeof item.links === 'object'
         ? item.links
         : {};
 
     const progress =
-      item.progress &&
-      typeof item.progress === 'object'
+      item.progress && typeof item.progress === 'object'
         ? item.progress
         : {};
 
     const ratings =
-      item.ratings &&
-      typeof item.ratings === 'object'
+      item.ratings && typeof item.ratings === 'object'
         ? item.ratings
         : {};
 
     const notes =
-      item.notes &&
-      typeof item.notes === 'object'
+      item.notes && typeof item.notes === 'object'
         ? item.notes
         : {};
 
     const dates =
-      item.dates &&
-      typeof item.dates === 'object'
+      item.dates && typeof item.dates === 'object'
         ? item.dates
         : {};
 
+    const summary = String(item.summary || '');
+
     return {
-      id:
-        String(item.id || ''),
+      id: String(item.id || ''),
 
-      subjectId:
-        finiteNumber(
-          item.subjectId
-        ),
+      subjectId: finiteNumber(item.subjectId),
 
-      slug:
-        String(
-          item.slug ||
-          item.id ||
-          ''
-        ),
+      slug: String(item.slug || item.id || ''),
 
-      status:
-        normalizeStatus(
-          item.status
-        ),
+      status: normalizeStatus(item.status),
 
       titles: {
-        original:
-          String(
-            titles.original ||
-            ''
-          ),
-
-        zh:
-          String(
-            titles.zh ||
-            ''
-          ),
-
-        en:
-          String(
-            titles.en ||
-            ''
-          )
+        original: String(titles.original || ''),
+        zh: String(titles.zh || ''),
+        en: String(titles.en || '')
       },
 
-      summary:
-        String(
-          item.summary ||
-          ''
-        ),
+      summary,
+      summaryParagraphs: normalizeSummaryParagraphs(summary),
 
       cover: {
-        remote:
-          String(
-            cover.remote ||
-            ''
-          ),
-
-        fallback:
-          String(
-            cover.fallback ||
-            ''
-          )
+        remote: String(cover.remote || ''),
+        fallback: String(cover.fallback || '')
       },
 
       links: {
-        watch:
-          String(
-            links.watch ||
-            ''
-          ),
-
-        bangumi:
-          String(
-            links.bangumi ||
-            ''
-          )
+        watch: String(links.watch || ''),
+        bangumi: String(links.bangumi || '')
       },
 
       progress: {
-        current:
-          finiteNumber(
-            progress.current
-          ),
-
-        total:
-          finiteNumber(
-            progress.total
-          )
+        current: finiteNumber(progress.current),
+        total: finiteNumber(progress.total)
       },
 
       year:
@@ -267,108 +228,68 @@
           ? ''
           : String(item.year),
 
-      studio:
-        String(
-          item.studio ||
-          ''
-        ),
+      studio: String(item.studio || ''),
 
-      genres:
-        Array.isArray(
-          item.genres
-        )
-          ? item.genres
-              .map(String)
-              .filter(hasText)
-          : [],
+      genres: Array.isArray(item.genres)
+        ? item.genres
+            .map(String)
+            .filter(hasText)
+        : [],
 
       ratings: {
-        bangumi:
-          finiteNumber(
-            ratings.bangumi
-          ),
-
-        personal:
-          finiteNumber(
-            ratings.personal
-          )
+        bangumi: finiteNumber(ratings.bangumi),
+        personal: finiteNumber(ratings.personal)
       },
 
       notes: {
-        zh:
-          String(
-            notes.zh ||
-            ''
-          ),
-
-        en:
-          String(
-            notes.en ||
-            ''
-          )
+        zh: String(notes.zh || ''),
+        en: String(notes.en || '')
       },
 
       dates: {
-        air:
-          String(
-            dates.air ||
-            ''
-          )
+        air: String(dates.air || '')
       },
 
-      updatedAt:
-        String(
-          item.updatedAt ||
-          ''
-        )
+      updatedAt: String(item.updatedAt || '')
     };
   }
 
   function normalizeData(raw) {
     const source =
-      raw &&
-      typeof raw === 'object'
+      raw && typeof raw === 'object'
         ? raw
         : {};
 
-    const items =
-      Array.isArray(
-        source.items
-      )
-        ? source.items
-            .map(normalizeItem)
-            .filter(
-              function (item) {
-                return (
-                  hasText(item.id) &&
-                  hasText(item.slug) &&
-                  hasText(item.status) &&
-                  hasText(
-                    item.links.bangumi
-                  )
-                );
-              }
-            )
-        : [];
+    const items = Array.isArray(source.items)
+      ? source.items
+          .map(normalizeItem)
+          .filter(function (item) {
+            return (
+              hasText(item.id) &&
+              hasText(item.slug) &&
+              hasText(item.status) &&
+              hasText(item.links.bangumi)
+            );
+          })
+      : [];
 
     return {
-      schemaVersion:
-        source.schemaVersion ||
-        1,
-
-      generatedAt:
-        String(
-          source.generatedAt ||
-          ''
-        ),
-
+      schemaVersion: source.schemaVersion || 1,
+      generatedAt: String(source.generatedAt || ''),
       items
     };
   }
 
+  function indexItems(items) {
+    state.itemById = new Map();
+
+    items.forEach(function (item) {
+      state.itemById.set(item.id, item);
+    });
+  }
+
   function setBusy(busy) {
-    const app =
-      getApp();
+    const app = getApp();
 
     if (!app) {
       return;
@@ -376,20 +297,18 @@
 
     app.setAttribute(
       'aria-busy',
-      busy
-        ? 'true'
-        : 'false'
+      busy ? 'true' : 'false'
     );
   }
 
   function renderLoading() {
-    const app =
-      getApp();
+    const app = getApp();
 
     if (!app) {
       return;
     }
 
+    clearPendingSummaryLayouts();
     setBusy(true);
 
     app.innerHTML = `
@@ -412,13 +331,13 @@
   }
 
   function renderError(error) {
-    const app =
-      getApp();
+    const app = getApp();
 
     if (!app) {
       return;
     }
 
+    clearPendingSummaryLayouts();
     setBusy(false);
 
     app.innerHTML = `
@@ -444,8 +363,7 @@
 
     if (
       window.console &&
-      typeof window.console.error ===
-        'function'
+      typeof window.console.error === 'function'
     ) {
       window.console.error(
         '[SocialAnime] Failed to load anime data.',
@@ -456,84 +374,60 @@
 
   function loadData() {
     if (state.data) {
-      return Promise.resolve(
-        state.data
-      );
+      return Promise.resolve(state.data);
     }
 
     if (state.dataPromise) {
       return state.dataPromise;
     }
 
-    const config =
-      getConfig();
-
+    const config = getConfig();
     const dataUrl =
       config.dataUrl ||
       './assets/data/social/anime/anime-index.json';
 
-    state.dataPromise =
-      fetch(
-        dataUrl,
-        {
-          credentials:
-            'same-origin',
-
-          cache:
-            'no-cache'
+    state.dataPromise = fetch(dataUrl, {
+      credentials: 'same-origin',
+      cache: 'no-cache'
+    })
+      .then(function (response) {
+        if (!response.ok) {
+          throw new Error(
+            'HTTP ' +
+            response.status +
+            ' while loading ' +
+            dataUrl
+          );
         }
-      )
-        .then(
-          function (response) {
-            if (!response.ok) {
-              throw new Error(
-                'HTTP ' +
-                response.status +
-                ' while loading ' +
-                dataUrl
-              );
-            }
 
-            return response.json();
-          }
-        )
-        .then(
-          function (raw) {
-            state.data =
-              normalizeData(raw);
+        return response.json();
+      })
+      .then(function (raw) {
+        state.data = normalizeData(raw);
+        indexItems(state.data.items);
 
-            return state.data;
-          }
-        )
-        .catch(
-          function (error) {
-            state.dataPromise =
-              null;
-
-            throw error;
-          }
-        );
+        return state.data;
+      })
+      .catch(function (error) {
+        state.dataPromise = null;
+        throw error;
+      });
 
     return state.dataPromise;
   }
 
   function allowedFilters() {
-    const config =
-      getConfig();
+    const config = getConfig();
 
-    return Array.isArray(
-      config.filters
-    )
-      ? config.filters.filter(
-          function (filter) {
-            return [
-              'all',
-              'watching',
-              'planned',
-              'completed'
-            ].includes(filter);
-          }
-        )
+    return Array.isArray(config.filters)
+      ? config.filters.filter(function (filter) {
+          return [
+            'all',
+            'watching',
+            'planned',
+            'completed'
+          ].includes(filter);
+        })
       : [
           'all',
           'watching',
@@ -544,116 +438,82 @@
 
   function queryFilter() {
     try {
-      const params =
-        new URLSearchParams(
-          window.location.search
-        );
+      const params = new URLSearchParams(
+        window.location.search
+      );
+      const status = params.get('status');
 
-      const status =
-        params.get('status');
-
-      return allowedFilters()
-        .includes(status)
-          ? status
-          : '';
+      return allowedFilters().includes(status)
+        ? status
+        : '';
     } catch (error) {
       return '';
     }
   }
 
   function readStoredFilter() {
-    const config =
-      getConfig();
-
-    const filters =
-      allowedFilters();
-
-    const fromQuery =
-      queryFilter();
+    const config = getConfig();
+    const filters = allowedFilters();
+    const fromQuery = queryFilter();
 
     if (fromQuery) {
       return fromQuery;
     }
 
     try {
-      const stored =
-        window.sessionStorage
-          .getItem(
-            config.storageKey ||
-            'stardust-social-anime-filter'
-          );
+      const stored = window.sessionStorage.getItem(
+        config.storageKey ||
+        'stardust-social-anime-filter'
+      );
 
-      if (
-        filters.includes(
-          stored
-        )
-      ) {
+      if (filters.includes(stored)) {
         return stored;
       }
     } catch (error) {
       // sessionStorage is optional.
     }
 
-    return filters.includes(
-      config.defaultFilter
-    )
+    return filters.includes(config.defaultFilter)
       ? config.defaultFilter
       : 'all';
   }
 
   function storeFilter(filter) {
-    const config =
-      getConfig();
+    const config = getConfig();
 
     try {
-      window.sessionStorage
-        .setItem(
-          config.storageKey ||
-            'stardust-social-anime-filter',
-          filter
-        );
+      window.sessionStorage.setItem(
+        config.storageKey ||
+        'stardust-social-anime-filter',
+        filter
+      );
     } catch (error) {
       // sessionStorage is optional.
     }
   }
 
-  function updateFilterQuery(
-    filter
-  ) {
+  function updateFilterQuery(filter) {
     if (
       !window.history ||
-      typeof window.history
-        .replaceState !==
-        'function'
+      typeof window.history.replaceState !== 'function'
     ) {
       return;
     }
 
     try {
-      const url =
-        new URL(
-          window.location.href
-        );
+      const url = new URL(window.location.href);
 
       if (filter === 'all') {
-        url.searchParams
-          .delete('status');
+        url.searchParams.delete('status');
       } else {
-        url.searchParams
-          .set(
-            'status',
-            filter
-          );
+        url.searchParams.set('status', filter);
       }
 
-      window.history
-        .replaceState(
-          window.history.state,
-          '',
-          url.pathname +
-          url.search +
-          url.hash
-        );
+      window.history.replaceState(
+        window.history.state,
+        '',
+        url.pathname + url.search + url.hash
+      );
     } catch (error) {
       // Query synchronization is optional.
     }
@@ -661,51 +521,39 @@
 
   function statusLabel(status) {
     return {
-      watching:
-        text(
-          'anime_status_watching',
-          'Watching'
-        ),
-
-      planned:
-        text(
-          'anime_status_planned',
-          'Planned'
-        ),
-
-      completed:
-        text(
-          'anime_status_completed',
-          'Completed'
-        )
+      watching: text(
+        'anime_status_watching',
+        'Watching'
+      ),
+      planned: text(
+        'anime_status_planned',
+        'Planned'
+      ),
+      completed: text(
+        'anime_status_completed',
+        'Completed'
+      )
     }[status] || status;
   }
 
   function filterLabel(filter) {
     return {
-      all:
-        text(
-          'anime_filter_all',
-          'All'
-        ),
-
-      watching:
-        text(
-          'anime_filter_watching',
-          'Watching'
-        ),
-
-      planned:
-        text(
-          'anime_filter_planned',
-          'Queue'
-        ),
-
-      completed:
-        text(
-          'anime_filter_completed',
-          'Finished'
-        )
+      all: text(
+        'anime_filter_all',
+        'All'
+      ),
+      watching: text(
+        'anime_filter_watching',
+        'Watching'
+      ),
+      planned: text(
+        'anime_filter_planned',
+        'Queue'
+      ),
+      completed: text(
+        'anime_filter_completed',
+        'Finished'
+      )
     }[filter] || filter;
   }
 
@@ -724,37 +572,22 @@
   }
 
   function secondaryTitle(item) {
-    const primary =
-      displayTitle(item);
-
+    const primary = displayTitle(item);
     const candidates =
       getLang() === 'zh'
-        ? [
-            item.titles.zh,
-            item.titles.en
-          ]
-        : [
-            item.titles.en,
-            item.titles.zh
-          ];
+        ? [item.titles.zh, item.titles.en]
+        : [item.titles.en, item.titles.zh];
 
-    return (
-      candidates.find(
-        function (candidate) {
-          return (
-            hasText(candidate) &&
-            candidate !== primary
-          );
-        }
-      ) ||
-      ''
-    );
+    return candidates.find(function (candidate) {
+      return (
+        hasText(candidate) &&
+        candidate !== primary
+      );
+    }) || '';
   }
 
   function personalNote(item) {
-    if (
-      getLang() === 'zh'
-    ) {
+    if (getLang() === 'zh') {
       return (
         item.notes.zh ||
         item.notes.en ||
@@ -770,73 +603,48 @@
   }
 
   function getFilteredItems() {
-    const items =
-      state.data
-        ? state.data.items
-        : [];
-
-    const filter =
-      state.filter ||
-      'all';
+    const items = state.data
+      ? state.data.items
+      : [];
+    const filter = state.filter || 'all';
 
     if (filter === 'all') {
-      return items.filter(
-        function (item) {
-          return [
-            'watching',
-            'planned',
-            'completed'
-          ].includes(
-            item.status
-          );
-        }
-      );
+      return items.filter(function (item) {
+        return [
+          'watching',
+          'planned',
+          'completed'
+        ].includes(item.status);
+      });
     }
 
-    return items.filter(
-      function (item) {
-        return (
-          item.status ===
-          filter
-        );
-      }
-    );
+    return items.filter(function (item) {
+      return item.status === filter;
+    });
   }
 
   function countByStatus(status) {
-    const items =
-      state.data
-        ? state.data.items
-        : [];
+    const items = state.data
+      ? state.data.items
+      : [];
 
     if (status === 'all') {
-      return items.filter(
-        function (item) {
-          return [
-            'watching',
-            'planned',
-            'completed'
-          ].includes(
-            item.status
-          );
-        }
-      ).length;
+      return items.filter(function (item) {
+        return [
+          'watching',
+          'planned',
+          'completed'
+        ].includes(item.status);
+      }).length;
     }
 
-    return items.filter(
-      function (item) {
-        return (
-          item.status ===
-          status
-        );
-      }
-    ).length;
+    return items.filter(function (item) {
+      return item.status === status;
+    }).length;
   }
 
   function filterButton(filter) {
-    const active =
-      filter ===
-      state.filter;
+    const active = filter === state.filter;
 
     return `
       <button
@@ -851,9 +659,7 @@
         ></span>
 
         <span class="anime-filter-label">
-          ${escapeHtml(
-            filterLabel(filter)
-          )}
+          ${escapeHtml(filterLabel(filter))}
         </span>
 
         <span class="anime-filter-count">
@@ -864,19 +670,18 @@
   }
 
   function renderListShell() {
-    const app =
-      getApp();
+    const app = getApp();
 
     if (!app) {
       return;
     }
 
-    const filters =
-      allowedFilters();
+    const filters = allowedFilters();
 
     state.visibleCount = 0;
-
+    clearPendingSummaryLayouts();
     disconnectObserver();
+    disconnectSummaryObserver();
 
     app.innerHTML = `
       <div class="anime-mobile-filter-wrap">
@@ -896,25 +701,17 @@
           id="anime-mobile-filter"
           class="anime-mobile-filter"
         >
-          ${filters
-            .map(
-              function (filter) {
-                return `
-                  <option
-                    value="${escapeAttr(filter)}"
-                    ${filter === state.filter ? 'selected' : ''}
-                  >
-                    ${escapeHtml(
-                      filterLabel(
-                        filter
-                      )
-                    )}
-                    (${countByStatus(filter)})
-                  </option>
-                `;
-              }
-            )
-            .join('')}
+          ${filters.map(function (filter) {
+            return `
+              <option
+                value="${escapeAttr(filter)}"
+                ${filter === state.filter ? 'selected' : ''}
+              >
+                ${escapeHtml(filterLabel(filter))}
+                (${countByStatus(filter)})
+              </option>
+            `;
+          }).join('')}
         </select>
       </div>
 
@@ -929,11 +726,7 @@
           )}"
         >
           <div class="anime-filter-panel">
-            ${filters
-              .map(
-                filterButton
-              )
-              .join('')}
+            ${filters.map(filterButton).join('')}
           </div>
         </aside>
 
@@ -955,37 +748,22 @@
     setBusy(false);
     appendNextBatch();
     observeSentinel();
+    observeSummaryContainer();
     refreshCursor(app);
   }
 
-  function metadataRow(
-    label,
-    value,
-    modifierClass
-  ) {
+  function metadataRow(label, value, modifierClass) {
     if (
       !hasText(
-        String(
-          value == null
-            ? ''
-            : value
-        )
+        String(value == null ? '' : value)
       )
     ) {
       return '';
     }
 
-    const modifier =
-      hasText(
-        modifierClass
-      )
-        ? (
-            ' ' +
-            escapeAttr(
-              modifierClass
-            )
-          )
-        : '';
+    const modifier = hasText(modifierClass)
+      ? ' ' + escapeAttr(modifierClass)
+      : '';
 
     return `
       <div class="anime-meta-row${modifier}">
@@ -1001,15 +779,11 @@
   }
 
   function cardProgress(item) {
-    const current =
-      item.progress.current;
-
-    const total =
-      item.progress.total;
+    const current = item.progress.current;
+    const total = item.progress.total;
 
     if (
-      item.status !==
-        'watching' ||
+      item.status !== 'watching' ||
       current == null ||
       current < 0
     ) {
@@ -1020,43 +794,33 @@
       total != null &&
       total > 0;
 
-    const percent =
-      hasTotal
-        ? Math.max(
-            0,
-            Math.min(
-              100,
-              current /
-                total *
-                100
-            )
+    const percent = hasTotal
+      ? Math.max(
+          0,
+          Math.min(
+            100,
+            current / total * 100
           )
-        : 0;
+        )
+      : 0;
 
-    const value =
-      hasTotal
-        ? current +
-          ' / ' +
-          total
-        : String(current);
+    const value = hasTotal
+      ? current + ' / ' + total
+      : String(current);
 
     return `
       <div class="anime-cover-progress">
-        ${
-          hasTotal
-            ? `
-              <div
-                class="anime-progress-track"
-                aria-hidden="true"
-              >
-                <span
-                  class="anime-progress-value"
-                  style="width:${percent.toFixed(2)}%"
-                ></span>
-              </div>
-            `
-            : ''
-        }
+        ${hasTotal ? `
+          <div
+            class="anime-progress-track"
+            aria-hidden="true"
+          >
+            <span
+              class="anime-progress-value"
+              style="width:${percent.toFixed(2)}%"
+            ></span>
+          </div>
+        ` : ''}
 
         <span class="anime-progress-text">
           ${escapeHtml(value)}
@@ -1094,47 +858,32 @@
         ></i>
 
         <span>
-          ${escapeHtml(
-            value.toFixed(1)
-          )}
+          ${escapeHtml(value.toFixed(1))}
         </span>
       </span>
     `;
   }
 
   function genreTags(item) {
-    if (
-      !item.genres.length
-    ) {
+    if (!item.genres.length) {
       return '';
     }
 
     return `
       <div class="anime-genre-list">
-        ${item.genres
-          .map(
-            function (genre) {
-              return `
-                <span class="anime-genre-tag">
-                  ${escapeHtml(genre)}
-                </span>
-              `;
-            }
-          )
-          .join('')}
+        ${item.genres.map(function (genre) {
+          return `
+            <span class="anime-genre-tag">
+              ${escapeHtml(genre)}
+            </span>
+          `;
+        }).join('')}
       </div>
     `;
   }
 
-  function watchButton(
-    item,
-    title
-  ) {
-    if (
-      !hasText(
-        item.links.watch
-      )
-    ) {
+  function watchButton(item, title) {
+    if (!hasText(item.links.watch)) {
       return '';
     }
 
@@ -1167,23 +916,11 @@
     `;
   }
 
-  function cardFooter(
-    item,
-    title
-  ) {
-    const tags =
-      genreTags(item);
+  function cardFooter(item, title) {
+    const tags = genreTags(item);
+    const action = watchButton(item, title);
 
-    const action =
-      watchButton(
-        item,
-        title
-      );
-
-    if (
-      !tags &&
-      !action
-    ) {
+    if (!tags && !action) {
       return '';
     }
 
@@ -1195,22 +932,34 @@
     `;
   }
 
+  function summaryHtml(item) {
+    if (!item.summaryParagraphs.length) {
+      return '';
+    }
+
+    return `
+      <div
+        class="anime-card-summary"
+        data-anime-summary
+      >
+        ${item.summaryParagraphs.map(function (paragraph) {
+          return `
+            <p class="${SUMMARY_PARAGRAPH_CLASS}">${escapeHtml(paragraph)}</p>
+          `;
+        }).join('')}
+      </div>
+    `;
+  }
+
   function cardHtml(item) {
-    const title =
-      displayTitle(item);
-
-    const secondary =
-      secondaryTitle(item);
-
-    const note =
-      personalNote(item);
+    const title = displayTitle(item);
+    const secondary = secondaryTitle(item);
+    const note = personalNote(item);
 
     const episodeValue =
       item.progress.total != null &&
       item.progress.total > 0
-        ? String(
-            item.progress.total
-          )
+        ? String(item.progress.total)
         : '';
 
     const metadata = [
@@ -1221,7 +970,6 @@
         ),
         item.year
       ),
-
       metadataRow(
         text(
           'anime_episodes',
@@ -1229,7 +977,6 @@
         ),
         episodeValue
       ),
-
       metadataRow(
         text(
           'anime_studio',
@@ -1238,19 +985,15 @@
         item.studio,
         'anime-meta-row-studio'
       )
-    ]
-      .filter(Boolean)
-      .join('');
+    ].filter(Boolean).join('');
 
     const remoteCover =
       item.cover.remote ||
       item.cover.fallback ||
-      getConfig()
-        .placeholderCover ||
+      getConfig().placeholderCover ||
       '';
 
-    const bangumiUrl =
-      item.links.bangumi;
+    const bangumiUrl = item.links.bangumi;
 
     return `
       <article
@@ -1306,11 +1049,7 @@
           <span
             class="anime-status-badge anime-status-${escapeAttr(item.status)}"
           >
-            ${escapeHtml(
-              statusLabel(
-                item.status
-              )
-            )}
+            ${escapeHtml(statusLabel(item.status))}
           </span>
 
           ${ratingBadge(item)}
@@ -1331,91 +1070,59 @@
                 </a>
               </h3>
 
-              ${
-                secondary
-                  ? `
-                    <div class="anime-card-secondary-title">
-                      ${escapeHtml(secondary)}
-                    </div>
-                  `
-                  : ''
-              }
+              ${secondary ? `
+                <div class="anime-card-secondary-title">
+                  ${escapeHtml(secondary)}
+                </div>
+              ` : ''}
             </div>
           </div>
 
-          ${
-            hasText(
-              item.summary
-            )
-              ? `
-                <p class="anime-card-summary">${escapeHtml(item.summary)}</p>
-              `
-              : ''
-          }
+          ${summaryHtml(item)}
 
-          ${
-            metadata
-              ? `
-                <div class="anime-card-meta">
-                  ${metadata}
-                </div>
-              `
-              : ''
-          }
+          ${metadata ? `
+            <div class="anime-card-meta">
+              ${metadata}
+            </div>
+          ` : ''}
 
-          ${cardFooter(
-            item,
-            title
-          )}
+          ${cardFooter(item, title)}
 
-          ${
-            hasText(note)
-              ? `
-                <div class="anime-card-note">
-                  <span class="anime-card-note-label">
-                    ${escapeHtml(
-                      text(
-                        'anime_personal_note',
-                        'Personal note'
-                      )
-                    )}
-                  </span>
+          ${hasText(note) ? `
+            <div class="anime-card-note">
+              <span class="anime-card-note-label">
+                ${escapeHtml(
+                  text(
+                    'anime_personal_note',
+                    'Personal note'
+                  )
+                )}
+              </span>
 
-                  <p>${escapeHtml(note)}</p>
-                </div>
-              `
-              : ''
-          }
+              <p>${escapeHtml(note)}</p>
+            </div>
+          ` : ''}
         </div>
       </article>
     `;
   }
 
   function appendNextBatch() {
-    const list =
-      document.getElementById(
-        'anime-card-list'
-      );
+    const list = document.getElementById(
+      'anime-card-list'
+    );
 
     if (!list) {
       return;
     }
 
-    const items =
-      getFilteredItems();
+    const items = getFilteredItems();
+    const batchSize = Math.max(
+      1,
+      Number(getConfig().batchSize) || 8
+    );
 
-    const batchSize =
-      Math.max(
-        1,
-        Number(
-          getConfig()
-            .batchSize
-        ) || 8
-      );
-
-    if (
-      items.length === 0
-    ) {
+    if (items.length === 0) {
       list.innerHTML = `
         <div class="anime-state anime-state-empty">
           <i
@@ -1438,72 +1145,74 @@
       return;
     }
 
-    const start =
-      state.visibleCount;
-
-    const end =
-      Math.min(
-        items.length,
-        start +
-          batchSize
-      );
-
-    const slice =
-      items.slice(
-        start,
-        end
-      );
+    const start = state.visibleCount;
+    const end = Math.min(
+      items.length,
+      start + batchSize
+    );
+    const slice = items.slice(start, end);
 
     if (!slice.length) {
       hideSentinel();
       return;
     }
 
+    const previousLastCard = list.lastElementChild;
+
     list.insertAdjacentHTML(
       'beforeend',
-      slice
-        .map(cardHtml)
-        .join('')
+      slice.map(cardHtml).join('')
     );
 
-    state.visibleCount =
-      end;
+    state.visibleCount = end;
 
-    bindCoverFallbacks(
-      list
+    const newCards = collectInsertedCards(
+      list,
+      previousLastCard
     );
 
-    refreshCursor(
-      list
-    );
+    bindCoverFallbacks(list);
+    watchSummaryCards(newCards);
+    refreshCursor(list);
 
-    if (
-      state.visibleCount >=
-      items.length
-    ) {
+    if (state.visibleCount >= items.length) {
       hideSentinel();
     }
   }
 
+  function collectInsertedCards(list, previousLastCard) {
+    const cards = [];
+    let node = previousLastCard
+      ? previousLastCard.nextElementSibling
+      : list.firstElementChild;
+
+    while (node) {
+      if (node.classList.contains('anime-card')) {
+        cards.push(node);
+      }
+
+      node = node.nextElementSibling;
+    }
+
+    return cards;
+  }
+
   function hideSentinel() {
-    const sentinel =
-      document.getElementById(
-        'anime-list-sentinel'
-      );
+    const sentinel = document.getElementById(
+      'anime-list-sentinel'
+    );
 
     if (sentinel) {
-      sentinel.hidden =
-        true;
+      sentinel.hidden = true;
     }
 
     disconnectObserver();
   }
 
   function observeSentinel() {
-    const sentinel =
-      document.getElementById(
-        'anime-list-sentinel'
-      );
+    const sentinel = document.getElementById(
+      'anime-list-sentinel'
+    );
 
     if (
       !sentinel ||
@@ -1512,16 +1221,10 @@
       return;
     }
 
-    if (
-      !(
-        'IntersectionObserver' in
-        window
-      )
-    ) {
+    if (!('IntersectionObserver' in window)) {
       while (
         state.visibleCount <
-        getFilteredItems()
-          .length
+        getFilteredItems().length
       ) {
         appendNextBatch();
       }
@@ -1531,152 +1234,464 @@
 
     disconnectObserver();
 
-    state.observer =
-      new IntersectionObserver(
-        function (entries) {
-          entries.forEach(
-            function (entry) {
-              if (
-                entry.isIntersecting
-              ) {
-                appendNextBatch();
-              }
-            }
-          );
-        },
-        {
-          rootMargin:
-            '280px 0px'
-        }
-      );
-
-    state.observer.observe(
-      sentinel
+    state.observer = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            appendNextBatch();
+          }
+        });
+      },
+      {
+        rootMargin: '280px 0px'
+      }
     );
+
+    state.observer.observe(sentinel);
   }
 
   function disconnectObserver() {
     if (state.observer) {
-      state.observer
-        .disconnect();
-
-      state.observer =
-        null;
+      state.observer.disconnect();
+      state.observer = null;
     }
   }
 
-  function bindCoverFallbacks(
-    scope
-  ) {
-    const root =
-      scope ||
-      document;
-
+  function bindCoverFallbacks(scope) {
+    const root = scope || document;
     const placeholder =
-      getConfig()
-        .placeholderCover ||
-      '';
+      getConfig().placeholderCover || '';
 
-    root
-      .querySelectorAll(
-        'img[data-anime-cover]'
-      )
-      .forEach(
-        function (image) {
-          if (
-            image.dataset
-              .animeFallbackBound ===
-              'true'
-          ) {
-            return;
-          }
+    root.querySelectorAll(
+      'img[data-anime-cover]'
+    ).forEach(function (image) {
+      if (
+        image.dataset.animeFallbackBound === 'true'
+      ) {
+        return;
+      }
 
-          image.dataset
-            .animeFallbackBound =
-            'true';
+      image.dataset.animeFallbackBound = 'true';
+      image.dataset.animeFallbackStage = 'remote';
 
-          image.dataset
-            .animeFallbackStage =
-            'remote';
+      image.addEventListener('error', function () {
+        const stage =
+          image.dataset.animeFallbackStage ||
+          'remote';
+        const fallback =
+          image.dataset.fallbackSrc ||
+          '';
 
-          image.addEventListener(
-            'error',
-            function () {
-              const stage =
-                image.dataset
-                  .animeFallbackStage ||
-                'remote';
-
-              const fallback =
-                image.dataset
-                  .fallbackSrc ||
-                '';
-
-              if (
-                stage ===
-                  'remote' &&
-                fallback &&
-                image.src !==
-                  new URL(
-                    fallback,
-                    document.baseURI
-                  ).href
-              ) {
-                image.dataset
-                  .animeFallbackStage =
-                  'local';
-
-                image.src =
-                  fallback;
-
-                return;
-              }
-
-              if (
-                stage !==
-                  'placeholder' &&
-                placeholder
-              ) {
-                image.dataset
-                  .animeFallbackStage =
-                  'placeholder';
-
-                image.src =
-                  placeholder;
-
-                return;
-              }
-
-              image.dataset
-                .animeFallbackStage =
-                'done';
-            }
-          );
+        if (
+          stage === 'remote' &&
+          fallback &&
+          image.src !== new URL(
+            fallback,
+            document.baseURI
+          ).href
+        ) {
+          image.dataset.animeFallbackStage = 'local';
+          image.src = fallback;
+          return;
         }
-      );
+
+        if (
+          stage !== 'placeholder' &&
+          placeholder
+        ) {
+          image.dataset.animeFallbackStage =
+            'placeholder';
+          image.src = placeholder;
+          return;
+        }
+
+        image.dataset.animeFallbackStage = 'done';
+      });
+    });
   }
 
-  function setFilter(filter) {
-    const filters =
-      allowedFilters();
+  function createSummaryParagraph(textContent) {
+    const paragraph = document.createElement('p');
+
+    paragraph.className = SUMMARY_PARAGRAPH_CLASS;
+    paragraph.textContent = textContent;
+
+    return paragraph;
+  }
+
+  function renderSummaryContent(
+    summary,
+    paragraphCharacters,
+    characterLimit,
+    appendEllipsis
+  ) {
+    const fragment = document.createDocumentFragment();
+    let remaining = Math.max(0, characterLimit);
+    let lastParagraph = null;
+
+    for (
+      let index = 0;
+      index < paragraphCharacters.length;
+      index += 1
+    ) {
+      if (remaining <= 0) {
+        break;
+      }
+
+      const characters = paragraphCharacters[index];
+      const take = Math.min(
+        remaining,
+        characters.length
+      );
+
+      if (take <= 0) {
+        continue;
+      }
+
+      lastParagraph = createSummaryParagraph(
+        characters.slice(0, take).join('')
+      );
+      fragment.appendChild(lastParagraph);
+      remaining -= take;
+    }
+
+    if (appendEllipsis) {
+      if (!lastParagraph) {
+        lastParagraph = createSummaryParagraph(
+          SUMMARY_ELLIPSIS
+        );
+        fragment.appendChild(lastParagraph);
+      } else {
+        lastParagraph.textContent =
+          lastParagraph.textContent
+            .replace(/\s+$/u, '') +
+          SUMMARY_ELLIPSIS;
+      }
+    }
+
+    summary.textContent = '';
+    summary.appendChild(fragment);
+  }
+
+  function summaryFits(summary) {
+    return (
+      summary.scrollHeight <=
+      summary.clientHeight +
+      SUMMARY_OVERFLOW_TOLERANCE
+    );
+  }
+
+  function fitSummary(summary) {
+    if (
+      !summary ||
+      !summary.isConnected ||
+      summary.clientWidth <= 0 ||
+      summary.clientHeight <= 0
+    ) {
+      return false;
+    }
+
+    const card = summary.closest(
+      '.anime-card[data-anime-id]'
+    );
+    const item = card
+      ? state.itemById.get(card.dataset.animeId)
+      : null;
 
     if (
-      !filters.includes(
-        filter
-      ) ||
-      state.filter ===
-        filter
+      !item ||
+      !item.summaryParagraphs.length
+    ) {
+      return true;
+    }
+
+    const paragraphCharacters =
+      item.summaryParagraphs.map(function (paragraph) {
+        return Array.from(paragraph);
+      });
+
+    const totalCharacters =
+      paragraphCharacters.reduce(
+        function (sum, characters) {
+          return sum + characters.length;
+        },
+        0
+      );
+
+    renderSummaryContent(
+      summary,
+      paragraphCharacters,
+      totalCharacters,
+      false
+    );
+
+    if (summaryFits(summary)) {
+      summary.classList.remove('is-truncated');
+      return true;
+    }
+
+    let low = 0;
+    let high = totalCharacters;
+    let best = 0;
+
+    while (low <= high) {
+      const middle = Math.floor(
+        (low + high) / 2
+      );
+
+      renderSummaryContent(
+        summary,
+        paragraphCharacters,
+        middle,
+        true
+      );
+
+      if (summaryFits(summary)) {
+        best = middle;
+        low = middle + 1;
+      } else {
+        high = middle - 1;
+      }
+    }
+
+    renderSummaryContent(
+      summary,
+      paragraphCharacters,
+      best,
+      true
+    );
+    summary.classList.add('is-truncated');
+
+    return true;
+  }
+
+  function collectSummaries(scope) {
+    if (!scope) {
+      return [];
+    }
+
+    const summaries = [];
+
+    if (
+      scope.nodeType === 1 &&
+      scope.matches(SUMMARY_SELECTOR)
+    ) {
+      summaries.push(scope);
+    }
+
+    if (typeof scope.querySelectorAll === 'function') {
+      scope.querySelectorAll(
+        SUMMARY_SELECTOR
+      ).forEach(function (summary) {
+        summaries.push(summary);
+      });
+    }
+
+    return summaries;
+  }
+
+  function scheduleSummaryLayout(scope) {
+    collectSummaries(scope).forEach(function (summary) {
+      state.pendingSummaries.add(summary);
+    });
+
+    if (
+      state.summaryLayoutFrame ||
+      !state.pendingSummaries.size
     ) {
       return;
     }
 
-    state.filter =
-      filter;
-
-    storeFilter(filter);
-    updateFilterQuery(
-      filter
+    state.summaryLayoutFrame = window.requestAnimationFrame(
+      flushSummaryLayouts
     );
+  }
+
+  function refreshSummaryCardLayouts() {
+    const app = getApp();
+
+    if (!app) {
+      return;
+    }
+
+    watchSummaryCards(
+      Array.from(
+        app.querySelectorAll('.anime-card')
+      )
+    );
+  }
+
+  function flushSummaryLayouts() {
+    state.summaryLayoutFrame = 0;
+
+    if (!isSectionActive()) {
+      state.pendingSummaries.clear();
+      return;
+    }
+
+    const pending = Array.from(
+      state.pendingSummaries
+    );
+    state.pendingSummaries.clear();
+
+    pending.forEach(function (summary) {
+      if (!fitSummary(summary)) {
+        const card = summary.closest('.anime-card');
+
+        if (
+          card &&
+          state.summaryObserver
+        ) {
+          state.summaryObserver.observe(card);
+        }
+      }
+    });
+  }
+
+  function clearPendingSummaryLayouts() {
+    state.pendingSummaries.clear();
+
+    if (state.summaryLayoutFrame) {
+      window.cancelAnimationFrame(
+        state.summaryLayoutFrame
+      );
+      state.summaryLayoutFrame = 0;
+    }
+  }
+
+  function ensureSummaryObserver() {
+    if (
+      state.summaryObserver ||
+      !('IntersectionObserver' in window)
+    ) {
+      return;
+    }
+
+    state.summaryObserver = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) {
+            return;
+          }
+
+          state.summaryObserver.unobserve(entry.target);
+          scheduleSummaryLayout(entry.target);
+        });
+      },
+      {
+        rootMargin: '320px 0px'
+      }
+    );
+  }
+
+  function watchSummaryCards(cards) {
+    if (!cards.length) {
+      return;
+    }
+
+    ensureSummaryObserver();
+
+    if (!state.summaryObserver) {
+      cards.forEach(scheduleSummaryLayout);
+      return;
+    }
+
+    cards.forEach(function (card) {
+      state.summaryObserver.observe(card);
+    });
+  }
+
+  function disconnectSummaryObserver() {
+    if (state.summaryObserver) {
+      state.summaryObserver.disconnect();
+      state.summaryObserver = null;
+    }
+  }
+
+  function observeSummaryContainer() {
+    const app = getApp();
+
+    if (
+      !app ||
+      !state.summaryResizeObserver
+    ) {
+      return;
+    }
+
+    state.summaryObservedWidth = null;
+    state.summaryResizeObserver.disconnect();
+    state.summaryResizeObserver.observe(app);
+  }
+
+  function bindSummaryLayoutWatchers() {
+    if (state.summaryWatchersBound) {
+      return;
+    }
+
+    if ('ResizeObserver' in window) {
+      state.summaryResizeObserver = new ResizeObserver(
+        function (entries) {
+          const entry = entries[0];
+          const width = entry
+            ? Math.round(entry.contentRect.width)
+            : null;
+
+          if (
+            width == null ||
+            width === state.summaryObservedWidth
+          ) {
+            return;
+          }
+
+          state.summaryObservedWidth = width;
+          refreshSummaryCardLayouts();
+        }
+      );
+    } else {
+      let previousWidth = window.innerWidth;
+
+      window.addEventListener(
+        'resize',
+        function () {
+          const width = window.innerWidth;
+
+          if (width === previousWidth) {
+            return;
+          }
+
+          previousWidth = width;
+          refreshSummaryCardLayouts();
+        },
+        { passive: true }
+      );
+    }
+
+    if (
+      document.fonts &&
+      document.fonts.ready &&
+      typeof document.fonts.ready.then === 'function'
+    ) {
+      document.fonts.ready.then(function () {
+        refreshSummaryCardLayouts();
+      });
+    }
+
+    state.summaryWatchersBound = true;
+  }
+
+  function setFilter(filter) {
+    const filters = allowedFilters();
+
+    if (
+      !filters.includes(filter) ||
+      state.filter === filter
+    ) {
+      return;
+    }
+
+    state.filter = filter;
+    storeFilter(filter);
+    updateFilterQuery(filter);
     renderListShell();
   }
 
@@ -1693,113 +1708,80 @@
   }
 
   function handleClick(event) {
-    const app =
-      getApp();
+    const app = getApp();
 
     if (
       !app ||
-      !app.contains(
-        event.target
-      )
+      !app.contains(event.target)
     ) {
       return;
     }
 
-    const filterButton =
-      event.target.closest(
-        '[data-anime-filter]'
-      );
+    const filterButtonElement = event.target.closest(
+      '[data-anime-filter]'
+    );
 
-    if (filterButton) {
+    if (filterButtonElement) {
       event.preventDefault();
-
       setFilter(
-        filterButton.dataset
-          .animeFilter ||
+        filterButtonElement.dataset.animeFilter ||
         'all'
       );
-
       return;
     }
 
     if (
-      event.target.closest(
-        '.anime-watch-button'
-      ) ||
-      event.target.closest(
-        '.anime-bangumi-link'
-      )
+      event.target.closest('.anime-watch-button') ||
+      event.target.closest('.anime-bangumi-link')
     ) {
       return;
     }
 
-    const card =
-      event.target.closest(
-        '.anime-card[data-anime-bangumi-url]'
-      );
+    const card = event.target.closest(
+      '.anime-card[data-anime-bangumi-url]'
+    );
 
     if (!card) {
       return;
     }
 
-    openBangumi(
-      card.dataset
-        .animeBangumiUrl
-    );
+    openBangumi(card.dataset.animeBangumiUrl);
   }
 
-  function handleKeydown(
-    event
-  ) {
+  function handleKeydown(event) {
     if (
-      event.key !==
-        'Enter' &&
-      event.key !==
-        ' '
+      event.key !== 'Enter' &&
+      event.key !== ' '
     ) {
       return;
     }
 
-    const card =
-      event.target.closest(
-        '.anime-card[data-anime-bangumi-url]'
-      );
+    const card = event.target.closest(
+      '.anime-card[data-anime-bangumi-url]'
+    );
 
     if (
       !card ||
-      event.target.closest(
-        'a, button, select'
-      )
+      event.target.closest('a, button, select')
     ) {
       return;
     }
 
     event.preventDefault();
-
-    openBangumi(
-      card.dataset
-        .animeBangumiUrl
-    );
+    openBangumi(card.dataset.animeBangumiUrl);
   }
 
-  function handleChange(
-    event
-  ) {
-    const target =
-      event.target;
+  function handleChange(event) {
+    const target = event.target;
 
     if (
       !target ||
-      target.id !==
-        'anime-mobile-filter'
+      target.id !== 'anime-mobile-filter'
     ) {
       return;
     }
 
-    setFilter(
-      target.value ||
-      'all'
-    );
+    setFilter(target.value || 'all');
   }
 
   function bindEvents() {
@@ -1807,113 +1789,69 @@
       return;
     }
 
-    const section =
-      getSection();
+    const section = getSection();
 
     if (!section) {
       return;
     }
 
-    section.addEventListener(
-      'click',
-      handleClick
-    );
+    section.addEventListener('click', handleClick);
+    section.addEventListener('keydown', handleKeydown);
+    section.addEventListener('change', handleChange);
 
-    section.addEventListener(
-      'keydown',
-      handleKeydown
-    );
-
-    section.addEventListener(
-      'change',
-      handleChange
-    );
-
-    state.bound =
-      true;
+    bindSummaryLayoutWatchers();
+    state.bound = true;
   }
 
-  function refreshCursor(
-    scope
-  ) {
-    const root =
-      scope ||
-      getSection();
+  function refreshCursor(scope) {
+    const root = scope || getSection();
 
     if (!root) {
       return;
     }
 
-    root
-      .querySelectorAll(
-        [
-          '.anime-filter-item',
-          '.anime-filter-item *',
-          '.anime-card',
-          '.anime-card *',
-          '.anime-bangumi-link',
-          '.anime-bangumi-link *',
-          '.anime-watch-button',
-          '.anime-watch-button *'
-        ].join(', ')
-      )
-      .forEach(
-        function (element) {
-          if (
-            !element.dataset
-          ) {
-            return;
-          }
+    root.querySelectorAll([
+      '.anime-filter-item',
+      '.anime-filter-item *',
+      '.anime-card',
+      '.anime-card *',
+      '.anime-bangumi-link',
+      '.anime-bangumi-link *',
+      '.anime-watch-button',
+      '.anime-watch-button *'
+    ].join(', ')).forEach(function (element) {
+      if (!element.dataset) {
+        return;
+      }
 
-          element.dataset
-            .cursor =
-            element.dataset
-              .cursor ||
-            'precise_select';
+      element.dataset.cursor =
+        element.dataset.cursor ||
+        'precise_select';
 
-          element.dataset
-            .cursorFallback =
-            element.dataset
-              .cursorFallback ||
-            'pointer';
-        }
-      );
+      element.dataset.cursorFallback =
+        element.dataset.cursorFallback ||
+        'pointer';
+    });
 
     if (
       window.CustomCursorAPI &&
-      typeof window
-        .CustomCursorAPI
-        .refresh ===
-        'function'
+      typeof window.CustomCursorAPI.refresh === 'function'
     ) {
-      window
-        .CustomCursorAPI
-        .refresh(root);
+      window.CustomCursorAPI.refresh(root);
     }
   }
 
   function renderList() {
     if (!state.filter) {
-      state.filter =
-        readStoredFilter();
+      state.filter = readStoredFilter();
     }
 
     renderListShell();
   }
 
   function enter() {
-    const section =
-      getSection();
-
-    if (
-      !section ||
-      section.hidden ||
-      !section.classList
-        .contains('active')
-    ) {
-      return Promise.resolve(
-        false
-      );
+    if (!isSectionActive()) {
+      return Promise.resolve(false);
     }
 
     bindEvents();
@@ -1923,38 +1861,18 @@
     }
 
     return loadData()
-      .then(
-        function () {
-          renderList();
-
-          return true;
-        }
-      )
-      .catch(
-        function (error) {
-          renderError(
-            error
-          );
-
-          return false;
-        }
-      );
+      .then(function () {
+        renderList();
+        return true;
+      })
+      .catch(function (error) {
+        renderError(error);
+        return false;
+      });
   }
 
   function refreshLanguage() {
-    if (!state.data) {
-      return;
-    }
-
-    const section =
-      getSection();
-
-    if (
-      !section ||
-      section.hidden ||
-      !section.classList
-        .contains('active')
-    ) {
+    if (!state.data || !isSectionActive()) {
       return;
     }
 
