@@ -155,15 +155,15 @@
       return null;
     }
 
-    const label = String(
+    let label = String(
       settings.label ||
       'Search anime'
     );
-    const placeholder = String(
+    let placeholder = String(
       settings.placeholder ||
       label
     );
-    const clearLabel = String(
+    let clearLabel = String(
       settings.clearLabel ||
       'Clear search'
     );
@@ -176,7 +176,7 @@
       typeof settings.onChange === 'function'
         ? settings.onChange
         : function () {};
-    const formatResult =
+    let formatResult =
       typeof settings.formatResult === 'function'
         ? settings.formatResult
         : function (count) {
@@ -190,6 +190,7 @@
     let timer = 0;
     let resizeObserver = null;
     let lastObservedWidth = null;
+    let lastResultCount = 0;
     let destroyed = false;
 
     const wrapper = createElement(
@@ -384,10 +385,77 @@
       );
       const active = hasText(query);
 
+      lastResultCount = numericCount;
       result.hidden = !active;
       result.textContent = active
         ? String(formatResult(numericCount))
         : '';
+    }
+
+    function updateText(optionsValue) {
+      const textOptions =
+        optionsValue &&
+        typeof optionsValue === 'object'
+          ? optionsValue
+          : {};
+
+      if (
+        Object.prototype.hasOwnProperty.call(
+          textOptions,
+          'label'
+        )
+      ) {
+        label = String(
+          textOptions.label ||
+          'Search anime'
+        );
+      }
+
+      if (
+        Object.prototype.hasOwnProperty.call(
+          textOptions,
+          'placeholder'
+        )
+      ) {
+        placeholder = String(
+          textOptions.placeholder ||
+          label
+        );
+      }
+
+      if (
+        Object.prototype.hasOwnProperty.call(
+          textOptions,
+          'clearLabel'
+        )
+      ) {
+        clearLabel = String(
+          textOptions.clearLabel ||
+          'Clear search'
+        );
+      }
+
+      if (
+        typeof textOptions.formatResult ===
+        'function'
+      ) {
+        formatResult =
+          textOptions.formatResult;
+      }
+
+      input.placeholder = placeholder;
+      input.setAttribute(
+        'aria-label',
+        label
+      );
+      clearButton.setAttribute(
+        'aria-label',
+        clearLabel
+      );
+      clearButton.title = clearLabel;
+
+      setResult(lastResultCount);
+      autoGrow();
     }
 
     function handleInput() {
@@ -498,7 +566,8 @@
       },
 
       setQuery,
-      setResult
+      setResult,
+      updateText
     };
   }
 

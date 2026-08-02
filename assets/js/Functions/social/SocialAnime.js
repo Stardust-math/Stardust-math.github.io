@@ -907,6 +907,9 @@
         button.dataset.animeFilter ||
         'all';
       const active = filter === state.filter;
+      const label = button.querySelector(
+        '.anime-filter-label'
+      );
       const count = button.querySelector(
         '.anime-filter-count'
       );
@@ -919,6 +922,11 @@
         'aria-pressed',
         active ? 'true' : 'false'
       );
+
+      if (label) {
+        label.textContent =
+          filterLabel(filter);
+      }
 
       if (count) {
         count.textContent = String(
@@ -946,6 +954,61 @@
         countByStatus('all')
       );
     }
+  }
+
+  function syncInterfaceLanguage() {
+    const app = getApp();
+
+    if (!app) {
+      return;
+    }
+
+    const filterLabelText = text(
+      'anime_filter_label',
+      'Status'
+    );
+    const mobileLabel = app.querySelector(
+      '.anime-mobile-filter-label'
+    );
+    const sidebar = app.querySelector(
+      '.anime-filter-sidebar'
+    );
+
+    if (mobileLabel) {
+      mobileLabel.textContent =
+        filterLabelText;
+    }
+
+    if (sidebar) {
+      sidebar.setAttribute(
+        'aria-label',
+        filterLabelText
+      );
+    }
+
+    if (
+      state.searchController &&
+      typeof state.searchController.updateText ===
+      'function'
+    ) {
+      state.searchController.updateText({
+        label: text(
+          'anime_search_label',
+          'Search anime'
+        ),
+        placeholder: text(
+          'anime_search_placeholder',
+          'Search anime...'
+        ),
+        clearLabel: text(
+          'anime_search_clear',
+          'Clear search'
+        ),
+        formatResult: searchResultText
+      });
+    }
+
+    syncFilterControls();
   }
 
   function resetCardResults() {
@@ -1417,6 +1480,59 @@
     `;
   }
 
+  function emptyStateHtml() {
+    const query = displaySearchQuery();
+    const hasQuery = hasText(query);
+    const message = hasQuery
+      ? formatText(
+          text(
+            'anime_search_empty',
+            'No anime in this status matched “{query}”.'
+          ),
+          { query }
+        )
+      : text(
+          'anime_empty',
+          'No anime entries in this category.'
+        );
+
+    return `
+      <div class="anime-state anime-state-empty">
+        <div class="anime-search-empty-content">
+          <i
+            class="fas fa-folder-open"
+            aria-hidden="true"
+          ></i>
+
+          <span>
+            ${escapeHtml(message)}
+          </span>
+
+          ${hasQuery ? `
+            <button
+              class="anime-search-empty-clear"
+              type="button"
+              data-anime-clear-search
+            >
+              ${escapeHtml(
+                text(
+                  'anime_search_empty_clear',
+                  'Clear search'
+                )
+              )}
+            </button>
+          ` : ''}
+        </div>
+      </div>
+    `;
+  }
+
+  function renderEmptyState(list) {
+    list.innerHTML = emptyStateHtml();
+    hideSentinel();
+    refreshCursor(list);
+  }
+
   function appendNextBatch() {
     const list = document.getElementById(
       'anime-card-list'
@@ -1433,53 +1549,7 @@
     );
 
     if (items.length === 0) {
-      const query = displaySearchQuery();
-      const hasQuery = hasText(query);
-      const message = hasQuery
-        ? formatText(
-            text(
-              'anime_search_empty',
-              'No anime in this status matched “{query}”.'
-            ),
-            { query }
-          )
-        : text(
-            'anime_empty',
-            'No anime entries in this category.'
-          );
-
-      list.innerHTML = `
-        <div class="anime-state anime-state-empty">
-          <div class="anime-search-empty-content">
-            <i
-              class="fas fa-folder-open"
-              aria-hidden="true"
-            ></i>
-
-            <span>
-              ${escapeHtml(message)}
-            </span>
-
-            ${hasQuery ? `
-              <button
-                class="anime-search-empty-clear"
-                type="button"
-                data-anime-clear-search
-              >
-                ${escapeHtml(
-                  text(
-                    'anime_search_empty_clear',
-                    'Clear search'
-                  )
-                )}
-              </button>
-            ` : ''}
-          </div>
-        </div>
-      `;
-
-      hideSentinel();
-      refreshCursor(list);
+      renderEmptyState(list);
       return;
     }
 
@@ -1515,6 +1585,77 @@
 
     if (state.visibleCount >= items.length) {
       hideSentinel();
+    }
+  }
+
+  function rerenderVisibleCards() {
+    const app = getApp();
+    const list = document.getElementById(
+      'anime-card-list'
+    );
+    const sentinel = document.getElementById(
+      'anime-list-sentinel'
+    );
+
+    if (!list) {
+      renderListShell();
+      return;
+    }
+
+    const items = getFilteredItems();
+    const batchSize = Math.max(
+      1,
+      Number(getConfig().batchSize) || 8
+    );
+    const targetCount = items.length
+      ? Math.min(
+          items.length,
+          Math.max(
+            state.visibleCount,
+            Math.min(batchSize, items.length)
+          )
+        )
+      : 0;
+
+    clearPendingSummaryLayouts();
+    disconnectObserver();
+    disconnectSummaryObserver();
+
+    list.textContent = '';
+    state.visibleCount = 0;
+
+    if (sentinel) {
+      sentinel.hidden = false;
+    }
+
+    if (!items.length) {
+      renderEmptyState(list);
+      refreshCursor(app);
+      return;
+    }
+
+    list.insertAdjacentHTML(
+      'beforeend',
+      items
+        .slice(0, targetCount)
+        .map(cardHtml)
+        .join('')
+    );
+
+    state.visibleCount = targetCount;
+
+    const cards = Array.from(
+      list.querySelectorAll('.anime-card')
+    );
+
+    bindCoverFallbacks(list);
+    watchSummaryCards(cards);
+    refreshCursor(list);
+
+    if (state.visibleCount >= items.length) {
+      hideSentinel();
+    } else {
+      observeSentinel();
     }
   }
 
@@ -2241,7 +2382,17 @@
       return;
     }
 
-    renderList();
+    const list = document.getElementById(
+      'anime-card-list'
+    );
+
+    if (!list) {
+      renderList();
+      return;
+    }
+
+    syncInterfaceLanguage();
+    rerenderVisibleCards();
   }
 
   window.SocialAnime = {
