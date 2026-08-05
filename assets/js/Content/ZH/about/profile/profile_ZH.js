@@ -197,7 +197,7 @@
         <div class="subsubheading">
           <div>导师: </div>
           <div class="resume-advisor-list">
-            <div><strong><a class="resume-link" href="https://cde.nus.edu.sg/isem/staff/li-xiaobo/" target="_blank" rel="noopener noreferrer">李晓波</a></strong>(<a class="resume-link" href="https://cde.nus.edu.sg/isem/" target="_blank" rel="noopener noreferrer">新加坡国立大学 工业系统工程与管理系</a>)</div>
+            <div><strong><a class="resume-link" href="https://cde.nus.edu.sg/isem/staff/li-xiaobo/" target="_blank" rel="noopener noreferrer">李晓波教授</a></strong>(<a class="resume-link" href="https://cde.nus.edu.sg/isem/" target="_blank" rel="noopener noreferrer">新加坡国立大学 工业系统工程与管理系</a>)</div>
           </div>
         </div>
         <ul>
