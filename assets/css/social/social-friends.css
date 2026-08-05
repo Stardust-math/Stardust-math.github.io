@@ -91,7 +91,7 @@
 
   object-fit: cover;
   object-position: center;
-  opacity: 0.13;
+  opacity: 0.3;
   filter: saturate(0.82) contrast(0.96) blur(0.1px);
 
   pointer-events: none;
@@ -117,7 +117,7 @@
 }
 
 .friend-card:hover .friend-card-bg {
-  opacity: 0.2;
+  opacity: 0.4;
   transform: scale(1.045);
   filter: saturate(0.92) contrast(1) blur(0.05px);
 }
@@ -698,12 +698,12 @@ body.dark-mode .friend-card {
 }
 
 body.dark-mode .friend-card-bg {
-  opacity: 0.16;
+  opacity: 0.4;
   filter: saturate(0.76) contrast(0.9) brightness(0.92) blur(0.1px);
 }
 
 body.dark-mode .friend-card:hover .friend-card-bg {
-  opacity: 0.24;
+  opacity: 0.5;
   filter: saturate(0.86) contrast(0.96) brightness(0.96) blur(0.05px);
 }
 
