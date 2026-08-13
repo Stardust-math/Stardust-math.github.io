@@ -53,7 +53,7 @@
                   <div class="resume-email-row">
                     <span class="resume-email-label">临时邮箱</span>
                     <a class="resume-email-address" href="mailto:jinghao-chen@u.nus.edu">jinghao-chen@u.nus.edu</a>
-                    <span class="resume-email-note">有效期：2026年8月--10月</span>
+                    <span class="resume-email-note">有效期: 2026年8月 &mdash; 10月</span>
                     <span class="resume-email-actions" aria-label="临时邮箱操作">
                       <button class="resume-email-icon-btn resume-email-copy-btn" type="button" data-copy-email="jinghao-chen@u.nus.edu" aria-label="复制临时邮箱地址" title="复制">
                         <i class="fas fa-copy" aria-hidden="true"></i>
@@ -80,7 +80,7 @@
 
       <div class="section">
         <h2>研究兴趣</h2>
-        <ul><li>运营管理、运筹学、供应链、随机模型、博弈论.</li></ul>
+        <ul><li>运营管理、运筹学、选择建模、销售机制、供应链管理、随机建模与博弈论.</li></ul>
       </div>
 
       <div class="section">
@@ -89,7 +89,7 @@
           <span class="subheading-title">
             <a class="resume-link" href="https://www.ustc.edu.cn/" target="_blank" rel="noopener noreferrer">中国科学技术大学</a>
           </span>
-          <span>2023年9月 -- 2027年7月 (预计)</span>
+          <span>2023年9月 &mdash; 2027年7月 (预计)</span>
         </div>
 
         <div class="subsubheading resume-degree-line">
@@ -127,7 +127,7 @@
             <td colspan="2">
               <div class="expand-content">
                 <a class="expand-item" href="https://math.ustc.edu.cn/2025/1024/c18650a706019/page.htm" target="_blank" rel="noopener noreferrer" aria-label="打开相关链接">
-                  <img src="./assets/images/about/Excellent_Student_Scholarship--Silver.jpg" alt="优秀学生奖学金（银奖）">
+                  <img src="./assets/images/about/Excellent_Student_Scholarship--Silver.jpg" alt="优秀学生奖学金 (银奖)">
                 </a>
               </div>
             </td>
@@ -161,7 +161,7 @@
             <td colspan="2">
               <div class="expand-content">
                 <a class="expand-item" href="./assets/pdf/about/Excellent_Freshman_Scholarship--Silver.pdf" download aria-label="下载 PDF">
-                  <img src="./assets/images/about/Excellent_Freshman_Scholarship--Silver.jpg" alt="优秀新生奖学金（银奖）">
+                  <img src="./assets/images/about/Excellent_Freshman_Scholarship--Silver.jpg" alt="优秀新生奖学金 (银奖)">
                 </a>
               </div>
             </td>
@@ -169,7 +169,7 @@
 
           <tr>
             <td>
-              <a class="award-link" href="./assets/pdf/about/2025_MCM_Problem_B_Results.pdf" download aria-label="下载 PDF">美国大学生数学建模竞赛 MCM (B题) Honorable Mention (担任队长)</a>
+              <a class="award-link" href="./assets/pdf/about/2025_MCM_Problem_B_Results.pdf" download aria-label="下载 PDF">美国大学生数学建模竞赛 (MCM) B 题: 荣誉奖 (队长)</a>
               <button class="expander" type="button" data-expand-target="exp-mcm-hm-zh" data-expand-key="mcm-hm" aria-expanded="false" aria-label="展开详情">
                 <i class="fas fa-chevron-right"></i>
               </button>
@@ -191,22 +191,23 @@
       <div class="section">
         <h2>科研经历</h2>
         <div class="subheading">
-          <span class="subheading-title">边际分布模型与选择模型不等式的猜想与证明</span>
-          <span>2026年7月 -- 至今</span>
+          <span class="subheading-title">选择模型不等式与边际分布模型</span>
+          <span>2026年7月 &mdash; 至今</span>
         </div>
         <div class="subsubheading">
           <div>导师: </div>
           <div class="resume-advisor-list">
-            <div><strong><a class="resume-link" href="https://cde.nus.edu.sg/isem/staff/li-xiaobo/" target="_blank" rel="noopener noreferrer">李晓波教授</a></strong>(<a class="resume-link" href="https://cde.nus.edu.sg/isem/" target="_blank" rel="noopener noreferrer">新加坡国立大学 工业系统工程与管理系</a>)</div>
+            <div><strong><a class="resume-link" href="https://cde.nus.edu.sg/isem/staff/li-xiaobo/" target="_blank" rel="noopener noreferrer">李晓波教授</a></strong>(<a class="resume-link" href="https://cde.nus.edu.sg/isem/" target="_blank" rel="noopener noreferrer">新加坡国立大学工业系统工程与管理系</a>)</div>
           </div>
         </div>
         <ul>
-          <li>待添加</li>
+          <li>否证了原有的选择模型不等式, 并提出了一个更为一般的猜想.</li>
+          <li>刻画了该不等式在一般选择模型、边际分布模型 (MDM)、混合边际分布模型与随机效用模型 (RUM) 中的差异.</li>
         </ul>
 
         <div class="subheading">
-          <span class="subheading-title">具有不平等厌恶偏好的消费者下的需求信息共享</span>
-          <span>2025年7月 -- 至今</span>
+          <span class="subheading-title">消费者不平等厌恶下的需求信息共享</span>
+          <span>2025年7月 &mdash; 2026年8月</span>
         </div>
         <div class="subsubheading">
           <div>导师: </div>
@@ -216,14 +217,14 @@
           </div>
         </div>
         <ul>
-          <li>构建包含需求预测不确定性与不平等厌恶消费者的制造商—零售商贝叶斯定价/信号传递模型, 并在 LMSE (least-misleading sequential equilibrium) 准则下求解精炼的完美贝叶斯均衡.</li>
-          <li>推导信息不共享与零售商共享两种机制下的闭式"混同/分离"批发价策略与利润表达式.</li>
-          <li>证明自愿信息共享与强制信息共享在收益上的等价性, 并给出比较静态: 阐明不同信念设定（被动 vs. 线性）与不平等厌恶如何重塑渠道表现.</li>
+          <li>构建了一个考虑需求预测不确定性与消费者不平等厌恶的贝叶斯制造商—零售商定价与信号传递模型, 并在字典序最大序贯均衡 (LMSE)精炼准则下刻画了完美贝叶斯均衡.</li>
+          <li>推导了不共享与零售商共享两种机制下混同与分离批发价策略及利润的闭式表达式.</li>
+          <li>证明了自愿信息共享与强制信息共享的收益等价性, 并刻画了被动信念与线性信念设定以及不平等厌恶如何影响渠道绩效.</li>
         </ul>
 
         <div class="subheading">
-          <span class="subheading-title">垄断企业在"先发货后购物 (STS)"与传统商业模式下的双边博弈</span>
-          <span>2024年9月 -- 2025年8月</span>
+          <span class="subheading-title">“先发货后购物” (STS) 与传统商业模式下垄断者的双边渠道选择博弈</span>
+          <span>2024年9月 &mdash; 2025年8月</span>
         </div>
         <div class="subsubheading">
           <div>导师: </div>
@@ -233,8 +234,8 @@
           </div>
         </div>
         <ul>
-          <li>构建比较传统渠道与 STS (Ship-then-Shop) 渠道的双边渠道选择博弈模型, 纳入订阅成本、搜索成本与退货成本等因素.</li>
-          <li>刻画企业最优定价, 并证明在均衡中不会出现"展厅效应 (showrooming)"; 该结论在放松消费者类型认知假设, 以及放宽消费者类型与退货成本分布假设后仍然成立.</li>
+          <li>构建了一个双边渠道选择博弈, 其中垄断者在传统渠道与“先发货后购物” (STS) 渠道之间进行选择，并将订阅成本、搜索成本和退货成本纳入模型.</li>
+          <li>刻画了最优定价, 并证明在放宽消费者对自身类型的认知以及消费者类型与退货成本分布等假设后, 均衡中仍不会出现展厅效应 (showrooming).</li>
         </ul>
       </div>
 
@@ -242,7 +243,7 @@
         <h2>教学经历</h2>
         <div class="subheading">
           <span class="subheading-title">助教, "数学分析(B1)"</span>
-          <span>2026年9月 -- 2027年1月</span>
+          <span>2026年9月 &mdash; 2027年1月 (预计)</span>
         </div>
         <div class="subsubheading">
           <div>授课教师: </div>
@@ -251,12 +252,12 @@
           </div>
         </div>
         <ul>
-          <li>待添加</li>
+          <li>设计并搭建课程网站, 用于发布和集中管理课程资料, 并系统整理课程关键信息:<a class="resume-link" href="https://mathematical-analysis-b1.pages.dev" target="_blank" rel="noopener noreferrer">https://mathematical-analysis-b1.pages.dev</a></li>
         </ul>
 
         <div class="subheading">
           <span class="subheading-title">助教, "机器学习B"</span>
-          <span>2026年3月 -- 2026年7月</span>
+          <span>2026年3月 &mdash; 2026年7月</span>
         </div>
         <div class="subsubheading">
           <div>授课教师: </div>
@@ -279,12 +280,13 @@
               <span>仓库</span>
             </a>
           </li>
-          <li>给学生的作业和考试评分, 提供反馈和辅导. 每周开设习题课, 回答问题, 帮助学生准备考试.</li>
+          <li>批改作业, 并就学生的概念理解与数学推理给予反馈; 同时协助批改考试并提供辅导.</li>
+          <li>主持每周答疑与习题讲解, 解答学生问题并协助其准备期末考试.</li>
         </ul>
 
         <div class="subheading">
           <span class="subheading-title">助教, "概率论与数理统计"</span>
-          <span>2025年9月 -- 2026年1月</span>
+          <span>2025年9月 &mdash; 2026年1月</span>
         </div>
         <div class="subsubheading">
           <div>授课教师: </div>
@@ -294,7 +296,7 @@
         </div>
         <ul>
           <li>
-            基于缪柏其、张伟平编撰的教材整理并编写详细 LaTeX 习题解答与参考答案；维护开源仓库供同学使用:
+            围绕缪柏其、张伟平编著教材中的习题, 编写了详细的 LaTeX 解答, 并维护面向学生的开源仓库:
             <a
               class="expand-action-btn"
               href="https://github.com/Stardust-math/Reference-Answer"
@@ -322,7 +324,7 @@
 
         <ul>
           <li>
-            本项目在加权图建模框架下研究地铁路径规划，并在原始教学模板基础上扩展为一个完整系统，包含最短路径计算、改进的图形交互界面，以及考虑换乘代价的路径规划扩展。
+            本项目在加权图建模框架下研究地铁路径规划, 并在原始教学模板基础上扩展为一个完整系统, 包含最短路径计算、改进的图形交互界面, 以及考虑换乘代价的路径规划扩展.
             <br>
             <div class="project-actions">
               <a
@@ -355,13 +357,13 @@
 
         <div class="subheading">
           <span class="subheading-title">
-            图像恢复的渐进式 RPCA 框架：从基础分解到掩膜补全
+            图像恢复的渐进式 RPCA 框架: 从基础分解到掩膜补全
           </span>
         </div>
 
         <ul>
           <li>
-            本项目研究基于渐进式 RPCA 框架的图像恢复，从基础的低秩—稀疏分解出发，进一步扩展到彩色图像处理、增强图形交互、TV 正则化恢复与掩膜补全。
+            本项目研究基于渐进式 RPCA 框架的图像恢复, 从基础的低秩—稀疏分解出发, 进一步扩展到彩色图像处理、增强图形交互、TV 正则化恢复与掩膜补全.
             <br>
             <div class="project-actions">
               <a
@@ -400,7 +402,7 @@
 
         <ul>
           <li>
-            本项目研究由采样点驱动的平面曲线重建，综合比较局部插值、全局拟合与周期闭曲线的截断傅里叶重建。实验系统考察了三次 Hermite 插值、三次 B 样条插值、多项式最小二乘拟合和 B 样条最小二乘拟合在不同参数化方式、节点密度与噪声水平下的表现。
+            本项目研究由采样点驱动的平面曲线重建, 综合比较局部插值、全局拟合与周期闭曲线的截断傅里叶重建. 实验系统考察了三次 Hermite 插值、三次 B 样条插值、多项式最小二乘拟合和 B 样条最小二乘拟合在不同参数化方式、节点密度与噪声水平下的表现.
             <br>
             <div class="project-actions">
               <a
@@ -439,7 +441,7 @@
 
         <ul>
           <li>
-            本项目基于 SIR 型区室传染病模型研究传染病的周期性爆发现象。实验从基础 SIR 模型出发，进一步引入出生死亡导致的人口更新、季节性传播率强迫以及 Gillespie 随机模拟，用于解释单次爆发、反复峰值、季节性流行模式与小感染人数下的早期消亡现象。
+            本项目基于 SIR 型区室传染病模型研究传染病的周期性爆发现象. 实验从基础 SIR 模型出发, 进一步引入出生死亡导致的人口更新、季节性传播率强迫以及 Gillespie 随机模拟, 用于解释单次爆发、反复峰值、季节性流行模式与小感染人数下的早期消亡现象.
             <br>
             <div class="project-actions">
               <a
@@ -472,13 +474,13 @@
 
         <div class="subheading">
           <span class="subheading-title">
-            压力下的搭便车：公共物品治理中的动态存量—压力模型
+            压力下的搭便车: 公共物品治理中的动态存量—压力模型
           </span>
         </div>
 
         <ul>
           <li>
-            本项目研究动态公共物品供给中的搭便车行为，构建基于仿真的动态存量—压力搭便车框架，将异质性主体、贡献激励、公共物品存量、维护压力、需求反馈、容量饱和与政策干预整合在同一动态多主体系统中；在受控合成情景下，比较 Nash 式个体理性基准与阶段性社会规划者基准，并评估补贴、惩罚、声誉、匹配基金、阈值治理与组合治理政策的效果。
+            本项目研究动态公共物品供给中的搭便车行为, 构建基于仿真的动态存量—压力搭便车框架, 将异质性主体、贡献激励、公共物品存量、维护压力、需求反馈、容量饱和与政策干预整合在同一动态多主体系统中; 在受控合成情景下, 比较 Nash 式个体理性基准与阶段性社会规划者基准, 并评估补贴、惩罚、声誉、匹配基金、阈值治理与组合治理政策的效果.
             <br>
             <div class="project-actions">
               <a
@@ -514,14 +516,14 @@
         <h2>附加信息</h2>
         <ul>
           <li>
-            <strong>技术能力:</strong>
+            <strong>技术技能:</strong>
             <ul>
-              <li>编程: Python（熟练）, C（熟练）, Mathematica（熟练）</li>
-              <li>工具: LaTeX（高级）, Visio, Adobe Illustrator, Adobe Photoshop</li>
+              <li>编程: Python (熟练), C (熟练), Mathematica (熟练)</li>
+              <li>工具: LaTeX (高级), Visio, Adobe Illustrator, Adobe Photoshop</li>
             </ul>
           </li>
           <li>
-            <strong>语言:</strong> 中文（母语）, 英语（流利--托福: 阅读 28, 听力 24, 口语 24, 写作 27）
+            <strong>语言:</strong> 普通话 (母语), 英语 (流利; 托福: 阅读 28, 听力 24, 口语 24, 写作 27)
           </li>
         </ul>
       </div>
