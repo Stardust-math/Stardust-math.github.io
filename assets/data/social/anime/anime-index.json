@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-09T19:30:17.751Z",
+  "generatedAt": "2026-08-13T16:33:11.774Z",
   "items": [
     {
       "id": "bgm-220445",
@@ -1010,7 +1010,7 @@
         "Liber"
       ],
       "ratings": {
-        "bangumi": 7.1,
+        "bangumi": 7,
         "personal": null
       },
       "notes": {
@@ -1020,7 +1020,7 @@
       "dates": {
         "air": "2026-07-06"
       },
-      "updatedAt": "2026-08-09T19:30:02.379Z"
+      "updatedAt": "2026-08-13T16:33:11.774Z"
     },
     {
       "id": "bgm-27364",
@@ -2450,7 +2450,7 @@
         "科幻"
       ],
       "ratings": {
-        "bangumi": 8.9,
+        "bangumi": 9,
         "personal": null
       },
       "notes": {
@@ -2460,7 +2460,7 @@
       "dates": {
         "air": "1996-09-07"
       },
-      "updatedAt": "2026-08-09T19:27:13.788Z"
+      "updatedAt": "2026-08-13T16:29:50.126Z"
     },
     {
       "id": "bgm-215425",
