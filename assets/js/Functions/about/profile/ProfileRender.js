@@ -12,6 +12,8 @@
 
   let expandableWarmupTimer = 0;
   let pendingLang = null;
+  let activeImageLightbox = null;
+  let activeImageTrigger = null;
 
   function getLang() {
     if (
@@ -399,6 +401,259 @@
       });
   }
 
+  function getImagePreviewLabel(image) {
+    const alt = String(
+      image && image.getAttribute('alt')
+        ? image.getAttribute('alt')
+        : ''
+    ).trim();
+
+    if (getLang() === 'zh') {
+      return alt
+        ? '放大查看' + alt
+        : '放大查看图片';
+    }
+
+    return alt
+      ? 'Preview ' + alt
+      : 'Preview image';
+  }
+
+  function getLightboxCloseLabel() {
+    return getLang() === 'zh'
+      ? '关闭图片预览'
+      : 'Close image preview';
+  }
+
+  function handleImageLightboxKeydown(event) {
+    if (event.key !== 'Escape') return;
+
+    event.preventDefault();
+    closeImageLightbox();
+  }
+
+  function closeImageLightbox(options) {
+    const opts = options || {};
+    const trigger = activeImageTrigger;
+
+    if (activeImageLightbox) {
+      activeImageLightbox.remove();
+    }
+
+    activeImageLightbox = null;
+    activeImageTrigger = null;
+
+    document.removeEventListener(
+      'keydown',
+      handleImageLightboxKeydown
+    );
+
+    if (
+      opts.restoreFocus !== false &&
+      trigger &&
+      trigger.isConnected &&
+      typeof trigger.focus === 'function'
+    ) {
+      try {
+        trigger.focus({ preventScroll: true });
+      } catch (error) {
+        trigger.focus();
+      }
+    }
+  }
+
+  function openImageLightbox(trigger) {
+    if (!trigger) return;
+
+    const image = trigger.querySelector('img[src]');
+    const src = normalizeImageUrl(
+      getImageSource(image)
+    );
+
+    if (!image || !src) return;
+
+    closeImageLightbox({
+      restoreFocus: false
+    });
+
+    const box = document.createElement('div');
+    box.className = 'profile-image-lightbox';
+    box.setAttribute('role', 'dialog');
+    box.setAttribute('aria-modal', 'true');
+    box.setAttribute(
+      'aria-label',
+      getImagePreviewLabel(image)
+    );
+
+    const closeButton =
+      document.createElement('button');
+
+    closeButton.className =
+      'profile-image-lightbox-close';
+    closeButton.type = 'button';
+    closeButton.textContent = '×';
+    closeButton.setAttribute(
+      'aria-label',
+      getLightboxCloseLabel()
+    );
+    closeButton.setAttribute(
+      'data-cursor',
+      'precise_select'
+    );
+    closeButton.setAttribute(
+      'data-cursor-fallback',
+      'pointer'
+    );
+
+    const previewImage =
+      document.createElement('img');
+
+    previewImage.src = src;
+    previewImage.alt =
+      image.getAttribute('alt') || '';
+    previewImage.decoding = 'async';
+
+    box.appendChild(closeButton);
+    box.appendChild(previewImage);
+
+    box.addEventListener('click', (event) => {
+      if (
+        event.target === box ||
+        event.target === closeButton
+      ) {
+        closeImageLightbox();
+      }
+    });
+
+    activeImageLightbox = box;
+    activeImageTrigger = trigger;
+
+    document.body.appendChild(box);
+    document.addEventListener(
+      'keydown',
+      handleImageLightboxKeydown
+    );
+
+    if (
+      window.CustomCursorAPI &&
+      typeof window.CustomCursorAPI.refresh ===
+        'function'
+    ) {
+      window.CustomCursorAPI.refresh(box);
+    }
+
+    try {
+      closeButton.focus({ preventScroll: true });
+    } catch (error) {
+      closeButton.focus();
+    }
+  }
+
+  function decorateExpandableImagePreview(image) {
+    if (!image) return null;
+
+    const trigger = image.closest('.expand-item');
+    const src = getImageSource(image);
+
+    if (!trigger || !src) return null;
+
+    trigger.classList.add(
+      'profile-image-preview'
+    );
+
+    trigger.setAttribute(
+      'data-profile-image-preview',
+      src
+    );
+    trigger.setAttribute(
+      'data-cursor',
+      'precise_select'
+    );
+    trigger.setAttribute(
+      'data-cursor-fallback',
+      'pointer'
+    );
+    trigger.setAttribute(
+      'role',
+      'button'
+    );
+    trigger.setAttribute(
+      'tabindex',
+      '0'
+    );
+    trigger.setAttribute(
+      'aria-label',
+      getImagePreviewLabel(image)
+    );
+
+    if (
+      trigger.tagName &&
+      trigger.tagName.toLowerCase() === 'a'
+    ) {
+      trigger.removeAttribute('href');
+      trigger.removeAttribute('target');
+      trigger.removeAttribute('rel');
+      trigger.removeAttribute('download');
+    }
+
+    return trigger;
+  }
+
+  function bindExpandableImagePreviews(root) {
+    if (!root) return;
+
+    root.querySelectorAll(
+      '.expand-row .expand-content ' +
+      '.expand-item img[src]'
+    ).forEach((image) => {
+      decorateExpandableImagePreview(image);
+    });
+
+    if (
+      root.dataset.profileImagePreviewBound === '1'
+    ) {
+      return;
+    }
+
+    root.dataset.profileImagePreviewBound = '1';
+
+    root.addEventListener('click', (event) => {
+      const trigger = event.target.closest(
+        '[data-profile-image-preview]'
+      );
+
+      if (!trigger || !root.contains(trigger)) {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+      openImageLightbox(trigger);
+    });
+
+    root.addEventListener('keydown', (event) => {
+      if (
+        event.key !== 'Enter' &&
+        event.key !== ' ' &&
+        event.key !== 'Spacebar'
+      ) {
+        return;
+      }
+
+      const trigger = event.target.closest(
+        '[data-profile-image-preview]'
+      );
+
+      if (!trigger || !root.contains(trigger)) {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+      openImageLightbox(trigger);
+    });
+  }
+
   function shouldAvoidBackgroundWarmup() {
     const connection =
       navigator.connection ||
@@ -517,6 +772,10 @@
           ? opts.openKeys
           : getOpenKeys(root);
 
+      closeImageLightbox({
+        restoreFocus: false
+      });
+
       root.innerHTML = template;
 
       root.dataset.renderedLang =
@@ -526,6 +785,7 @@
 
       optimizeImages(root);
       bindExpandableImageIntent(root);
+      bindExpandableImagePreviews(root);
       initExpanders(root, openKeys);
       refreshRuntimeFeatures(root);
     }
@@ -542,6 +802,7 @@
 
     optimizeImages(root);
     bindExpandableImageIntent(root);
+    bindExpandableImagePreviews(root);
 
     scheduleExpandableWarmup(root, {
       delay: EXPANDABLE_WARMUP_DELAY
@@ -753,9 +1014,11 @@
     enter,
     optimizeImages,
     bindExpandableImageIntent,
+    bindExpandableImagePreviews,
     scheduleExpandableWarmup,
     preloadExpandableTarget,
-    waitForCriticalImages
+    waitForCriticalImages,
+    closeImageLightbox
   };
 
   window.ProfileRender = api;
