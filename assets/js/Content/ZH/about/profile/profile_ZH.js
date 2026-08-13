@@ -510,6 +510,43 @@
             </div>
           </li>
         </ul>
+
+        <div class="subheading">
+          <span class="subheading-title">
+            TopoGraph3D: 面向三维有限元分析, 科学可视化与拓扑优化的可执行节点图系统
+          </span>
+        </div>
+
+        <ul>
+          <li>
+            本项目开发 TopoGraph3D, 一款基于 C++17 的 Windows 桌面应用, 通过 20 种内置节点将三维结构分析流程表示为可执行类型化节点图, 并在统一数据流环境中集成结构化 Hex8 线性静力有限元分析, SIMP 拓扑优化, 与网格绑定的标量场后处理以及支持 SVG/VTK 导出的交互式科学可视化.
+            <br>
+            <div class="project-actions">
+              <a
+                class="expand-action-btn"
+                href="https://stardust-math.github.io/TopoGraph3D/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <svg class="btn-ico" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                  <path d="M14 3v5h5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                </svg>
+                <span>展示页</span>
+              </a>
+
+              <a
+                class="expand-action-btn"
+                href="https://github.com/Stardust-math/TopoGraph3D"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i class="fab fa-github btn-ico" aria-hidden="true"></i>
+                <span>仓库</span>
+              </a>
+            </div>
+          </li>
+        </ul>
       </div>
 
       <div class="section">

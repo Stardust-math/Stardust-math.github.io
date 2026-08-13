@@ -510,6 +510,43 @@
             </div>
           </li>
         </ul>
+
+        <div class="subheading">
+          <span class="subheading-title">
+            TopoGraph3D: An Executable Node-Graph System for Three-Dimensional Finite Element Analysis, Scientific Visualization, and Topology Optimization
+          </span>
+        </div>
+
+        <ul>
+          <li>
+            This project develops TopoGraph3D, a C++17 Windows desktop application that represents three-dimensional structural-analysis workflows as typed executable node graphs with 20 built-in node types, integrating structured Hex8 linear-static finite element analysis, SIMP topology optimization, mesh-bound scalar-field post-processing, and interactive scientific visualization with SVG/VTK export.
+            <br>
+            <div class="project-actions">
+              <a
+                class="expand-action-btn"
+                href="https://stardust-math.github.io/TopoGraph3D/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <svg class="btn-ico" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                  <path d="M14 3v5h5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                </svg>
+                <span>Page</span>
+              </a>
+
+              <a
+                class="expand-action-btn"
+                href="https://github.com/Stardust-math/TopoGraph3D"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i class="fab fa-github btn-ico" aria-hidden="true"></i>
+                <span>Repo</span>
+              </a>
+            </div>
+          </li>
+        </ul>
       </div>
 
       <div class="section">
