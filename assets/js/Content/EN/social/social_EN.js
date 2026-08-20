@@ -15,6 +15,7 @@
 
     tiktok_title: "TikTok (Chinese)",
     tiktok_desc: "Short-form videos in Chinese",
+
     rednote_title: "REDnote",
     rednote_desc: "Chinese lifestyle and knowledge sharing",
 
@@ -32,6 +33,10 @@
 
     orcid_title: "ORCID",
     orcid_desc: "Academic identifier and research profile",
+
+    icourse_title: "USTC iCourse",
+    icourse_desc: "My course reviews and profile on USTC iCourse",
+
     steam_title: "Steam",
     steam_desc: "My gaming profile and library",
 
@@ -46,6 +51,7 @@
 
     orcid_qr_title: "ORCID QR Code",
     orcid_qr_caption: "Scan to open my ORCID record.",
+
     stats_heading: "Website Statistics",
     metric_total: "All-time (Total)",
     metric_month: "Last 30 days",
@@ -53,6 +59,7 @@
     metric_page: "This path",
     dashboard_title: "GoatCounter Dashboard",
     visitor_map: "Visitor Map",
+
     comments_title: "Guestbook",
     comments_guest_user: "Guest user",
     comments_identity_guest: "Sign in with GitHub",
@@ -72,6 +79,7 @@
     comments_failed:
       "Comments failed to load. Please open the discussion on GitHub.",
     comments_open_github: "Open discussion on GitHub",
+
     anime_heading: "My Anime Watchlist",
 
     anime_filter_label: "Status",

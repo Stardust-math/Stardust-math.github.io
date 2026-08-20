@@ -18,6 +18,7 @@
 
     rednote_title: "小红书",
     rednote_desc: "生活方式与知识分享",
+
     quora_title: "Quora",
     quora_desc: "问答与观点分享",
 
@@ -33,8 +34,12 @@
     orcid_title: "ORCID",
     orcid_desc: "学术身份识别与研究档案",
 
+    icourse_title: "USTC评课社区",
+    icourse_desc: "我的课程点评与个人主页",
+
     steam_title: "Steam",
     steam_desc: "游戏主页与库",
+
     link_channel: "频道",
     link_handle: "账号",
     link_profile: "主页",
@@ -54,6 +59,7 @@
     metric_page: "当前页面",
     dashboard_title: "GoatCounter 面板",
     visitor_map: "访客地图",
+
     comments_title: "留言板",
     comments_guest_user: "未登录用户",
     comments_identity_guest: "点击后在评论框中登录 GitHub",
@@ -74,6 +80,7 @@
     comments_failed:
       "留言加载失败，可以在 GitHub 中打开讨论页。",
     comments_open_github: "在 GitHub 中打开讨论页",
+
     anime_heading: "我的番剧星册",
 
     anime_filter_label: "状态",
@@ -101,6 +108,7 @@
 
     anime_open_bangumi: "在 Bangumi 中打开",
     anime_watch: "观看",
+
     anime_year: "年份",
     anime_episodes: "集数",
     anime_studio: "动画制作",
