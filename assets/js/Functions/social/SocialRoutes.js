@@ -98,6 +98,16 @@
       normalizeView(view) ||
       DEFAULT_VIEW;
 
+    if (
+      window.BootstrapRoutes &&
+      typeof window.BootstrapRoutes.buildLocalizedPath === 'function'
+    ) {
+      return window.BootstrapRoutes.buildLocalizedPath(
+        'social/' + VIEW_TO_SLUG[normalized],
+        window.BootstrapRoutes.getCurrentLanguage()
+      );
+    }
+
     return new URL(
       VIEW_TO_SLUG[normalized] +
       '/',
@@ -120,11 +130,16 @@
   }
 
   function isSocialPath(pathname) {
+    const path =
+      window.BootstrapRoutes &&
+      typeof window.BootstrapRoutes.getBusinessPath === 'function'
+        ? window.BootstrapRoutes.getBusinessPath(
+            pathname || window.location.pathname
+          )
+        : pathname || window.location.pathname;
+
     const parts =
-      normalizePath(
-        pathname ||
-        window.location.pathname
-      )
+      normalizePath(path)
         .split('/')
         .filter(Boolean);
 
@@ -134,11 +149,16 @@
   }
 
   function getSocialPathParts(pathname) {
+    const path =
+      window.BootstrapRoutes &&
+      typeof window.BootstrapRoutes.getBusinessPath === 'function'
+        ? window.BootstrapRoutes.getBusinessPath(
+            pathname || window.location.pathname
+          )
+        : pathname || window.location.pathname;
+
     const parts =
-      normalizePath(
-        pathname ||
-        window.location.pathname
-      )
+      normalizePath(path)
         .split('/')
         .filter(Boolean);
 
@@ -345,6 +365,17 @@
     const setter =
       getSocialSetter();
 
+    if (
+      opts.updateHistory &&
+      window.BootstrapRoutes &&
+      typeof window.BootstrapRoutes.syncHistory === 'function'
+    ) {
+      window.BootstrapRoutes.syncHistory(
+        getRoute(normalized),
+        opts.replaceHistory === true
+      );
+    }
+
     enhanceSocialSubnav();
 
     if (setter) {
@@ -357,39 +388,6 @@
       );
     }
 
-    if (
-      opts.updateHistory &&
-      window.history &&
-      typeof window.history.pushState === 'function'
-    ) {
-      const route =
-        getRoute(normalized);
-
-      const current =
-        normalizePath(
-          window.location.pathname
-        );
-
-      const next =
-        normalizePath(route);
-
-      if (
-        current !== next
-      ) {
-        const method =
-          opts.replaceHistory
-            ? 'replaceState'
-            : 'pushState';
-
-        window.history[method](
-          {
-            path: route
-          },
-          '',
-          route
-        );
-      }
-    }
   }
 
   function enterFromLocation(options) {
@@ -414,6 +412,18 @@
     );
   }
 
+  function isPlainLeftClick(event) {
+    return !!(
+      event &&
+      event.button === 0 &&
+      !event.metaKey &&
+      !event.ctrlKey &&
+      !event.shiftKey &&
+      !event.altKey &&
+      !event.defaultPrevented
+    );
+  }
+
   function handleSocialSubnavClick(event) {
     const control =
       event.target &&
@@ -424,6 +434,14 @@
         : null;
 
     if (!control) {
+      return;
+    }
+
+    if (
+      control.tagName &&
+      control.tagName.toLowerCase() === 'a' &&
+      !isPlainLeftClick(event)
+    ) {
       return;
     }
 
@@ -556,6 +574,21 @@
         },
         0
       );
+    }
+  );
+
+  window.addEventListener(
+    'site:langchange',
+    function (event) {
+      if (
+        event &&
+        event.detail &&
+        event.detail.scheduleExportOnly === true
+      ) {
+        return;
+      }
+
+      enhanceSocialSubnav();
     }
   );
 

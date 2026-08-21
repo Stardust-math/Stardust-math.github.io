@@ -1,6 +1,17 @@
 (function () {
   const STORAGE_KEY = "site_lang"; // "en" | "zh"
   const LANG = { EN: "en", ZH: "zh" };
+  const HTML_LANG = Object.assign(
+    {
+      en: "en",
+      zh: "zh-CN"
+    },
+    window.SiteResources &&
+    window.SiteResources.localization &&
+    window.SiteResources.localization.htmlLanguages
+      ? window.SiteResources.localization.htmlLanguages
+      : {}
+  );
 
   // ------------------------------
   // Expose unified language helpers
@@ -32,7 +43,7 @@
 
     document.documentElement.setAttribute(
       "lang",
-      l === LANG.ZH ? "zh-CN" : "en"
+      HTML_LANG[l] || l
     );
 
     if (document.body && document.body.dataset) {
@@ -45,6 +56,57 @@
   function getFullCalendarLocale(lang) {
     const l = normalizeLang(lang);
     return (l === LANG.ZH) ? "zh-cn" : "en";
+  }
+
+  function getLanguageFromLocation(options) {
+    const opts = options || {};
+    const routes = window.BootstrapRoutes;
+
+    if (!routes || typeof routes.parsePath !== "function") {
+      return opts.preserveNeutralRoute === true
+        ? getLang()
+        : LANG.EN;
+    }
+
+    const parsed = routes.parsePath(window.location.pathname);
+
+    if (!parsed.isLocalizedRoute) {
+      return opts.preserveNeutralRoute === true
+        ? getLang()
+        : LANG.EN;
+    }
+
+    return normalizeLang(parsed.language);
+  }
+
+  function setLocationLanguage(lang, options) {
+    const routes = window.BootstrapRoutes;
+
+    if (
+      !routes ||
+      typeof routes.setLocationLanguage !== "function"
+    ) {
+      return null;
+    }
+
+    if (
+      typeof routes.saveCurrentScrollPosition === "function"
+    ) {
+      routes.saveCurrentScrollPosition();
+    }
+
+    const result = routes.setLocationLanguage(
+      normalizeLang(lang),
+      options
+    );
+
+    if (
+      typeof routes.setCurrentScrollPath === "function"
+    ) {
+      routes.setCurrentScrollPath(window.location.pathname);
+    }
+
+    return result;
   }
 
   window.SiteLang = window.SiteLang || {};
@@ -437,6 +499,13 @@
           button.textContent = text;
         }
       });
+
+    if (
+      window.TopNav &&
+      typeof window.TopNav.refreshLinks === "function"
+    ) {
+      window.TopNav.refreshLinks();
+    }
   }
 
   function getFallbackOpenKeys(scope) {
@@ -625,9 +694,60 @@
     if (shouldEmitLangChange) {
       dispatchSiteLangChange(l, openKeys);
     }
+
+    return l;
+  }
+
+  function syncFromLocation(options) {
+    const opts = Object.assign({
+      emitLangChange: true,
+      canonicalize: true,
+      preserveNeutralRoute: true
+    }, options || {});
+
+    const routes = window.BootstrapRoutes;
+    const current = getLang();
+
+    if (!routes || typeof routes.parsePath !== "function") {
+      return applyLanguage(current, {
+        emitLangChange: false
+      });
+    }
+
+    const parsed = routes.parsePath(window.location.pathname);
+
+    if (!parsed.isLocalizedRoute) {
+      if (opts.preserveNeutralRoute === true) {
+        return current;
+      }
+
+      return applyLanguage(LANG.EN, {
+        emitLangChange: false
+      });
+    }
+
+    const language = normalizeLang(parsed.language);
+
+    if (
+      opts.canonicalize === true &&
+      typeof routes.canonicalizeLocation === "function"
+    ) {
+      routes.canonicalizeLocation({
+        defaultLanguage: LANG.EN
+      });
+    }
+
+    return applyLanguage(language, {
+      emitLangChange:
+        opts.emitLangChange === true &&
+        current !== language
+    });
   }
 
   window.SiteLang.applyLanguage = applyLanguage;
+  window.SiteLang.getLanguageFromLocation = getLanguageFromLocation;
+  window.SiteLang.setLocationLanguage = setLocationLanguage;
+  window.SiteLang.syncFromLocation = syncFromLocation;
 
   function bindLangToggle() {
     const button = document.getElementById("top-lang-btn");
@@ -644,6 +764,10 @@
         ? LANG.ZH
         : LANG.EN;
 
+      setLocationLanguage(next, {
+        replace: true
+      });
+
       applyLanguage(next, {
         emitLangChange: true
       });
@@ -651,8 +775,10 @@
   }
 
   function init() {
-    applyLanguage(LANG.EN, {
-      emitLangChange: false
+    syncFromLocation({
+      emitLangChange: false,
+      canonicalize: true,
+      preserveNeutralRoute: false
     });
 
     bindLangToggle();

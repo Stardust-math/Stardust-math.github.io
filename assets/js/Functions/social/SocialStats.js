@@ -133,7 +133,13 @@
     disconnectVisibleObserverIfDone();
 
     try {
-      const currentPath = window.location.pathname || '/';
+      const currentPath =
+        window.BootstrapRoutes &&
+        typeof window.BootstrapRoutes.getUnlocalizedPath === 'function'
+          ? window.BootstrapRoutes.getUnlocalizedPath(
+              window.location.pathname
+            )
+          : window.location.pathname || '/';
 
       const [
         total,

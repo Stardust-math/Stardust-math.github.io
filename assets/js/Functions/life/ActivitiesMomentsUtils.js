@@ -378,27 +378,55 @@
   }
 
   function getListRoute() {
+    if (
+      window.BootstrapRoutes &&
+      typeof window.BootstrapRoutes.buildLocalizedPath === 'function'
+    ) {
+      return window.BootstrapRoutes.buildLocalizedPath(
+        'life/activities_moments',
+        window.BootstrapRoutes.getCurrentLanguage()
+      );
+    }
+
     return new URL('activities_moments/', getLifeBaseUrl()).pathname;
   }
 
   function getDetailRoute(dateKey) {
+    if (
+      window.BootstrapRoutes &&
+      typeof window.BootstrapRoutes.buildLocalizedPath === 'function'
+    ) {
+      return window.BootstrapRoutes.buildLocalizedPath(
+        'life/activities_moments/' + encodeURIComponent(dateKey),
+        window.BootstrapRoutes.getCurrentLanguage()
+      );
+    }
+
     return new URL('activities_moments/' + encodeURIComponent(dateKey) + '/', getLifeBaseUrl()).pathname;
   }
 
   function pushRoute(path, replace) {
-    if (!window.history || typeof window.history.pushState !== 'function') return;
-
-    const current = normalizePath(window.location.pathname);
-    const next = normalizePath(path);
-
-    if (current === next) return;
-
-    const method = replace ? 'replaceState' : 'pushState';
-    window.history[method]({ path }, '', path);
+    if (
+      window.BootstrapRoutes &&
+      typeof window.BootstrapRoutes.syncHistory === 'function'
+    ) {
+      window.BootstrapRoutes.syncHistory(
+        path,
+        replace === true
+      );
+    }
   }
 
   function resolveDateKeyFromPath(pathname) {
-    const parts = normalizePath(pathname || window.location.pathname)
+    const path =
+      window.BootstrapRoutes &&
+      typeof window.BootstrapRoutes.getBusinessPath === 'function'
+        ? window.BootstrapRoutes.getBusinessPath(
+            pathname || window.location.pathname
+          )
+        : pathname || window.location.pathname;
+
+    const parts = normalizePath(path)
       .split('/')
       .filter(Boolean);
 

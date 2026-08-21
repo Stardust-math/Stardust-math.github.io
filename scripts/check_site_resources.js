@@ -10,13 +10,6 @@ const ROOT = path.resolve(__dirname, '..');
 const SITE_FONTS_FILE = path.join(ROOT, 'assets/js/Config/SiteFonts.js');
 const SITE_RESOURCES_FILE = path.join(ROOT, 'assets/js/Config/SiteResources.js');
 
-const ROUTE_ENTRY_ROUTES = [
-  'about',
-  'schedule',
-  'social',
-  'life'
-];
-
 const FORBIDDEN_PATH_PATTERNS = [
   {
     label: 'removed fav/ directory',
@@ -448,12 +441,239 @@ function checkRouteEntries(resources) {
     fail('Missing root index.html');
   }
 
-  ROUTE_ENTRY_ROUTES.forEach((route) => {
+  const localization = resources && resources.localization
+    ? resources.localization
+    : {};
+
+  if (typeof localization.defaultLanguage !== 'string') {
+    fail('localization.defaultLanguage must be a string.');
+  }
+
+  const defaultLanguage = String(
+    localization.defaultLanguage || ''
+  ).trim().toLowerCase();
+  if (
+    !Array.isArray(localization.languages) ||
+    localization.languages.length === 0
+  ) {
+    fail(
+      'localization.languages must be a non-empty array.'
+    );
+  }
+
+  if (
+    Array.isArray(localization.languages) &&
+    localization.languages.some((language) =>
+      typeof language !== 'string'
+    )
+  ) {
+    fail(
+      'localization.languages must contain only strings.'
+    );
+  }
+
+  const languages = Array.isArray(localization.languages)
+    ? localization.languages.map((language) =>
+        typeof language === 'string'
+          ? language.trim().toLowerCase()
+          : ''
+      )
+    : [];
+
+  if (!languages.includes(defaultLanguage)) {
+    fail(
+      'localization.defaultLanguage must be included in languages.'
+    );
+  }
+
+  if (defaultLanguage !== 'en') {
+    fail(
+      'localization.defaultLanguage must be en for the formal unprefixed entries.'
+    );
+  }
+
+  if (
+    languages.some((language) => !language) ||
+    new Set(languages).size !== languages.length
+  ) {
+    fail(
+      'localization.languages must contain unique, non-empty language codes.'
+    );
+  }
+
+  if (
+    languages.some((language) =>
+      !/^[a-z0-9][a-z0-9-]*$/.test(language)
+    )
+  ) {
+    fail(
+      'localization.languages must contain safe lowercase URL path segments.'
+    );
+  }
+
+  if (
+    languages.length !== 2 ||
+    !languages.includes('en') ||
+    !languages.includes('zh')
+  ) {
+    fail(
+      'localization.languages must contain exactly en and zh.'
+    );
+  }
+
+  const htmlLanguages = localization.htmlLanguages || {};
+  const hreflangLanguages = localization.hreflangLanguages || {};
+
+  languages.forEach((language) => {
+    if (
+      typeof htmlLanguages[language] !== 'string' ||
+      !htmlLanguages[language].trim()
+    ) {
+      fail(`Missing localization.htmlLanguages.${language}.`);
+    }
+
+    if (
+      typeof hreflangLanguages[language] !== 'string' ||
+      !hreflangLanguages[language].trim()
+    ) {
+      fail(`Missing localization.hreflangLanguages.${language}.`);
+    }
+  });
+
+  const canonicalOrigin =
+    resources && resources.site
+      ? resources.site.canonicalOrigin
+      : '';
+
+  let canonicalUrl = null;
+
+  try {
+    canonicalUrl = new URL(canonicalOrigin);
+  } catch (error) {}
+
+  if (
+    typeof canonicalOrigin !== 'string' ||
+    !canonicalUrl ||
+    canonicalUrl.protocol !== 'https:' ||
+    canonicalUrl.username ||
+    canonicalUrl.password ||
+    canonicalUrl.pathname !== '/' ||
+    canonicalUrl.search ||
+    canonicalUrl.hash ||
+    !(
+      canonicalOrigin === canonicalUrl.origin ||
+      canonicalOrigin === canonicalUrl.origin + '/'
+    )
+  ) {
+    fail(
+      'site.canonicalOrigin must be a bare HTTPS origin.'
+    );
+  }
+
+  const pages = resources && resources.pages
+    ? resources.pages
+    : {};
+  if (
+    !Array.isArray(localization.localizedPages) ||
+    localization.localizedPages.length === 0
+  ) {
+    fail(
+      'localization.localizedPages must be a non-empty array.'
+    );
+  }
+
+  if (
+    Array.isArray(localization.localizedPages) &&
+    localization.localizedPages.some((pageKey) =>
+      typeof pageKey !== 'string'
+    )
+  ) {
+    fail(
+      'localization.localizedPages must contain only strings.'
+    );
+  }
+
+  const localizedPageKeys = Array.isArray(
+    localization.localizedPages
+  )
+    ? localization.localizedPages.map((pageKey) =>
+        typeof pageKey === 'string'
+          ? pageKey.trim()
+          : ''
+      )
+    : [];
+  const localizedRoutes = [];
+
+  if (localizedPageKeys.some((pageKey) => !pageKey)) {
+    fail('localization.localizedPages contains an empty page key.');
+  }
+
+  if (
+    new Set(localizedPageKeys).size !== localizedPageKeys.length
+  ) {
+    fail('localization.localizedPages contains duplicate page keys.');
+  }
+
+  localizedPageKeys.forEach((pageKey) => {
+    const page = pages[pageKey];
+
+    if (!page || typeof page.route !== 'string' || !page.route.trim()) {
+      fail(`Missing route for localized page: pages.${pageKey}.route`);
+      return;
+    }
+
+    const route = page.route
+      .trim()
+      .replace(/^\/+|\/+$/g, '');
+
+    if (
+      !route ||
+      route.includes('/') ||
+      !/^[a-z0-9][a-z0-9_-]*$/.test(route)
+    ) {
+      fail(
+        `pages.${pageKey}.route must be one safe lowercase top-level path segment.`
+      );
+      return;
+    }
+
+    if (languages.includes(route)) {
+      fail(
+        `pages.${pageKey}.route conflicts with a language prefix: ${route}`
+      );
+      return;
+    }
+
+    localizedRoutes.push(route);
+  });
+
+  if (new Set(localizedRoutes).size !== localizedRoutes.length) {
+    fail('Localized pages must use unique routes.');
+  }
+
+  localizedRoutes.forEach((route) => {
     const entry = path.join(ROOT, route, 'index.html');
 
     if (!fs.existsSync(entry)) {
-      fail(`Missing route entry: ${route}/index.html`);
+      fail(
+        `Missing unprefixed default-language entry: ${route}/index.html`
+      );
     }
+
+    languages.forEach((language) => {
+      const localizedEntry = path.join(
+        ROOT,
+        language,
+        route,
+        'index.html'
+      );
+
+      if (!fs.existsSync(localizedEntry)) {
+        fail(
+          `Missing localized route entry: ${language}/${route}/index.html`
+        );
+      }
+    });
   });
 
   const toolkitEntry = path.join(ROOT, 'toolkit', 'index.html');
@@ -461,21 +681,6 @@ function checkRouteEntries(resources) {
   if (fs.existsSync(toolkitEntry)) {
     warn('toolkit/index.html exists. If Toolkit is intended to stay hidden, check whether this file is intentional.');
   }
-
-  const pages = resources && resources.pages ? resources.pages : {};
-
-  Object.keys(pages).forEach((pageKey) => {
-    const page = pages[pageKey];
-    if (!page || typeof page !== 'object') return;
-
-    if (pageKey === 'toolkit') return;
-
-    const route = page.route;
-
-    if (typeof route === 'string' && route && !ROUTE_ENTRY_ROUTES.includes(route)) {
-      warn(`pages.${pageKey}.route is "${route}", but ${route}/index.html is not included in ROUTE_ENTRY_ROUTES.`);
-    }
-  });
 }
 
 function printResult() {

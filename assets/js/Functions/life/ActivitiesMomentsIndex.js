@@ -22,12 +22,28 @@
     return String(value == null ? '' : value);
   }
 
-  function getLifeBaseUrl() {
-    return new URL('life/', document.baseURI);
-  }
-
   function getDetailRoute(dateKey) {
-    return new URL('activities_moments/' + encodeURIComponent(dateKey) + '/', getLifeBaseUrl()).pathname;
+    if (
+      window.ActivitiesMomentsUtils &&
+      typeof window.ActivitiesMomentsUtils.getDetailRoute === 'function'
+    ) {
+      return window.ActivitiesMomentsUtils.getDetailRoute(dateKey);
+    }
+
+    if (
+      window.BootstrapRoutes &&
+      typeof window.BootstrapRoutes.buildLocalizedPath === 'function'
+    ) {
+      return window.BootstrapRoutes.buildLocalizedPath(
+        'life/activities_moments/' + encodeURIComponent(dateKey),
+        window.BootstrapRoutes.getCurrentLanguage()
+      );
+    }
+
+    return new URL(
+      'life/activities_moments/' + encodeURIComponent(dateKey) + '/',
+      document.baseURI
+    ).pathname;
   }
 
   function sortMomentsNewestFirst(moments) {

@@ -99,11 +99,32 @@
   window.SiteResources = {
     site: {
       title: 'Joker Chen',
+      canonicalOrigin:
+        'https://stardust-math.github.io',
 
       favicon: {
         href: A + 'images/favicon.png',
         type: 'image/png'
       }
+    },
+
+    localization: {
+      defaultLanguage: 'en',
+      languages: ['en', 'zh'],
+      htmlLanguages: {
+        en: 'en',
+        zh: 'zh-CN'
+      },
+      hreflangLanguages: {
+        en: 'en',
+        zh: 'zh-Hans'
+      },
+      localizedPages: [
+        'resume',
+        'schedule',
+        'social',
+        'life'
+      ]
     },
 
     offline: {
@@ -298,6 +319,9 @@
         A + 'js/Functions/cover/Cover.js',
         A + 'js/Functions/general/Clock.js',
         A + 'js/Functions/general/Theme.js',
+        A +
+          'js/Functions/bootstrap/' +
+          'BootstrapRoutes.js',
         A + 'js/Functions/general/Translate.js',
         A + 'js/Functions/general/Expanders.js',
         A + 'js/Functions/general/Custom-cursors.js',
@@ -307,9 +331,6 @@
       ],
 
       bootstrap: [
-        A +
-          'js/Functions/bootstrap/' +
-          'BootstrapRoutes.js',
         A +
           'js/Functions/bootstrap/' +
           'BootstrapWarmup.js',

@@ -13,7 +13,8 @@ const args = new Set(process.argv.slice(2));
 const flags = {
   check: args.has('--check'),
   dryRun: args.has('--dry-run'),
-  list: args.has('--list')
+  list: args.has('--list'),
+  paths: args.has('--paths')
 };
 
 const PRE_COVER_FORMULAS = [
@@ -154,6 +155,284 @@ function routeToIndexPath(route) {
   return cleaned ? `${cleaned}/index.html` : 'index.html';
 }
 
+function indexPathToRoute(outputPath) {
+  const normalized = normalizeOutputPath(outputPath);
+
+  if (normalized === 'index.html') {
+    return '';
+  }
+
+  return normalized
+    .replace(/\/?index\.html$/i, '')
+    .replace(/^\/+|\/+$/g, '');
+}
+
+function routeToPublicPath(route) {
+  const cleaned = String(route || '')
+    .replace(/^\/+/, '')
+    .replace(/\/+$/, '');
+
+  return cleaned ? `/${cleaned}/` : '/';
+}
+
+function joinRoute() {
+  return Array.from(arguments)
+    .map((part) => String(part || '').replace(/^\/+|\/+$/g, ''))
+    .filter(Boolean)
+    .join('/');
+}
+
+function normalizeSubroute(value, label) {
+  const subroute = String(value || '').trim();
+  const segments = subroute.split('/');
+
+  if (
+    !subroute ||
+    subroute.startsWith('/') ||
+    subroute.endsWith('/') ||
+    subroute.includes('\\') ||
+    /[?#]/.test(subroute) ||
+    segments.some((segment) =>
+      !/^[a-z0-9][a-z0-9_-]*$/.test(segment)
+    )
+  ) {
+    throw new Error(
+      `${label} must be a safe lowercase path relative to its page route.`
+    );
+  }
+
+  return segments.join('/');
+}
+
+function getLocalization(siteResources) {
+  const source = siteResources.localization || {};
+
+  if (typeof source.defaultLanguage !== 'string') {
+    throw new Error(
+      'SiteResources.localization.defaultLanguage must be a string.'
+    );
+  }
+
+  const defaultLanguage = String(
+    source.defaultLanguage
+  ).trim().toLowerCase();
+
+  if (defaultLanguage !== 'en') {
+    throw new Error(
+      'SiteResources.localization.defaultLanguage must be en for the formal unprefixed entries.'
+    );
+  }
+
+  if (
+    !Array.isArray(source.languages) ||
+    source.languages.length === 0
+  ) {
+    throw new Error(
+      'SiteResources.localization.languages must be a non-empty array.'
+    );
+  }
+
+  if (source.languages.some((lang) => typeof lang !== 'string')) {
+    throw new Error(
+      'SiteResources.localization.languages must contain only strings.'
+    );
+  }
+
+  const languages = source.languages.map((lang) =>
+    lang.trim().toLowerCase()
+  );
+
+  if (languages.some((language) => !language)) {
+    throw new Error(
+      'SiteResources.localization.languages contains an empty language code.'
+    );
+  }
+
+  if (!languages.includes(defaultLanguage)) {
+    throw new Error(
+      'SiteResources.localization.defaultLanguage must be included in languages.'
+    );
+  }
+
+  if (new Set(languages).size !== languages.length) {
+    throw new Error(
+      'SiteResources.localization.languages contains duplicates.'
+    );
+  }
+
+  if (
+    languages.some((language) =>
+      !/^[a-z0-9][a-z0-9-]*$/.test(language)
+    )
+  ) {
+    throw new Error(
+      'SiteResources.localization.languages must contain safe lowercase URL path segments.'
+    );
+  }
+
+  if (
+    languages.length !== 2 ||
+    !languages.includes('en') ||
+    !languages.includes('zh')
+  ) {
+    throw new Error(
+      'SiteResources.localization.languages must contain exactly en and zh.'
+    );
+  }
+
+  const htmlLanguages = source.htmlLanguages || {};
+  const hreflangLanguages = source.hreflangLanguages || {};
+
+  languages.forEach((lang) => {
+    if (
+      typeof htmlLanguages[lang] !== 'string' ||
+      !htmlLanguages[lang].trim()
+    ) {
+      throw new Error(
+        `Missing SiteResources.localization.htmlLanguages.${lang}.`
+      );
+    }
+
+    if (
+      typeof hreflangLanguages[lang] !== 'string' ||
+      !hreflangLanguages[lang].trim()
+    ) {
+      throw new Error(
+        `Missing SiteResources.localization.hreflangLanguages.${lang}.`
+      );
+    }
+  });
+
+  const pages = siteResources.pages || {};
+  if (
+    !Array.isArray(source.localizedPages) ||
+    source.localizedPages.length === 0
+  ) {
+    throw new Error(
+      'SiteResources.localization.localizedPages must be a non-empty array.'
+    );
+  }
+
+  if (
+    source.localizedPages.some((pageKey) =>
+      typeof pageKey !== 'string'
+    )
+  ) {
+    throw new Error(
+      'SiteResources.localization.localizedPages must contain only strings.'
+    );
+  }
+
+  const rawLocalizedPageKeys = source.localizedPages.map((pageKey) =>
+    pageKey.trim()
+  );
+
+  if (rawLocalizedPageKeys.some((pageKey) => !pageKey)) {
+    throw new Error(
+      'SiteResources.localization.localizedPages contains an empty page key.'
+    );
+  }
+
+  if (
+    new Set(rawLocalizedPageKeys).size !==
+    rawLocalizedPageKeys.length
+  ) {
+    throw new Error(
+      'SiteResources.localization.localizedPages contains duplicates.'
+    );
+  }
+
+  const localizedPageKeys = rawLocalizedPageKeys;
+  const pageRoutes = {};
+  const routeOwners = new Map();
+
+  localizedPageKeys.forEach((pageKey) => {
+    const page = pages[pageKey];
+
+    if (!page || typeof page.route !== 'string') {
+      throw new Error(
+        `Missing route for SiteResources.pages.${pageKey}.`
+      );
+    }
+
+    const route = page.route
+      .trim()
+      .replace(/^\/+|\/+$/g, '');
+
+    if (
+      !route ||
+      route.includes('/') ||
+      !/^[a-z0-9][a-z0-9_-]*$/.test(route)
+    ) {
+      throw new Error(
+        `SiteResources.pages.${pageKey}.route must be one safe lowercase top-level path segment.`
+      );
+    }
+
+    if (languages.includes(route.toLowerCase())) {
+      throw new Error(
+        `SiteResources.pages.${pageKey}.route conflicts with a language prefix: ${route}`
+      );
+    }
+
+    if (routeOwners.has(route)) {
+      throw new Error(
+        `Localized pages ${routeOwners.get(route)} and ${pageKey} use the same route: ${route}`
+      );
+    }
+
+    routeOwners.set(route, pageKey);
+    pageRoutes[pageKey] = route;
+  });
+
+  return {
+    defaultLanguage,
+    languages,
+    htmlLanguages,
+    hreflangLanguages,
+    localizedPageKeys,
+    pageRoutes
+  };
+}
+
+function getCanonicalOrigin(siteResources) {
+  const value =
+    siteResources.site &&
+    siteResources.site.canonicalOrigin;
+  let url;
+
+  try {
+    url = new URL(value);
+  } catch (error) {
+    url = null;
+  }
+
+  if (
+    typeof value !== 'string' ||
+    !url ||
+    url.protocol !== 'https:' ||
+    url.username ||
+    url.password ||
+    url.pathname !== '/' ||
+    url.search ||
+    url.hash ||
+    !(
+      value === url.origin ||
+      value === url.origin + '/'
+    )
+  ) {
+    throw new Error(
+      'SiteResources.site.canonicalOrigin must be a bare HTTPS origin.'
+    );
+  }
+
+  return url.origin;
+}
+
+function canonicalUrl(origin, route) {
+  return origin + routeToPublicPath(route);
+}
+
 function getBaseHref(outputPath) {
   const normalized = normalizeOutputPath(outputPath);
   const dir = path.posix.dirname(normalized);
@@ -202,95 +481,350 @@ function loadSiteResources() {
 function makeEntry(outputPath, options) {
   const opts = options || {};
   const normalized = normalizeOutputPath(outputPath);
+  const routeEntry = typeof opts.routeEntry === 'boolean'
+    ? opts.routeEntry
+    : normalized !== 'index.html';
 
   return {
     outputPath: normalized,
     baseHref: opts.baseHref || getBaseHref(normalized),
-    routeEntry: typeof opts.routeEntry === 'boolean'
-      ? opts.routeEntry
-      : normalized !== 'index.html',
+    routeEntry,
     preCoverLoading: opts.preCoverLoading === true,
-    title: opts.title || config.title || 'Joker Chen'
+    title: opts.title || config.title || 'Joker Chen',
+    languageVariants: opts.languageVariants === true
   };
+}
+
+function decorateEntry(entry, options) {
+  const opts = options || {};
+
+  return Object.assign({}, entry, {
+    language: opts.language,
+    htmlLang: opts.htmlLang,
+    logicalRoute: opts.logicalRoute,
+    logicalPath: routeToPublicPath(opts.logicalRoute),
+    localizedRoute: opts.localizedRoute,
+    localizedPath: routeToPublicPath(opts.localizedRoute),
+    unprefixedDefaultEntry:
+      opts.unprefixedDefaultEntry === true,
+    canonicalUrl: opts.canonicalUrl,
+    alternates: Array.isArray(opts.alternates)
+      ? opts.alternates
+      : []
+  });
+}
+
+function expandLanguageVariants(baseEntries, siteResources) {
+  const localization = getLocalization(siteResources);
+  const canonicalOrigin = getCanonicalOrigin(siteResources);
+  const expanded = [];
+
+  baseEntries.forEach((entry) => {
+    const logicalRoute = indexPathToRoute(entry.outputPath);
+    const shouldLocalize =
+      entry.routeEntry && entry.languageVariants;
+
+    if (!shouldLocalize) {
+      expanded.push(decorateEntry(entry, {
+        language: localization.defaultLanguage,
+        htmlLang:
+          localization.htmlLanguages[localization.defaultLanguage],
+        logicalRoute,
+        localizedRoute: logicalRoute,
+        unprefixedDefaultEntry: false,
+        canonicalUrl: canonicalUrl(canonicalOrigin, logicalRoute),
+        alternates: []
+      }));
+      return;
+    }
+
+    const localizedRoutes = new Map();
+
+    localization.languages.forEach((language) => {
+      localizedRoutes.set(
+        language,
+        joinRoute(language, logicalRoute)
+      );
+    });
+
+    const alternates = localization.languages.map((language) => {
+      const route = localizedRoutes.get(language);
+
+      return {
+        language,
+        htmlLang: localization.htmlLanguages[language],
+        hreflang: localization.hreflangLanguages[language],
+        route,
+        href: canonicalUrl(canonicalOrigin, route)
+      };
+    });
+
+    const defaultRoute = localizedRoutes.get(
+      localization.defaultLanguage
+    );
+
+    expanded.push(decorateEntry(entry, {
+      language: localization.defaultLanguage,
+      htmlLang:
+        localization.htmlLanguages[localization.defaultLanguage],
+      logicalRoute,
+      localizedRoute: defaultRoute,
+      unprefixedDefaultEntry: true,
+      canonicalUrl: canonicalUrl(
+        canonicalOrigin,
+        defaultRoute
+      ),
+      alternates
+    }));
+
+    localization.languages.forEach((language) => {
+      const route = localizedRoutes.get(language);
+      const localizedEntry = makeEntry(
+        routeToIndexPath(route),
+        Object.assign({}, entry, {
+          baseHref: null,
+          languageVariants: true
+        })
+      );
+
+      expanded.push(decorateEntry(localizedEntry, {
+        language,
+        htmlLang: localization.htmlLanguages[language],
+        logicalRoute,
+        localizedRoute: route,
+        unprefixedDefaultEntry: false,
+        canonicalUrl: canonicalUrl(canonicalOrigin, route),
+        alternates
+      }));
+    });
+  });
+
+  return expanded;
+}
+
+function dedupeEntries(entries) {
+  const deduped = [];
+  const seen = new Map();
+
+  entries.forEach((entry) => {
+    const signature = JSON.stringify({
+      baseHref: entry.baseHref,
+      routeEntry: entry.routeEntry,
+      preCoverLoading: entry.preCoverLoading,
+      title: entry.title,
+      languageVariants: entry.languageVariants,
+      language: entry.language,
+      htmlLang: entry.htmlLang,
+      logicalRoute: entry.logicalRoute,
+      localizedRoute: entry.localizedRoute,
+      unprefixedDefaultEntry: entry.unprefixedDefaultEntry,
+      canonicalUrl: entry.canonicalUrl,
+      alternates: entry.alternates
+    });
+
+    if (seen.has(entry.outputPath)) {
+      if (seen.get(entry.outputPath) !== signature) {
+        throw new Error(
+          `Conflicting entry for ${entry.outputPath}`
+        );
+      }
+
+      return;
+    }
+
+    seen.set(entry.outputPath, signature);
+    deduped.push(entry);
+  });
+
+  return deduped;
 }
 
 function collectEntries() {
   const siteResources = loadSiteResources();
+  const localization = getLocalization(siteResources);
   const entries = [];
 
-  const rawEntries = Array.isArray(config.entries) ? config.entries : [];
+  localization.localizedPageKeys.forEach((pageKey) => {
+    entries.push(makeEntry(
+      routeToIndexPath(localization.pageRoutes[pageKey]),
+      {
+        routeEntry: true,
+        languageVariants: true
+      }
+    ));
+  });
 
-  rawEntries.forEach((item) => {
+  if (!Array.isArray(config.neutralEntries)) {
+    throw new Error(
+      'scripts/index_pages.config.js neutralEntries must be an array.'
+    );
+  }
+
+  const neutralEntries = config.neutralEntries;
+
+  neutralEntries.forEach((item) => {
     if (!item) return;
 
-    if (item.sitePage) {
-      const pages = siteResources.pages || {};
-      const pageConfig = pages[item.sitePage];
-
-      if (!pageConfig || !pageConfig.route) {
-        throw new Error(`Missing route for SiteResources.pages.${item.sitePage}`);
-      }
-
-      entries.push(makeEntry(routeToIndexPath(pageConfig.route), item));
-      return;
-    }
-
     if (Object.prototype.hasOwnProperty.call(item, 'path')) {
-      entries.push(makeEntry(item.path, item));
+      entries.push(makeEntry(
+        item.path,
+        Object.assign({}, item, {
+          languageVariants: false
+        })
+      ));
       return;
     }
 
     if (Object.prototype.hasOwnProperty.call(item, 'route')) {
-      entries.push(makeEntry(routeToIndexPath(item.route), item));
+      entries.push(makeEntry(
+        routeToIndexPath(item.route),
+        Object.assign({}, item, {
+          languageVariants: false
+        })
+      ));
       return;
     }
 
-    throw new Error(`Invalid entry in scripts/index_pages.config.js: ${JSON.stringify(item)}`);
+    throw new Error(
+      `Invalid neutral entry in scripts/index_pages.config.js: ${JSON.stringify(item)}`
+    );
+  });
+
+  const pageSubroutes = config.pageSubroutes;
+
+  if (
+    !pageSubroutes ||
+    Array.isArray(pageSubroutes) ||
+    typeof pageSubroutes !== 'object'
+  ) {
+    throw new Error(
+      'scripts/index_pages.config.js pageSubroutes must be an object.'
+    );
+  }
+
+  const normalizedPageSubroutes = {};
+
+  Object.keys(pageSubroutes).forEach((pageKey) => {
+    if (!localization.localizedPageKeys.includes(pageKey)) {
+      throw new Error(
+        `pageSubroutes contains an unknown localized page key: ${pageKey}`
+      );
+    }
+
+    const values = pageSubroutes[pageKey];
+
+    if (!Array.isArray(values)) {
+      throw new Error(
+        `pageSubroutes.${pageKey} must be an array.`
+      );
+    }
+
+    const seenSubroutes = new Set();
+    normalizedPageSubroutes[pageKey] = seenSubroutes;
+
+    values.forEach((value, index) => {
+      const subroute = normalizeSubroute(
+        value,
+        `pageSubroutes.${pageKey}[${index}]`
+      );
+
+      if (seenSubroutes.has(subroute)) {
+        throw new Error(
+          `pageSubroutes.${pageKey} contains a duplicate: ${subroute}`
+        );
+      }
+
+      seenSubroutes.add(subroute);
+
+      entries.push(makeEntry(
+        routeToIndexPath(joinRoute(
+          localization.pageRoutes[pageKey],
+          subroute
+        )),
+        {
+          routeEntry: true,
+          languageVariants: true
+        }
+      ));
+    });
   });
 
   const activityConfig = config.activityMomentDetailEntries || {};
 
   if (activityConfig.enabled) {
-    const baseRoute = String(activityConfig.baseRoute || 'life/activities_moments')
-      .replace(/^\/+/, '')
-      .replace(/\/+$/, '');
+    const pageKey = String(
+      activityConfig.sitePage || ''
+    ).trim();
 
-    const dates = siteResources.activitiesMoments &&
-      Array.isArray(siteResources.activitiesMoments.dates)
-      ? siteResources.activitiesMoments.dates
-      : [];
+    if (!localization.localizedPageKeys.includes(pageKey)) {
+      throw new Error(
+        'activityMomentDetailEntries.sitePage must identify a localized page.'
+      );
+    }
 
-    dates.forEach((dateKey) => {
+    const baseSubroute = normalizeSubroute(
+      activityConfig.baseSubroute,
+      'activityMomentDetailEntries.baseSubroute'
+    );
+
+    if (
+      !normalizedPageSubroutes[pageKey] ||
+      !normalizedPageSubroutes[pageKey].has(baseSubroute)
+    ) {
+      throw new Error(
+        'activityMomentDetailEntries.baseSubroute must also be listed in pageSubroutes for its page.'
+      );
+    }
+
+    const baseRoute = joinRoute(
+      localization.pageRoutes[pageKey],
+      baseSubroute
+    );
+
+    const dates =
+      siteResources.activitiesMoments &&
+      siteResources.activitiesMoments.dates;
+
+    if (!Array.isArray(dates)) {
+      throw new Error(
+        'SiteResources.activitiesMoments.dates must be an array when activity moment entries are enabled.'
+      );
+    }
+
+    const seenDates = new Set();
+
+    dates.forEach((value, index) => {
+      const dateKey = normalizeSubroute(
+        value,
+        `SiteResources.activitiesMoments.dates[${index}]`
+      );
+
+      if (dateKey.includes('/')) {
+        throw new Error(
+          `Activity moment date must be one path segment: ${dateKey}`
+        );
+      }
+
+      if (seenDates.has(dateKey)) {
+        throw new Error(
+          `SiteResources.activitiesMoments.dates contains a duplicate: ${dateKey}`
+        );
+      }
+
+      seenDates.add(dateKey);
+
       entries.push(makeEntry(`${baseRoute}/${dateKey}/index.html`, {
-        routeEntry: true
+        routeEntry: true,
+        languageVariants: true
       }));
     });
   }
 
-  const deduped = [];
-  const seen = new Map();
+  const baseEntries = dedupeEntries(entries);
 
-  entries.forEach((entry) => {
-    if (seen.has(entry.outputPath)) {
-      const previous = seen.get(entry.outputPath);
-
-      if (
-        previous.baseHref !== entry.baseHref ||
-        previous.routeEntry !== entry.routeEntry ||
-        previous.preCoverLoading !== entry.preCoverLoading ||
-        previous.title !== entry.title
-      ) {
-        throw new Error(`Conflicting entry for ${entry.outputPath}`);
-      }
-
-      return;
-    }
-
-    seen.set(entry.outputPath, entry);
-    deduped.push(entry);
-  });
-
-  return deduped;
+  return dedupeEntries(
+    expandLanguageVariants(baseEntries, siteResources)
+  );
 }
 
 function escapeHtml(text) {
@@ -303,6 +837,79 @@ function escapeHtml(text) {
       "'": '&#39;'
     }[char];
   });
+}
+
+function escapeJsonForHtml(value) {
+  return JSON.stringify(value)
+    .replace(/</g, '\\u003c')
+    .replace(/\u2028/g, '\\u2028')
+    .replace(/\u2029/g, '\\u2029');
+}
+
+function getSeoHead(entry) {
+  const lines = [
+    `<link id="site-canonical" rel="canonical" href="${escapeHtml(entry.canonicalUrl)}" />`
+  ];
+
+  entry.alternates.forEach((alternate) => {
+    lines.push(
+      '<link rel="alternate" ' +
+      `data-site-language="${escapeHtml(alternate.language)}" ` +
+      `hreflang="${escapeHtml(alternate.hreflang)}" ` +
+      `href="${escapeHtml(alternate.href)}" />`
+    );
+  });
+
+  return lines.join('\n');
+}
+
+function getEntryBootstrapHead(entry) {
+  const data = {
+    language: entry.language,
+    htmlLang: entry.htmlLang,
+    logicalPath: entry.logicalPath,
+    localizedRoute: entry.localizedRoute,
+    unprefixedDefaultEntry: entry.unprefixedDefaultEntry
+  };
+
+  return `<script>
+(function () {
+  'use strict';
+
+  const entry = ${escapeJsonForHtml(data)};
+
+  try {
+    const siteRoot = new URL(document.baseURI);
+    const baseElement = document.querySelector('base[href]');
+    const route = entry.localizedRoute
+      ? entry.localizedRoute.replace(/\\/+$/, '') + '/'
+      : '';
+    const localizedUrl = new URL(route, siteRoot);
+
+    if (baseElement) {
+      baseElement.href = siteRoot.href;
+    }
+
+    entry.siteRootPath = siteRoot.pathname;
+    entry.localizedPath = localizedUrl.pathname;
+
+    window.__SITE_ENTRY__ = Object.freeze(entry);
+
+    if (entry.unprefixedDefaultEntry) {
+      localizedUrl.search = window.location.search;
+      localizedUrl.hash = window.location.hash;
+
+      window.history.replaceState(
+        window.history.state,
+        '',
+        localizedUrl.href
+      );
+    }
+  } catch (error) {
+    window.__SITE_ENTRY__ = Object.freeze(entry);
+  }
+})();
+</script>`;
 }
 
 function escapeInlineStyle(styleText) {
@@ -491,8 +1098,11 @@ function getPreCoverLoadingScript(entry) {
 function renderTemplate(template, entry) {
   return template
     .replace(/\{\{GENERATED_NOTICE\}\}/g, config.generatedNotice || '')
+    .replace(/\{\{HTML_LANG\}\}/g, entry.htmlLang)
     .replace(/\{\{HTML_CLASS_ATTR\}\}/g, getHtmlClassAttr(entry))
     .replace(/\{\{BASE_HREF\}\}/g, entry.baseHref)
+    .replace(/\{\{SEO_HEAD\}\}/g, getSeoHead(entry))
+    .replace(/\{\{ENTRY_BOOTSTRAP_HEAD\}\}/g, getEntryBootstrapHead(entry))
     .replace(/\{\{ROUTE_ENTRY_HEAD\}\}/g, getRouteEntryHead(entry.routeEntry))
     .replace(/\{\{TITLE\}\}/g, entry.title)
     .replace(/\{\{PRECOVER_LOADING_HEAD\}\}/g, getPreCoverLoadingHead(entry))
@@ -552,9 +1162,23 @@ function printList(entries) {
       labels.push('pre-cover-loading');
     }
 
+    labels.push(`lang=${entry.language}`);
+
+    if (entry.unprefixedDefaultEntry) {
+      labels.push(
+        `unprefixed-default-entry->${entry.localizedPath}`
+      );
+    }
+
     labels.push(`base=${entry.baseHref}`);
 
     console.log(`${entry.outputPath}  [${labels.join(', ')}]`);
+  });
+}
+
+function printPaths(entries) {
+  entries.forEach((entry) => {
+    console.log(entry.outputPath);
   });
 }
 
@@ -594,6 +1218,11 @@ function printSummary(results) {
 
 function main() {
   const entries = collectEntries();
+
+  if (flags.paths) {
+    printPaths(entries);
+    return;
+  }
 
   if (flags.list) {
     printList(entries);

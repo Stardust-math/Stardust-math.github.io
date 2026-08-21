@@ -66,6 +66,26 @@
     }
   }
 
+  function isPlainLeftClick(event) {
+    return !!(
+      event &&
+      event.button === 0 &&
+      !event.metaKey &&
+      !event.ctrlKey &&
+      !event.shiftKey &&
+      !event.altKey &&
+      !event.defaultPrevented
+    );
+  }
+
+  function shouldUseClientNavigation(event, control) {
+    return !(
+      control &&
+      control.tagName &&
+      control.tagName.toLowerCase() === 'a'
+    ) || isPlainLeftClick(event);
+  }
+
   function bindEvents() {
     const mount = getMount();
     if (!mount || mount.dataset.activitiesMomentsBound === '1') return;
@@ -75,6 +95,8 @@
     mount.addEventListener('click', (event) => {
       const back = event.target.closest('[data-am-action="back"]');
       if (back) {
+        if (!shouldUseClientNavigation(event, back)) return;
+
         event.preventDefault();
         showList({ updateHistory: true });
         return;
@@ -82,6 +104,8 @@
 
       const view = event.target.closest('[data-am-action="view"][data-date-key]');
       if (view) {
+        if (!shouldUseClientNavigation(event, view)) return;
+
         event.preventDefault();
 
         const dateKey = view.getAttribute('data-date-key');
@@ -137,13 +161,13 @@
     STATE.mode = 'list';
     STATE.dateKey = null;
 
-    mount.innerHTML = render.renderListHtml();
-    bindEvents();
-    refreshCursor();
-
     if (opts.updateHistory) {
       utils.pushRoute(utils.getListRoute(), opts.replaceHistory);
     }
+
+    mount.innerHTML = render.renderListHtml();
+    bindEvents();
+    refreshCursor();
 
     if (opts.scroll !== false) {
       scrollToMount();
@@ -297,12 +321,38 @@
 
   function getListRoute() {
     const utils = U();
-    return utils ? utils.getListRoute() : '/life/activities_moments/';
+
+    if (utils) return utils.getListRoute();
+
+    if (
+      window.BootstrapRoutes &&
+      typeof window.BootstrapRoutes.buildLocalizedPath === 'function'
+    ) {
+      return window.BootstrapRoutes.buildLocalizedPath(
+        'life/activities_moments',
+        window.BootstrapRoutes.getCurrentLanguage()
+      );
+    }
+
+    return '/life/activities_moments/';
   }
 
   function getDetailRoute(dateKey) {
     const utils = U();
-    return utils ? utils.getDetailRoute(dateKey) : '/life/activities_moments/' + encodeURIComponent(dateKey) + '/';
+
+    if (utils) return utils.getDetailRoute(dateKey);
+
+    if (
+      window.BootstrapRoutes &&
+      typeof window.BootstrapRoutes.buildLocalizedPath === 'function'
+    ) {
+      return window.BootstrapRoutes.buildLocalizedPath(
+        'life/activities_moments/' + encodeURIComponent(dateKey),
+        window.BootstrapRoutes.getCurrentLanguage()
+      );
+    }
+
+    return '/life/activities_moments/' + encodeURIComponent(dateKey) + '/';
   }
 
   function resolveDateKeyFromPath(pathname) {

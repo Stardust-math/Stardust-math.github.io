@@ -8,6 +8,11 @@ on:
 
 permissions:
   contents: write
+  pages: write
+
+concurrency:
+  group: generate-index-pages-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   generate-index-pages:
@@ -25,35 +30,45 @@ jobs:
       - name: Generate index pages
         run: node scripts/generate_index_pages.js
 
-      - name: Commit generated index pages
+      - name: Verify generated site
         run: |
-          has_tracked_changes=false
-          has_untracked_changes=false
+          node scripts/generate_index_pages.js --check
+          node scripts/check_site_resources.js
 
-          if ! git diff --quiet; then
-            has_tracked_changes=true
+      - name: Commit generated index pages
+        id: commit_generated
+        run: |
+          generated_path_file="$RUNNER_TEMP/generated-index-paths.txt"
+          node scripts/generate_index_pages.js --paths > "$generated_path_file"
+          mapfile -t generated_paths < "$generated_path_file"
+
+          if [ "${#generated_paths[@]}" -eq 0 ]; then
+            echo "The generator returned no index page paths."
+            exit 1
           fi
-
-          if [ -n "$(git ls-files --others --exclude-standard)" ]; then
-            has_untracked_changes=true
-          fi
-
-          if [ "$has_tracked_changes" = false ] && [ "$has_untracked_changes" = false ]; then
-            echo "No generated index page changes."
-            exit 0
-          fi
-
-          git status --short
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add -A
+          git add -- "${generated_paths[@]}"
 
           if git diff --cached --quiet; then
-            echo "No generated index page changes after staging."
+            echo "No generated index page changes."
+            echo "committed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
+          git status --short -- "${generated_paths[@]}"
           git commit -m "chore(index): regenerate index pages"
           git push
+          echo "committed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Request GitHub Pages build
+        if: steps.commit_generated.outputs.committed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api \
+            --method POST \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "repos/${{ github.repository }}/pages/builds"

@@ -55,6 +55,16 @@
       VIEW_TO_SLUG[normalized] ||
       VIEW_TO_SLUG[DEFAULT_VIEW];
 
+    if (
+      window.BootstrapRoutes &&
+      typeof window.BootstrapRoutes.buildLocalizedPath === 'function'
+    ) {
+      return window.BootstrapRoutes.buildLocalizedPath(
+        'about/' + slug,
+        window.BootstrapRoutes.getCurrentLanguage()
+      );
+    }
+
     const root = getSiteRootPath();
 
     return (
@@ -75,10 +85,15 @@
   }
 
   function isAboutPath(pathname) {
-    const parts = normalizePath(
-      pathname ||
-      window.location.pathname
-    )
+    const path =
+      window.BootstrapRoutes &&
+      typeof window.BootstrapRoutes.getBusinessPath === 'function'
+        ? window.BootstrapRoutes.getBusinessPath(
+            pathname || window.location.pathname
+          )
+        : pathname || window.location.pathname;
+
+    const parts = normalizePath(path)
       .split('/')
       .filter(Boolean);
 
@@ -86,10 +101,15 @@
   }
 
   function resolveViewFromPath(pathname) {
-    const parts = normalizePath(
-      pathname ||
-      window.location.pathname
-    )
+    const path =
+      window.BootstrapRoutes &&
+      typeof window.BootstrapRoutes.getBusinessPath === 'function'
+        ? window.BootstrapRoutes.getBusinessPath(
+            pathname || window.location.pathname
+          )
+        : pathname || window.location.pathname;
+
+    const parts = normalizePath(path)
       .split('/')
       .filter(Boolean);
 
@@ -183,6 +203,18 @@
     }
 
     if (
+      opts.updateHistory === true &&
+      window.BootstrapRoutes &&
+      typeof window.BootstrapRoutes.syncHistory ===
+        'function'
+    ) {
+      window.BootstrapRoutes.syncHistory(
+        getRoute(normalized),
+        opts.replaceHistory === true
+      );
+    }
+
+    if (
       previousView === 'archive' &&
       normalized !== 'archive'
     ) {
@@ -215,37 +247,6 @@
 
     if (normalized === 'archive') {
       enterArchive();
-    }
-
-    if (
-      opts.updateHistory === true &&
-      window.history &&
-      typeof window.history.pushState ===
-        'function'
-    ) {
-      const route =
-        getRoute(normalized);
-
-      const current =
-        normalizePath(
-          window.location.pathname
-        );
-
-      const next =
-        normalizePath(route);
-
-      if (current !== next) {
-        const method =
-          opts.replaceHistory
-            ? 'replaceState'
-            : 'pushState';
-
-        window.history[method](
-          { path: route },
-          '',
-          route
-        );
-      }
     }
 
     if (opts.scroll === true) {
@@ -465,6 +466,21 @@
         },
         0
       );
+    }
+  );
+
+  window.addEventListener(
+    'site:langchange',
+    function (event) {
+      if (
+        event &&
+        event.detail &&
+        event.detail.scheduleExportOnly === true
+      ) {
+        return;
+      }
+
+      enhanceSubnav();
     }
   );
 

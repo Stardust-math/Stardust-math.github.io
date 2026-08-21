@@ -28,6 +28,20 @@
     const normalized = normalizeView(view) || DEFAULT_VIEW;
     const slug = VIEW_TO_SLUG[normalized] || VIEW_TO_SLUG[DEFAULT_VIEW];
 
+    const logicalPath = normalized === 'activities_moments' && dateKey
+      ? 'life/' + slug + '/' + encodeURIComponent(dateKey)
+      : 'life/' + slug;
+
+    if (
+      window.BootstrapRoutes &&
+      typeof window.BootstrapRoutes.buildLocalizedPath === 'function'
+    ) {
+      return window.BootstrapRoutes.buildLocalizedPath(
+        logicalPath,
+        window.BootstrapRoutes.getCurrentLanguage()
+      );
+    }
+
     if (normalized === 'activities_moments' && dateKey) {
       return new URL(slug + '/' + encodeURIComponent(dateKey) + '/', getLifeBaseUrl()).pathname;
     }
@@ -42,7 +56,15 @@
   }
 
   function isLifePath(pathname) {
-    const parts = normalizePath(pathname || window.location.pathname)
+    const path =
+      window.BootstrapRoutes &&
+      typeof window.BootstrapRoutes.getBusinessPath === 'function'
+        ? window.BootstrapRoutes.getBusinessPath(
+            pathname || window.location.pathname
+          )
+        : pathname || window.location.pathname;
+
+    const parts = normalizePath(path)
       .split('/')
       .filter(Boolean);
 
@@ -50,7 +72,15 @@
   }
 
   function getLifePathParts(pathname) {
-    const parts = normalizePath(pathname || window.location.pathname)
+    const path =
+      window.BootstrapRoutes &&
+      typeof window.BootstrapRoutes.getBusinessPath === 'function'
+        ? window.BootstrapRoutes.getBusinessPath(
+            pathname || window.location.pathname
+          )
+        : pathname || window.location.pathname;
+
+    const parts = normalizePath(path)
       .split('/')
       .filter(Boolean);
 
@@ -166,6 +196,17 @@
     const normalized = normalizeView(view) || DEFAULT_VIEW;
     const setter = getLifeSetter();
 
+    if (
+      opts.updateHistory &&
+      window.BootstrapRoutes &&
+      typeof window.BootstrapRoutes.syncHistory === 'function'
+    ) {
+      window.BootstrapRoutes.syncHistory(
+        getRoute(normalized, opts.dateKey || null),
+        opts.replaceHistory === true
+      );
+    }
+
     enhanceLifeSubnav();
 
     if (setter) {
@@ -180,16 +221,6 @@
       activateMeditations();
     }
 
-    if (opts.updateHistory && window.history && typeof window.history.pushState === 'function') {
-      const route = getRoute(normalized, opts.dateKey || null);
-      const current = normalizePath(window.location.pathname);
-      const next = normalizePath(route);
-
-      if (current !== next) {
-        const method = opts.replaceHistory ? 'replaceState' : 'pushState';
-        window.history[method]({ path: route }, '', route);
-      }
-    }
   }
 
   function enterFromLocation() {
@@ -203,12 +234,32 @@
     });
   }
 
+  function isPlainLeftClick(event) {
+    return !!(
+      event &&
+      event.button === 0 &&
+      !event.metaKey &&
+      !event.ctrlKey &&
+      !event.shiftKey &&
+      !event.altKey &&
+      !event.defaultPrevented
+    );
+  }
+
   function handleLifeSubnavClick(event) {
     const control = event.target && event.target.closest
       ? event.target.closest('.life-switcher .life-switch-btn')
       : null;
 
     if (!control) return;
+
+    if (
+      control.tagName &&
+      control.tagName.toLowerCase() === 'a' &&
+      !isPlainLeftClick(event)
+    ) {
+      return;
+    }
 
     const view = normalizeView(control.dataset.view);
     if (!view) return;
@@ -231,6 +282,18 @@
         enterFromLocation();
       }
     }, 0);
+  });
+
+  window.addEventListener('site:langchange', (event) => {
+    if (
+      event &&
+      event.detail &&
+      event.detail.scheduleExportOnly === true
+    ) {
+      return;
+    }
+
+    enhanceLifeSubnav();
   });
 
   if (window.SitePages && typeof window.SitePages.register === 'function') {

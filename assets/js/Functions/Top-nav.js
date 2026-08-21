@@ -1,6 +1,27 @@
 (function () {
   'use strict';
 
+  function getTopLevelHref(pageKey) {
+    const resources = window.SiteResources || {};
+    const pages = resources.pages || {};
+    const page = pages[pageKey] || {};
+    const route = page.route;
+
+    if (!route) return './';
+
+    if (
+      window.BootstrapRoutes &&
+      typeof window.BootstrapRoutes.buildLocalizedPath === 'function'
+    ) {
+      return window.BootstrapRoutes.buildLocalizedPath(
+        route,
+        window.BootstrapRoutes.getCurrentLanguage()
+      );
+    }
+
+    return new URL(route + '/', document.baseURI).pathname;
+  }
+
   // ------------------------------
   // Render Top Nav HTML
   // ------------------------------
@@ -42,7 +63,7 @@
         >
           <a
             class="top-nav-link"
-            href="./about/"
+            href="${getTopLevelHref('resume')}"
             data-page="resume"
             data-cursor="precise_select"
             data-cursor-fallback="pointer"
@@ -50,7 +71,7 @@
 
           <a
             class="top-nav-link"
-            href="./schedule/"
+            href="${getTopLevelHref('schedule')}"
             data-page="schedule"
             data-cursor="precise_select"
             data-cursor-fallback="pointer"
@@ -58,7 +79,7 @@
 
           <a
             class="top-nav-link"
-            href="./social/"
+            href="${getTopLevelHref('social')}"
             data-page="social"
             data-cursor="precise_select"
             data-cursor-fallback="pointer"
@@ -67,7 +88,7 @@
           <!--
           <a
             class="top-nav-link"
-            href="./toolkit/"
+            href="${getTopLevelHref('toolkit')}"
             data-page="toolkit"
             data-cursor="precise_select"
             data-cursor-fallback="pointer"
@@ -76,7 +97,7 @@
 
           <a
             class="top-nav-link"
-            href="./life/"
+            href="${getTopLevelHref('life')}"
             data-page="life"
             data-cursor="precise_select"
             data-cursor-fallback="pointer"
@@ -121,7 +142,24 @@
     </nav>
   `);
 
+  function refreshTopNavHrefs() {
+    const topNav = document.getElementById('top-nav');
+
+    if (!topNav) return;
+
+    topNav
+      .querySelectorAll('.top-nav-link[data-page]')
+      .forEach((link) => {
+        const page = link.dataset.page;
+
+        if (!page) return;
+
+        link.setAttribute('href', getTopLevelHref(page));
+      });
+  }
+
   function showTopNav() {
+    refreshTopNavHrefs();
     document.body.classList.add('nav-visible');
   }
 
@@ -167,6 +205,23 @@
         {
           updateHistory: false,
           scroll: false
+        }
+      );
+
+      return;
+    }
+
+    if (
+      pageKey === 'social' &&
+      window.SocialRoutes &&
+      typeof window.SocialRoutes.activateView ===
+        'function'
+    ) {
+      window.SocialRoutes.activateView(
+        'constellation',
+        {
+          updateHistory: false,
+          silent: false
         }
       );
 
@@ -326,13 +381,20 @@
     });
 
     // Hidden on cover by default.
+    refreshTopNavHrefs();
     hideTopNav();
   }
+
+  window.addEventListener(
+    'site:langchange',
+    refreshTopNavHrefs
+  );
 
   window.TopNav = {
     show: showTopNav,
     hide: hideTopNav,
     setActive: setTopNavActive,
+    refreshLinks: refreshTopNavHrefs,
     init: initTopNav
   };
 })();

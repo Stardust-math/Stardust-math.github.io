@@ -400,7 +400,10 @@
       : restorePath;
 
     if (previousPage && previousPage !== targetPage) {
-      routes.saveCurrentScrollPosition();
+      if (options.skipSaveCurrentScroll !== true) {
+        routes.saveCurrentScrollPosition();
+      }
+
       runPageLeave(previousPage, targetPage);
     }
 
@@ -434,7 +437,10 @@
     ) {
       routes.syncHistory(
         routes.getRouteForPage(currentPage),
-        options.replaceHistory
+        options.replaceHistory,
+        {
+          saveScroll: false
+        }
       );
     }
 
@@ -459,7 +465,8 @@
       instant: false,
       scrollBehavior: 'smooth',
       restoreScroll: false,
-      restoreScrollPath: null
+      restoreScrollPath: null,
+      skipSaveCurrentScroll: false
     }, options || {});
 
     if (!pageConfigs[page]) return;
@@ -473,6 +480,20 @@
           routes.getRouteForPage(page),
           opts.replaceHistory
         );
+      }
+
+      if (opts.restoreScroll) {
+        const restorePath =
+          opts.restoreScrollPath ||
+          window.location.pathname;
+
+        routes.setCurrentScrollPath(restorePath);
+
+        requestAnimationFrame(() => {
+          routes.restoreSavedScrollPosition(
+            restorePath
+          );
+        });
       }
 
       return;
@@ -585,7 +606,10 @@
     if (opts.updateHistory) {
       routes.syncHistory(
         routes.getCoverRoute(),
-        opts.replaceHistory
+        opts.replaceHistory,
+        {
+          saveScroll: false
+        }
       );
     }
 
@@ -604,7 +628,36 @@
     }, 100);
   }
 
+  function syncLanguageFromLocation(options) {
+    if (
+      window.SiteLang &&
+      typeof window.SiteLang.syncFromLocation === 'function'
+    ) {
+      return window.SiteLang.syncFromLocation(options);
+    }
+
+    return null;
+  }
+
   async function applyRouteFromLocation(options) {
+    const opts = options || {};
+
+    if (opts.syncLanguage !== false) {
+      syncLanguageFromLocation({
+        emitLangChange: opts.emitLangChange === true,
+        canonicalize: true,
+        preserveNeutralRoute: true
+      });
+    }
+
+    if (
+      typeof routes.syncDocumentMetadata === 'function'
+    ) {
+      routes.syncDocumentMetadata(
+        window.location.pathname
+      );
+    }
+
     const page = routes.getPageFromPath(window.location.pathname);
 
     if (page) {
@@ -614,7 +667,7 @@
         scrollBehavior: 'auto',
         restoreScroll: true,
         restoreScrollPath: window.location.pathname
-      }, options || {}));
+      }, opts));
 
       return;
     }
@@ -622,7 +675,7 @@
     backToCover(Object.assign({
       updateHistory: false,
       instant: true
-    }, options || {}));
+    }, opts));
   }
 
   async function bootDOMContentLoaded() {
@@ -715,11 +768,20 @@
   }
 
   window.addEventListener('popstate', () => {
-    routes.saveCurrentScrollPosition();
+    routes.saveCurrentScrollPosition({
+      includeLocationPath: false
+    });
+
+    routes.setCurrentScrollPath(
+      window.location.pathname
+    );
 
     applyRouteFromLocation({
+      syncLanguage: true,
+      emitLangChange: true,
       restoreScroll: true,
-      restoreScrollPath: window.location.pathname
+      restoreScrollPath: window.location.pathname,
+      skipSaveCurrentScroll: true
     });
   });
 
