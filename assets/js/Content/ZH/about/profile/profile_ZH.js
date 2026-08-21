@@ -248,7 +248,7 @@
         <div class="subsubheading">
           <div>授课教师: </div>
           <div class="resume-advisor-list">
-            <div><strong><a class="resume-link" href="https://faculty.ustc.edu.cn/mingminzhang/zh_CN/index.htm" target="_blank" rel="noopener noreferrer">张明敏</a></strong> (<a class="resume-link" href="https://math.ustc.edu.cn/main.htm" target="_blank" rel="noopener noreferrer">中国科学技术大学 数学科学学院</a>)</div>
+            <div><strong><a class="resume-link" href="https://faculty.ustc.edu.cn/mingminzhang/zh_CN/index.htm" target="_blank" rel="noopener noreferrer">张明敏教授</a></strong> (<a class="resume-link" href="https://math.ustc.edu.cn/main.htm" target="_blank" rel="noopener noreferrer">中国科学技术大学 数学科学学院</a>)</div>
           </div>
         </div>
         <ul>
