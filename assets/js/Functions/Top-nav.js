@@ -85,16 +85,6 @@
             data-cursor-fallback="pointer"
           >Social</a>
 
-          <!--
-          <a
-            class="top-nav-link"
-            href="${getTopLevelHref('toolkit')}"
-            data-page="toolkit"
-            data-cursor="precise_select"
-            data-cursor-fallback="pointer"
-          >Toolkit</a>
-          -->
-
           <a
             class="top-nav-link"
             href="${getTopLevelHref('life')}"

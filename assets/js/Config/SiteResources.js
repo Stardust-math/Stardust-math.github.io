@@ -172,7 +172,6 @@
         'about',
         'schedule',
         'social',
-        'toolkit',
         'life'
       ],
       warmup: {
@@ -181,7 +180,6 @@
           - The cover remains the first critical target.
           - Once the cover background is ready, all main
             modules keep warming.
-          - Hidden/easter-egg pages are excluded.
           - FullCalendar and Life moment details stay
             lazy-loaded.
         */
@@ -284,7 +282,6 @@
         A + 'css/base/core.css',
         A + 'css/base/site-zoom.css',
         A + 'css/layout/page-shell.css',
-        A + 'css/components/legacy-controls.css',
         A + 'css/components/expanders.css',
         A + 'css/base/dark-mode.css',
         A + 'css/components/submodule-switcher.css',
@@ -296,9 +293,6 @@
         A + 'css/cover/cover-enter.css'
       ],
       optional: {
-        blog:
-          A + 'css/blog/blog.css',
-
         /*
           Loaded only when Archive or Meditations
           actually needs an embedded PDF reader.
@@ -345,9 +339,6 @@
       ],
 
       optional: {
-        blog:
-          A +
-          'js/Functions/blog/Blog.js',
         /*
           Loaded on demand together with the matching
           optional stylesheet above.
@@ -553,29 +544,6 @@
         ]
       },
 
-      toolkit: {
-        route: 'toolkit',
-        domId: 'toolkit',
-        mountId: 'mount-toolkit',
-
-        styles: [
-          A + 'css/toolkit/toolkit.css'
-        ],
-        scripts: [
-          A +
-            'js/Content/EN/toolkit/' +
-            'toolkit_EN.js',
-
-          A +
-            'js/Content/ZH/toolkit/' +
-            'toolkit_ZH.js',
-
-          A +
-            'js/Functions/toolkit/' +
-            'Toolkit.js'
-        ]
-      },
-
       life: {
         route: 'life',
         domId: 'life',
@@ -661,27 +629,6 @@
         'cover_11.webp',
         'cover_12.webp'
       ],
-
-      blog: {
-        background:
-          A +
-          'images/blog/background.jpg',
-
-        backgroundPng:
-          A +
-          'images/blog/background.png',
-        oldPaperTexture:
-          A +
-          'images/blog/old-paper-texture.jpg',
-
-        scrollTexture:
-          A +
-          'images/blog/scroll-texture.png',
-
-        fireAnimation:
-          A +
-          'animation/blog/fire-animation.gif'
-      },
 
       about: {
         profile:

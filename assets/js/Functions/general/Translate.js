@@ -353,71 +353,6 @@
   }
 
   /* ------------------------------
-   * Toolkit I18N
-   * ------------------------------ */
-  function getToolkitEnDict() {
-    if (
-      window.TOOLKIT_EN_I18N &&
-      typeof window.TOOLKIT_EN_I18N === "object"
-    ) {
-      return window.TOOLKIT_EN_I18N;
-    }
-
-    return {
-      toolkit_heading: "Academic Toolkit",
-      search_placeholder: "Search tools by name.",
-      filter_all: "All",
-      no_results: "No matching tools found.\nTry a different search term."
-    };
-  }
-
-  function getToolkitDict(lang) {
-    if (
-      lang === LANG.ZH &&
-      window.TOOLKIT_ZH_I18N &&
-      typeof window.TOOLKIT_ZH_I18N === "object"
-    ) {
-      return window.TOOLKIT_ZH_I18N;
-    }
-
-    return getToolkitEnDict();
-  }
-
-  function applyToolkitI18N(lang) {
-    const toolkit = document.getElementById("toolkit");
-
-    if (!toolkit) return;
-
-    const dict = getToolkitDict(lang);
-
-    toolkit.querySelectorAll("[data-i18n]").forEach((element) => {
-      const key = element.getAttribute("data-i18n");
-
-      if (!key) return;
-
-      const value = dict[key];
-
-      if (typeof value === "string") {
-        element.textContent = value;
-      }
-    });
-
-    toolkit
-      .querySelectorAll("[data-i18n-placeholder]")
-      .forEach((element) => {
-        const key = element.getAttribute("data-i18n-placeholder");
-
-        if (!key) return;
-
-        const value = dict[key];
-
-        if (typeof value === "string") {
-          element.setAttribute("placeholder", value);
-        }
-      });
-  }
-
-  /* ------------------------------
    * Social I18N
    * ------------------------------ */
   function getSocialDict(lang) {
@@ -475,14 +410,12 @@
         about: "关于",
         schedule: "日程",
         social: "社交",
-        toolkit: "工具",
         life: "人生"
       }
       : {
         about: "About",
         schedule: "Schedule",
         social: "Social",
-        toolkit: "Toolkit",
         life: "Life"
       };
 
@@ -687,7 +620,6 @@
       applyMeditationsLanguage(l);
     }
 
-    applyToolkitI18N(l);
     applySocialI18N(l);
     applyTopNavI18N(l);
 
@@ -817,7 +749,6 @@
           : getLang()
       );
 
-      applyToolkitI18N(l);
       applySocialI18N(l);
       applyTopNavI18N(l);
       updateLangButton(l);

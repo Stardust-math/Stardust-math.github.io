@@ -115,7 +115,7 @@
 
     Dedicated display fonts under assets/fonts/ remain unchanged,
     especially Activities & Moments date/title fonts, Cover fonts,
-    and Blog fonts.
+    and display-font stacks.
   */
 
   --font-zh-regular:
@@ -278,26 +278,6 @@
     "HongLeiXingShu Local",
     var(--font-zh-heading);
 
-  /* Blog: keep dedicated display fonts unchanged */
-  --font-blog-title:
-    var(--font-script-external);
-
-  --font-blog-heading:
-    var(--font-display-cinzel);
-
-  --font-blog-body:
-    var(--font-serif);
-
-  /*
-    Blog easter-egg scroll:
-    keep dedicated display fonts unchanged.
-  */
-  --font-blog-scroll-heading:
-    var(--font-display-cinzel);
-
-  --font-blog-scroll-body:
-    var(--font-display-cinzel);
-
   /* Social */
   --font-social-heading:
     var(--font-heading-serif);
@@ -352,7 +332,6 @@
   - Activities & Moments card date numbers
   - Activities & Moments custom Chinese card titles
   - Cover custom display fonts
-  - Blog custom display fonts
 */
 body[data-lang="zh"] .top-nav-link,
 body[data-lang="zh"] h2,
@@ -364,7 +343,6 @@ body[data-lang="zh"] .stats-heading,
 body[data-lang="zh"] .stats-subtitle,
 body[data-lang="zh"] .life-heading,
 body[data-lang="zh"] .life-switch-btn,
-body[data-lang="zh"] .toolkit-heading,
 body[data-lang="zh"] .category-title,
 body[data-lang="zh"] #meditations .medit-contents-title,
 body[data-lang="zh"] #meditations .medit-row-big .medit-title,
@@ -403,7 +381,6 @@ body[data-lang="zh"] .schedule-switch-btn {
 */
 body[data-lang="zh"] #about,
 body[data-lang="zh"] #social,
-body[data-lang="zh"] #toolkit,
 body[data-lang="zh"] #schedule,
 body[data-lang="zh"] #life,
 body[data-lang="zh"] .container,
@@ -569,19 +546,6 @@ body[data-lang="zh"] .stats-link {
 }
 
 /*
-  Toolkit ordinary text and controls.
-*/
-body[data-lang="zh"] .toolkit-card,
-body[data-lang="zh"] .toolkit-title,
-body[data-lang="zh"] .toolkit-link,
-body[data-lang="zh"] .filter-btn,
-body[data-lang="zh"] .search-input,
-body[data-lang="zh"] .no-results {
-  font-family:
-    var(--font-zh-regular);
-}
-
-/*
   Life ordinary text.
 
   Do not target:
@@ -600,23 +564,6 @@ body[data-lang="zh"] .am-card-action,
 body[data-lang="zh"] .am-detail-back,
 body[data-lang="zh"] .am-detail-body,
 body[data-lang="zh"] .am-detail-body p {
-  font-family:
-    var(--font-zh-regular);
-}
-
-/*
-  Blog ordinary Chinese body text only.
-
-  Dedicated Blog headings and title fonts remain
-  unchanged.
-*/
-body[data-lang="zh"] .blog-card-excerpt,
-body[data-lang="zh"] .blog-card-meta,
-body[data-lang="zh"] .blog-quote,
-body[data-lang="zh"] .blog-author,
-body[data-lang="zh"] .detail-body,
-body[data-lang="zh"] .detail-meta,
-body[data-lang="zh"] .detail-footer {
   font-family:
     var(--font-zh-regular);
 }

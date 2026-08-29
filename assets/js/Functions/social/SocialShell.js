@@ -310,16 +310,6 @@
       'beforeend',
       `
         <div id="social">
-          <button id="toggle-btn-social">
-            <span>
-              <i class="fas fa-sun"></i>
-            </span>
-          </button>
-
-          <div id="clock-social">
-            GMT+8 00:00
-          </div>
-
           <div class="container social-container">
             <div
               class="social-heading"
@@ -391,13 +381,6 @@
             </div>
           </div>
 
-          <a
-            href="#"
-            class="back-btn"
-            id="social-back-btn"
-          >
-            <i class="fas fa-arrow-left"></i>
-          </a>
         </div>
       `
     );

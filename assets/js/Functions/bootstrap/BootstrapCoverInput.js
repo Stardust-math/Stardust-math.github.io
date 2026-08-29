@@ -545,17 +545,9 @@
       warmDefaultPage('cover-avatar-touch');
     }, { passive: true });
 
-    /*
-      Use capture + stopImmediatePropagation so that, if the old Blog.js
-      avatar click listener is still loaded somewhere, the avatar will now
-      enter the About page instead of triggering the blog easter egg.
-    */
-    avatarFrame.addEventListener('click', (event) => {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-
+    avatarFrame.addEventListener('click', () => {
       enterDefaultPage(avatarFrame);
-    }, true);
+    });
   }
 
   function bindWheel(cover) {

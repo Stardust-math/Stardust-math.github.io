@@ -30,10 +30,6 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
   const mount = document.getElementById("mount-schedule") || document.body;
   mount.insertAdjacentHTML("beforeend", `
   <div id="schedule">
-    <button id="toggle-btn-schedule">
-      <span><i class="fas fa-sun"></i></span>
-    </button>
-    <div id="clock-schedule">GMT+8 00:00</div>
     <div class="container">
       <div class="schedule-heading">My Schedule</div>
       
@@ -4480,10 +4476,6 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
         </div>
       </div>
     </div>
-    
-    <a href="#" class="back-btn" id="schedule-back-btn">
-      <i class="fas fa-arrow-left"></i>
-    </a>
     
     <!-- Event Modal -->
     <div class="event-modal" id="event-modal">

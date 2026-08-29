@@ -10,6 +10,22 @@ const ROOT = path.resolve(__dirname, '..');
 const SITE_FONTS_FILE = path.join(ROOT, 'assets/js/Config/SiteFonts.js');
 const SITE_RESOURCES_FILE = path.join(ROOT, 'assets/js/Config/SiteResources.js');
 
+const RETIRED_MODULE_DIRECTORIES = [
+  'assets/css/toolkit',
+  'assets/js/Content/EN/toolkit',
+  'assets/js/Content/ZH/toolkit',
+  'assets/js/Functions/toolkit',
+  'assets/css/blog',
+  'assets/js/Functions/blog',
+  'assets/images/blog',
+  'assets/audio/blog',
+  'assets/animation/blog'
+];
+
+const RETIRED_FILES = [
+  'assets/css/components/legacy-controls.css'
+];
+
 const FORBIDDEN_PATH_PATTERNS = [
   {
     label: 'removed fav/ directory',
@@ -18,6 +34,18 @@ const FORBIDDEN_PATH_PATTERNS = [
   {
     label: 'removed cursor.css file',
     pattern: /cursor\.css/i
+  },
+  {
+    label: 'removed Toolkit module resource',
+    pattern: /assets\/(?:css\/toolkit|js\/(?:Content\/(?:EN|ZH)|Functions)\/toolkit)\//i
+  },
+  {
+    label: 'removed Blog easter-egg resource',
+    pattern: /assets\/(?:css|images|audio|animation)\/blog\/|assets\/js\/Functions\/blog\//i
+  },
+  {
+    label: 'removed legacy controls stylesheet',
+    pattern: /assets\/css\/components\/legacy-controls\.css/i
   },
   {
     label: 'legacy flat About/Profile image path',
@@ -61,6 +89,22 @@ const FORBIDDEN_SOURCE_PATTERNS = [
   {
     label: 'legacy Resume expander storage key',
     pattern: /resume_expanders_/i
+  },
+  {
+    label: 'retired Toolkit page key',
+    pattern: /['"]toolkit['"]/
+  },
+  {
+    label: 'retired Toolkit mount point',
+    pattern: /\bmount-toolkit\b/i
+  },
+  {
+    label: 'retired Toolkit runtime API',
+    pattern: /\b(?:TOOLKIT_(?:EN|ZH)_I18N|initToolkitFilter)\b|\bwindow\.Toolkit\b/
+  },
+  {
+    label: 'retired page-local control identifier',
+    pattern: /\b(?:about-back-btn|social-back-btn|schedule-back-btn|toolkit-back-btn|toggle-btn-social|toggle-btn-schedule|toggle-btn-toolkit|clock-social|clock-schedule|clock-toolkit|clock-toggle)\b/
   }
 ];
 
@@ -490,6 +534,50 @@ function walkFiles(dir, out) {
   return out;
 }
 
+function listFilesRecursively(directory, out) {
+  if (!fs.existsSync(directory)) return out;
+
+  const entries = fs.readdirSync(directory, {
+    withFileTypes: true
+  });
+
+  entries.forEach((entry) => {
+    const abs = path.join(directory, entry.name);
+
+    if (entry.isDirectory()) {
+      listFilesRecursively(abs, out);
+      return;
+    }
+
+    if (entry.isFile()) {
+      out.push(abs);
+    }
+  });
+
+  return out;
+}
+
+function checkRetiredArtifactsAbsent() {
+  RETIRED_MODULE_DIRECTORIES.forEach((repoDirectory) => {
+    const abs = path.join(ROOT, repoDirectory);
+    const files = listFilesRecursively(abs, []);
+
+    files.forEach((file) => {
+      fail(
+        `Retired module file must be removed: ${rel(file)}`
+      );
+    });
+  });
+
+  RETIRED_FILES.forEach((repoFile) => {
+    const abs = path.join(ROOT, repoFile);
+
+    if (fs.existsSync(abs)) {
+      fail(`Retired file must be removed: ${repoFile}`);
+    }
+  });
+}
+
 function checkForbiddenTextReferences() {
   const files = walkFiles(ROOT, []);
 
@@ -861,11 +949,17 @@ function checkRouteEntries(resources) {
     });
   });
 
-  const toolkitEntry = path.join(ROOT, 'toolkit', 'index.html');
+  ['toolkit', 'blog'].forEach((route) => {
+    const retiredEntry = path.join(
+      ROOT,
+      route,
+      'index.html'
+    );
 
-  if (fs.existsSync(toolkitEntry)) {
-    warn('toolkit/index.html exists. If Toolkit is intended to stay hidden, check whether this file is intentional.');
-  }
+    if (fs.existsSync(retiredEntry)) {
+      fail(`Retired route entry must be removed: ${route}/index.html`);
+    }
+  });
 }
 
 function printResult() {
@@ -903,6 +997,7 @@ function main() {
     checkRouteEntries(null);
   }
 
+  checkRetiredArtifactsAbsent();
   checkForbiddenTextReferences();
   checkStaticLocalAssetReferences();
 

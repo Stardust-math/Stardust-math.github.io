@@ -103,13 +103,6 @@ body.dark-mode .fc {
   --fc-today-bg-color: var(--accent-weak);
 }
 
-/* Slightly tone down very colorful toolkit icon blocks in dark mode */
-body.dark-mode .toolkit-icon {
-  filter: saturate(0.55) contrast(0.95) brightness(0.90);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
 /* Hover underline color in dark mode */
 body.dark-mode a:hover {
   text-decoration-color: rgba(180, 210, 236, 0.55);

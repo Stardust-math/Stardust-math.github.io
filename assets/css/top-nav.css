@@ -359,10 +359,3 @@ body[data-lang="zh"] .top-nav-lang-btn .lang-right{
   .top-nav-clock{ display: none; }
 }
 
-/* Hide legacy fixed controls (moved into top-nav) */
-#toggle-btn, #toggle-btn-social, #toggle-btn-toolkit, #toggle-btn-schedule,
-#clock, #clock-social, #clock-toolkit, #clock-schedule,
-#about-back-btn, #social-back-btn, #toolkit-back-btn, #schedule-back-btn,
-.clock-toggle{
-  display: none !important;
-}

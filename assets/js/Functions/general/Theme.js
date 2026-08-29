@@ -14,7 +14,7 @@
   function updateToggleBtnIcon() {
     const isDark = document.body.classList.contains('dark-mode');
     const toggleButtons = document.querySelectorAll(
-      '#toggle-btn, #toggle-btn-social, #toggle-btn-toolkit, #toggle-btn-schedule, #top-toggle-btn'
+      '#top-toggle-btn'
     );
 
     toggleButtons.forEach((button) => {
@@ -48,7 +48,7 @@
   }
 
   function bindThemeToggles() {
-    const ids = ['toggle-btn', 'toggle-btn-social', 'toggle-btn-toolkit', 'toggle-btn-schedule', 'top-toggle-btn'];
+    const ids = ['top-toggle-btn'];
 
     ids.forEach((id) => {
       const el = document.getElementById(id);

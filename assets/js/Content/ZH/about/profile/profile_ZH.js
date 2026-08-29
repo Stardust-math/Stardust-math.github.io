@@ -565,8 +565,5 @@
         </ul>
       </div>
 
-    <a href="#" class="back-btn" id="about-back-btn">
-      <i class="fas fa-arrow-left"></i>
-    </a>
   `;
 })();

@@ -31,7 +31,6 @@
       'about',
       'schedule',
       'social',
-      'toolkit',
       'life'
     ],
 

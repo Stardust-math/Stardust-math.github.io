@@ -273,14 +273,6 @@
         window.Schedule.initSemesterSelection();
       }
     }
-
-    if (
-      page === 'toolkit' &&
-      window.Toolkit &&
-      typeof window.Toolkit.initToolkitFilter === 'function'
-    ) {
-      window.Toolkit.initToolkitFilter();
-    }
   }
 
   function runPageEnter(page, previousPage) {
@@ -590,16 +582,6 @@
 
     routes.hideAllPages();
 
-    [
-      'about-back-btn',
-      'social-back-btn',
-      'toolkit-back-btn',
-      'schedule-back-btn'
-    ].forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) el.classList.remove('visible');
-    });
-
     window.scrollTo(0, 0);
     document.body.style.overflow = 'hidden';
 
@@ -697,12 +679,6 @@
       );
     }
 
-    if (
-      window.Clock &&
-      typeof window.Clock.initToggle === 'function'
-    ) {
-      window.Clock.initToggle();
-    }
 
     coverInput.bindCoverArrowAndScroll();
 

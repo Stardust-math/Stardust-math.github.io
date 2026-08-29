@@ -94,20 +94,6 @@
     return undefined;
   }
 
-  function callToolkit(name, args) {
-    const params = Array.isArray(args) ? args : [];
-
-    if (window.Toolkit && typeof window.Toolkit[name] === 'function') {
-      return window.Toolkit[name].apply(window.Toolkit, params);
-    }
-
-    if (typeof window[name] === 'function') {
-      return window[name].apply(window, params);
-    }
-
-    return undefined;
-  }
-
   function registerDefaultLifecycles() {
     register('schedule', {
       init() {
@@ -125,12 +111,6 @@
         }
 
         callSchedule('setScheduleView', ['my-timetable']);
-      }
-    });
-
-    register('toolkit', {
-      init() {
-        callToolkit('initToolkitFilter');
       }
     });
 

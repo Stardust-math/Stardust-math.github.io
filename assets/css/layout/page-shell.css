@@ -1,13 +1,12 @@
 /* =========================================================
    Shared Page Shell
-   - About / Social / Toolkit / Schedule page containers
+   - About / Social / Schedule page containers
    - Shared content cards and basic content typography
    ========================================================= */
 
-/* Shared content styling (About / Social / Toolkit / Schedule) */
+/* Shared content styling (About / Social / Schedule) */
 #about,
 #social,
-#toolkit,
 #schedule {
   position: relative;
   z-index: 1;
@@ -37,7 +36,6 @@
 
 #about.visible,
 #social.visible,
-#toolkit.visible,
 #schedule.visible {
   display: block;
   opacity: 1;
