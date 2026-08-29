@@ -666,7 +666,6 @@
   function getExpanders() {
     return (
       window.ContentExpanders ||
-      window.ResumeExpanders ||
       null
     );
   }

@@ -52,7 +52,7 @@ module.exports = {
     相对于主模块的路径；无需重复书写 about、schedule 等前缀。
   */
   pageSubroutes: {
-    resume: [
+    about: [
       'profile',
       'archive'
     ],

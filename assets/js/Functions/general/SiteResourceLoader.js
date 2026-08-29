@@ -499,7 +499,7 @@
     }
 
     if (!list.length) {
-      list.push('resume', 'schedule', 'social', 'life');
+      list.push('about', 'schedule', 'social', 'life');
     }
 
     return uniqueValidPages(list);

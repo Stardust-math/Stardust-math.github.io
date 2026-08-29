@@ -406,7 +406,7 @@
 
           <img
             class="orcid-qr-image"
-            src="assets/images/social/ORCID.png"
+            src="assets/images/social/identity/ORCID.png"
             alt="ORCID QR code / ORCID 二维码"
             loading="lazy"
           />

@@ -63,8 +63,8 @@
         >
           <a
             class="top-nav-link"
-            href="${getTopLevelHref('resume')}"
-            data-page="resume"
+            href="${getTopLevelHref('about')}"
+            data-page="about"
             data-cursor="precise_select"
             data-cursor-fallback="pointer"
           >About</a>
@@ -181,7 +181,7 @@
 
   function resetDefaultSubroute(pageKey) {
     if (
-      pageKey === 'resume' &&
+      pageKey === 'about' &&
       window.AboutRoutes &&
       typeof window.AboutRoutes.activateView ===
         'function'

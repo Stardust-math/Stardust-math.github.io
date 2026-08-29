@@ -112,7 +112,7 @@
   function warmAboutProfileImage() {
     const images = resources.images || {};
     const about = images.about || {};
-    const url = about.profile || './assets/images/about/profile.jpg';
+    const url = about.profile || './assets/images/about/profile/profile.jpg';
 
     if (!url) return;
 

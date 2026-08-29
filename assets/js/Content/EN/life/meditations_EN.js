@@ -3,7 +3,7 @@
 
   window.MEDITATIONS_EN_INNER_HTML = `
 <div class="container medit-pdf-page">
-  <div class="resume-heading">
+  <div class="meditations-heading">
     Meditations
   </div>
 

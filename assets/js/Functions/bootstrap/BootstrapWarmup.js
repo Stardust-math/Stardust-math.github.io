@@ -4,7 +4,7 @@
   let pageConfigs = {};
   let loader = {};
   let warmupConfig = {};
-  let defaultPage = 'resume';
+  let defaultPage = 'about';
   let getCurrentPage = function () {
     return null;
   };
@@ -183,7 +183,7 @@
     pageConfigs = opts.pageConfigs || {};
     loader = opts.loader || {};
     warmupConfig = opts.warmupConfig || {};
-    defaultPage = opts.defaultPage || 'resume';
+    defaultPage = opts.defaultPage || 'about';
 
     if (typeof opts.getCurrentPage === 'function') {
       getCurrentPage = opts.getCurrentPage;

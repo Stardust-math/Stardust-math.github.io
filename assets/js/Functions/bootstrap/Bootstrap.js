@@ -5,7 +5,7 @@
   const loader = window.SiteResourceLoader || {};
   const pageConfigs = resources.pages || {};
   const navigation = resources.navigation || {};
-  const defaultPage = navigation.defaultPage || 'resume';
+  const defaultPage = navigation.defaultPage || 'about';
   const warmupConfig = navigation.warmup || {};
 
   const routes = window.BootstrapRoutes || {};
@@ -341,10 +341,10 @@
     }
 
     if (
-      window.ResumeExpanders &&
-      typeof window.ResumeExpanders.init === 'function'
+      window.ContentExpanders &&
+      typeof window.ContentExpanders.init === 'function'
     ) {
-      window.ResumeExpanders.init(pageEl || document);
+      window.ContentExpanders.init(pageEl || document);
     }
 
     if (
@@ -357,14 +357,14 @@
 
   function warmPageCriticalAssetsNonBlocking(page) {
     if (
-      page === 'resume' &&
-      window.AboutResumeRender &&
-      typeof window.AboutResumeRender.waitForCriticalImages === 'function'
+      page === 'about' &&
+      window.ProfileRender &&
+      typeof window.ProfileRender.waitForCriticalImages === 'function'
     ) {
-      window.AboutResumeRender.waitForCriticalImages({
+      window.ProfileRender.waitForCriticalImages({
         timeout: 1400
       }).catch((err) => {
-        console.warn('[Bootstrap] Non-blocking resume image warm-up failed:', err);
+        console.warn('[Bootstrap] Non-blocking About profile image warm-up failed:', err);
       });
     }
   }
@@ -591,7 +591,7 @@
     routes.hideAllPages();
 
     [
-      'resume-back-btn',
+      'about-back-btn',
       'social-back-btn',
       'toolkit-back-btn',
       'schedule-back-btn'

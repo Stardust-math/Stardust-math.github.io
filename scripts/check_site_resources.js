@@ -18,8 +18,78 @@ const FORBIDDEN_PATH_PATTERNS = [
   {
     label: 'removed cursor.css file',
     pattern: /cursor\.css/i
+  },
+  {
+    label: 'legacy flat About/Profile image path',
+    pattern: /assets\/images\/about\/(?:profile\.jpg|Education_Background\.png|Excellent_Student_Scholarship--Silver\.jpg|Zhang_Zongzhi_Sci-Tech_Scholarship\.jpg|Excellent_Freshman_Scholarship--Silver\.jpg|Honorable_Mention\.jpg)/i
+  },
+  {
+    label: 'legacy flat About/Profile PDF path',
+    pattern: /assets\/pdf\/about\/(?:2025_MCM_Problem_B_Results\.pdf|Excellent_Freshman_Scholarship--Silver\.pdf)/i
+  },
+  {
+    label: 'legacy flat About/Archive PDF path',
+    pattern: /assets\/pdf\/about\/《概率论与数理统计》（缪柏其、张伟平）参考答案\.pdf/i
+  },
+  {
+    label: 'legacy flat Social/Identity ORCID image path',
+    pattern: /assets\/images\/social\/ORCID\.png/i
   }
 ];
+
+const FORBIDDEN_SOURCE_PATTERNS = [
+  {
+    label: 'legacy About page key string',
+    pattern: /['"]resume['"]/i
+  },
+  {
+    label: 'legacy About page key property',
+    pattern: /\bresume\s*:/i
+  },
+  {
+    label: 'legacy Profile selector or control prefix',
+    pattern: /resume-/i
+  },
+  {
+    label: 'legacy ResumeExpanders API',
+    pattern: /\bResumeExpanders\b/
+  },
+  {
+    label: 'legacy AboutResumeRender API',
+    pattern: /\bAboutResumeRender\b/
+  },
+  {
+    label: 'legacy Resume expander storage key',
+    pattern: /resume_expanders_/i
+  }
+];
+
+const SOURCE_SCAN_EXTENSIONS = new Set([
+  '.html',
+  '.css',
+  '.js'
+]);
+
+const LOCAL_ASSET_EXTENSIONS = new Set([
+  '.css',
+  '.js',
+  '.json',
+  '.png',
+  '.jpg',
+  '.jpeg',
+  '.webp',
+  '.gif',
+  '.svg',
+  '.pdf',
+  '.mp3',
+  '.m4a',
+  '.mp4',
+  '.woff',
+  '.woff2',
+  '.ttf',
+  '.otf',
+  '.cur'
+]);
 
 const SCANNED_EXTENSIONS = new Set([
   '.html',
@@ -387,7 +457,7 @@ function checkForbiddenConfiguredAssets(assets) {
   assets.forEach((asset) => {
     FORBIDDEN_PATH_PATTERNS.forEach((item) => {
       if (item.pattern.test(asset.path)) {
-        fail(`Forbidden old path reference (${item.label}): ${asset.path}    from ${asset.origin}`);
+        fail(`Forbidden legacy path (${item.label}): ${asset.path}    from ${asset.origin}`);
       }
     });
   });
@@ -428,7 +498,83 @@ function checkForbiddenTextReferences() {
 
     FORBIDDEN_PATH_PATTERNS.forEach((item) => {
       if (item.pattern.test(text)) {
-        fail(`Forbidden old path reference (${item.label}) found in ${rel(file)}`);
+        fail(`Forbidden legacy path (${item.label}) found in ${rel(file)}`);
+      }
+    });
+
+    const extension = path.extname(file).toLowerCase();
+    if (!SOURCE_SCAN_EXTENSIONS.has(extension)) return;
+
+    FORBIDDEN_SOURCE_PATTERNS.forEach((item) => {
+      if (item.pattern.test(text)) {
+        fail(`Forbidden legacy source reference (${item.label}) found in ${rel(file)}`);
+      }
+    });
+  });
+}
+
+function decodeRepoPath(value) {
+  try {
+    return decodeURIComponent(value);
+  } catch (error) {
+    return value;
+  }
+}
+
+function extractStaticLocalAssetReferences(text) {
+  const references = [];
+  const pattern = /(['"`])((?:\.\/|\/)?assets\/[^'"`\r\n]+?)\1/g;
+  let match = null;
+
+  while ((match = pattern.exec(text)) !== null) {
+    const value = String(match[2] || '').trim();
+
+    if (
+      !value ||
+      value.includes('${') ||
+      /[*{}<>]/.test(value)
+    ) {
+      continue;
+    }
+
+    const clean = stripQueryAndHash(value);
+    const extension = path.posix.extname(clean).toLowerCase();
+
+    if (!LOCAL_ASSET_EXTENSIONS.has(extension)) {
+      continue;
+    }
+
+    references.push(value);
+  }
+
+  return references;
+}
+
+function checkStaticLocalAssetReferences() {
+  const files = walkFiles(ROOT, []);
+
+  files.forEach((file) => {
+    const text = readText(file);
+    const references = extractStaticLocalAssetReferences(text);
+
+    references.forEach((value) => {
+      const repoPath = toRepoPath(value);
+      if (!repoPath) return;
+
+      const decodedPath = decodeRepoPath(repoPath);
+      const candidates = Array.from(
+        new Set([repoPath, decodedPath])
+      );
+
+      const exists = candidates.some((candidate) => {
+        const abs = path.join(ROOT, candidate);
+        return fs.existsSync(abs) && fs.statSync(abs).isFile();
+      });
+
+      if (!exists) {
+        fail(
+          `Missing statically referenced local asset: ${repoPath}    from ${rel(file)}`
+        );
       }
     });
   });
@@ -614,6 +760,39 @@ function checkRouteEntries(resources) {
     fail('localization.localizedPages contains duplicate page keys.');
   }
 
+  const navigation = resources && resources.navigation
+    ? resources.navigation
+    : {};
+  const defaultPage = typeof navigation.defaultPage === 'string'
+    ? navigation.defaultPage.trim()
+    : '';
+
+  if (!defaultPage || !pages[defaultPage]) {
+    fail('navigation.defaultPage must name a configured page key.');
+  }
+
+  if (!Array.isArray(navigation.pages) || navigation.pages.length === 0) {
+    fail('navigation.pages must be a non-empty array.');
+  } else {
+    const navigationPages = navigation.pages.map((pageKey) =>
+      typeof pageKey === 'string' ? pageKey.trim() : ''
+    );
+
+    if (navigationPages.some((pageKey) => !pageKey)) {
+      fail('navigation.pages must contain only non-empty page keys.');
+    }
+
+    if (new Set(navigationPages).size !== navigationPages.length) {
+      fail('navigation.pages must not contain duplicate page keys.');
+    }
+
+    navigationPages.forEach((pageKey) => {
+      if (!pages[pageKey]) {
+        fail(`navigation.pages references an unknown page key: ${pageKey}`);
+      }
+    });
+  }
+
   localizedPageKeys.forEach((pageKey) => {
     const page = pages[pageKey];
 
@@ -635,6 +814,12 @@ function checkRouteEntries(resources) {
         `pages.${pageKey}.route must be one safe lowercase top-level path segment.`
       );
       return;
+    }
+
+    if (pageKey !== route) {
+      fail(
+        `Localized page key must match its canonical route: pages.${pageKey}.route is ${route}.`
+      );
     }
 
     if (languages.includes(route)) {
@@ -719,6 +904,7 @@ function main() {
   }
 
   checkForbiddenTextReferences();
+  checkStaticLocalAssetReferences();
 
   printResult();
 }

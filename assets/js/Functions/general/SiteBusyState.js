@@ -220,7 +220,7 @@
   function getDefaultPage() {
     const resources = getSiteResources();
     const navigation = resources.navigation || {};
-    return navigation.defaultPage || 'resume';
+    return navigation.defaultPage || 'about';
   }
 
   function getPageElement(page) {

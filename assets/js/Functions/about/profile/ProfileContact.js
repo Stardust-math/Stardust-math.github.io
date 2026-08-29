@@ -199,7 +199,7 @@
       event.target &&
       typeof event.target.closest === 'function'
         ? event.target.closest(
-          '.resume-email-copy-btn[data-copy-email]'
+          '.profile-email-copy-btn[data-copy-email]'
         )
         : null;
 

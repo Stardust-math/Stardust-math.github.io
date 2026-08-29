@@ -1,24 +1,24 @@
 /* =========================================================
    About Contact
-   - Resume hero email disclosure layout
+   - Profile hero email disclosure layout
    - Email row alignment
    - Copy / send icon buttons
    ========================================================= */
 
-.resume-email-block {
+.profile-email-block {
   width: fit-content;
   max-width: 100%;
   color: var(--text);
 }
 
-.resume-email-toggle-line {
+.profile-email-toggle-line {
   display: inline-flex;
   align-items: center;
   gap: 7px;
   min-height: 18px;
 }
 
-.resume-email-title {
+.profile-email-title {
   color: var(--text);
   font-family: inherit;
   font-size: 1.02em;
@@ -27,7 +27,7 @@
   letter-spacing: 0;
 }
 
-.resume-email-title-icon {
+.profile-email-title-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -40,15 +40,15 @@
   line-height: 1;
 }
 
-.resume-email-title-icon i {
+.profile-email-title-icon i {
   line-height: 1;
 }
 
-.resume-email-expander {
+.profile-email-expander {
   margin-left: 0;
 }
 
-.resume-email-expand {
+.profile-email-expand {
   width: 100%;
 }
 
@@ -63,7 +63,7 @@
   This file only adds a lower divider and makes its padding transition
   follow the same timing as the global expander.
 */
-.resume-email-content {
+.profile-email-content {
   --expand-max-height: 250px;
   --expand-open-duration: 0.52s;
   --expand-close-duration: 0.32s;
@@ -87,7 +87,7 @@
     transform 0.22s var(--expand-ease-close);
 }
 
-.resume-email-expand.is-open .resume-email-content {
+.profile-email-expand.is-open .profile-email-content {
   padding-bottom: 10px;
   border-bottom-color: color-mix(in srgb, var(--border) 80%, transparent);
 
@@ -100,13 +100,13 @@
     transform 0.34s var(--expand-ease-open);
 }
 
-.resume-email-list {
+.profile-email-list {
   display: grid;
   gap: 5px;
   max-width: 100%;
 }
 
-.resume-email-row {
+.profile-email-row {
   display: grid;
   grid-template-columns: 92px minmax(210px, auto) minmax(0, auto) 78px;
   column-gap: 14px;
@@ -118,15 +118,15 @@
   line-height: 1.5;
 }
 
-.resume-email-label {
+.profile-email-label {
   min-width: 0;
   color: color-mix(in srgb, var(--muted) 88%, var(--accent));
   font-weight: 700;
   white-space: nowrap;
 }
 
-.resume-email-address,
-.resume-email-address:visited {
+.profile-email-address,
+.profile-email-address:visited {
   min-width: 0;
   color: var(--text);
   text-decoration: none;
@@ -135,21 +135,21 @@
   overflow-wrap: anywhere;
 }
 
-.resume-email-address:hover,
-.resume-email-address:focus-visible {
+.profile-email-address:hover,
+.profile-email-address:focus-visible {
   color: var(--accent);
   text-decoration: underline;
   text-decoration-color: color-mix(in srgb, var(--accent) 55%, transparent);
 }
 
-.resume-email-note {
+.profile-email-note {
   min-width: 0;
   color: color-mix(in srgb, var(--accent) 62%, var(--muted));
   font-size: 0.92em;
   white-space: nowrap;
 }
 
-.resume-email-actions {
+.profile-email-actions {
   display: inline-flex;
   align-items: center;
   justify-content: flex-end;
@@ -160,8 +160,8 @@
 }
 
 /* Match SocialFriends .friends-icon-button */
-.resume-email-icon-btn,
-.resume-email-icon-btn:visited {
+.profile-email-icon-btn,
+.profile-email-icon-btn:visited {
   appearance: none;
   -webkit-appearance: none;
 
@@ -192,8 +192,8 @@
     box-shadow 0.18s ease;
 }
 
-.resume-email-icon-btn:hover,
-.resume-email-icon-btn:focus-visible {
+.profile-email-icon-btn:hover,
+.profile-email-icon-btn:focus-visible {
   color: var(--accent-strong);
   text-decoration: none;
 
@@ -203,122 +203,122 @@
   transform: translateY(-1px);
 }
 
-.resume-email-icon-btn:focus-visible {
+.profile-email-icon-btn:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
 
-.resume-email-icon-btn.is-copied {
+.profile-email-icon-btn.is-copied {
   color: #1f8a4c;
   border-color: color-mix(in srgb, #1f8a4c 52%, var(--border));
   background: color-mix(in srgb, #1f8a4c 12%, var(--surface));
 }
 
-.resume-email-icon-btn.is-copy-failed {
+.profile-email-icon-btn.is-copy-failed {
   color: var(--danger);
   border-color: color-mix(in srgb, var(--danger) 45%, var(--border));
   background: color-mix(in srgb, var(--danger) 10%, var(--surface));
 }
 
-.resume-email-copy-btn[disabled] {
+.profile-email-copy-btn[disabled] {
   cursor: default;
 }
 
 /* Fallback for browsers without color-mix support */
 @supports not (color: color-mix(in srgb, white, black)) {
-  .resume-email-expand.is-open .resume-email-content {
+  .profile-email-expand.is-open .profile-email-content {
     border-bottom-color: var(--border);
   }
 
-  .resume-email-title-icon {
+  .profile-email-title-icon {
     color: var(--accent);
   }
 
-  .resume-email-label {
+  .profile-email-label {
     color: var(--muted);
   }
 
-  .resume-email-note {
+  .profile-email-note {
     color: var(--accent);
   }
 
-  .resume-email-address:hover,
-  .resume-email-address:focus-visible {
+  .profile-email-address:hover,
+  .profile-email-address:focus-visible {
     color: var(--accent);
     text-decoration-color: var(--accent);
   }
 
-  .resume-email-icon-btn,
-  .resume-email-icon-btn:visited {
+  .profile-email-icon-btn,
+  .profile-email-icon-btn:visited {
     color: var(--accent);
     background: var(--surface);
     border-color: var(--border);
   }
 
-  .resume-email-icon-btn:hover,
-  .resume-email-icon-btn:focus-visible {
+  .profile-email-icon-btn:hover,
+  .profile-email-icon-btn:focus-visible {
     color: var(--accent-strong);
     background: var(--accent-weak);
     border-color: var(--accent);
   }
 
-  .resume-email-icon-btn.is-copied {
+  .profile-email-icon-btn.is-copied {
     color: #1f8a4c;
     border-color: #1f8a4c;
   }
 
-  .resume-email-icon-btn.is-copy-failed {
+  .profile-email-icon-btn.is-copy-failed {
     color: var(--danger);
     border-color: var(--danger);
   }
 }
 
 @media (max-width: 768px) {
-  .resume-email-block {
+  .profile-email-block {
     width: 100%;
   }
 
-  .resume-email-content {
+  .profile-email-content {
     width: 100%;
   }
 
-  .resume-email-row {
+  .profile-email-row {
     grid-template-columns: 88px minmax(0, 1fr) 78px;
     row-gap: 1px;
     column-gap: 12px;
   }
 
-  .resume-email-note {
+  .profile-email-note {
     grid-column: 2 / 4;
     white-space: normal;
   }
 
-  .resume-email-actions {
+  .profile-email-actions {
     grid-column: 3;
     grid-row: 1 / span 2;
   }
 }
 
 @media (max-width: 520px) {
-  .resume-email-row {
+  .profile-email-row {
     grid-template-columns: 1fr 78px;
     gap: 0 10px;
     padding: 2px 0;
   }
 
-  .resume-email-label {
+  .profile-email-label {
     grid-column: 1 / 3;
   }
 
-  .resume-email-address {
+  .profile-email-address {
     grid-column: 1;
   }
 
-  .resume-email-note {
+  .profile-email-note {
     grid-column: 1 / 3;
   }
 
-  .resume-email-actions {
+  .profile-email-actions {
     grid-column: 2;
     grid-row: 2;
   }
@@ -326,13 +326,13 @@
 
 /* Accessibility: respect reduced-motion preferences */
 @media (prefers-reduced-motion: reduce) {
-  .resume-email-content,
-  .resume-email-expand.is-open .resume-email-content {
+  .profile-email-content,
+  .profile-email-expand.is-open .profile-email-content {
     transition: none;
     transform: none;
   }
 
-  .resume-email-icon-btn {
+  .profile-email-icon-btn {
     transition: none;
   }
 }

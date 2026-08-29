@@ -7,8 +7,6 @@
 
   const VIEW_ALIASES = Object.freeze({
     profile: 'profile',
-    resume: 'profile',
-    cv: 'profile',
     archive: 'archive'
   });
 

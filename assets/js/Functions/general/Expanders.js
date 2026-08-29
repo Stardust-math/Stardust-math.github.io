@@ -2,7 +2,7 @@
   'use strict';
 
   const STORAGE_KEY =
-    'resume_expanders_open_keys_v1';
+    'content_expanders_open_keys_v1';
 
   const ANIMATION_MS = 280;
 
@@ -712,14 +712,7 @@
     toggle
   };
 
-  /*
-    ContentExpanders is the new generic name.
-
-    ResumeExpanders remains available so existing
-    Profile code continues to work unchanged.
-  */
   window.ContentExpanders = api;
-  window.ResumeExpanders = api;
 
   setupDelegatedClickOnce();
   setupMeditationsRowClickOnce();

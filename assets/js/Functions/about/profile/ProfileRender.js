@@ -100,7 +100,6 @@
   function getExpanders() {
     return (
       window.ContentExpanders ||
-      window.ResumeExpanders ||
       null
     );
   }
@@ -267,7 +266,7 @@
       }
 
       const isHero = !!image.closest(
-        '.resume-hero-avatar'
+        '.profile-hero-avatar'
       );
 
       const isExpandable = !!image.closest(
@@ -935,7 +934,7 @@
     }
 
     const avatar = root.querySelector(
-      '.resume-hero-avatar img'
+      '.profile-hero-avatar img'
     );
 
     if (!avatar) {
@@ -1022,14 +1021,6 @@
   };
 
   window.ProfileRender = api;
-
-  /*
-    Bootstrap.js currently uses AboutResumeRender as its
-    stable non-blocking image warm-up hook. Both names point
-    to the same implementation; no duplicate renderer exists.
-  */
-  window.AboutResumeRender = api;
-
   window.addEventListener(
     'site:langchange',
     handleLanguageChange

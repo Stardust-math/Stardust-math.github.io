@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  let defaultPage = 'resume';
+  let defaultPage = 'about';
 
   let showPage = function () {};
   let warmPage = function () {

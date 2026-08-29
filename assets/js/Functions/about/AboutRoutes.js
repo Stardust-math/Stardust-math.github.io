@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const PAGE_KEY = 'resume';
+  const PAGE_KEY = 'about';
   const DEFAULT_VIEW = 'profile';
 
   const VIEW_TO_SLUG = Object.freeze({
@@ -11,8 +11,6 @@
 
   const SLUG_TO_VIEW = Object.freeze({
     profile: 'profile',
-    resume: 'profile',
-    cv: 'profile',
     archive: 'archive'
   });
 

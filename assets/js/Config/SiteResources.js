@@ -18,9 +18,9 @@
     assets/js/Content/ZH/life/activities_moments_ZH.js
     The detail data is stored in:
     assets/js/Content/EN/life/
-      activities_moments_2026_05_12.js
+      activities_moments_<date>.js
     assets/js/Content/ZH/life/
-      activities_moments_2026_05_12.js
+      activities_moments_<date>.js
     Loading strategy:
     1. List/index files are critical Life resources.
     2. Detail files are loaded on demand when
@@ -120,7 +120,7 @@
         zh: 'zh-Hans'
       },
       localizedPages: [
-        'resume',
+        'about',
         'schedule',
         'social',
         'life'
@@ -167,9 +167,9 @@
     },
 
     navigation: {
-      defaultPage: 'resume',
+      defaultPage: 'about',
       pages: [
-        'resume',
+        'about',
         'schedule',
         'social',
         'toolkit',
@@ -186,13 +186,13 @@
             lazy-loaded.
         */
         afterCover: [
-          'resume',
+          'about',
           'schedule',
           'social',
           'life'
         ],
         afterFirstPage: [
-          'resume',
+          'about',
           'schedule',
           'social',
           'life'
@@ -360,7 +360,7 @@
     },
 
     pages: {
-      resume: {
+      about: {
         route: 'about',
         domId: 'about',
         mountId: 'mount-about',
@@ -686,29 +686,29 @@
       about: {
         profile:
           A +
-          'images/about/profile.jpg',
+          'images/about/profile/profile.jpg',
 
         educationBackground:
           A +
-          'images/about/' +
+          'images/about/profile/' +
           'Education_Background.png',
         excellentStudentScholarship:
           A +
-          'images/about/' +
+          'images/about/profile/' +
           'Excellent_Student_Scholarship--Silver.jpg',
 
         zhangZongzhiScholarship:
           A +
-          'images/about/' +
+          'images/about/profile/' +
           'Zhang_Zongzhi_Sci-Tech_Scholarship.jpg',
 
         excellentFreshmanScholarship:
           A +
-          'images/about/' +
+          'images/about/profile/' +
           'Excellent_Freshman_Scholarship--Silver.jpg',
         honorableMention:
           A +
-          'images/about/' +
+          'images/about/profile/' +
           'Honorable_Mention.jpg'
       }
     }

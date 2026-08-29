@@ -362,7 +362,7 @@ body[data-lang="zh"] .top-nav-lang-btn .lang-right{
 /* Hide legacy fixed controls (moved into top-nav) */
 #toggle-btn, #toggle-btn-social, #toggle-btn-toolkit, #toggle-btn-schedule,
 #clock, #clock-social, #clock-toolkit, #clock-schedule,
-#resume-back-btn, #social-back-btn, #toolkit-back-btn, #schedule-back-btn,
+#about-back-btn, #social-back-btn, #toolkit-back-btn, #schedule-back-btn,
 .clock-toggle{
   display: none !important;
 }

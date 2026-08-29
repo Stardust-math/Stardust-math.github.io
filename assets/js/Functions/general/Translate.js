@@ -472,14 +472,14 @@
     const l = normalizeLang(lang);
     const labels = (l === LANG.ZH)
       ? {
-        resume: "关于",
+        about: "关于",
         schedule: "日程",
         social: "社交",
         toolkit: "工具",
         life: "人生"
       }
       : {
-        resume: "About",
+        about: "About",
         schedule: "Schedule",
         social: "Social",
         toolkit: "Toolkit",
@@ -541,7 +541,7 @@
 
   function getOpenKeys() {
     try {
-      const api = window.ResumeExpanders;
+      const api = window.ContentExpanders;
 
       if (
         api &&
@@ -556,7 +556,7 @@
 
   function restoreMeditationsOpenKeys(keys) {
     try {
-      const api = window.ResumeExpanders;
+      const api = window.ContentExpanders;
       const meditations = document.getElementById("meditations");
 
       if (

@@ -134,7 +134,7 @@
       }
     });
 
-    register('resume', {});
+    register('about', {});
     register('social', {});
     register('life', {});
   }

@@ -8,12 +8,6 @@
    - Profile layout utilities
    ========================================================= */
 
-.resume-heading {
-  font-size: 2.6em;
-  text-align: center;
-  color: var(--accent);
-  margin-bottom: 10px;
-}
 
 .contact-info {
   text-align: center;
@@ -22,18 +16,18 @@
 }
 
 /* Profile hero */
-.section.resume-hero {
+.section.profile-hero {
   display: flex;
   align-items: stretch;
   gap: 22px;
 }
 
-.resume-hero-avatar {
+.profile-hero-avatar {
   flex: 0 0 clamp(120px, 16vw, 170px);
   align-self: stretch;
 }
 
-.resume-hero-avatar img {
+.profile-hero-avatar img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -45,7 +39,7 @@
   box-shadow: var(--shadow-xs);
 }
 
-.resume-hero-body {
+.profile-hero-body {
   flex: 1 1 auto;
   min-width: 0;
 
@@ -55,14 +49,14 @@
   gap: 10px;
 }
 
-.resume-hero-name {
+.profile-hero-name {
   font-size: 2.2em;
   font-weight: 700;
   line-height: 1.08;
   color: var(--accent);
 }
 
-.resume-hero-intro {
+.profile-hero-intro {
   margin: 0;
   color: var(--muted);
   font-size: 1.02em;
@@ -70,22 +64,22 @@
 }
 
 /* Profile layout utilities */
-.resume-degree-line {
+.profile-degree-line {
   display: flex;
   justify-content: space-between;
   gap: 16px;
 }
 
-.resume-degree-line > span:first-child {
+.profile-degree-line > span:first-child {
   min-width: 0;
 }
 
-.resume-degree-line > span:last-child {
+.profile-degree-line > span:last-child {
   flex: 0 0 auto;
   text-align: right;
 }
 
-.resume-advisor-list {
+.profile-advisor-list {
   margin-left: 20px;
 }
 
@@ -178,8 +172,8 @@
 }
 
 /* Profile and award text links */
-#profile .resume-link,
-#profile .resume-link:visited,
+#profile .profile-link,
+#profile .profile-link:visited,
 #profile .award-link,
 #profile .award-link:visited {
   color: inherit;
@@ -189,8 +183,8 @@
   cursor: pointer;
 }
 
-#profile .resume-link:hover,
-#profile .resume-link:focus-visible,
+#profile .profile-link:hover,
+#profile .profile-link:focus-visible,
 #profile .award-link:hover,
 #profile .award-link:focus-visible {
   color: inherit;
@@ -289,41 +283,38 @@
 
 /* Responsive: stack photo above text on small screens */
 @media (max-width: 768px) {
-  .resume-heading {
-    font-size: 2.1em;
-  }
 
-  .section.resume-hero {
+  .section.profile-hero {
     flex-direction: column;
     align-items: flex-start;
     gap: 14px;
   }
 
-  .resume-hero-avatar {
+  .profile-hero-avatar {
     flex: 0 0 auto;
     width: min(240px, 70vw);
   }
 
-  .resume-hero-avatar img {
+  .profile-hero-avatar img {
     height: auto;
     aspect-ratio: 4 / 5;
   }
 
-  .resume-hero-name {
+  .profile-hero-name {
     font-size: 1.95em;
   }
 
-  .resume-degree-line {
+  .profile-degree-line {
     flex-direction: column;
     justify-content: flex-start;
     gap: 4px;
   }
 
-  .resume-degree-line > span:last-child {
+  .profile-degree-line > span:last-child {
     text-align: left;
   }
 
-  .resume-advisor-list {
+  .profile-advisor-list {
     margin-left: 0;
     margin-top: 4px;
   }

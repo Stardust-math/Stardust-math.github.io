@@ -30,7 +30,7 @@ body[data-lang="zh"]
 }
 
 /* Page title */
-#meditations .resume-heading {
+#meditations .meditations-heading {
   margin-bottom: 18px;
 
   color: var(--accent);
@@ -43,7 +43,7 @@ body[data-lang="zh"]
 }
 
 body[data-lang="zh"]
-#meditations .resume-heading {
+#meditations .meditations-heading {
   font-family:
     var(--font-medit-heading-zh);
   font-variant: normal;
@@ -114,7 +114,7 @@ body[data-lang="zh"]
       calc(100vw - 24px);
   }
 
-  #meditations .resume-heading {
+  #meditations .meditations-heading {
     margin-bottom: 14px;
     font-size: 2.05em;
   }

@@ -356,7 +356,7 @@
 */
 body[data-lang="zh"] .top-nav-link,
 body[data-lang="zh"] h2,
-body[data-lang="zh"] .resume-heading,
+body[data-lang="zh"] .meditations-heading,
 body[data-lang="zh"] .schedule-heading,
 body[data-lang="zh"] .schedule-switch-btn,
 body[data-lang="zh"] .social-heading,
@@ -366,7 +366,6 @@ body[data-lang="zh"] .life-heading,
 body[data-lang="zh"] .life-switch-btn,
 body[data-lang="zh"] .toolkit-heading,
 body[data-lang="zh"] .category-title,
-body[data-lang="zh"] #meditations .resume-heading,
 body[data-lang="zh"] #meditations .medit-contents-title,
 body[data-lang="zh"] #meditations .medit-row-big .medit-title,
 body[data-lang="zh"] #schedule .fc-toolbar-title,
@@ -402,7 +401,7 @@ body[data-lang="zh"] .schedule-switch-btn {
   .am-detail-date
   .am-detail-title
 */
-body[data-lang="zh"] #resume,
+body[data-lang="zh"] #about,
 body[data-lang="zh"] #social,
 body[data-lang="zh"] #toolkit,
 body[data-lang="zh"] #schedule,
@@ -432,20 +431,20 @@ body[data-lang="zh"]
   so they need a stronger Chinese-mode rule here.
 */
 body[data-lang="zh"]
-#resume
+#about
 .expand-action-btn,
 body[data-lang="zh"]
-#resume
+#about
 .expand-action-btn span,
 body[data-lang="zh"]
-#resume
+#about
 .project-actions,
 body[data-lang="zh"]
-#resume
+#about
 .project-actions
 .expand-action-btn,
 body[data-lang="zh"]
-#resume
+#about
 .project-actions
 .expand-action-btn span {
   font-family:

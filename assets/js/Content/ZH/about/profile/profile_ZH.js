@@ -2,63 +2,63 @@
   'use strict';
 
   window.PROFILE_ZH_INNER_HTML = `
-      <div class="section resume-hero" id="resume-hero">
-        <div class="resume-hero-avatar">
-          <img src="./assets/images/about/profile.jpg" alt="Profile photo">
+      <div class="section profile-hero" id="profile-hero">
+        <div class="profile-hero-avatar">
+          <img src="./assets/images/about/profile/profile.jpg" alt="Profile photo">
         </div>
-        <div class="resume-hero-body">
-          <div class="resume-hero-name">陈璟皓</div>
+        <div class="profile-hero-body">
+          <div class="profile-hero-name">陈璟皓</div>
 
-          <div class="resume-email-block">
-            <div class="resume-email-toggle-line">
-              <span class="resume-email-title resume-email-title-icon" aria-label="邮箱" title="邮箱">
+          <div class="profile-email-block">
+            <div class="profile-email-toggle-line">
+              <span class="profile-email-title profile-email-title-icon" aria-label="邮箱" title="邮箱">
                 <i class="fas fa-envelope" aria-hidden="true"></i>
               </span>
-              <button class="expander resume-email-expander" type="button" data-expand-target="exp-hero-email-zh" data-expand-key="hero-email" aria-expanded="false" aria-label="展开邮箱地址">
+              <button class="expander profile-email-expander" type="button" data-expand-target="exp-hero-email-zh" data-expand-key="hero-email" aria-expanded="false" aria-label="展开邮箱地址">
                 <i class="fas fa-chevron-right"></i>
               </button>
             </div>
 
-            <div class="expand-row resume-email-expand" id="exp-hero-email-zh" aria-hidden="true" style="display:none;">
-              <div class="expand-content resume-email-content">
-                <div class="resume-email-list">
-                  <div class="resume-email-row">
-                    <span class="resume-email-label">学术邮箱</span>
-                    <a class="resume-email-address" href="mailto:chenjinghao@mail.ustc.edu.cn">chenjinghao@mail.ustc.edu.cn</a>
-                    <span class="resume-email-note"></span>
-                    <span class="resume-email-actions" aria-label="学术邮箱操作">
-                      <button class="resume-email-icon-btn resume-email-copy-btn" type="button" data-copy-email="chenjinghao@mail.ustc.edu.cn" aria-label="复制学术邮箱地址" title="复制">
+            <div class="expand-row profile-email-expand" id="exp-hero-email-zh" aria-hidden="true" style="display:none;">
+              <div class="expand-content profile-email-content">
+                <div class="profile-email-list">
+                  <div class="profile-email-row">
+                    <span class="profile-email-label">学术邮箱</span>
+                    <a class="profile-email-address" href="mailto:chenjinghao@mail.ustc.edu.cn">chenjinghao@mail.ustc.edu.cn</a>
+                    <span class="profile-email-note"></span>
+                    <span class="profile-email-actions" aria-label="学术邮箱操作">
+                      <button class="profile-email-icon-btn profile-email-copy-btn" type="button" data-copy-email="chenjinghao@mail.ustc.edu.cn" aria-label="复制学术邮箱地址" title="复制">
                         <i class="fas fa-copy" aria-hidden="true"></i>
                       </button>
-                      <a class="resume-email-icon-btn resume-email-send-btn" href="mailto:chenjinghao@mail.ustc.edu.cn" aria-label="发送邮件到学术邮箱" title="发送邮件">
+                      <a class="profile-email-icon-btn profile-email-send-btn" href="mailto:chenjinghao@mail.ustc.edu.cn" aria-label="发送邮件到学术邮箱" title="发送邮件">
                         <i class="fas fa-paper-plane" aria-hidden="true"></i>
                       </a>
                     </span>
                   </div>
 
-                  <div class="resume-email-row">
-                    <span class="resume-email-label">个人邮箱</span>
-                    <a class="resume-email-address" href="mailto:stardust.math26@gmail.com">stardust.math26@gmail.com</a>
-                    <span class="resume-email-note"></span>
-                    <span class="resume-email-actions" aria-label="个人邮箱操作">
-                      <button class="resume-email-icon-btn resume-email-copy-btn" type="button" data-copy-email="stardust.math26@gmail.com" aria-label="复制个人邮箱地址" title="复制">
+                  <div class="profile-email-row">
+                    <span class="profile-email-label">个人邮箱</span>
+                    <a class="profile-email-address" href="mailto:stardust.math26@gmail.com">stardust.math26@gmail.com</a>
+                    <span class="profile-email-note"></span>
+                    <span class="profile-email-actions" aria-label="个人邮箱操作">
+                      <button class="profile-email-icon-btn profile-email-copy-btn" type="button" data-copy-email="stardust.math26@gmail.com" aria-label="复制个人邮箱地址" title="复制">
                         <i class="fas fa-copy" aria-hidden="true"></i>
                       </button>
-                      <a class="resume-email-icon-btn resume-email-send-btn" href="mailto:stardust.math26@gmail.com" aria-label="发送邮件到个人邮箱" title="发送邮件">
+                      <a class="profile-email-icon-btn profile-email-send-btn" href="mailto:stardust.math26@gmail.com" aria-label="发送邮件到个人邮箱" title="发送邮件">
                         <i class="fas fa-paper-plane" aria-hidden="true"></i>
                       </a>
                     </span>
                   </div>
 
-                  <div class="resume-email-row">
-                    <span class="resume-email-label">临时邮箱</span>
-                    <a class="resume-email-address" href="mailto:jinghao-chen@u.nus.edu">jinghao-chen@u.nus.edu</a>
-                    <span class="resume-email-note">有效期: 2026年8月 &mdash; 10月</span>
-                    <span class="resume-email-actions" aria-label="临时邮箱操作">
-                      <button class="resume-email-icon-btn resume-email-copy-btn" type="button" data-copy-email="jinghao-chen@u.nus.edu" aria-label="复制临时邮箱地址" title="复制">
+                  <div class="profile-email-row">
+                    <span class="profile-email-label">临时邮箱</span>
+                    <a class="profile-email-address" href="mailto:jinghao-chen@u.nus.edu">jinghao-chen@u.nus.edu</a>
+                    <span class="profile-email-note">有效期: 2026年8月 &mdash; 10月</span>
+                    <span class="profile-email-actions" aria-label="临时邮箱操作">
+                      <button class="profile-email-icon-btn profile-email-copy-btn" type="button" data-copy-email="jinghao-chen@u.nus.edu" aria-label="复制临时邮箱地址" title="复制">
                         <i class="fas fa-copy" aria-hidden="true"></i>
                       </button>
-                      <a class="resume-email-icon-btn resume-email-send-btn" href="mailto:jinghao-chen@u.nus.edu" aria-label="发送邮件到临时邮箱" title="发送邮件">
+                      <a class="profile-email-icon-btn profile-email-send-btn" href="mailto:jinghao-chen@u.nus.edu" aria-label="发送邮件到临时邮箱" title="发送邮件">
                         <i class="fas fa-paper-plane" aria-hidden="true"></i>
                       </a>
                     </span>
@@ -68,7 +68,7 @@
             </div>
           </div>
 
-          <p class="resume-hero-intro">
+          <p class="profile-hero-intro">
           我是中国科学技术大学 (USTC) 数学专业本科生, 辅修计算机科学. 我主要研究运营管理与运筹学方向, 尤其关注供应链分析、随机建模与博弈论.
           <br><br>
           作为数学专业的学生, 严格的数学训练塑造了我处理应用问题的方式: 在进行计算之前, 我往往会先寻找问题背后的结构. 这种视角常常让我能借助代数或数论中的工具——例如不变量、对称性与离散推理——用更精炼的论证、更清晰的推导与更易于解释的结果, 替代单纯的暴力计算. 即使研究最终目标偏经验或决策导向, 我也会尽量让建模假设清晰可见、推理链条透明可靠. 作为计算机专业的学生, 当工作与计算或人工智能产生交集时, 我能够快速上手 (无论理论还是实操). 与此同时，多年的编程经验也让我能自然高效地使用科研软件进行可视化、分析与学术写作.
@@ -87,19 +87,19 @@
         <h2>教育背景</h2>
         <div class="subheading">
           <span class="subheading-title">
-            <a class="resume-link" href="https://www.ustc.edu.cn/" target="_blank" rel="noopener noreferrer">中国科学技术大学</a>
+            <a class="profile-link" href="https://www.ustc.edu.cn/" target="_blank" rel="noopener noreferrer">中国科学技术大学</a>
           </span>
           <span>2023年9月 &mdash; 2027年7月 (预计)</span>
         </div>
 
-        <div class="subsubheading resume-degree-line">
+        <div class="subsubheading profile-degree-line">
           <span>
-            <a class="resume-link" href="https://math.ustc.edu.cn/main.htm" target="_blank" rel="noopener noreferrer">数学理学学士</a>; <a class="resume-link" href="https://cs.ustc.edu.cn/main.htm" target="_blank" rel="noopener noreferrer">计算机科学与技术工学学士</a>
+            <a class="profile-link" href="https://math.ustc.edu.cn/main.htm" target="_blank" rel="noopener noreferrer">数学理学学士</a>; <a class="profile-link" href="https://cs.ustc.edu.cn/main.htm" target="_blank" rel="noopener noreferrer">计算机科学与技术工学学士</a>
             <button class="expander" type="button" data-expand-target="exp-edu-bg-zh" data-expand-key="edu-bg" aria-expanded="false" aria-label="展开详情">
               <i class="fas fa-chevron-right"></i>
             </button>
             <br>
-            (PS: <a class="resume-link" href="https://aixmicroprogram.mh.chaoxing.com/" target="_blank" rel="noopener noreferrer">AI+X 微专业, 华东五校联盟</a>)
+            (PS: <a class="profile-link" href="https://aixmicroprogram.mh.chaoxing.com/" target="_blank" rel="noopener noreferrer">AI+X 微专业, 华东五校联盟</a>)
           </span>
           <span>中国·合肥</span>
         </div>
@@ -107,7 +107,7 @@
         <div class="expand-row" id="exp-edu-bg-zh" aria-hidden="true" style="display:none;">
           <div class="expand-content">
             <div class="expand-item">
-              <img src="./assets/images/about/Education_Background.png" alt="教育背景">
+              <img src="./assets/images/about/profile/Education_Background.png" alt="教育背景">
             </div>
           </div>
         </div>
@@ -127,7 +127,7 @@
             <td colspan="2">
               <div class="expand-content">
                 <a class="expand-item" href="https://math.ustc.edu.cn/2025/1024/c18650a706019/page.htm" target="_blank" rel="noopener noreferrer" aria-label="打开相关链接">
-                  <img src="./assets/images/about/Excellent_Student_Scholarship--Silver.jpg" alt="优秀学生奖学金 (银奖)">
+                  <img src="./assets/images/about/profile/Excellent_Student_Scholarship--Silver.jpg" alt="优秀学生奖学金 (银奖)">
                 </a>
               </div>
             </td>
@@ -144,7 +144,7 @@
             <td colspan="2">
               <div class="expand-content">
                 <a class="expand-item" href="https://math.ustc.edu.cn/2024/1113/c18650a660488/page.htm" target="_blank" rel="noopener noreferrer" aria-label="打开相关链接">
-                  <img src="./assets/images/about/Zhang_Zongzhi_Sci-Tech_Scholarship.jpg" alt="张宗植科技奖学金">
+                  <img src="./assets/images/about/profile/Zhang_Zongzhi_Sci-Tech_Scholarship.jpg" alt="张宗植科技奖学金">
                 </a>
               </div>
             </td>
@@ -152,7 +152,7 @@
 
           <tr>
             <td>
-              <a class="award-link" href="./assets/pdf/about/Excellent_Freshman_Scholarship--Silver.pdf" download aria-label="下载 PDF">优秀新生奖学金 (银奖)</a>
+              <a class="award-link" href="./assets/pdf/about/profile/Excellent_Freshman_Scholarship--Silver.pdf" download aria-label="下载 PDF">优秀新生奖学金 (银奖)</a>
               <button class="expander" type="button" data-expand-target="exp-efs-silver-zh" data-expand-key="efs-silver" aria-expanded="false" aria-label="展开详情"><i class="fas fa-chevron-right"></i></button>
             </td>
             <td align="right">2023</td>
@@ -160,8 +160,8 @@
           <tr class="expand-row" id="exp-efs-silver-zh" aria-hidden="true" style="display:none;">
             <td colspan="2">
               <div class="expand-content">
-                <a class="expand-item" href="./assets/pdf/about/Excellent_Freshman_Scholarship--Silver.pdf" download aria-label="下载 PDF">
-                  <img src="./assets/images/about/Excellent_Freshman_Scholarship--Silver.jpg" alt="优秀新生奖学金 (银奖)">
+                <a class="expand-item" href="./assets/pdf/about/profile/Excellent_Freshman_Scholarship--Silver.pdf" download aria-label="下载 PDF">
+                  <img src="./assets/images/about/profile/Excellent_Freshman_Scholarship--Silver.jpg" alt="优秀新生奖学金 (银奖)">
                 </a>
               </div>
             </td>
@@ -169,7 +169,7 @@
 
           <tr>
             <td>
-              <a class="award-link" href="./assets/pdf/about/2025_MCM_Problem_B_Results.pdf" download aria-label="下载 PDF">美国大学生数学建模竞赛 (MCM) B 题: 荣誉奖 (队长)</a>
+              <a class="award-link" href="./assets/pdf/about/profile/2025_MCM_Problem_B_Results.pdf" download aria-label="下载 PDF">美国大学生数学建模竞赛 (MCM) B 题: 荣誉奖 (队长)</a>
               <button class="expander" type="button" data-expand-target="exp-mcm-hm-zh" data-expand-key="mcm-hm" aria-expanded="false" aria-label="展开详情">
                 <i class="fas fa-chevron-right"></i>
               </button>
@@ -179,8 +179,8 @@
           <tr class="expand-row" id="exp-mcm-hm-zh" aria-hidden="true" style="display:none;">
             <td colspan="2">
               <div class="expand-content">
-                <a class="expand-item" href="./assets/pdf/about/2025_MCM_Problem_B_Results.pdf" download aria-label="下载 PDF">
-                  <img src="./assets/images/about/Honorable_Mention.jpg" alt="MCM Honorable Mention">
+                <a class="expand-item" href="./assets/pdf/about/profile/2025_MCM_Problem_B_Results.pdf" download aria-label="下载 PDF">
+                  <img src="./assets/images/about/profile/Honorable_Mention.jpg" alt="MCM Honorable Mention">
                 </a>
               </div>
             </td>
@@ -196,8 +196,8 @@
         </div>
         <div class="subsubheading">
           <div>导师: </div>
-          <div class="resume-advisor-list">
-            <div><strong><a class="resume-link" href="https://cde.nus.edu.sg/isem/staff/li-xiaobo/" target="_blank" rel="noopener noreferrer">李晓波教授</a></strong>(<a class="resume-link" href="https://cde.nus.edu.sg/isem/" target="_blank" rel="noopener noreferrer">新加坡国立大学工业系统工程与管理系</a>)</div>
+          <div class="profile-advisor-list">
+            <div><strong><a class="profile-link" href="https://cde.nus.edu.sg/isem/staff/li-xiaobo/" target="_blank" rel="noopener noreferrer">李晓波教授</a></strong>(<a class="profile-link" href="https://cde.nus.edu.sg/isem/" target="_blank" rel="noopener noreferrer">新加坡国立大学工业系统工程与管理系</a>)</div>
           </div>
         </div>
         <ul>
@@ -211,9 +211,9 @@
         </div>
         <div class="subsubheading">
           <div>导师: </div>
-          <div class="resume-advisor-list">
-            <div><strong><a class="resume-link" href="https://sites.google.com/site/yiminyu/" target="_blank" rel="noopener noreferrer">虞义敏教授</a></strong>(<a class="resume-link" href="https://www.cb.cityu.edu.hk/dao/" target="_blank" rel="noopener noreferrer">香港城市大学 决策分析与运营学系</a>)</div>
-            <div><strong><a class="resume-link" href="https://www.ln.edu.hk/mkt/faculty-staff/staff-list/wang-qian" target="_blank" rel="noopener noreferrer">汪倩教授</a></strong>(<a class="resume-link" href="https://www.ln.edu.hk/mkt" target="_blank" rel="noopener noreferrer">香港岭南大学 市场营销与国际商务学系</a>)</div>
+          <div class="profile-advisor-list">
+            <div><strong><a class="profile-link" href="https://sites.google.com/site/yiminyu/" target="_blank" rel="noopener noreferrer">虞义敏教授</a></strong>(<a class="profile-link" href="https://www.cb.cityu.edu.hk/dao/" target="_blank" rel="noopener noreferrer">香港城市大学 决策分析与运营学系</a>)</div>
+            <div><strong><a class="profile-link" href="https://www.ln.edu.hk/mkt/faculty-staff/staff-list/wang-qian" target="_blank" rel="noopener noreferrer">汪倩教授</a></strong>(<a class="profile-link" href="https://www.ln.edu.hk/mkt" target="_blank" rel="noopener noreferrer">香港岭南大学 市场营销与国际商务学系</a>)</div>
           </div>
         </div>
         <ul>
@@ -228,9 +228,9 @@
         </div>
         <div class="subsubheading">
           <div>导师: </div>
-          <div class="resume-advisor-list">
-            <div><strong><a class="resume-link" href="https://bs.ustc.edu.cn/chinese/profile-329.html" target="_blank" rel="noopener noreferrer">沈晓蓓教授</a></strong>(<a class="resume-link" href="https://business.ustc.edu.cn/main.htm" target="_blank" rel="noopener noreferrer">中国科学技术大学 管理学院</a>)</div>
-            <div><strong><a class="resume-link" href="https://bs.ustc.edu.cn/chinese/profile-2329.html" target="_blank" rel="noopener noreferrer">吕建成博士</a></strong>(<a class="resume-link" href="https://business.ustc.edu.cn/main.htm" target="_blank" rel="noopener noreferrer">中国科学技术大学 管理学院</a>)</div>
+          <div class="profile-advisor-list">
+            <div><strong><a class="profile-link" href="https://bs.ustc.edu.cn/chinese/profile-329.html" target="_blank" rel="noopener noreferrer">沈晓蓓教授</a></strong>(<a class="profile-link" href="https://business.ustc.edu.cn/main.htm" target="_blank" rel="noopener noreferrer">中国科学技术大学 管理学院</a>)</div>
+            <div><strong><a class="profile-link" href="https://bs.ustc.edu.cn/chinese/profile-2329.html" target="_blank" rel="noopener noreferrer">吕建成博士</a></strong>(<a class="profile-link" href="https://business.ustc.edu.cn/main.htm" target="_blank" rel="noopener noreferrer">中国科学技术大学 管理学院</a>)</div>
           </div>
         </div>
         <ul>
@@ -247,8 +247,8 @@
         </div>
         <div class="subsubheading">
           <div>授课教师: </div>
-          <div class="resume-advisor-list">
-            <div><strong><a class="resume-link" href="https://faculty.ustc.edu.cn/mingminzhang/zh_CN/index.htm" target="_blank" rel="noopener noreferrer">张明敏教授</a></strong> (<a class="resume-link" href="https://math.ustc.edu.cn/main.htm" target="_blank" rel="noopener noreferrer">中国科学技术大学 数学科学学院</a>)</div>
+          <div class="profile-advisor-list">
+            <div><strong><a class="profile-link" href="https://faculty.ustc.edu.cn/mingminzhang/zh_CN/index.htm" target="_blank" rel="noopener noreferrer">张明敏教授</a></strong> (<a class="profile-link" href="https://math.ustc.edu.cn/main.htm" target="_blank" rel="noopener noreferrer">中国科学技术大学 数学科学学院</a>)</div>
           </div>
         </div>
         <ul>
@@ -275,8 +275,8 @@
         </div>
         <div class="subsubheading">
           <div>授课教师: </div>
-          <div class="resume-advisor-list">
-            <div><strong><a class="resume-link" href="https://faculty.ustc.edu.cn/xiaoli" target="_blank" rel="noopener noreferrer">肖力教授</a></strong> (<a class="resume-link" href="https://sist.ustc.edu.cn/main.htm" target="_blank" rel="noopener noreferrer">中国科学技术大学 信息科学技术学院</a>)</div>
+          <div class="profile-advisor-list">
+            <div><strong><a class="profile-link" href="https://faculty.ustc.edu.cn/xiaoli" target="_blank" rel="noopener noreferrer">肖力教授</a></strong> (<a class="profile-link" href="https://sist.ustc.edu.cn/main.htm" target="_blank" rel="noopener noreferrer">中国科学技术大学 信息科学技术学院</a>)</div>
           </div>
         </div>
         <ul>
@@ -302,8 +302,8 @@
         </div>
         <div class="subsubheading">
           <div>授课教师: </div>
-          <div class="resume-advisor-list">
-            <div><strong><a class="resume-link" href="https://bs.ustc.edu.cn/chinese/profile-97.html" target="_blank" rel="noopener noreferrer">张曙光教授</a></strong> (<a class="resume-link" href="https://business.ustc.edu.cn/main.htm" target="_blank" rel="noopener noreferrer">中国科学技术大学 管理学院</a>)</div>
+          <div class="profile-advisor-list">
+            <div><strong><a class="profile-link" href="https://bs.ustc.edu.cn/chinese/profile-97.html" target="_blank" rel="noopener noreferrer">张曙光教授</a></strong> (<a class="profile-link" href="https://business.ustc.edu.cn/main.htm" target="_blank" rel="noopener noreferrer">中国科学技术大学 管理学院</a>)</div>
           </div>
         </div>
         <ul>
@@ -565,7 +565,7 @@
         </ul>
       </div>
 
-    <a href="#" class="back-btn" id="resume-back-btn">
+    <a href="#" class="back-btn" id="about-back-btn">
       <i class="fas fa-arrow-left"></i>
     </a>
   `;

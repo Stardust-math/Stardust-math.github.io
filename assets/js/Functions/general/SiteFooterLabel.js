@@ -24,10 +24,8 @@
     ustcHome: 'https://www.ustc.edu.cn/',
 
     /*
-      These are DOM element IDs, not internal page keys.
-
-      The internal Bootstrap page key remains "resume",
-      but the public About page root is now #about.
+      These are DOM element IDs for pages that receive
+      the shared footer label.
     */
     targetPageIds: [
       'about',

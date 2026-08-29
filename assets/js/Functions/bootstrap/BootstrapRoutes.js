@@ -3,7 +3,7 @@
 
   let pageConfigs = {};
   let navigation = {};
-  let defaultPage = 'resume';
+  let defaultPage = 'about';
 
   const ROUTE_TO_PAGE = {};
   const PAGE_TO_ROUTE = {};
@@ -40,7 +40,7 @@
   const configuredLocalizedPages =
     Array.isArray(localization.localizedPages)
       ? localization.localizedPages
-      : ['resume', 'schedule', 'social', 'life'];
+      : ['about', 'schedule', 'social', 'life'];
 
   const LOCALIZED_ROUTE_SEGMENTS = Object.freeze(
     Array.from(
@@ -798,7 +798,7 @@
 
     pageConfigs = opts.pageConfigs || {};
     navigation = opts.navigation || {};
-    defaultPage = navigation.defaultPage || opts.defaultPage || 'resume';
+    defaultPage = navigation.defaultPage || opts.defaultPage || 'about';
 
     buildRouteMaps();
 
