@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-25T12:04:22.838Z",
+  "generatedAt": "2026-08-29T11:41:02.534Z",
   "items": [
     {
       "id": "bgm-220445",
@@ -230,7 +230,7 @@
         "抄袭狗"
       ],
       "ratings": {
-        "bangumi": 6,
+        "bangumi": 6.1,
         "personal": null
       },
       "notes": {
@@ -240,7 +240,7 @@
       "dates": {
         "air": "2014-01-17"
       },
-      "updatedAt": "2026-08-23T19:34:49.294Z"
+      "updatedAt": "2026-08-29T11:39:21.587Z"
     },
     {
       "id": "bgm-121596",
@@ -2450,7 +2450,7 @@
         "科幻"
       ],
       "ratings": {
-        "bangumi": 9,
+        "bangumi": 8.9,
         "personal": null
       },
       "notes": {
@@ -2460,7 +2460,7 @@
       "dates": {
         "air": "1996-09-07"
       },
-      "updatedAt": "2026-08-23T19:34:40.848Z"
+      "updatedAt": "2026-08-29T11:39:13.770Z"
     },
     {
       "id": "bgm-215425",
@@ -6036,7 +6036,7 @@
         "紫罗兰剧场版"
       ],
       "ratings": {
-        "bangumi": 7.6,
+        "bangumi": 7.5,
         "personal": null
       },
       "notes": {
@@ -6046,7 +6046,7 @@
       "dates": {
         "air": "2020-09-18"
       },
-      "updatedAt": "2026-08-02T00:04:49.465Z"
+      "updatedAt": "2026-08-29T11:40:10.716Z"
     },
     {
       "id": "bgm-255530",
@@ -6096,7 +6096,7 @@
         "续作"
       ],
       "ratings": {
-        "bangumi": 6.6,
+        "bangumi": 6.5,
         "personal": null
       },
       "notes": {
@@ -6106,7 +6106,7 @@
       "dates": {
         "air": "2021-05-15"
       },
-      "updatedAt": "2026-08-16T19:33:53.522Z"
+      "updatedAt": "2026-08-29T11:40:16.907Z"
     },
     {
       "id": "bgm-255525",
@@ -9630,7 +9630,7 @@
         "吐槽"
       ],
       "ratings": {
-        "bangumi": 7.4,
+        "bangumi": 7.5,
         "personal": null
       },
       "notes": {
@@ -9640,7 +9640,7 @@
       "dates": {
         "air": "2019-12-30"
       },
-      "updatedAt": "2026-08-23T19:36:06.787Z"
+      "updatedAt": "2026-08-29T11:40:33.735Z"
     },
     {
       "id": "bgm-48034",
@@ -12800,7 +12800,7 @@
         "及川啓"
       ],
       "ratings": {
-        "bangumi": 5.7,
+        "bangumi": 5.8,
         "personal": null
       },
       "notes": {
@@ -12810,7 +12810,7 @@
       "dates": {
         "air": "2023-04-27"
       },
-      "updatedAt": "2026-08-16T19:34:40.748Z"
+      "updatedAt": "2026-08-29T11:41:02.534Z"
     },
     {
       "id": "bgm-102134",
