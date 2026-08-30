@@ -25,8 +25,8 @@ Do not edit it manually.
 | bgm-27364 | 冰菓 | completed | `items/bgm-27364.json` | https://bgm.tv/subject/27364 |
 | bgm-111762 | 冰菓 应该持有之物 | planned | `items/bgm-111762.json` | https://bgm.tv/subject/111762 |
 | bgm-47957 | 超次元游戏 海王星 | planned | `items/bgm-47957.json` | https://bgm.tv/subject/47957 |
+| bgm-604826 | 超辉夜姬！ | planned | `items/bgm-604826.json` | https://bgm.tv/subject/604826 |
 | bgm-1974 | 超魔神英雄传 | completed | `items/bgm-1974.json` | https://bgm.tv/subject/1974 |
-| bgm-604826 | 超时空辉夜姬！ | planned | `items/bgm-604826.json` | https://bgm.tv/subject/604826 |
 | bgm-115908 | 吹响吧！上低音号 | planned | `items/bgm-115908.json` | https://bgm.tv/subject/115908 |
 | bgm-152091 | 吹响吧！上低音号 第二季 | planned | `items/bgm-152091.json` | https://bgm.tv/subject/152091 |
 | bgm-283643 | 吹响吧！上低音号 第三季 | planned | `items/bgm-283643.json` | https://bgm.tv/subject/283643 |
