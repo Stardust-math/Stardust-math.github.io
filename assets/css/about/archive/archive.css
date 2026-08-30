@@ -1,9 +1,9 @@
 /* =========================================================
    About / Archive
-   - Typography aligned with About / Profile
-   - Categorised document list
-   - Profile-consistent expander arrow
-   - Lazy shared PDF reader
+   - Flexible material taxonomy
+   - Metadata search and dynamic filters
+   - Profile-consistent document list
+   - On-demand shared PDF reader
    ========================================================= */
 
 #about-archive {
@@ -15,27 +15,400 @@ body[data-lang="zh"] #about-archive {
   font-family: var(--font-zh-regular);
 }
 
+#about-archive [hidden] {
+  display: none !important;
+}
+
+.archive-visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
 /* =========================================================
-   Category
+   Search and filters
+   ========================================================= */
+
+.archive-toolbar {
+  width: 100%;
+  margin: 0 0 26px;
+}
+
+.archive-search-field {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm, 10px);
+  background: var(--surface);
+  box-shadow:
+    var(
+      --shadow-xs,
+      0 2px 10px rgba(17, 24, 39, 0.06)
+    );
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    background-color 0.18s ease;
+}
+
+.archive-search-field:hover,
+.archive-search-field:focus-within {
+  border-color: var(--accent);
+}
+
+.archive-search-field:focus-within {
+  box-shadow: 0 0 0 3px var(--accent-weak);
+}
+
+.archive-search-icon {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 17px;
+  height: 17px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  pointer-events: none;
+  transform: translateY(-50%);
+  transition: color 0.18s ease;
+}
+
+.archive-search-field:focus-within
+.archive-search-icon {
+  color: var(--accent);
+}
+
+.archive-search-input {
+  appearance: none;
+  -webkit-appearance: none;
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  margin: 0;
+  padding: 10px 42px 10px 42px;
+  border: 0;
+  border-radius: inherit;
+  outline: 0;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.94rem;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.archive-search-input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.archive-search-input::placeholder {
+  color: var(--muted);
+  font-weight: 400;
+  opacity: 0.9;
+}
+
+.archive-search-clear {
+  appearance: none;
+  -webkit-appearance: none;
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition:
+    color 0.18s ease,
+    background-color 0.18s ease;
+}
+
+.archive-search-clear:hover {
+  background: var(--accent-weak);
+  color: var(--accent-strong);
+}
+
+.archive-search-clear:focus-visible,
+.archive-primary-filter:focus-visible,
+.archive-filter-select:focus-visible,
+.archive-empty-reset:focus-visible,
+.archive-document-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.archive-toolbar-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 14px;
+  margin-top: 12px;
+}
+
+.archive-primary-filters,
+.archive-select-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.archive-primary-filter {
+  appearance: none;
+  -webkit-appearance: none;
+  min-height: 34px;
+  padding: 6px 13px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 650;
+  line-height: 1.3;
+  cursor: pointer;
+  transition:
+    border-color 0.18s ease,
+    background-color 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.archive-primary-filter:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.archive-primary-filter.is-active {
+  border-color: var(--accent);
+  background: var(--accent-weak);
+  color: var(--accent-strong);
+}
+
+.archive-filter-field {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.archive-filter-select {
+  appearance: none;
+  -webkit-appearance: none;
+  min-height: 34px;
+  max-width: 230px;
+  padding: 6px 34px 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  outline: 0;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 600;
+  line-height: 1.3;
+  cursor: pointer;
+  transition:
+    border-color 0.18s ease,
+    background-color 0.18s ease,
+    color 0.18s ease;
+}
+
+.archive-filter-select:hover,
+.archive-filter-select:focus {
+  border-color: var(--accent);
+}
+
+.archive-filter-icon {
+  position: absolute;
+  right: 12px;
+  color: var(--muted);
+  font-size: 0.65rem;
+  pointer-events: none;
+}
+
+.archive-toolbar-status {
+  display: flex;
+  justify-content: flex-end;
+  min-height: 1.3em;
+  margin-top: 7px;
+  padding: 0 2px;
+}
+
+.archive-result-count {
+  color: var(--muted);
+  font-size: 0.77rem;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+  line-height: 1.4;
+}
+
+body.dark-mode .archive-search-field {
+  box-shadow:
+    0 2px 12px rgba(0, 0, 0, 0.18);
+}
+
+/* =========================================================
+   Empty state
+   ========================================================= */
+
+.archive-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+  min-height: 150px;
+  padding: 28px 16px;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-sm, 10px);
+  color: var(--muted);
+  text-align: center;
+}
+
+.archive-empty-state p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.archive-empty-reset {
+  appearance: none;
+  -webkit-appearance: none;
+  min-height: 34px;
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--accent-strong);
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    border-color 0.18s ease,
+    background-color 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.archive-empty-reset:hover {
+  border-color: var(--accent);
+  background: var(--accent-weak);
+  color: var(--accent);
+  transform: translateY(-1px);
+}
+
+/* =========================================================
+   Classification hierarchy
    ========================================================= */
 
 .archive-category + .archive-category {
-  margin-top: 24px;
+  margin-top: 30px;
 }
 
-/*
-  The category title is an h2 element.
-
-  It therefore inherits the same typography as the
-  section headings on the Profile page.
-*/
 .archive-category-title {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55em;
   margin-top: 0;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 body[data-lang="zh"]
 .archive-category-title {
+  font-family: var(--font-zh-heading);
+  font-variant: normal;
+  letter-spacing: 0;
+}
+
+.archive-group-count {
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 0.64em;
+  font-style: normal;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.82;
+}
+
+.archive-material-type +
+.archive-material-type {
+  margin-top: 24px;
+}
+
+.archive-material-type-title {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5em;
+  margin: 0 0 6px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 1.06em;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+body[data-lang="zh"]
+.archive-material-type-title {
+  font-family: var(--font-zh-heading);
+  font-variant: normal;
+  letter-spacing: 0;
+}
+
+.archive-series {
+  margin-top: 15px;
+}
+
+.archive-series + .archive-series {
+  margin-top: 20px;
+}
+
+.archive-series-title {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45em;
+  margin: 0 0 3px;
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 0.94em;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+body[data-lang="zh"]
+.archive-series-title {
   font-family: var(--font-zh-heading);
   font-variant: normal;
   letter-spacing: 0;
@@ -61,11 +434,9 @@ body[data-lang="zh"]
 
 .archive-document-row {
   display: grid;
-  grid-template-columns:
-    minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: start;
-  column-gap: 12px;
-
+  column-gap: 14px;
   padding: 15px 2px 14px;
 }
 
@@ -74,21 +445,14 @@ body[data-lang="zh"]
 }
 
 .archive-document-title-line {
+  display: flex;
+  align-items: baseline;
   min-width: 0;
   line-height: 1.55;
 }
 
-/* =========================================================
-   Document typography
-   ========================================================= */
-
-/*
-  Match Profile's .subheading-title:
-  inherited serif family, accent colour and bold weight.
-*/
 .archive-document-title {
-  display: inline;
-
+  min-width: 0;
   color: var(--accent);
   font-family: inherit;
   font-size: 1.03em;
@@ -96,12 +460,9 @@ body[data-lang="zh"]
   font-weight: 700;
   line-height: 1.55;
   letter-spacing: 0;
+  overflow-wrap: anywhere;
 }
 
-/*
-  English book titles retain the same serif family
-  and weight. Italics are the only distinction.
-*/
 .archive-document-book-title {
   font-family: inherit;
   font-size: inherit;
@@ -110,11 +471,7 @@ body[data-lang="zh"]
   letter-spacing: inherit;
 }
 
-/*
-  Author names stay upright while remaining part
-  of the same title line.
-*/
-.archive-document-authors {
+.archive-document-person {
   font-family: inherit;
   font-size: inherit;
   font-style: normal;
@@ -130,72 +487,92 @@ body[data-lang="zh"]
 }
 
 body[data-lang="zh"]
-.archive-document-book-title {
-  font-family: inherit;
-  font-style: normal;
-  font-weight: inherit;
-}
-
+.archive-document-book-title,
 body[data-lang="zh"]
-.archive-document-authors {
+.archive-document-person {
   font-family: inherit;
   font-style: normal;
   font-weight: inherit;
 }
-
-/* =========================================================
-   Supporting information
-   ========================================================= */
 
 .archive-document-meta,
 .archive-document-notice {
   color: var(--muted);
   font-family: inherit;
-  font-size: 0.95em;
+  font-size: 0.94em;
   font-weight: 400;
   line-height: 1.55;
 }
 
 .archive-document-meta {
   align-self: start;
-
-  margin-top: 0;
-
-  font-style: normal;
   text-align: right;
   white-space: nowrap;
 }
 
-.archive-document-meta:empty {
-  display: none;
-}
-
-/*
-  Match Profile's .subsubheading:
-  muted, slightly smaller and italic.
-*/
 .archive-document-notice {
   margin-top: 3px;
   font-style: italic;
 }
 
-.archive-document-notice:empty {
-  display: none;
+.archive-document-tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
 }
 
-/* =========================================================
-   Expander
-   ========================================================= */
+.archive-document-tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 23px;
+  padding: 2px 8px;
+  border:
+    1px solid
+    color-mix(
+      in srgb,
+      var(--border) 82%,
+      transparent
+    );
+  border-radius: 999px;
+  background:
+    color-mix(
+      in srgb,
+      var(--surface) 88%,
+      var(--accent-weak) 12%
+    );
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
 
-/*
-  The Archive arrow now participates in the same inline
-  text flow as Profile arrows.
+.archive-document-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 9px;
+}
 
-  Its dimensions, spacing, gradient, shadow, baseline
-  adjustment and animation all come directly from the
-  shared .expander rules.
-*/
+.archive-document-link {
+  color: var(--accent-strong);
+  font-size: 0.84rem;
+  font-weight: 650;
+  line-height: 1.4;
+  text-decoration: none;
+}
+
+.archive-document-link:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+/* The arrow inherits dimensions, gradient and animation
+   from the shared .expander component. */
 .archive-document-expander {
+  flex: 0 0 auto;
   cursor: help;
 }
 
@@ -208,17 +585,20 @@ body[data-lang="zh"]
 }
 
 .archive-document-content {
-  --expand-max-height: 1260px;
-
+  --expand-max-height: 1320px;
   width: 100%;
-
-  grid-template-columns:
-    minmax(0, 1fr) !important;
-
-  justify-items:
-    stretch !important;
-
+  grid-template-columns: minmax(0, 1fr) !important;
+  justify-items: stretch !important;
   gap: 0;
+}
+
+.archive-document-description {
+  max-width: 76ch;
+  margin: 4px 4px 16px;
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 0.94em;
+  line-height: 1.65;
 }
 
 /* =========================================================
@@ -228,7 +608,6 @@ body[data-lang="zh"]
 .archive-reader-status {
   margin: 0;
   padding: 18px 8px 24px;
-
   color: var(--muted);
   font-family: inherit;
   font-size: 0.95em;
@@ -238,7 +617,6 @@ body[data-lang="zh"]
 
 .archive-reader-status a {
   margin-left: 0.35em;
-
   color: var(--accent);
   font-family: inherit;
   text-decoration: none;
@@ -260,10 +638,6 @@ body[data-lang="zh"]
   font-family: inherit;
 }
 
-/*
-  Fullscreen mode temporarily moves the reader under body,
-  so the Archive/Profile font family is stated explicitly.
-*/
 .archive-pdf-reader
 .pdf-reader-fullscreen-title {
   font-family: var(--font-serif);
@@ -296,12 +670,44 @@ body[data-lang="zh"]
    ========================================================= */
 
 @media (max-width: 768px) {
+  .archive-toolbar {
+    margin-bottom: 22px;
+  }
+
+  .archive-search-input {
+    min-height: 46px;
+    font-size: 0.95rem;
+  }
+
+  .archive-toolbar-controls {
+    align-items: stretch;
+  }
+
+  .archive-primary-filters,
+  .archive-select-filters {
+    width: 100%;
+  }
+
+  .archive-filter-field {
+    flex: 1 1 180px;
+  }
+
+  .archive-filter-select {
+    width: 100%;
+    max-width: none;
+  }
+
   .archive-category + .archive-category {
-    margin-top: 20px;
+    margin-top: 25px;
+  }
+
+  .archive-material-type +
+  .archive-material-type {
+    margin-top: 21px;
   }
 
   .archive-document-row {
-    column-gap: 9px;
+    column-gap: 10px;
     padding: 14px 0 13px;
   }
 
@@ -316,18 +722,44 @@ body[data-lang="zh"]
 
   .archive-document-meta,
   .archive-document-notice,
+  .archive-document-description,
   .archive-reader-status {
     font-size: 0.92em;
   }
 
   .archive-document-content {
-    --expand-max-height: 920px;
+    --expand-max-height: 980px;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 520px) {
+  .archive-toolbar-controls {
+    gap: 9px;
+  }
+
+  .archive-primary-filters {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .archive-primary-filter {
+    width: 100%;
+  }
+
+  .archive-select-filters {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   .archive-document-row {
-    column-gap: 7px;
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 4px;
+  }
+
+  .archive-document-meta {
+    grid-row: 2;
+    text-align: left;
+    white-space: normal;
   }
 
   .archive-document-title,
@@ -335,7 +767,27 @@ body[data-lang="zh"]
     line-height: 1.48;
   }
 
+  .archive-document-tags {
+    margin-top: 7px;
+  }
+
+  .archive-document-description {
+    margin-right: 0;
+    margin-left: 0;
+  }
+
   .archive-document-content {
-    --expand-max-height: 840px;
+    --expand-max-height: 900px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .archive-search-field,
+  .archive-search-icon,
+  .archive-search-clear,
+  .archive-primary-filter,
+  .archive-filter-select,
+  .archive-empty-reset {
+    transition: none;
   }
 }
