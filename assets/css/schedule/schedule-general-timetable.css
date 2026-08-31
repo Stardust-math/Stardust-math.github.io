@@ -122,14 +122,23 @@
   the visual bottom-left corner belongs to the row-spanned Evening cell,
   not to period number 13.
 */
-#schedule .timetable > tbody > tr:nth-last-child(3) > .period-header,
+#schedule #my-timetable-section .timetable > tbody > tr:nth-last-child(3) > .period-header,
 #schedule #ustc-timetable > tbody > tr:nth-last-child(3) > .period-header {
   border-bottom-left-radius: var(--radius) !important;
 }
 
-#schedule .timetable > tbody > tr:last-child > .period-number,
+#schedule #my-timetable-section .timetable > tbody > tr:last-child > .period-number,
 #schedule #ustc-timetable > tbody > tr:last-child > .period-number {
   border-bottom-left-radius: 0 !important;
+}
+
+/*
+  General Timetable:
+  each generated hour row owns its own time cell, so the first cell in
+  the final row is the actual outer bottom-left corner.
+*/
+#schedule #timetable > tbody > tr:last-child > .time-cell:first-child {
+  border-bottom-left-radius: var(--radius) !important;
 }
 
 /* Outer bottom-right corner. */
