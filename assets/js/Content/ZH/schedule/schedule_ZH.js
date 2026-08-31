@@ -26,6 +26,7 @@
     "011144.04": "计算机网络",
     "011145.02": "计算机组成原理",
     "011174.01": "操作系统原理与设计",
+    "011187.01": "数据隐私的方法伦理和实践",
     "210706.01": "脑与认知科学导论",
     "AI3001.02": "机器学习 A",
     "BIO1509G.02": "人体微生物与健康",
@@ -733,6 +734,14 @@
     const l = normalizeLang(lang);
     const scheduleRoot = document.getElementById("schedule");
     if (!scheduleRoot) return false;
+
+    const switcher = scheduleRoot.querySelector(".schedule-switcher");
+    if (switcher) {
+      switcher.setAttribute(
+        "aria-label",
+        (l === LANG.ZH) ? "日程分区" : "Schedule sections"
+      );
+    }
 
     // Heading
     const heading = scheduleRoot.querySelector(".schedule-heading");

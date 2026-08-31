@@ -7,6 +7,9 @@ const path = require('path');
 const vm = require('vm');
 
 const ROOT = path.resolve(__dirname, '..');
+const INDEX_PAGES_CONFIG = require(
+  './index_pages.config.js'
+);
 const SITE_FONTS_FILE = path.join(ROOT, 'assets/js/Config/SiteFonts.js');
 const SITE_RESOURCES_FILE = path.join(ROOT, 'assets/js/Config/SiteResources.js');
 
@@ -908,6 +911,44 @@ function checkRouteEntries(resources) {
       fail(
         `Localized page key must match its canonical route: pages.${pageKey}.route is ${route}.`
       );
+    }
+
+    if (
+      Object.prototype.hasOwnProperty.call(
+        page,
+        'defaultSubroute'
+      )
+    ) {
+      const defaultSubroute =
+        typeof page.defaultSubroute === 'string'
+          ? page.defaultSubroute.trim()
+          : '';
+
+      if (
+        !defaultSubroute ||
+        !/^[a-z0-9][a-z0-9_-]*$/.test(
+          defaultSubroute
+        )
+      ) {
+        fail(
+          `pages.${pageKey}.defaultSubroute must be one safe lowercase path segment.`
+        );
+      } else {
+        const configuredSubroutes =
+          INDEX_PAGES_CONFIG.pageSubroutes &&
+          INDEX_PAGES_CONFIG.pageSubroutes[pageKey];
+
+        if (
+          !Array.isArray(configuredSubroutes) ||
+          !configuredSubroutes.includes(
+            defaultSubroute
+          )
+        ) {
+          fail(
+            `pages.${pageKey}.defaultSubroute must be listed in index_pages.config.js pageSubroutes.${pageKey}.`
+          );
+        }
+      }
     }
 
     if (languages.includes(route)) {

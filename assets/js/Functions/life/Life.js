@@ -29,6 +29,9 @@
       meditations:
         'Meditations',
 
+      sections_label:
+        'Life sections',
+
       top_nav_life:
         'Life'
     },
@@ -42,6 +45,9 @@
 
       meditations:
         '沉思录',
+
+      sections_label:
+        '人生分区',
 
       top_nav_life:
         '人生'
@@ -118,6 +124,18 @@
     if (topLife) {
       topLife.textContent =
         dict.top_nav_life;
+    }
+
+    const switcher =
+      document.querySelector(
+        '#life .life-switcher'
+      );
+
+    if (switcher) {
+      switcher.setAttribute(
+        'aria-label',
+        dict.sections_label
+      );
     }
   }
 
@@ -405,12 +423,12 @@
       `
         <div id="life">
           <div class="life-container">
-            <div
+            <h1
               class="life-heading"
               data-life-i18n="life_heading"
             >
               Vignettes of a Fleeting Life
-            </div>
+            </h1>
 
             <div class="life-shell">
               <div
@@ -420,10 +438,13 @@
               >
                 <button
                   class="life-switch-btn active"
+                  id="life-tab-activities_moments"
                   type="button"
                   data-view="activities_moments"
                   role="tab"
                   aria-selected="true"
+                  aria-controls="activities_moments-section"
+                  tabindex="0"
                   data-life-i18n="activities_moments"
                   data-cursor="precise_select"
                   data-cursor-fallback="pointer"
@@ -433,10 +454,13 @@
 
                 <button
                   class="life-switch-btn"
+                  id="life-tab-meditations"
                   type="button"
                   data-view="meditations"
                   role="tab"
                   aria-selected="false"
+                  aria-controls="meditations-section"
+                  tabindex="-1"
                   data-life-i18n="meditations"
                   data-cursor="precise_select"
                   data-cursor-fallback="pointer"
@@ -450,6 +474,7 @@
                 id="activities_moments-section"
                 data-view="activities_moments"
                 role="tabpanel"
+                aria-labelledby="life-tab-activities_moments"
               >
                 <div
                   id="mount-activities_moments"
@@ -461,6 +486,7 @@
                 id="meditations-section"
                 data-view="meditations"
                 role="tabpanel"
+                aria-labelledby="life-tab-meditations"
                 hidden
               >
                 <div

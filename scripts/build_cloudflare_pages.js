@@ -3,9 +3,28 @@
 
 const fs = require('fs');
 const path = require('path');
+const { execFileSync } = require('child_process');
 
 const ROOT = path.resolve(__dirname, '..');
 const DIST = path.join(ROOT, 'dist');
+const INDEX_PAGE_GENERATOR = path.join(
+  ROOT,
+  'scripts',
+  'generate_index_pages.js'
+);
+
+const PUBLIC_DIRECTORIES = Object.freeze([
+  'assets'
+]);
+
+const PUBLIC_ROOT_FILES = Object.freeze([
+  'LICENSE',
+  'giscus.json',
+  'sw.js'
+]);
+
+const COVER_VIDEO_DIR_PLACEHOLDER =
+  '/* __CLOUDFLARE_COVER_VIDEO_DIR__ */ null';
 
 const DEFAULT_R2_COVER_VIDEO_DIR =
   'https://pub-af9c4bd8bbc54c3da2c1a4e992469554.r2.dev/cover/';
@@ -23,39 +42,64 @@ const R2_COVER_VIDEO_DIR = normalizeBaseUrl(
 );
 
 const MAX_FILE_SIZE_BYTES = 25 * 1024 * 1024;
-const MAX_FILE_COUNT = Number(
-  process.env.CLOUDFLARE_PAGES_MAX_FILES || 20000
+const MAX_FILE_COUNT = normalizePositiveInteger(
+  process.env.CLOUDFLARE_PAGES_MAX_FILES,
+  20000,
+  'CLOUDFLARE_PAGES_MAX_FILES'
 );
-
-const SKIPPED_DIRECTORIES = new Set([
-  '.git',
-  '.github',
-  'dist',
-  'node_modules',
-  'scripts'
-]);
 
 function toPosix(filePath) {
   return String(filePath || '').replace(/\\/g, '/');
 }
 
-function normalizeBaseUrl(value) {
-  const url = String(value || '').trim();
+function normalizePositiveInteger(value, fallback, label) {
+  const text = String(value == null ? '' : value).trim();
 
-  if (!/^https:\/\//i.test(url)) {
+  if (!text) return fallback;
+
+  if (!/^[1-9]\d*$/.test(text)) {
+    throw new Error(`${label} must be a positive integer.`);
+  }
+
+  const number = Number(text);
+
+  if (!Number.isSafeInteger(number)) {
+    throw new Error(`${label} must be a safe positive integer.`);
+  }
+
+  return number;
+}
+
+function normalizeBaseUrl(value) {
+  const valueText = String(value || '').trim();
+  let url;
+
+  try {
+    url = new URL(valueText);
+  } catch (error) {
+    url = null;
+  }
+
+  if (
+    !url ||
+    url.protocol !== 'https:' ||
+    !url.hostname ||
+    url.username ||
+    url.password ||
+    url.search ||
+    url.hash ||
+    /[?#]/.test(valueText)
+  ) {
     throw new Error(
-      'COVER_VIDEO_BASE_URL must begin with https://'
+      'COVER_VIDEO_BASE_URL must be an HTTPS base URL without credentials, query, or hash.'
     );
   }
 
-  return url.endsWith('/') ? url : `${url}/`;
-}
+  if (!url.pathname.endsWith('/')) {
+    url.pathname += '/';
+  }
 
-function shouldSkipDirectory(relativePath) {
-  const normalized = toPosix(relativePath);
-  const firstSegment = normalized.split('/')[0];
-
-  return SKIPPED_DIRECTORIES.has(firstSegment);
+  return url.href;
 }
 
 function shouldSkipFile(relativePath) {
@@ -99,11 +143,6 @@ function copyDirectory(
     );
 
     if (entry.isDirectory()) {
-      if (shouldSkipDirectory(relativePath)) {
-        console.log(`[skip directory] ${relativePath}`);
-        continue;
-      }
-
       copyDirectory(
         sourcePath,
         destinationPath,
@@ -131,7 +170,112 @@ function copyDirectory(
   }
 }
 
-function patchCloudflareVideoDirectory() {
+function copyPublicFile(relativePath) {
+  const sourcePath = path.join(ROOT, relativePath);
+  const destinationPath = path.join(DIST, relativePath);
+
+  if (
+    !fs.existsSync(sourcePath) ||
+    !fs.lstatSync(sourcePath).isFile()
+  ) {
+    throw new Error(
+      `Required public file was not found: ${relativePath}`
+    );
+  }
+
+  fs.mkdirSync(path.dirname(destinationPath), {
+    recursive: true
+  });
+
+  fs.copyFileSync(sourcePath, destinationPath);
+  console.log(`[copy public file] ${relativePath}`);
+}
+
+function copyPublicInputs() {
+  PUBLIC_DIRECTORIES.forEach((relativePath) => {
+    const sourcePath = path.join(ROOT, relativePath);
+
+    if (
+      !fs.existsSync(sourcePath) ||
+      !fs.lstatSync(sourcePath).isDirectory()
+    ) {
+      throw new Error(
+        `Required public directory was not found: ${relativePath}`
+      );
+    }
+
+    copyDirectory(
+      sourcePath,
+      path.join(DIST, relativePath),
+      relativePath
+    );
+  });
+
+  PUBLIC_ROOT_FILES.forEach(copyPublicFile);
+}
+
+function getGeneratedIndexPaths() {
+  const output = execFileSync(
+    process.execPath,
+    [INDEX_PAGE_GENERATOR, '--paths'],
+    {
+      cwd: ROOT,
+      encoding: 'utf8'
+    }
+  );
+
+  const paths = output
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+
+  if (paths.length === 0) {
+    throw new Error(
+      'The index page generator returned no output paths.'
+    );
+  }
+
+  const uniquePaths = new Set();
+
+  paths.forEach((filePath) => {
+    const normalized = toPosix(filePath);
+
+    if (
+      normalized !== path.posix.normalize(normalized) ||
+      path.posix.isAbsolute(normalized) ||
+      normalized === '..' ||
+      normalized.startsWith('../') ||
+      !/(^|\/)index\.html$/.test(normalized)
+    ) {
+      throw new Error(
+        `The index page generator returned an unsafe path: ${filePath}`
+      );
+    }
+
+    if (uniquePaths.has(normalized)) {
+      throw new Error(
+        `The index page generator returned a duplicate path: ${normalized}`
+      );
+    }
+
+    uniquePaths.add(normalized);
+  });
+
+  return Array.from(uniquePaths);
+}
+
+function generateIndexPages() {
+  execFileSync(
+    process.execPath,
+    [INDEX_PAGE_GENERATOR, '--output-root=dist'],
+    {
+      cwd: ROOT,
+      stdio: 'inherit'
+    }
+  );
+}
+
+function injectCloudflareVideoDirectory() {
   const configPath = path.join(
     DIST,
     'assets',
@@ -151,26 +295,24 @@ function patchCloudflareVideoDirectory() {
     'utf8'
   );
 
-  /*
-    只匹配 coverVideo 配置块中的本地视频目录。
-  */
-  const localVideoDirectoryPattern =
-    /(coverVideo\s*:\s*\{[\s\S]*?\bdir\s*:\s*)A\s*\+\s*(['"])animation\/cover\/\2/;
-
-  let replacementCount = 0;
-
-  const updatedText = originalText.replace(
-    localVideoDirectoryPattern,
-    (fullMatch, prefix) => {
-      replacementCount += 1;
-
-      return `${prefix}'${R2_COVER_VIDEO_DIR}'`;
-    }
-  );
+  const replacementCount = originalText
+    .split(COVER_VIDEO_DIR_PLACEHOLDER)
+    .length - 1;
 
   if (replacementCount !== 1) {
     throw new Error(
-      `Expected to replace exactly one coverVideo.dir, but replaced ${replacementCount}.`
+      `Expected exactly one Cloudflare cover video placeholder, but found ${replacementCount}.`
+    );
+  }
+
+  const updatedText = originalText.replace(
+    COVER_VIDEO_DIR_PLACEHOLDER,
+    JSON.stringify(R2_COVER_VIDEO_DIR)
+  );
+
+  if (updatedText.includes(COVER_VIDEO_DIR_PLACEHOLDER)) {
+    throw new Error(
+      'Cloudflare cover video placeholder remained after injection.'
     );
   }
 
@@ -181,11 +323,11 @@ function patchCloudflareVideoDirectory() {
   );
 
   console.log(
-    `[patch] Cloudflare cover video directory: ${R2_COVER_VIDEO_DIR}`
+    `[inject] Cloudflare cover video directory: ${R2_COVER_VIDEO_DIR}`
   );
 }
 
-function validateOutput() {
+function validateOutput(generatedIndexPaths) {
   const requiredIndexPath = path.join(
     DIST,
     'index.html'
@@ -194,6 +336,46 @@ function validateOutput() {
   if (!fs.existsSync(requiredIndexPath)) {
     throw new Error(
       'dist/index.html was not generated.'
+    );
+  }
+
+  const missingGeneratedEntries = generatedIndexPaths
+    .filter((relativePath) =>
+      !fs.existsSync(path.join(DIST, relativePath))
+    );
+
+  if (missingGeneratedEntries.length > 0) {
+    throw new Error(
+      [
+        'Cloudflare Pages output is missing generated entries:',
+        ...missingGeneratedEntries
+      ].join('\n')
+    );
+  }
+
+  const allowedTopLevelEntries = new Set([
+    ...PUBLIC_DIRECTORIES,
+    ...PUBLIC_ROOT_FILES
+  ]);
+
+  generatedIndexPaths.forEach((relativePath) => {
+    allowedTopLevelEntries.add(
+      toPosix(relativePath).split('/')[0]
+    );
+  });
+
+  const unexpectedTopLevelEntries = fs
+    .readdirSync(DIST)
+    .filter((entryName) =>
+      !allowedTopLevelEntries.has(entryName)
+    );
+
+  if (unexpectedTopLevelEntries.length > 0) {
+    throw new Error(
+      [
+        'Cloudflare Pages output contains unexpected top-level entries:',
+        ...unexpectedTopLevelEntries
+      ].join('\n')
     );
   }
 
@@ -278,6 +460,10 @@ function validateOutput() {
   }
 
   console.log(`[validate] File count: ${fileCount}`);
+  console.log(
+    `[validate] Generated index entries: ${generatedIndexPaths.length}`
+  );
+  console.log('[validate] Public top-level allowlist passed.');
   console.log('[validate] No files exceed 25 MiB.');
   console.log('[validate] No local cover MP4 files were copied.');
 }
@@ -292,9 +478,16 @@ function build() {
     force: true
   });
 
-  copyDirectory(ROOT, DIST);
-  patchCloudflareVideoDirectory();
-  validateOutput();
+  fs.mkdirSync(DIST, {
+    recursive: true
+  });
+
+  const generatedIndexPaths = getGeneratedIndexPaths();
+
+  copyPublicInputs();
+  generateIndexPages();
+  injectCloudflareVideoDirectory();
+  validateOutput(generatedIndexPaths);
 
   console.log(
     '[build] Cloudflare Pages output is ready.'

@@ -16,8 +16,8 @@ permissions:
   contents: write
 
 concurrency:
-  group: social-anime-sync
-  cancel-in-progress: false
+  group: stardust-main-writer
+  queue: max
 
 jobs:
   sync:

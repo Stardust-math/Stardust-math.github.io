@@ -11,8 +11,8 @@ permissions:
   pages: write
 
 concurrency:
-  group: generate-index-pages-${{ github.ref }}
-  cancel-in-progress: false
+  group: stardust-main-writer
+  queue: max
 
 jobs:
   generate-index-pages:
@@ -21,6 +21,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -38,19 +41,10 @@ jobs:
       - name: Commit generated index pages
         id: commit_generated
         run: |
-          generated_path_file="$RUNNER_TEMP/generated-index-paths.txt"
-          node scripts/generate_index_pages.js --paths > "$generated_path_file"
-          mapfile -t generated_paths < "$generated_path_file"
-
-          if [ "${#generated_paths[@]}" -eq 0 ]; then
-            echo "The generator returned no index page paths."
-            exit 1
-          fi
-
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add -- "${generated_paths[@]}"
+          git add -A -- ':(glob)**/index.html'
 
           if git diff --cached --quiet; then
             echo "No generated index page changes."
@@ -58,7 +52,7 @@ jobs:
             exit 0
           fi
 
-          git status --short -- "${generated_paths[@]}"
+          git status --short -- ':(glob)**/index.html'
           git commit -m "chore(index): regenerate index pages"
           git push
           echo "committed=true" >> "$GITHUB_OUTPUT"

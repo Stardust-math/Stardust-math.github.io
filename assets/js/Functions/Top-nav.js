@@ -40,6 +40,7 @@
           <button
             id="top-toggle-btn"
             class="top-nav-icon"
+            type="button"
             aria-label="Toggle theme"
             data-cursor="precise_select"
             data-cursor-fallback="pointer"
@@ -56,48 +57,65 @@
           >GMT+8 00:00</div>
         </div>
 
-        <div
-          class="top-nav-center"
-          role="navigation"
-          aria-label="Pages"
-        >
-          <a
-            class="top-nav-link"
-            href="${getTopLevelHref('about')}"
-            data-page="about"
+        <div class="top-nav-center-wrap">
+          <button
+            id="top-menu-btn"
+            class="top-nav-icon top-nav-menu-btn"
+            type="button"
+            aria-label="Open page menu"
+            aria-controls="top-nav-pages"
+            aria-expanded="false"
             data-cursor="precise_select"
             data-cursor-fallback="pointer"
-          >About</a>
+          >
+            <i class="fas fa-bars" aria-hidden="true"></i>
+          </button>
 
-          <a
-            class="top-nav-link"
-            href="${getTopLevelHref('schedule')}"
-            data-page="schedule"
-            data-cursor="precise_select"
-            data-cursor-fallback="pointer"
-          >Schedule</a>
+          <div
+            id="top-nav-pages"
+            class="top-nav-center"
+            role="group"
+            aria-label="Pages"
+          >
+            <a
+              class="top-nav-link"
+              href="${getTopLevelHref('about')}"
+              data-page="about"
+              data-cursor="precise_select"
+              data-cursor-fallback="pointer"
+            >About</a>
 
-          <a
-            class="top-nav-link"
-            href="${getTopLevelHref('social')}"
-            data-page="social"
-            data-cursor="precise_select"
-            data-cursor-fallback="pointer"
-          >Social</a>
+            <a
+              class="top-nav-link"
+              href="${getTopLevelHref('schedule')}"
+              data-page="schedule"
+              data-cursor="precise_select"
+              data-cursor-fallback="pointer"
+            >Schedule</a>
 
-          <a
-            class="top-nav-link"
-            href="${getTopLevelHref('life')}"
-            data-page="life"
-            data-cursor="precise_select"
-            data-cursor-fallback="pointer"
-          >Life</a>
+            <a
+              class="top-nav-link"
+              href="${getTopLevelHref('social')}"
+              data-page="social"
+              data-cursor="precise_select"
+              data-cursor-fallback="pointer"
+            >Social</a>
+
+            <a
+              class="top-nav-link"
+              href="${getTopLevelHref('life')}"
+              data-page="life"
+              data-cursor="precise_select"
+              data-cursor-fallback="pointer"
+            >Life</a>
+          </div>
         </div>
 
         <div class="top-nav-right">
           <button
             id="top-lang-btn"
             class="top-nav-icon top-nav-lang-btn"
+            type="button"
             aria-label="Switch to Chinese"
             data-cursor="precise_select"
             data-cursor-fallback="pointer"
@@ -121,6 +139,7 @@
           <button
             id="top-back-btn"
             class="top-nav-icon"
+            type="button"
             aria-label="Back to cover"
             data-cursor="precise_select"
             data-cursor-fallback="pointer"
@@ -131,6 +150,128 @@
       </div>
     </nav>
   `);
+
+  const MOBILE_MENU_MAX_WIDTH = 820;
+
+  const mobileMenuMedia =
+    typeof window.matchMedia === 'function'
+      ? window.matchMedia(
+          `(max-width: ${MOBILE_MENU_MAX_WIDTH}px)`
+        )
+      : null;
+
+  function isMobileMenuLayout() {
+    return mobileMenuMedia
+      ? mobileMenuMedia.matches
+      : window.innerWidth <=
+          MOBILE_MENU_MAX_WIDTH;
+  }
+
+  function isChinese() {
+    return Boolean(
+      document.body &&
+      document.body.dataset.lang === 'zh'
+    );
+  }
+
+  function updateMobileMenuLabel() {
+    const button =
+      document.getElementById('top-menu-btn');
+
+    const topNav =
+      document.getElementById('top-nav');
+
+    const pages =
+      document.getElementById('top-nav-pages');
+
+    if (!button) return;
+
+    const open =
+      button.getAttribute('aria-expanded') === 'true';
+
+    const label = isChinese()
+      ? (open ? '关闭页面菜单' : '打开页面菜单')
+      : (open ? 'Close page menu' : 'Open page menu');
+
+    button.setAttribute('aria-label', label);
+    button.title = label;
+
+    if (topNav) {
+      topNav.setAttribute(
+        'aria-label',
+        isChinese()
+          ? '主导航'
+          : 'Primary navigation'
+      );
+    }
+
+    if (pages) {
+      pages.setAttribute(
+        'aria-label',
+        isChinese()
+          ? '页面'
+          : 'Pages'
+      );
+    }
+  }
+
+  function setMobileMenuOpen(open, options) {
+    const opts = options || {};
+    const topNav = document.getElementById('top-nav');
+    const button = document.getElementById('top-menu-btn');
+    const pages = document.getElementById('top-nav-pages');
+
+    if (!topNav || !button || !pages) return;
+
+    const nextOpen =
+      Boolean(open) &&
+      isMobileMenuLayout();
+
+    topNav.classList.toggle(
+      'top-nav-menu-open',
+      nextOpen
+    );
+
+    button.setAttribute(
+      'aria-expanded',
+      nextOpen ? 'true' : 'false'
+    );
+
+    const shouldHidePages =
+      isMobileMenuLayout() &&
+      !nextOpen;
+
+    const shouldReturnFocus =
+      !nextOpen &&
+      (
+        opts.returnFocus === true ||
+        (
+          shouldHidePages &&
+          pages.contains(document.activeElement)
+        )
+      );
+
+    if (shouldReturnFocus) {
+      button.focus({
+        preventScroll: true
+      });
+    }
+
+    if (shouldHidePages) {
+      pages.setAttribute('aria-hidden', 'true');
+    } else {
+      pages.removeAttribute('aria-hidden');
+    }
+
+    const icon = button.querySelector('i');
+
+    if (icon) {
+      icon.classList.toggle('fa-bars', !nextOpen);
+      icon.classList.toggle('fa-xmark', nextOpen);
+    }
+
+    updateMobileMenuLabel();
+  }
 
   function refreshTopNavHrefs() {
     const topNav = document.getElementById('top-nav');
@@ -154,6 +295,7 @@
   }
 
   function hideTopNav() {
+    setMobileMenuOpen(false);
     document.body.classList.remove('nav-visible');
   }
 
@@ -162,10 +304,16 @@
       document.querySelectorAll('.top-nav-link');
 
     links.forEach((link) => {
-      link.classList.toggle(
-        'active',
-        link.dataset.page === pageKey
-      );
+      const active =
+        link.dataset.page === pageKey;
+
+      link.classList.toggle('active', active);
+
+      if (active) {
+        link.setAttribute('aria-current', 'page');
+      } else {
+        link.removeAttribute('aria-current');
+      }
     });
   }
 
@@ -291,6 +439,27 @@
     const topBackBtn =
       document.getElementById('top-back-btn');
 
+    const topMenuBtn =
+      document.getElementById('top-menu-btn');
+
+    if (
+      topMenuBtn &&
+      topMenuBtn.dataset.boundMenu !== '1'
+    ) {
+      topMenuBtn.dataset.boundMenu = '1';
+
+      topMenuBtn.addEventListener(
+        'click',
+        () => {
+          setMobileMenuOpen(
+            topMenuBtn.getAttribute(
+              'aria-expanded'
+            ) !== 'true'
+          );
+        }
+      );
+    }
+
     if (
       topBackBtn &&
       onBackToCover &&
@@ -325,6 +494,8 @@
             }
 
             event.preventDefault();
+
+            setMobileMenuOpen(false);
 
             navigateToTopLevelPage(
               target,
@@ -370,6 +541,106 @@
       }
     });
 
+    if (topNav.dataset.boundMobileMenu !== '1') {
+      topNav.dataset.boundMobileMenu = '1';
+
+      document.addEventListener(
+        'click',
+        (event) => {
+          if (
+            topNav.classList.contains(
+              'top-nav-menu-open'
+            ) &&
+            !topNav.contains(event.target)
+          ) {
+            setMobileMenuOpen(false);
+          }
+        },
+        true
+      );
+
+      document.addEventListener(
+        'keydown',
+        (event) => {
+          if (
+            event.key === 'Escape' &&
+            topNav.classList.contains(
+              'top-nav-menu-open'
+            )
+          ) {
+            event.preventDefault();
+            setMobileMenuOpen(false, {
+              returnFocus: true
+            });
+          }
+        }
+      );
+
+      let previousMobileMenuLayout =
+        isMobileMenuLayout();
+
+      const handleLayoutChange = () => {
+        const nextMobileMenuLayout =
+          isMobileMenuLayout();
+
+        if (
+          nextMobileMenuLayout ===
+          previousMobileMenuLayout
+        ) {
+          return;
+        }
+
+        previousMobileMenuLayout =
+          nextMobileMenuLayout;
+
+        const menuHadFocus =
+          document.activeElement === topMenuBtn;
+
+        setMobileMenuOpen(false);
+
+        if (
+          menuHadFocus &&
+          !nextMobileMenuLayout
+        ) {
+          const currentLink =
+            topNav.querySelector(
+              '.top-nav-link[aria-current="page"]'
+            );
+
+          if (currentLink) {
+            currentLink.focus({
+              preventScroll: true
+            });
+          }
+        }
+      };
+
+      if (mobileMenuMedia) {
+        if (
+          typeof mobileMenuMedia.addEventListener ===
+            'function'
+        ) {
+          mobileMenuMedia.addEventListener(
+            'change',
+            handleLayoutChange
+          );
+        } else if (
+          typeof mobileMenuMedia.addListener ===
+            'function'
+        ) {
+          mobileMenuMedia.addListener(
+            handleLayoutChange
+          );
+        }
+      } else {
+        window.addEventListener(
+          'resize',
+          handleLayoutChange,
+          { passive: true }
+        );
+      }
+    }
+
     // Hidden on cover by default.
     refreshTopNavHrefs();
     hideTopNav();
@@ -377,7 +648,10 @@
 
   window.addEventListener(
     'site:langchange',
-    refreshTopNavHrefs
+    () => {
+      refreshTopNavHrefs();
+      updateMobileMenuLabel();
+    }
   );
 
   window.TopNav = {

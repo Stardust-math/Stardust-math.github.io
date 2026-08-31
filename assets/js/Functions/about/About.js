@@ -83,10 +83,10 @@
         data-about-view="${DEFAULT_VIEW}"
       >
         <div class="container about-container">
-          <div
+          <h1
             class="about-heading"
             data-about-i18n="heading"
-          >About Me</div>
+          >About Me</h1>
 
           <div class="about-shell">
             <nav

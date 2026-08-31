@@ -41,7 +41,9 @@
   font-size: 2.6em;
   text-align: center;
   color: var(--accent);
+  margin-top: 0;
   margin-bottom: 22px;
+  font-weight: inherit;
   font-family: var(--font-heading-serif);
   font-variant: small-caps;
   letter-spacing: 0.6px;
@@ -123,13 +125,6 @@ body[data-lang="zh"] .life-heading {
   border-radius: 0;
   box-shadow: none;
   background: transparent;
-}
-
-.medit-loading {
-  margin: 0;
-  color: var(--muted);
-  font-size: 1rem;
-  line-height: 1.7;
 }
 
 /* =========================================================

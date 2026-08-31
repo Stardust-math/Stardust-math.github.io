@@ -311,12 +311,12 @@
       `
         <div id="social">
           <div class="container social-container">
-            <div
+            <h1
               class="social-heading"
               data-i18n="social_heading"
             >
               Connect With Me
-            </div>
+            </h1>
 
             <div class="social-shell">
               <div

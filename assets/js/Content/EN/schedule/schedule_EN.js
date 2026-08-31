@@ -31,20 +31,24 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
   mount.insertAdjacentHTML("beforeend", `
   <div id="schedule">
     <div class="container">
-      <div class="schedule-heading">My Schedule</div>
+      <h1 class="schedule-heading">My Schedule</h1>
       
       <div class="schedule-container">
-        <div class="schedule-switcher">
+        <div
+          class="schedule-switcher"
+          role="tablist"
+          aria-label="Schedule sections"
+        >
           <!-- My Timetable button -->
-          <button class="schedule-switch-btn active" data-view="my-timetable">My Timetable</button>
+          <button class="schedule-switch-btn active" id="schedule-tab-my-timetable" type="button" data-view="my-timetable" role="tab" aria-selected="true" aria-controls="my-timetable-section" tabindex="0">My Timetable</button>
           <!-- USTC Timetable button -->
-          <button class="schedule-switch-btn" data-view="ustc-timetable">USTC Timetable</button>
-          <button class="schedule-switch-btn" data-view="timetable">Timetable</button>
-          <button class="schedule-switch-btn" data-view="calendar">Calendar</button>
+          <button class="schedule-switch-btn" id="schedule-tab-ustc-timetable" type="button" data-view="ustc-timetable" role="tab" aria-selected="false" aria-controls="ustc-timetable-section" tabindex="-1">USTC Timetable</button>
+          <button class="schedule-switch-btn" id="schedule-tab-timetable" type="button" data-view="timetable" role="tab" aria-selected="false" aria-controls="timetable-section" tabindex="-1">Timetable</button>
+          <button class="schedule-switch-btn" id="schedule-tab-calendar" type="button" data-view="calendar" role="tab" aria-selected="false" aria-controls="calendar-section" tabindex="-1">Calendar</button>
         </div>
         
         <!-- My Timetable Section -->
-        <div class="schedule-section active" id="my-timetable-section">
+        <div class="schedule-section active" id="my-timetable-section" data-view="my-timetable" role="tabpanel" aria-labelledby="schedule-tab-my-timetable">
           <div class="semester-selector">
             <div class="semester-dropdown">
               <button class="semester-dropdown-btn">
@@ -4240,7 +4244,7 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
         </div>
 
         <!-- USTC Timetable Section -->
-        <div class="schedule-section" id="ustc-timetable-section">
+        <div class="schedule-section" id="ustc-timetable-section" data-view="ustc-timetable" role="tabpanel" aria-labelledby="schedule-tab-ustc-timetable" hidden>
           <div class="ustc-local-save-hint">
             <i class="fas fa-info-circle"></i>
             <span>Your actions will be saved locally, allowing you to pick up right where you left off next time.</span>
@@ -4431,7 +4435,7 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
         </div>
 
         <!-- Timetable Section -->
-        <div class="schedule-section" id="timetable-section">
+        <div class="schedule-section" id="timetable-section" data-view="timetable" role="tabpanel" aria-labelledby="schedule-tab-timetable" hidden>
           <div class="week-navigation">
             <button class="week-nav-btn" id="prev-week-btn">
               <i class="fas fa-chevron-left"></i>
@@ -4468,7 +4472,7 @@ window.SCHEDULE_COURSE_TYPE_BY_KEY = window.SCHEDULE_COURSE_TYPE_BY_KEY || {
         </div>
 
         <!-- Calendar Section -->
-        <div class="schedule-section" id="calendar-section">
+        <div class="schedule-section" id="calendar-section" data-view="calendar" role="tabpanel" aria-labelledby="schedule-tab-calendar" hidden>
           <div id="calendar-container"></div>
           <button class="add-event-btn" id="add-calendar-event">
             <i class="fas fa-plus"></i> Add Event

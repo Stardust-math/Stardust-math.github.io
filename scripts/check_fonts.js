@@ -10,6 +10,7 @@ const ROOT = path.resolve(__dirname, '..');
 
 const FONTS_CSS = path.join(ROOT, 'assets/css/fonts.css');
 const SITE_FONTS_JS = path.join(ROOT, 'assets/js/Config/SiteFonts.js');
+const SITE_RESOURCES_JS = path.join(ROOT, 'assets/js/Config/SiteResources.js');
 const FONT_AWESOME_CSS = path.join(ROOT, 'assets/fonts/Font_Awesome/css/all.min.css');
 
 const SELF_FILE = path.normalize(__filename);
@@ -44,6 +45,7 @@ const ALLOWED_FONT_FACE_FILES = new Set([
 const CENTRAL_FONT_FILES = new Set([
   normalizePath(FONTS_CSS),
   normalizePath(SITE_FONTS_JS),
+  normalizePath(SITE_RESOURCES_JS),
   normalizePath(FONT_AWESOME_CSS)
 ]);
 

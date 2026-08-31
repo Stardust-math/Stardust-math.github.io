@@ -253,6 +253,10 @@
 
     if (!control) return;
 
+    const root = document.getElementById('life');
+
+    if (!root || !root.contains(control)) return;
+
     if (
       control.tagName &&
       control.tagName.toLowerCase() === 'a' &&
@@ -274,7 +278,77 @@
     });
   }
 
+  function handleLifeSubnavKeydown(event) {
+    const control = event.target && event.target.closest
+      ? event.target.closest('.life-switcher .life-switch-btn[data-view]')
+      : null;
+
+    if (!control) return;
+
+    if (
+      event.key !== 'ArrowLeft' &&
+      event.key !== 'ArrowRight' &&
+      event.key !== 'Home' &&
+      event.key !== 'End'
+    ) {
+      return;
+    }
+
+    const root = document.getElementById('life');
+
+    if (!root || !root.contains(control)) return;
+
+    const controls = Array.from(
+      root.querySelectorAll(
+        '.life-switcher .life-switch-btn[data-view]'
+      )
+    );
+
+    const currentIndex = controls.indexOf(control);
+
+    if (!controls.length || currentIndex < 0) return;
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
+    let nextIndex = currentIndex;
+
+    if (event.key === 'Home') {
+      nextIndex = 0;
+    } else if (event.key === 'End') {
+      nextIndex = controls.length - 1;
+    } else {
+      const direction = event.key === 'ArrowRight'
+        ? 1
+        : -1;
+
+      nextIndex = (
+        currentIndex +
+        direction +
+        controls.length
+      ) % controls.length;
+    }
+
+    const next = controls[nextIndex];
+    const view = normalizeView(
+      next && next.dataset
+        ? next.dataset.view
+        : ''
+    );
+
+    if (!next || !view) return;
+
+    next.focus();
+
+    activateView(view, {
+      updateHistory: true,
+      dateKey: null,
+      scroll: false
+    });
+  }
+
   document.addEventListener('click', handleLifeSubnavClick, true);
+  document.addEventListener('keydown', handleLifeSubnavKeydown, true);
 
   window.addEventListener('popstate', () => {
     window.setTimeout(() => {

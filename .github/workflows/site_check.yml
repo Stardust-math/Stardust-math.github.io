@@ -9,6 +9,9 @@ on:
       - main
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   check_site_resources:
     runs-on: ubuntu-latest
@@ -22,11 +25,37 @@ jobs:
         with:
           node-version: 20
 
+      - name: Check JavaScript syntax
+        run: node scripts/check_js_syntax.js
+
+      - name: Check index generator ownership rules
+        run: node scripts/check_index_generator.js
+
+      - name: Check generated index pages are current
+        if: github.event_name == 'pull_request'
+        run: node scripts/generate_index_pages.js --check
+
       - name: Generate index pages for validation
+        if: github.event_name != 'pull_request'
         run: node scripts/generate_index_pages.js
+
+      - name: Check index page metadata and landmarks
+        run: node scripts/check_index_page_contracts.js
+
+      - name: Check runtime route metadata
+        run: node scripts/check_route_metadata.js
+
+      - name: Check tab navigation behavior
+        run: node scripts/check_tab_navigation.js
 
       - name: Check configured site resources
         run: node scripts/check_site_resources.js
 
       - name: Check About Archive data
         run: node scripts/check_about_archive.js
+
+      - name: Check Social Anime data and generated files
+        run: node scripts/check_social_anime.js
+
+      - name: Check Social Anime synchronization credential scope
+        run: node scripts/check_social_anime_sync_security.js

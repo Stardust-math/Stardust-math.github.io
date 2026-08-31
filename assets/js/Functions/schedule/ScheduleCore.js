@@ -45,24 +45,36 @@ function dispatchScheduleViewChange(view) {
 }
 
 function setScheduleView(view) {
-  const targetView = view || 'my-timetable';
+  const supportedViews = [
+    'my-timetable',
+    'ustc-timetable',
+    'timetable',
+    'calendar'
+  ];
+
+  const targetView = supportedViews.includes(view)
+    ? view
+    : 'my-timetable';
 
   const viewSwitchers = document.querySelectorAll('.schedule-switch-btn');
-  const calendarSection = document.getElementById('calendar-section');
-  const timetableSection = document.getElementById('timetable-section');
-  const ustcTimetableSection = document.getElementById('ustc-timetable-section');
-  const myTimetableSection = document.getElementById('my-timetable-section');
+  const sections = document.querySelectorAll('.schedule-section[data-view]');
 
   viewSwitchers.forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.view === targetView);
+    const active = btn.dataset.view === targetView;
+
+    btn.classList.toggle('active', active);
+    btn.setAttribute('aria-selected', active ? 'true' : 'false');
+    btn.setAttribute('tabindex', active ? '0' : '-1');
   });
 
-  [calendarSection, timetableSection, ustcTimetableSection, myTimetableSection].forEach(sec => {
-    if (sec) sec.classList.remove('active');
+  sections.forEach(sec => {
+    const active = sec.dataset.view === targetView;
+
+    sec.classList.toggle('active', active);
+    sec.toggleAttribute('hidden', !active);
   });
 
   if (targetView === 'calendar') {
-    if (calendarSection) calendarSection.classList.add('active');
     setTimeout(() => {
       if (typeof ensureCalendarRendered === 'function') {
         ensureCalendarRendered('dayGridMonth');
@@ -71,17 +83,13 @@ function setScheduleView(view) {
       scheduleCursorRefresh(document.getElementById('schedule'));
     }, 0);
   } else if (targetView === 'timetable') {
-    if (timetableSection) timetableSection.classList.add('active');
     if (typeof updateTimetable === 'function') {
       updateTimetable();
     }
   } else if (targetView === 'ustc-timetable') {
-    if (ustcTimetableSection) ustcTimetableSection.classList.add('active');
     if (typeof renderUstcTimetable === 'function') {
       renderUstcTimetable();
     }
-  } else {
-    if (myTimetableSection) myTimetableSection.classList.add('active');
   }
 
   scheduleCursorRefresh(document.getElementById('schedule'));
@@ -303,11 +311,6 @@ function initSchedulePage() {
 
   viewSwitchers.forEach(btn => {
     setCursorHint(btn, 'precise_select', 'pointer', true);
-
-    bindOnce(btn, 'click', () => {
-      const view = btn.dataset.view;
-      setScheduleView(view);
-    }, 'scheduleViewBound');
   });
 
   const eventModal = document.getElementById('event-modal');

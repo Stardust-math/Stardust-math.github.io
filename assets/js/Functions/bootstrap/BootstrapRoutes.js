@@ -55,6 +55,33 @@
     )
   );
 
+  const DEFAULT_SUBROUTE_BY_ROUTE = Object.freeze(
+    configuredLocalizedPages.reduce(
+      (defaults, pageKey) => {
+        const page =
+          resources.pages &&
+          resources.pages[pageKey];
+
+        const route =
+          page && page.route
+            ? String(page.route).trim()
+            : '';
+
+        const defaultSubroute =
+          page && page.defaultSubroute
+            ? String(page.defaultSubroute).trim()
+            : '';
+
+        if (route && defaultSubroute) {
+          defaults[route] = defaultSubroute;
+        }
+
+        return defaults;
+      },
+      {}
+    )
+  );
+
   const HTML_LANGUAGES = Object.assign({
     en: 'en',
     zh: 'zh-CN'
@@ -397,6 +424,14 @@
     if (parsed.isCover) return '/';
 
     const segments = parsed.businessSegments.slice();
+
+    if (
+      segments.length === 2 &&
+      DEFAULT_SUBROUTE_BY_ROUTE[segments[0]] ===
+        segments[1]
+    ) {
+      segments.pop();
+    }
 
     if (parsed.isLocalizedRoute) {
       segments.unshift(normalizeLanguage(language || parsed.language));

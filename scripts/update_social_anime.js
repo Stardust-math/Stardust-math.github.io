@@ -30,6 +30,13 @@ const {
   './lib/social_anime_data.js'
 );
 
+const {
+  createApiRequestHeaders,
+  createPublicRequestHeaders
+} = require(
+  './lib/social_anime_http.js'
+);
+
 const API_BASE =
   'https://api.bgm.tv';
 
@@ -182,28 +189,25 @@ function sleep(milliseconds) {
   );
 }
 
-function requestHeaders(accept) {
-  const headers = {
-    Accept:
-      accept ||
-      'application/json',
-
-    'User-Agent':
-      USER_AGENT
-  };
-
-  const token =
-    asString(
+function apiRequestHeaders(url) {
+  return createApiRequestHeaders({
+    url,
+    apiBase:
+      API_BASE,
+    userAgent:
+      USER_AGENT,
+    accessToken:
       process.env
         .BANGUMI_ACCESS_TOKEN
-    );
+  });
+}
 
-  if (token) {
-    headers.Authorization =
-      `Bearer ${token}`;
-  }
-
-  return headers;
+function publicRequestHeaders(accept) {
+  return createPublicRequestHeaders({
+    accept,
+    userAgent:
+      USER_AGENT
+  });
 }
 
 async function fetchWithTimeout(
@@ -247,9 +251,7 @@ async function fetchJson(
       url,
       {
         headers:
-          requestHeaders(
-            'application/json'
-          )
+          apiRequestHeaders(url)
       }
     );
 
@@ -786,7 +788,7 @@ async function ensureFallbackCover(
       remoteUrl,
       {
         headers:
-          requestHeaders(
+          publicRequestHeaders(
             'image/webp,' +
             'image/png,' +
             'image/jpeg,' +

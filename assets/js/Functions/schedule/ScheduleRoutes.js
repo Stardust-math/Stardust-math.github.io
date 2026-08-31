@@ -100,7 +100,7 @@
 
     if (control.tagName && control.tagName.toLowerCase() === 'a') {
       control.setAttribute('href', href);
-      control.setAttribute('role', 'button');
+      control.setAttribute('role', 'tab');
       applyScheduleSubnavCursor(control);
       return control;
     }
@@ -115,7 +115,7 @@
     link.className = control.className;
     link.dataset.view = view;
     link.href = href;
-    link.setAttribute('role', 'button');
+    link.setAttribute('role', 'tab');
     link.innerHTML = control.innerHTML;
 
     applyScheduleSubnavCursor(link);
@@ -200,6 +200,10 @@
 
     if (!control) return;
 
+    const root = document.getElementById('schedule');
+
+    if (!root || !root.contains(control)) return;
+
     if (
       control.tagName &&
       control.tagName.toLowerCase() === 'a' &&
@@ -217,7 +221,72 @@
     activateView(view, { updateHistory: true });
   }
 
+  function handleScheduleSubnavKeydown(event) {
+    const control = event.target && event.target.closest
+      ? event.target.closest('.schedule-switcher .schedule-switch-btn[data-view]')
+      : null;
+
+    if (!control) return;
+
+    if (
+      event.key !== 'ArrowLeft' &&
+      event.key !== 'ArrowRight' &&
+      event.key !== 'Home' &&
+      event.key !== 'End'
+    ) {
+      return;
+    }
+
+    const root = document.getElementById('schedule');
+
+    if (!root || !root.contains(control)) return;
+
+    const controls = Array.from(
+      root.querySelectorAll(
+        '.schedule-switcher .schedule-switch-btn[data-view]'
+      )
+    );
+
+    const currentIndex = controls.indexOf(control);
+
+    if (!controls.length || currentIndex < 0) return;
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
+    let nextIndex = currentIndex;
+
+    if (event.key === 'Home') {
+      nextIndex = 0;
+    } else if (event.key === 'End') {
+      nextIndex = controls.length - 1;
+    } else {
+      const direction = event.key === 'ArrowRight'
+        ? 1
+        : -1;
+
+      nextIndex = (
+        currentIndex +
+        direction +
+        controls.length
+      ) % controls.length;
+    }
+
+    const next = controls[nextIndex];
+    const view = normalizeView(
+      next && next.dataset
+        ? next.dataset.view
+        : ''
+    );
+
+    if (!next || !view) return;
+
+    next.focus();
+    activateView(view, { updateHistory: true });
+  }
+
   document.addEventListener('click', handleScheduleSubnavClick, true);
+  document.addEventListener('keydown', handleScheduleSubnavKeydown, true);
 
   window.addEventListener('popstate', () => {
     window.setTimeout(() => {

@@ -3,6 +3,9 @@
 
   const A = './assets/';
 
+  const DEPLOYMENT_COVER_VIDEO_DIR =
+    /* __CLOUDFLARE_COVER_VIDEO_DIR__ */ null;
+
   const SITE_FONT_STYLES =
     window.SiteFonts &&
     Array.isArray(window.SiteFonts.externalStyles)
@@ -162,7 +165,9 @@
     */
     coverVideo: {
       enabled: true,
-      dir: A + 'animation/cover/',
+      dir:
+        DEPLOYMENT_COVER_VIDEO_DIR ||
+        A + 'animation/cover/',
       extension: '.mp4'
     },
 
@@ -353,6 +358,7 @@
     pages: {
       about: {
         route: 'about',
+        defaultSubroute: 'profile',
         domId: 'about',
         mountId: 'mount-about',
         styles: [
@@ -405,6 +411,7 @@
 
       schedule: {
         route: 'schedule',
+        defaultSubroute: 'my_timetable',
         domId: 'schedule',
         mountId: 'mount-schedule',
 
@@ -455,6 +462,7 @@
 
       social: {
         route: 'social',
+        defaultSubroute: 'constellation',
         domId: 'social',
         mountId: 'mount-social',
         styles: [
@@ -546,6 +554,7 @@
 
       life: {
         route: 'life',
+        defaultSubroute: 'activities_moments',
         domId: 'life',
         mountId: 'mount-life',
 

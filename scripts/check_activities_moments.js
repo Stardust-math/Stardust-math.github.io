@@ -368,7 +368,7 @@ function checkContentFile(filePath, lang, dateKey) {
     reporter.error(`${rel(filePath)} is missing a title field.`);
   }
 
-  if (!meta.location) {
+  if (meta.location === null) {
     reporter.warn(`${rel(filePath)} is missing a location field.`);
   }
 
