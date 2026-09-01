@@ -275,6 +275,21 @@
     return loaded;
   }
 
+  function unload(readerOrChild) {
+    const reader = getReader(readerOrChild);
+
+    if (!reader) return false;
+
+    const frame = getFrame(reader);
+
+    if (!frame) return false;
+
+    frame.removeAttribute('src');
+    reader.dataset.pdfLoaded = '0';
+
+    return true;
+  }
+
   function setTopbarVisible(reader, visible) {
     const topbar = getTopbar(reader);
 
@@ -732,6 +747,7 @@
   window.PdfReader = {
     init,
     load,
+    unload,
     configure,
     buildViewerUrl,
     openFullscreen,

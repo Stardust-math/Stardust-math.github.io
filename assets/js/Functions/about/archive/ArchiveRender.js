@@ -2094,6 +2094,26 @@
     }
   }
 
+  function unloadDocumentReader(documentElement) {
+    if (!documentElement) return false;
+
+    const id = documentElement.getAttribute(
+      'data-archive-document-id'
+    );
+    const reader = findReader(id);
+
+    if (
+      !reader ||
+      !window.PdfReader ||
+      typeof window.PdfReader.unload !==
+        'function'
+    ) {
+      return false;
+    }
+
+    return window.PdfReader.unload(reader);
+  }
+
   function countVisibleDocuments(element) {
     return Array.from(
       element.querySelectorAll(
@@ -2214,6 +2234,7 @@
 
       if (!matches && !documentElement.hidden) {
         closeDocument(documentElement);
+        unloadDocumentReader(documentElement);
       }
 
       documentElement.hidden = !matches;
