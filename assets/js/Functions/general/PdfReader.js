@@ -2,6 +2,12 @@
   'use strict';
 
   const READER_SELECTOR = '[data-pdf-reader]';
+  const DEFAULT_SPREAD_MODE = 'odd';
+  const SPREAD_MODES = new Set([
+    'none',
+    'odd',
+    'even'
+  ]);
   const STATE = new WeakMap();
 
   let activeReader = null;
@@ -62,6 +68,18 @@
       : fallback;
   }
 
+  function normalizeSpreadMode(value) {
+    const mode = String(
+      value == null ? '' : value
+    )
+      .trim()
+      .toLowerCase();
+
+    return SPREAD_MODES.has(mode)
+      ? mode
+      : DEFAULT_SPREAD_MODE;
+  }
+
   function buildViewerUrl(pdfPath, options) {
     const opts = options || {};
 
@@ -78,6 +96,13 @@
     viewerUrl.searchParams.set(
       'file',
       pdfUrl.href
+    );
+
+    viewerUrl.searchParams.set(
+      'spreadmode',
+      normalizeSpreadMode(
+        opts.spreadMode
+      )
     );
 
     const hash = new URLSearchParams();
@@ -163,7 +188,11 @@
       pageMode:
         reader.getAttribute(
           'data-pdf-page-mode'
-        ) || 'bookmarks'
+        ) || 'bookmarks',
+      spreadMode:
+        reader.getAttribute(
+          'data-pdf-spread-mode'
+        ) || DEFAULT_SPREAD_MODE
     });
   }
 

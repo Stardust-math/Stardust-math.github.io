@@ -1053,6 +1053,9 @@
         data-pdf-page-mode="${escapeHtml(
           pdf.pageMode || 'bookmarks'
         )}"
+        data-pdf-spread-mode="${escapeHtml(
+          pdf.spreadMode || 'odd'
+        )}"
         hidden
       >
         <div

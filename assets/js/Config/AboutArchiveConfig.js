@@ -18,7 +18,7 @@
   }
 
   window.AboutArchiveConfig = deepFreeze({
-    schemaVersion: 2,
+    schemaVersion: 3,
     exclusiveOpen: true,
 
     search: {
@@ -278,6 +278,12 @@
       ]
     },
 
+    /*
+      Embedded PDF spread modes are recorded per resource:
+      - 'none': single-page layout
+      - 'odd': cover-first two-page layout
+      - 'even': even-page-first two-page layout
+    */
     documents: [
       {
         id: 'probability-statistics-miao-zhang-solutions',
@@ -303,6 +309,7 @@
             initialPage: 1,
             zoom: 'page-width',
             pageMode: 'bookmarks',
+            spreadMode: 'odd',
             order: 10
           }
         ],
@@ -330,6 +337,7 @@
             initialPage: 1,
             zoom: 'page-width',
             pageMode: 'bookmarks',
+            spreadMode: 'odd',
             order: 10
           }
         ],
@@ -357,6 +365,7 @@
             initialPage: 1,
             zoom: 'page-width',
             pageMode: 'bookmarks',
+            spreadMode: 'odd',
             order: 10
           }
         ],
@@ -384,6 +393,7 @@
             initialPage: 1,
             zoom: 'page-width',
             pageMode: 'bookmarks',
+            spreadMode: 'odd',
             order: 10
           }
         ],
@@ -411,6 +421,7 @@
             initialPage: 1,
             zoom: 'page-width',
             pageMode: 'bookmarks',
+            spreadMode: 'odd',
             order: 10
           }
         ],
@@ -437,6 +448,7 @@
             initialPage: 1,
             zoom: 'page-width',
             pageMode: 'bookmarks',
+            spreadMode: 'none',
             order: 10
           }
         ],
@@ -463,6 +475,7 @@
             initialPage: 1,
             zoom: 'page-width',
             pageMode: 'bookmarks',
+            spreadMode: 'odd',
             order: 10
           }
         ],
@@ -489,6 +502,7 @@
             initialPage: 1,
             zoom: 'page-width',
             pageMode: 'bookmarks',
+            spreadMode: 'odd',
             order: 10
           }
         ],
@@ -515,6 +529,7 @@
             initialPage: 1,
             zoom: 'page-width',
             pageMode: 'bookmarks',
+            spreadMode: 'odd',
             order: 10
           }
         ],
@@ -541,6 +556,7 @@
             initialPage: 1,
             zoom: 'page-width',
             pageMode: 'bookmarks',
+            spreadMode: 'odd',
             order: 10
           }
         ],
@@ -571,6 +587,7 @@
             initialPage: 1,
             zoom: 'page-width',
             pageMode: 'bookmarks',
+            spreadMode: 'odd',
             order: 10
           }
         ],
@@ -598,6 +615,7 @@
             initialPage: 1,
             zoom: 'page-width',
             pageMode: 'bookmarks',
+            spreadMode: 'odd',
             order: 10
           }
         ],
@@ -625,6 +643,7 @@
             initialPage: 1,
             zoom: 'page-width',
             pageMode: 'bookmarks',
+            spreadMode: 'odd',
             order: 10
           }
         ],
@@ -652,6 +671,7 @@
             initialPage: 1,
             zoom: 'page-width',
             pageMode: 'bookmarks',
+            spreadMode: 'odd',
             order: 10
           }
         ],
@@ -679,6 +699,7 @@
             initialPage: 1,
             zoom: 'page-width',
             pageMode: 'bookmarks',
+            spreadMode: 'odd',
             order: 10
           }
         ],
@@ -706,6 +727,7 @@
             initialPage: 1,
             zoom: 'page-width',
             pageMode: 'bookmarks',
+            spreadMode: 'odd',
             order: 10
           }
         ],
@@ -733,6 +755,7 @@
             initialPage: 1,
             zoom: 'page-width',
             pageMode: 'bookmarks',
+            spreadMode: 'odd',
             order: 10
           }
         ],
@@ -760,6 +783,7 @@
             initialPage: 1,
             zoom: 'page-width',
             pageMode: 'bookmarks',
+            spreadMode: 'odd',
             order: 10
           }
         ],
@@ -787,6 +811,7 @@
             initialPage: 1,
             zoom: 'page-width',
             pageMode: 'bookmarks',
+            spreadMode: 'odd',
             order: 10
           }
         ],
@@ -814,6 +839,7 @@
             initialPage: 1,
             zoom: 'page-width',
             pageMode: 'bookmarks',
+            spreadMode: 'odd',
             order: 10
           }
         ],
@@ -841,6 +867,7 @@
             initialPage: 1,
             zoom: 'page-width',
             pageMode: 'bookmarks',
+            spreadMode: 'odd',
             order: 10
           }
         ],
@@ -868,6 +895,7 @@
             initialPage: 1,
             zoom: 'page-width',
             pageMode: 'bookmarks',
+            spreadMode: 'odd',
             order: 10
           }
         ],
@@ -895,6 +923,7 @@
             initialPage: 1,
             zoom: 'page-width',
             pageMode: 'bookmarks',
+            spreadMode: 'odd',
             order: 10
           }
         ],
@@ -922,6 +951,7 @@
             initialPage: 1,
             zoom: 'page-width',
             pageMode: 'bookmarks',
+            spreadMode: 'odd',
             order: 10
           }
         ],
@@ -949,6 +979,7 @@
             initialPage: 1,
             zoom: 'page-width',
             pageMode: 'bookmarks',
+            spreadMode: 'odd',
             order: 10
           }
         ],
@@ -976,6 +1007,7 @@
             initialPage: 1,
             zoom: 'page-width',
             pageMode: 'bookmarks',
+            spreadMode: 'odd',
             order: 10
           }
         ],
@@ -1003,6 +1035,7 @@
             initialPage: 1,
             zoom: 'page-width',
             pageMode: 'bookmarks',
+            spreadMode: 'odd',
             order: 10
           }
         ],
@@ -1030,6 +1063,7 @@
             initialPage: 1,
             zoom: 'page-width',
             pageMode: 'bookmarks',
+            spreadMode: 'odd',
             order: 10
           }
         ],
@@ -1057,6 +1091,7 @@
             initialPage: 1,
             zoom: 'page-width',
             pageMode: 'bookmarks',
+            spreadMode: 'odd',
             order: 10
           }
         ],

@@ -16,6 +16,11 @@ const DICTIONARY_PATHS = {
 };
 const SAFE_ID = /^[a-z0-9][a-z0-9-]*$/;
 const SAFE_FILTER_ID = /^[a-z][a-zA-Z0-9]*$/;
+const PDF_SPREAD_MODES = new Set([
+  'none',
+  'odd',
+  'even'
+]);
 const TAXONOMY_GROUPS = [
   'primaryCategories',
   'materialTypes',
@@ -689,6 +694,20 @@ function validateResource(
         );
       }
     });
+
+    const spreadMode = requireString(
+      resource.spreadMode,
+      `${prefix}.spreadMode`
+    );
+
+    if (
+      spreadMode &&
+      !PDF_SPREAD_MODES.has(spreadMode)
+    ) {
+      fail(
+        `${prefix}.spreadMode must be none, odd, or even.`
+      );
+    }
   }
 
   return {
@@ -987,9 +1006,9 @@ function main() {
     fail('window.AboutArchiveConfig was not created.');
   }
 
-  if (Number(config && config.schemaVersion) !== 2) {
+  if (Number(config && config.schemaVersion) !== 3) {
     fail(
-      'AboutArchiveConfig.schemaVersion must be 2.'
+      'AboutArchiveConfig.schemaVersion must be 3.'
     );
   }
 

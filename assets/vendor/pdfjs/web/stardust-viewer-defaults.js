@@ -4,9 +4,10 @@
   /*
     Stardust PDF.js defaults.
 
-    Wide readers preserve the current desktop experience:
+    Wide readers use the document's requested spread mode:
     - outline sidebar open
-    - odd spread (two-page) layout
+    - odd spread (two-page) layout by default
+    - single-page layout when requested
 
     Compact readers use a mobile-friendly layout:
     - sidebar closed
@@ -37,6 +38,27 @@
     ODD: 1,
     EVEN: 2
   });
+
+  const SPREAD_PROFILES = Object.freeze({
+    none: Object.freeze({
+      key: 'none',
+      spreadMode: SPREAD_MODE.NONE,
+      spreadButtonId: 'spreadNone'
+    }),
+    odd: Object.freeze({
+      key: 'odd',
+      spreadMode: SPREAD_MODE.ODD,
+      spreadButtonId: 'spreadOdd'
+    }),
+    even: Object.freeze({
+      key: 'even',
+      spreadMode: SPREAD_MODE.EVEN,
+      spreadButtonId: 'spreadEven'
+    })
+  });
+
+  const DEFAULT_SPREAD_PROFILE =
+    SPREAD_PROFILES.odd;
 
   const CURSOR_TOOL = Object.freeze({
     SELECT: 0,
@@ -168,16 +190,66 @@
     );
   }
 
+  function getConfiguredSpreadProfile() {
+    let key = '';
+
+    try {
+      key = String(
+        new URLSearchParams(
+          window.location.search
+        ).get('spreadmode') || ''
+      )
+        .trim()
+        .toLowerCase();
+    } catch (err) {
+      key = '';
+    }
+
+    return Object.prototype.hasOwnProperty.call(
+      SPREAD_PROFILES,
+      key
+    )
+      ? SPREAD_PROFILES[key]
+      : DEFAULT_SPREAD_PROFILE;
+  }
+
+  function getWideProfile() {
+    const spreadProfile =
+      getConfiguredSpreadProfile();
+
+    if (
+      spreadProfile.spreadMode ===
+      VIEW_PROFILES.wide.spreadMode
+    ) {
+      return VIEW_PROFILES.wide;
+    }
+
+    return Object.assign(
+      {},
+      VIEW_PROFILES.wide,
+      {
+        key:
+          'wide-' + spreadProfile.key,
+        spreadMode:
+          spreadProfile.spreadMode,
+        spreadButtonId:
+          spreadProfile.spreadButtonId
+      }
+    );
+  }
+
   function getViewProfile() {
     const width =
       getViewportWidth();
+    const wideProfile =
+      getWideProfile();
 
     /*
       If the iframe has not received a measurable width yet,
       keep the existing desktop profile until PDF.js lays it out.
     */
     if (width <= 0) {
-      return VIEW_PROFILES.wide;
+      return wideProfile;
     }
 
     const compact =
@@ -190,7 +262,7 @@
 
     return compact
       ? VIEW_PROFILES.compact
-      : VIEW_PROFILES.wide;
+      : wideProfile;
   }
 
   function setOption(name, value) {
