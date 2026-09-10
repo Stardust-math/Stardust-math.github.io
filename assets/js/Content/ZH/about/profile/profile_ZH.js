@@ -8,7 +8,6 @@
         </div>
         <div class="profile-hero-body">
           <div class="profile-hero-name">陈璟皓</div>
-
           <div class="profile-email-block">
             <div class="profile-email-toggle-line">
               <span class="profile-email-title profile-email-title-icon" aria-label="邮箱" title="邮箱">
@@ -18,7 +17,6 @@
                 <i class="fas fa-chevron-right"></i>
               </button>
             </div>
-
             <div class="expand-row profile-email-expand" id="exp-hero-email-zh" aria-hidden="true" style="display:none;">
               <div class="expand-content profile-email-content">
                 <div class="profile-email-list">
@@ -35,7 +33,6 @@
                       </a>
                     </span>
                   </div>
-
                   <div class="profile-email-row">
                     <span class="profile-email-label">个人邮箱</span>
                     <a class="profile-email-address" href="mailto:stardust.math26@gmail.com">stardust.math26@gmail.com</a>
@@ -49,7 +46,6 @@
                       </a>
                     </span>
                   </div>
-
                   <div class="profile-email-row">
                     <span class="profile-email-label">临时邮箱</span>
                     <a class="profile-email-address" href="mailto:jinghao-chen@u.nus.edu">jinghao-chen@u.nus.edu</a>
@@ -67,7 +63,6 @@
               </div>
             </div>
           </div>
-
           <p class="profile-hero-intro">
           我是中国科学技术大学 (USTC) 数学专业本科生, 辅修计算机科学. 我主要研究运营管理与运筹学方向, 尤其关注供应链分析、随机建模与博弈论.
           <br><br>
@@ -77,7 +72,6 @@
           </p>
         </div>
       </div>
-
       <div class="section">
         <h2>研究兴趣</h2>
         <ul><li>运营管理、运筹学、选择建模、销售机制、供应链管理、随机建模与博弈论.</li></ul>
@@ -91,7 +85,6 @@
           </span>
           <span>2023年9月 &mdash; 2027年7月 (预计)</span>
         </div>
-
         <div class="subsubheading profile-degree-line">
           <span>
             <a class="profile-link" href="https://math.ustc.edu.cn/main.htm" target="_blank" rel="noopener noreferrer">数学理学学士</a>; <a class="profile-link" href="https://cs.ustc.edu.cn/main.htm" target="_blank" rel="noopener noreferrer">计算机科学与技术工学学士</a>
@@ -103,7 +96,6 @@
           </span>
           <span>中国·合肥</span>
         </div>
-
         <div class="expand-row" id="exp-edu-bg-zh" aria-hidden="true" style="display:none;">
           <div class="expand-content">
             <div class="expand-item">
@@ -112,7 +104,6 @@
           </div>
         </div>
       </div>
-
       <div class="section">
         <h2>荣誉与奖项</h2>
         <table width="100%">
@@ -132,7 +123,6 @@
               </div>
             </td>
           </tr>
-
           <tr>
             <td>
               <a class="award-link" href="https://math.ustc.edu.cn/2024/1113/c18650a660488/page.htm" target="_blank" rel="noopener noreferrer" aria-label="打开相关链接">张宗植科技奖学金</a>
@@ -149,7 +139,6 @@
               </div>
             </td>
           </tr>
-
           <tr>
             <td>
               <a class="award-link" href="./assets/pdf/about/profile/Excellent_Freshman_Scholarship--Silver.pdf" download aria-label="下载 PDF">优秀新生奖学金 (银奖)</a>
@@ -166,7 +155,6 @@
               </div>
             </td>
           </tr>
-
           <tr>
             <td>
               <a class="award-link" href="./assets/pdf/about/profile/2025_MCM_Problem_B_Results.pdf" download aria-label="下载 PDF">美国大学生数学建模竞赛 (MCM) B 题: 荣誉奖 (队长)</a>
@@ -187,7 +175,6 @@
           </tr>
         </table>
       </div>
-
       <div class="section">
         <h2>科研经历</h2>
         <div class="subheading">
@@ -201,10 +188,12 @@
           </div>
         </div>
         <ul>
-          <li>否证了原有的选择模型不等式, 并提出了一个更为一般的猜想.</li>
-          <li>刻画了该不等式在一般选择模型、边际分布模型 (MDM)、混合边际分布模型与随机效用模型 (RUM) 中的差异.</li>
+          <li>推导包含正则性、带饰环（decorated-cycle）与辐条不等式在内的完整概率不等式组，刻画备选项数量不超过四个时的混合边际分布模型（Mixed MDM）。</li>
+          <li>刻画四个备选项情形下的 17 维可行多面体，并确定其 288 个互异顶点。</li>
+          <li>利用置换对称性，将 288 个顶点划分为 13 个轨道，并通过凸集之间的双向包含关系证明充分性。</li>
+          <li>运用 Möbius 反演获得图流表示，并通过 Hall 型容量条件验证可行性，从而建立非枚举证明。</li>
+          <li>将各类不等式与生成它们的图结构相联系，给出相应的行为解释，并为推广至一般 n 奠定基础。</li>
         </ul>
-
         <div class="subheading">
           <span class="subheading-title">消费者不平等厌恶下的需求信息共享</span>
           <span>2025年7月 &mdash; 2026年8月</span>
@@ -217,11 +206,12 @@
           </div>
         </div>
         <ul>
-          <li>构建了一个考虑需求预测不确定性与消费者不平等厌恶的贝叶斯制造商—零售商定价与信号传递模型, 并在字典序最大序贯均衡 (LMSE)精炼准则下刻画了完美贝叶斯均衡.</li>
-          <li>推导了不共享与零售商共享两种机制下混同与分离批发价策略及利润的闭式表达式.</li>
-          <li>证明了自愿信息共享与强制信息共享的收益等价性, 并刻画了被动信念与线性信念设定以及不平等厌恶如何影响渠道绩效.</li>
+          <li>构建贝叶斯制造商—零售商定价与信号传递模型，纳入私有需求预测及消费者的劣势不平等厌恶。</li>
+          <li>在字典序最大序贯均衡（LMSE）精炼准则下，刻画不共享信息时的均衡，区分混同、有扭曲分离与无扭曲分离三类区域。</li>
+          <li>将被动信念与线性信念下的分析扩展至向零售商完全共享需求预测的情形，并推导状态依存的价格、需求及利润的闭式表达式。</li>
+          <li>推导预测信息含量与不平等厌恶程度的阈值，用以刻画企业及渠道整体对信息共享的偏好。</li>
+          <li>识别不共享信息时的行为保护效应（behavioral shield）与线性信念下的验证缺口（verification gap）；在相应条件下，不平等厌恶为正时，信息共享会在所有预测信息含量水平下同时降低渠道利润与消费者福利。</li>
         </ul>
-
         <div class="subheading">
           <span class="subheading-title">“先发货后购物” (STS) 与传统商业模式下垄断者的双边渠道选择博弈</span>
           <span>2024年9月 &mdash; 2025年8月</span>
@@ -234,11 +224,10 @@
           </div>
         </div>
         <ul>
-          <li>构建了一个双边渠道选择博弈, 其中垄断者在传统渠道与“先发货后购物” (STS) 渠道之间进行选择，并将订阅成本、搜索成本和退货成本纳入模型.</li>
-          <li>刻画了最优定价, 并证明在放宽消费者对自身类型的认知以及消费者类型与退货成本分布等假设后, 均衡中仍不会出现展厅效应 (showrooming).</li>
+          <li>构建垄断者在传统零售与“先发货后购物”（STS）模式之间进行选择的博弈论模型，纳入消费者的订阅、搜索及退货成本。</li>
+          <li>推导均衡渠道选择与定价决策，并证明不存在展厅效应（showrooming）的结论对消费者自身类型认知假设、消费者类型分布及退货成本分布的调整具有稳健性。</li>
         </ul>
       </div>
-
       <div class="section">
         <h2>教学经历</h2>
         <div class="subheading">
@@ -253,7 +242,7 @@
         </div>
         <ul>
           <li>
-            设计并搭建课程网站, 用于发布和集中管理课程资料, 并系统整理课程关键信息: 
+            搭建课程网站，集中提供学习资料与课程关键信息：
             <a
               class="expand-action-btn"
               href="https://mathematical-analysis-b1.pages.dev"
@@ -268,7 +257,6 @@
             </a>
           </li>
         </ul>
-
         <div class="subheading">
           <span class="subheading-title">助教, "机器学习B"</span>
           <span>2026年3月 &mdash; 2026年7月</span>
@@ -281,7 +269,7 @@
         </div>
         <ul>
           <li>
-            补充拓展了“机器学习A”中学到的、王杰老师编的教材内容, 帮助同学们夯实机器学习相关的数学基础:
+            每周开展答疑，并组织补充教学与考前复习，重点围绕机器学习核心概念与数学推理进行辅导。补充学习资料：
             <a
               class="expand-action-btn"
               href="https://github.com/Stardust-math/Machine_Learning_B"
@@ -292,10 +280,8 @@
               <span>仓库</span>
             </a>
           </li>
-          <li>批改作业, 并就学生的概念理解与数学推理给予反馈; 同时协助批改考试并提供辅导.</li>
-          <li>主持每周答疑与习题讲解, 解答学生问题并协助其准备期末考试.</li>
+          <li>批改作业与试卷，并就学生对概念的理解和定量问题的作答提供详细反馈。</li>
         </ul>
-
         <div class="subheading">
           <span class="subheading-title">助教, "概率论与数理统计"</span>
           <span>2025年9月 &mdash; 2026年1月</span>
@@ -308,7 +294,7 @@
         </div>
         <ul>
           <li>
-            围绕缪柏其、张伟平编著教材中的习题, 编写了详细的 LaTeX 解答, 并维护面向学生的开源仓库:
+            编写内容全面的课程教材习题解答手册，使用 LaTeX 排版，并维护面向学生的开源仓库：
             <a
               class="expand-action-btn"
               href="https://github.com/Stardust-math/Reference-Answer"
@@ -319,10 +305,8 @@
               <span>仓库</span>
             </a>
           </li>
-          <li>给学生的作业和考试评分, 提供反馈和辅导. 每周开设习题课, 回答问题, 帮助学生准备考试.</li>
         </ul>
       </div>
-
       <div class="section">
         <h2>课程设计</h2>
 
@@ -331,7 +315,6 @@
             基于加权图建模与系统额外增量的地铁线路规划
           </span>
         </div>
-
         <ul>
           <li>
             本项目在加权图建模框架下研究地铁路径规划, 并在原始教学模板基础上扩展为一个完整系统, 包含最短路径计算、改进的图形交互界面, 以及考虑换乘代价的路径规划扩展.
@@ -349,7 +332,6 @@
                 </svg>
                 <span>展示页</span>
               </a>
-
               <a
                 class="expand-action-btn"
                 href="https://github.com/Stardust-math/Mathematical_Modeling/tree/main/HW%26ANS/Answer_1"
@@ -362,13 +344,11 @@
             </div>
           </li>
         </ul>
-
         <div class="subheading">
           <span class="subheading-title">
             图像恢复的渐进式 RPCA 框架: 从基础分解到掩膜补全
           </span>
         </div>
-
         <ul>
           <li>
             本项目研究基于渐进式 RPCA 框架的图像恢复, 从基础的低秩—稀疏分解出发, 进一步扩展到彩色图像处理、增强图形交互、TV 正则化恢复与掩膜补全.
@@ -386,7 +366,6 @@
                 </svg>
                 <span>展示页</span>
               </a>
-
               <a
                 class="expand-action-btn"
                 href="https://github.com/Stardust-math/Mathematical_Modeling/tree/main/HW%26ANS/Answer_2"
@@ -399,13 +378,11 @@
             </div>
           </li>
         </ul>
-
         <div class="subheading">
           <span class="subheading-title">
             基于插值、拟合与傅里叶重建的曲线拟合
           </span>
         </div>
-
         <ul>
           <li>
             本项目研究由采样点驱动的平面曲线重建, 综合比较局部插值、全局拟合与周期闭曲线的截断傅里叶重建. 实验系统考察了三次 Hermite 插值、三次 B 样条插值、多项式最小二乘拟合和 B 样条最小二乘拟合在不同参数化方式、节点密度与噪声水平下的表现.
@@ -423,7 +400,6 @@
                 </svg>
                 <span>展示页</span>
               </a>
-
               <a
                 class="expand-action-btn"
                 href="https://github.com/Stardust-math/Mathematical_Modeling/tree/main/HW%26ANS/Answer_3"
@@ -436,13 +412,11 @@
             </div>
           </li>
         </ul>
-
         <div class="subheading">
           <span class="subheading-title">
             基于区室传染病模型的周期性爆发建模
           </span>
         </div>
-
         <ul>
           <li>
             本项目基于 SIR 型区室传染病模型研究传染病的周期性爆发现象. 实验从基础 SIR 模型出发, 进一步引入出生死亡导致的人口更新、季节性传播率强迫以及 Gillespie 随机模拟, 用于解释单次爆发、反复峰值、季节性流行模式与小感染人数下的早期消亡现象.
@@ -460,7 +434,6 @@
                 </svg>
                 <span>展示页</span>
               </a>
-
               <a
                 class="expand-action-btn"
                 href="https://github.com/Stardust-math/Mathematical_Modeling/tree/main/HW%26ANS/Answer_4"
@@ -473,13 +446,11 @@
             </div>
           </li>
         </ul>
-
         <div class="subheading">
           <span class="subheading-title">
             压力下的搭便车: 公共物品治理中的动态存量—压力模型
           </span>
         </div>
-
         <ul>
           <li>
             本项目研究动态公共物品供给中的搭便车行为, 构建基于仿真的动态存量—压力搭便车框架, 将异质性主体、贡献激励、公共物品存量、维护压力、需求反馈、容量饱和与政策干预整合在同一动态多主体系统中; 在受控合成情景下, 比较 Nash 式个体理性基准与阶段性社会规划者基准, 并评估补贴、惩罚、声誉、匹配基金、阈值治理与组合治理政策的效果.
@@ -497,7 +468,6 @@
                 </svg>
                 <span>展示页</span>
               </a>
-
               <a
                 class="expand-action-btn"
                 href="https://github.com/Stardust-math/Mathematical_Modeling/tree/main/HW%26ANS/Final/PublicGood_FreeRiding"
@@ -510,13 +480,11 @@
             </div>
           </li>
         </ul>
-
         <div class="subheading">
           <span class="subheading-title">
             TopoGraph3D: 面向三维有限元分析, 科学可视化与拓扑优化的可执行节点图系统
           </span>
         </div>
-
         <ul>
           <li>
             本项目开发 TopoGraph3D, 一款基于 C++17 的 Windows 桌面应用, 通过 20 种内置节点将三维结构分析流程表示为可执行类型化节点图, 并在统一数据流环境中集成结构化 Hex8 线性静力有限元分析, SIMP 拓扑优化, 与网格绑定的标量场后处理以及支持 SVG/VTK 导出的交互式科学可视化.
@@ -534,7 +502,6 @@
                 </svg>
                 <span>展示页</span>
               </a>
-
               <a
                 class="expand-action-btn"
                 href="https://github.com/Stardust-math/TopoGraph3D"
@@ -548,7 +515,6 @@
           </li>
         </ul>
       </div>
-
       <div class="section">
         <h2>附加信息</h2>
         <ul>
