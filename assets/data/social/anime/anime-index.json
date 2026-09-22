@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-20T21:35:48.932Z",
+  "generatedAt": "2026-09-22T17:02:13.576Z",
   "items": [
     {
       "id": "bgm-220445",
@@ -1010,7 +1010,7 @@
         "恋爱"
       ],
       "ratings": {
-        "bangumi": 7.1,
+        "bangumi": 7,
         "personal": null
       },
       "notes": {
@@ -1020,7 +1020,7 @@
       "dates": {
         "air": "2026-07-06"
       },
-      "updatedAt": "2026-09-13T21:30:31.677Z"
+      "updatedAt": "2026-09-22T17:02:13.576Z"
     },
     {
       "id": "bgm-27364",
@@ -8132,7 +8132,7 @@
         "TV"
       ],
       "ratings": {
-        "bangumi": 6.6,
+        "bangumi": 6.7,
         "personal": null
       },
       "notes": {
@@ -8142,7 +8142,7 @@
       "dates": {
         "air": "2014-12-26"
       },
-      "updatedAt": "2026-09-20T21:32:58.536Z"
+      "updatedAt": "2026-09-22T16:59:14.281Z"
     },
     {
       "id": "bgm-193467",
