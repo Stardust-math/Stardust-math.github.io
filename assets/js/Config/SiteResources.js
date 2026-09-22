@@ -101,7 +101,7 @@
 
   window.SiteResources = {
     site: {
-      title: 'Joker Chen',
+      title: 'Jinghao Chen',
       canonicalOrigin:
         'https://stardust-math.github.io',
 

@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-  title: 'Joker Chen',
+  title: 'Jinghao Chen',
 
   templatePath:
     'scripts/templates/index.template.html',

@@ -648,7 +648,7 @@ function makeEntry(outputPath, options) {
     baseHref: opts.baseHref || getBaseHref(normalized),
     routeEntry,
     preCoverLoading: opts.preCoverLoading === true,
-    title: opts.title || config.title || 'Joker Chen',
+    title: opts.title || config.title || 'Jinghao Chen',
     languageVariants: opts.languageVariants === true
   };
 }
