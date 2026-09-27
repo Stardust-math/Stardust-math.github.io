@@ -19,7 +19,7 @@
     "totalEpisodes": 10,
     "airDate": "2021-07-10",
     "year": 2021,
-    "studio": "miHoYo",
+    "studio": "miHoYo[米哈游]",
     "genres": [
       "国产",
       "泡面",
@@ -34,17 +34,17 @@
       "米哈游",
       "WEB",
       "中日合作",
-      "日常",
-      "2021年",
       "中国",
+      "2021年",
+      "日常",
       "绘梦想动漫",
-      "国产动画",
-      "动画",
-      "周半癫"
+      "中推",
+      "周半癫",
+      "国产动画"
     ],
     "bangumiRating": 6.6,
     "personalRating": null,
-    "updatedAt": "2026-09-20T21:34:48.378Z"
+    "updatedAt": "2026-09-27T19:25:13.713Z"
   },
   "custom": {
     "status": "planned",
