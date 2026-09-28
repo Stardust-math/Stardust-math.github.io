@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-27T19:26:36.541Z",
+  "generatedAt": "2026-09-28T11:16:05.362Z",
   "items": [
     {
       "id": "bgm-220445",
@@ -1070,7 +1070,7 @@
         "日常"
       ],
       "ratings": {
-        "bangumi": 8.1,
+        "bangumi": 8.2,
         "personal": null
       },
       "notes": {
@@ -1080,7 +1080,7 @@
       "dates": {
         "air": "2012-04-22"
       },
-      "updatedAt": "2026-09-27T19:24:20.648Z"
+      "updatedAt": "2026-09-28T11:16:05.362Z"
     },
     {
       "id": "bgm-111762",
@@ -6096,7 +6096,7 @@
         "续作"
       ],
       "ratings": {
-        "bangumi": 6.6,
+        "bangumi": 6.5,
         "personal": null
       },
       "notes": {
@@ -6106,7 +6106,7 @@
       "dates": {
         "air": "2021-05-15"
       },
-      "updatedAt": "2026-09-20T21:33:55.033Z"
+      "updatedAt": "2026-09-28T11:15:54.772Z"
     },
     {
       "id": "bgm-255525",
