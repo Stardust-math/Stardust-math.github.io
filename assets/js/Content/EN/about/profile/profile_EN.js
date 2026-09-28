@@ -91,8 +91,6 @@ Even when the end goal is empirical or decision-oriented, I strive to make the m
             <button class="expander" type="button" data-expand-target="exp-edu-bg" data-expand-key="edu-bg" aria-expanded="false" aria-label="Expand details">
               <i class="fas fa-chevron-right"></i>
             </button>
-            <br>
-            (<a class="profile-link" href="https://aixmicroprogram.mh.chaoxing.com/" target="_blank" rel="noopener noreferrer">Additional Specialization in AI+X (Certificate Program), East China Five Universities Consortium</a>)
           </span>
           <span>Hefei, China</span>
         </div>

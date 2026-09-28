@@ -91,8 +91,6 @@
             <button class="expander" type="button" data-expand-target="exp-edu-bg-zh" data-expand-key="edu-bg" aria-expanded="false" aria-label="展开详情">
               <i class="fas fa-chevron-right"></i>
             </button>
-            <br>
-            (PS: <a class="profile-link" href="https://aixmicroprogram.mh.chaoxing.com/" target="_blank" rel="noopener noreferrer">AI+X 微专业, 华东五校联盟</a>)
           </span>
           <span>中国·合肥</span>
         </div>
