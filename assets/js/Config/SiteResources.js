@@ -625,10 +625,10 @@
       coverDir:
         A + 'images/cover/',
       coverFiles: [
-        'cover_1.webp',
+        // 'cover_1.webp',
         'cover_2.webp',
         'cover_3.webp',
-        'cover_4.webp',
+        // 'cover_4.webp',
         'cover_5.webp',
         'cover_6.webp',
         'cover_7.webp',
