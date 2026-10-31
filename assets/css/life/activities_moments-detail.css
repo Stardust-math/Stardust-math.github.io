@@ -291,6 +291,12 @@ body[data-lang="zh"] .am-detail-index-link {
   margin-top: 0;
 }
 
+.am-detail-blocks {
+  display: flex;
+  flex-direction: column;
+  gap: 34px;
+}
+
 .am-detail-body {
   display: flex;
   flex-direction: column;
@@ -314,8 +320,14 @@ body[data-lang="zh"] .am-detail-index-link {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
+}
 
+.am-detail-blocks > .am-gallery:first-child:not(.am-gallery-single) {
   margin-top: 34px;
+}
+
+.am-gallery.am-gallery-single {
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .am-gallery-item {

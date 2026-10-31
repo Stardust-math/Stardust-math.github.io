@@ -22,13 +22,16 @@
 
     summary: '',
 
-    body: [],
-
-    gallery: [
-      './assets/images/life/activities_moments/2024_10_26/01.jpg',
-      './assets/images/life/activities_moments/2024_10_26/02.jpg',
-      './assets/images/life/activities_moments/2024_10_26/03.jpg',
-      './assets/images/life/activities_moments/2024_10_26/04.jpg'
+    content: [
+      {
+        type: 'gallery',
+        images: [
+          './assets/images/life/activities_moments/2024_10_26/01.jpg',
+          './assets/images/life/activities_moments/2024_10_26/02.jpg',
+          './assets/images/life/activities_moments/2024_10_26/03.jpg',
+          './assets/images/life/activities_moments/2024_10_26/04.jpg'
+        ]
+      }
     ]
   });
 

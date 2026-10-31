@@ -22,15 +22,20 @@
 
     summary: '回到知临，给奥1到奥7班的同学们宣传了科大。',
 
-    body: [
-      '回到知临，给奥1到奥7班的同学们宣传了科大。'
-    ],
-
-    gallery: [
-      './assets/images/life/activities_moments/2024_02_20/01.jpg',
-      './assets/images/life/activities_moments/2024_02_20/02.jpg',
-      './assets/images/life/activities_moments/2024_02_20/03.jpg',
-      './assets/images/life/activities_moments/2024_02_20/04.jpg'
+    content: [
+      {
+        type: 'text',
+        text: '回到知临，给奥1到奥7班的同学们宣传了科大。'
+      },
+      {
+        type: 'gallery',
+        images: [
+          './assets/images/life/activities_moments/2024_02_20/01.jpg',
+          './assets/images/life/activities_moments/2024_02_20/02.jpg',
+          './assets/images/life/activities_moments/2024_02_20/03.jpg',
+          './assets/images/life/activities_moments/2024_02_20/04.jpg'
+        ]
+      }
     ]
   });
 

@@ -14,6 +14,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const vm = require('vm');
 
 const ROOT = path.resolve(__dirname, '..');
 
@@ -342,6 +343,91 @@ function parseContentFile(filePath, lang, dateKey) {
   };
 }
 
+function checkContentImage(image, source) {
+  if (typeof image === 'string') {
+    if (!image.trim()) {
+      reporter.error(`${source} must contain a non-empty image path.`);
+    }
+    return;
+  }
+
+  if (!image || typeof image !== 'object' || Array.isArray(image)) {
+    reporter.error(`${source} must be an image path or an object with a src field.`);
+    return;
+  }
+
+  if (typeof image.src !== 'string' || !image.src.trim()) {
+    reporter.error(`${source}.src must be a non-empty string.`);
+  }
+
+  if (image.alt !== undefined && typeof image.alt !== 'string') {
+    reporter.error(`${source}.alt must be a string when provided.`);
+  }
+}
+
+function checkOrderedContent(filePath, lang, dateKey) {
+  const sandbox = { window: {} };
+
+  try {
+    vm.runInNewContext(readText(filePath), sandbox, {
+      filename: rel(filePath),
+      timeout: 1000
+    });
+  } catch (error) {
+    reporter.error(`Cannot evaluate ${rel(filePath)}: ${error.message}`);
+    return;
+  }
+
+  const data = sandbox.window[`ACTIVITIES_MOMENTS_${lang}`];
+  const moment = data && Array.isArray(data.moments)
+    ? data.moments.find((item) => item && item.dateKey === dateKey)
+    : null;
+
+  if (!moment) {
+    reporter.error(`${rel(filePath)} does not register a detail record for ${dateKey}.`);
+    return;
+  }
+
+  ['body', 'gallery'].forEach((field) => {
+    if (Object.prototype.hasOwnProperty.call(moment, field)) {
+      reporter.error(`${rel(filePath)} still uses the retired top-level ${field} field. Use content instead.`);
+    }
+  });
+
+  if (!Array.isArray(moment.content)) {
+    reporter.error(`${rel(filePath)} must define a content array.`);
+    return;
+  }
+
+  moment.content.forEach((item, index) => {
+    const source = `${rel(filePath)} content[${index}]`;
+
+    if (!item || typeof item !== 'object' || Array.isArray(item)) {
+      reporter.error(`${source} must be a text, image, or gallery object.`);
+      return;
+    }
+
+    if (item.type === 'text') {
+      if (typeof item.text !== 'string') {
+        reporter.error(`${source}.text must be a string.`);
+      }
+    } else if (item.type === 'image') {
+      checkContentImage(item, source);
+    } else if (item.type === 'gallery') {
+      if (!Array.isArray(item.images)) {
+        reporter.error(`${source}.images must be an array.`);
+        return;
+      }
+
+      item.images.forEach((image, imageIndex) => {
+        checkContentImage(image, `${source}.images[${imageIndex}]`);
+      });
+    } else {
+      reporter.error(`${source} has unsupported type ${String(item.type)}. Expected text, image, or gallery.`);
+    }
+  });
+}
+
 function checkContentFile(filePath, lang, dateKey) {
   if (!isFile(filePath)) {
     reporter.error(`Missing ${lang} content file for ${dateKey}: ${rel(filePath)}`);
@@ -349,6 +435,7 @@ function checkContentFile(filePath, lang, dateKey) {
   }
 
   const meta = parseContentFile(filePath, lang, dateKey);
+  checkOrderedContent(filePath, lang, dateKey);
 
   if (meta.dateKey !== dateKey) {
     reporter.error(`${rel(filePath)} has dateKey \`${meta.dateKey}\`, expected \`${dateKey}\`.`);

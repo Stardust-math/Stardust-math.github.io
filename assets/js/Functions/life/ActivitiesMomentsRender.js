@@ -95,18 +95,19 @@
     `;
   }
 
-  function renderGallery(moment, ui) {
+  function renderImageGroup(images, title, ui, single, offset) {
     const U = getUtils();
     if (!U) return '';
 
-    const gallery = Array.isArray(moment.gallery) ? moment.gallery : [];
-    if (!gallery.length) return '';
+    if (!images.length) return '';
 
     return `
-      <div class="am-gallery">
-        ${gallery.map((src, index) => {
-          const safeSrc = U.escapeHtml(src);
-          const alt = U.escapeHtml((moment.title || '') + ' ' + (index + 1));
+      <div class="am-gallery${single ? ' am-gallery-single' : ''}">
+        ${images.map((image, index) => {
+          const safeSrc = U.escapeHtml(image.src);
+          const alt = U.escapeHtml(typeof image.alt === 'string'
+            ? image.alt
+            : (title || '') + ' ' + ((offset || 0) + index + 1));
 
           return `
             <button
@@ -123,6 +124,29 @@
         }).join('')}
       </div>
     `;
+  }
+
+  function renderContent(moment, ui) {
+    const U = getUtils();
+    if (!U) return '';
+
+    let imageOffset = 0;
+
+    const html = U.getContentBlocks(moment).map((block) => {
+      if (block.type === 'text') {
+        const paragraphs = block.paragraphs
+          .map((paragraph) => `<p>${U.renderInlineText(paragraph)}</p>`)
+          .join('');
+
+        return paragraphs ? `<div class="am-detail-body">${paragraphs}</div>` : '';
+      }
+
+      const gallery = renderImageGroup(block.images, moment.title, ui, block.single, imageOffset);
+      imageOffset += block.images.length;
+      return gallery;
+    }).join('\n      ');
+
+    return html ? `<div class="am-detail-blocks">${html}</div>` : '';
   }
 
   function renderDetailShell(moment, innerHtml) {
@@ -184,14 +208,9 @@
     const ui = U.getUi();
 
     const backHref = U.escapeHtml(U.getListRoute());
-    const body = Array.isArray(moment.body) ? moment.body : [];
-    const bodyHtml = body
-      .map((paragraph) => `<p>${U.renderInlineText(paragraph)}</p>`)
-      .join('');
 
     return renderDetailShell(moment, `
-      ${bodyHtml ? `<div class="am-detail-body">${bodyHtml}</div>` : ''}
-      ${renderGallery(moment, ui)}
+      ${renderContent(moment, ui)}
 
       <div class="am-detail-footer">
         <a
@@ -209,7 +228,6 @@
     renderMomentIndex,
     renderCard,
     renderListHtml,
-    renderGallery,
     renderDetailShell,
     renderDetailLoadingHtml,
     renderDetailHtml

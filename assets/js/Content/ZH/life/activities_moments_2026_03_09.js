@@ -22,9 +22,7 @@
 
     summary: '',
 
-    body: [],
-
-    gallery: []
+    content: []
   });
 
   window.ACTIVITIES_MOMENTS_ZH = target;

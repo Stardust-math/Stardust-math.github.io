@@ -222,6 +222,55 @@
     return Array.isArray(data.moments) ? data.moments : [];
   }
 
+  function normalizeImages(images) {
+    return (Array.isArray(images) ? images : [])
+      .map((value) => {
+        const image = typeof value === 'string' ? { src: value } : value;
+        if (!image || typeof image.src !== 'string' || !image.src.trim()) return null;
+
+        return {
+          src: image.src,
+          alt: typeof image.alt === 'string' ? image.alt : undefined
+        };
+      })
+      .filter(Boolean);
+  }
+
+  function getContentBlocks(moment) {
+    if (!moment || !Array.isArray(moment.content)) return [];
+
+    const blocks = [];
+
+    moment.content.forEach((item) => {
+      if (!item || typeof item !== 'object') return;
+
+      if (item.type === 'text' && typeof item.text === 'string') {
+        const previous = blocks[blocks.length - 1];
+
+        if (previous && previous.type === 'text') {
+          previous.paragraphs.push(item.text);
+        } else {
+          blocks.push({ type: 'text', paragraphs: [item.text] });
+        }
+
+        return;
+      }
+
+      if (item.type === 'image' || item.type === 'gallery') {
+        const images = normalizeImages(item.type === 'image' ? [item] : item.images);
+        if (!images.length) return;
+
+        blocks.push({
+          type: 'gallery',
+          images,
+          single: item.type === 'image'
+        });
+      }
+    });
+
+    return blocks;
+  }
+
   function findByDateKey(items, dateKey) {
     return (Array.isArray(items) ? items : []).find((item) => {
       return item && item.dateKey === dateKey;
@@ -497,6 +546,7 @@
     getDetailScript,
     getCatalogItems,
     getDetailItems,
+    getContentBlocks,
     findByDateKey,
     getCatalogMomentInLang,
     getDetailMomentInLang,

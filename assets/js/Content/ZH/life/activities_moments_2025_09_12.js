@@ -22,11 +22,14 @@
 
     summary: '',
 
-    body: [],
-
-    gallery: [
-      './assets/images/life/activities_moments/2025_09_12/01.jpg',
-      './assets/images/life/activities_moments/2025_09_12/02.jpg'
+    content: [
+      {
+        type: 'gallery',
+        images: [
+          './assets/images/life/activities_moments/2025_09_12/01.jpg',
+          './assets/images/life/activities_moments/2025_09_12/02.jpg'
+        ]
+      }
     ]
   });
 

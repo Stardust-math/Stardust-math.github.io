@@ -25,16 +25,30 @@
 
     summary: 'A joyful ending.',
 
-    body: [
-      'A joyful ending [celebrate].',
-      'The teacher gave each of us another brush handmade by himself [rose]. We all wrote many characters together [smile].',
-      'A calligrapher and painter also came to write inscriptions and paint for everyone. I did not expect someone to recognize the source of my piece, which was such a pleasant surprise [grin].',
-      'Unfortunately, I heard that this course might be offered for the last time. I am not sure whether that makes me lucky [frown].'
-    ],
-
-    gallery: [
-      './assets/images/life/activities_moments/2025_12_22/01.jpg',
-      './assets/images/life/activities_moments/2025_12_22/02.jpg'
+    content: [
+      {
+        type: 'text',
+        text: 'A joyful ending [celebrate].'
+      },
+      {
+        type: 'text',
+        text: 'The teacher gave each of us another brush handmade by himself [rose]. We all wrote many characters together [smile].'
+      },
+      {
+        type: 'text',
+        text: 'A calligrapher and painter also came to write inscriptions and paint for everyone. I did not expect someone to recognize the source of my piece, which was such a pleasant surprise [grin].'
+      },
+      {
+        type: 'text',
+        text: 'Unfortunately, I heard that this course might be offered for the last time. I am not sure whether that makes me lucky [frown].'
+      },
+      {
+        type: 'gallery',
+        images: [
+          './assets/images/life/activities_moments/2025_12_22/01.jpg',
+          './assets/images/life/activities_moments/2025_12_22/02.jpg'
+        ]
+      }
     ]
   });
 

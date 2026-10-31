@@ -19,15 +19,20 @@
   }
 
   function collectGalleryImagesFromMoment(moment) {
-    if (!moment || !Array.isArray(moment.gallery)) return [];
+    const U = getUtils();
+    if (!U || !moment) return [];
 
-    return moment.gallery
-      .map((src) => {
-        if (typeof src === 'string') return src;
-        if (src && typeof src === 'object' && src.src) return src.src;
-        return '';
-      })
-      .filter(Boolean);
+    const images = [];
+
+    U.getContentBlocks(moment).forEach((block) => {
+      if (block.type !== 'gallery') return;
+
+      block.images.forEach((image) => {
+        images.push(image.src);
+      });
+    });
+
+    return images;
   }
 
   function collectAllGalleryImages() {

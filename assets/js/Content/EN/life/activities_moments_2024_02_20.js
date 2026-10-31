@@ -22,15 +22,20 @@
 
     summary: 'Returning to Zhilin, I introduced USTC to students from Olympiad Classes 1 to 7.',
 
-    body: [
-      'Returning to Zhilin, I introduced USTC to students from Olympiad Classes 1 to 7.'
-    ],
-
-    gallery: [
-      './assets/images/life/activities_moments/2024_02_20/01.jpg',
-      './assets/images/life/activities_moments/2024_02_20/02.jpg',
-      './assets/images/life/activities_moments/2024_02_20/03.jpg',
-      './assets/images/life/activities_moments/2024_02_20/04.jpg'
+    content: [
+      {
+        type: 'text',
+        text: 'Returning to Zhilin, I introduced USTC to students from Olympiad Classes 1 to 7.'
+      },
+      {
+        type: 'gallery',
+        images: [
+          './assets/images/life/activities_moments/2024_02_20/01.jpg',
+          './assets/images/life/activities_moments/2024_02_20/02.jpg',
+          './assets/images/life/activities_moments/2024_02_20/03.jpg',
+          './assets/images/life/activities_moments/2024_02_20/04.jpg'
+        ]
+      }
     ]
   });
 

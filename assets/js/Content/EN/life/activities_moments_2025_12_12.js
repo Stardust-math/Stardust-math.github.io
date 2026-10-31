@@ -22,15 +22,20 @@
 
     summary: 'An ordinary day, unexpectedly comforted by a bowl of beef noodles.',
 
-    body: [
-      'After trying so many kinds of noodles both on and off campus, most of them felt rather plain and forgettable. This bowl, however, was genuinely good. The noodles had just the right texture, soft yet pleasantly chewy; the beef practically melted in my mouth, and even the portion size was perfect, leaving nothing to waste [delicious].'
-    ],
-
-    gallery: [
-      './assets/images/life/activities_moments/2025_12_12/01.jpg',
-      './assets/images/life/activities_moments/2025_12_12/02.jpg',
-      './assets/images/life/activities_moments/2025_12_12/03.jpg',
-      './assets/images/life/activities_moments/2025_12_12/04.jpg'
+    content: [
+      {
+        type: 'text',
+        text: 'After trying so many kinds of noodles both on and off campus, most of them felt rather plain and forgettable. This bowl, however, was genuinely good. The noodles had just the right texture, soft yet pleasantly chewy; the beef practically melted in my mouth, and even the portion size was perfect, leaving nothing to waste [delicious].'
+      },
+      {
+        type: 'gallery',
+        images: [
+          './assets/images/life/activities_moments/2025_12_12/01.jpg',
+          './assets/images/life/activities_moments/2025_12_12/02.jpg',
+          './assets/images/life/activities_moments/2025_12_12/03.jpg',
+          './assets/images/life/activities_moments/2025_12_12/04.jpg'
+        ]
+      }
     ]
   });
 

@@ -22,16 +22,30 @@
 
     summary: '完结撒花。',
 
-    body: [
-      '完结撒花[庆祝]。',
-      '老师又送了我们每人一支他亲手做的笔[玫瑰]。大家一起写了很多字[憨笑]。',
-      '有书画家来给大家题字、画画，没想到竟然有人认出我这幅字的出处，太惊喜了[呲牙]。',
-      '可惜听说这门课可能是最后一届开了，不知道算不算幸运[皱眉]。'
-    ],
-
-    gallery: [
-      './assets/images/life/activities_moments/2025_12_22/01.jpg',
-      './assets/images/life/activities_moments/2025_12_22/02.jpg'
+    content: [
+      {
+        type: 'text',
+        text: '完结撒花[庆祝]。'
+      },
+      {
+        type: 'text',
+        text: '老师又送了我们每人一支他亲手做的笔[玫瑰]。大家一起写了很多字[憨笑]。'
+      },
+      {
+        type: 'text',
+        text: '有书画家来给大家题字、画画，没想到竟然有人认出我这幅字的出处，太惊喜了[呲牙]。'
+      },
+      {
+        type: 'text',
+        text: '可惜听说这门课可能是最后一届开了，不知道算不算幸运[皱眉]。'
+      },
+      {
+        type: 'gallery',
+        images: [
+          './assets/images/life/activities_moments/2025_12_22/01.jpg',
+          './assets/images/life/activities_moments/2025_12_22/02.jpg'
+        ]
+      }
     ]
   });
 
