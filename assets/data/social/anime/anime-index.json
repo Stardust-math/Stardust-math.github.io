@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-25T21:50:31.528Z",
+  "generatedAt": "2026-10-31T02:48:31.591Z",
   "items": [
     {
       "id": "bgm-220445",
@@ -230,7 +230,7 @@
         "辛迪加影视"
       ],
       "ratings": {
-        "bangumi": 6,
+        "bangumi": 6.1,
         "personal": null
       },
       "notes": {
@@ -240,7 +240,7 @@
       "dates": {
         "air": "2014-01-17"
       },
-      "updatedAt": "2026-10-25T21:47:18.795Z"
+      "updatedAt": "2026-10-31T02:45:42.331Z"
     },
     {
       "id": "bgm-121596",
@@ -9451,7 +9451,7 @@
         "樱井弘明"
       ],
       "ratings": {
-        "bangumi": 7.7,
+        "bangumi": 7.8,
         "personal": null
       },
       "notes": {
@@ -9461,7 +9461,7 @@
       "dates": {
         "air": "2016-07-10"
       },
-      "updatedAt": "2026-10-11T22:54:50.471Z"
+      "updatedAt": "2026-10-31T02:45:59.102Z"
     },
     {
       "id": "bgm-204027",
@@ -9571,7 +9571,7 @@
         "SP"
       ],
       "ratings": {
-        "bangumi": 7.5,
+        "bangumi": 7.6,
         "personal": null
       },
       "notes": {
@@ -9581,7 +9581,7 @@
       "dates": {
         "air": "2018-12-28"
       },
-      "updatedAt": "2026-10-18T21:31:52.868Z"
+      "updatedAt": "2026-10-31T02:46:34.876Z"
     },
     {
       "id": "bgm-278899",
@@ -18139,7 +18139,7 @@
         "日常"
       ],
       "ratings": {
-        "bangumi": 9.2,
+        "bangumi": 9.1,
         "personal": null
       },
       "notes": {
@@ -18149,7 +18149,7 @@
       "dates": {
         "air": "2008-10-02"
       },
-      "updatedAt": "2026-10-04T20:17:34.911Z"
+      "updatedAt": "2026-10-31T02:48:31.591Z"
     },
     {
       "id": "bgm-37874",
