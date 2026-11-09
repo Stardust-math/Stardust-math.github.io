@@ -85,6 +85,13 @@
         siteurl: 'https://lys1eek.github.io',
         avatar: 'https://lys1eek.github.io/images/profile_self.png',
         tag: 'Academic'
+      },
+      {
+        title: 'Yibin Shen',
+        desc: '饿了想吃番薯',
+        siteurl: 'https://weakly-sane.github.io',
+        avatar: 'https://avatars.githubusercontent.com/u/354143069?v=4',
+        tag: 'Academic'
       }
     ]
   };

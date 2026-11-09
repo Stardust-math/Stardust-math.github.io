@@ -88,6 +88,10 @@
     return t('friends_copy_line') || 'Copy this line';
   }
 
+  function getFriendOpenLabel(title) {
+    return t('friends_open_site') + ': ' + title;
+  }
+
   function renderIntro() {
     const intro = String(t('friends_intro') || '').trim();
 
@@ -178,7 +182,7 @@
     const url = item.siteurl || item.url || item.link || '#';
     const avatar = item.avatar || item.imgurl || '';
     const tag = item.tag || '';
-    const openLabel = t('friends_open_site') + ': ' + title;
+    const openLabel = getFriendOpenLabel(title);
 
     const bgAvatar = avatar
       ? [
@@ -400,6 +404,16 @@
       if (typeof value === 'string') {
         el.setAttribute('aria-label', value);
         el.setAttribute('title', value);
+      }
+    });
+
+    root.querySelectorAll('.friend-card').forEach(function (card) {
+      const title = card.querySelector('.friend-title');
+      if (!title) return;
+
+      const label = getFriendOpenLabel(title.textContent);
+      if (card.getAttribute('aria-label') !== label) {
+        card.setAttribute('aria-label', label);
       }
     });
   }
