@@ -448,7 +448,17 @@ function checkContentFile(filePath, lang, dateKey) {
 
   const dateLabel = expectedLabel(dateKey);
   if (meta.dateLabel !== dateLabel) {
-    reporter.error(`${rel(filePath)} has dateLabel \`${meta.dateLabel}\`, expected \`${dateLabel}\`.`);
+    const range = /^([0-9]{4}\.[0-9]{2}\.[0-9]{2})——([0-9]{4}\.[0-9]{2}\.[0-9]{2})$/.exec(meta.dateLabel || '');
+
+    if (!range || range[2] !== dateLabel) {
+      reporter.error(`${rel(filePath)} has dateLabel \`${meta.dateLabel}\`, expected \`${dateLabel}\` or a date range ending on it.`);
+    } else {
+      validateDateKey(range[1].replace(/\./g, '_'), `${rel(filePath)} dateLabel start`);
+
+      if (range[1] > range[2]) {
+        reporter.error(`${rel(filePath)} has a dateLabel range that starts after it ends.`);
+      }
+    }
   }
 
   if (!meta.title) {

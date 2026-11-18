@@ -14,6 +14,15 @@
 
     items: [
       {
+        dateKey: '2026_10_30',
+        dateISO: '2026-10-30',
+        dateLabel: '2026.08.04——2026.10.30',
+        title: '新加坡的三月暑研',
+        location: '新加坡国立大学 · 设计与工程学院 · 工业系统工程与管理系',
+        cover: './assets/images/life/activities_moments/2026_10_30/cover.jpg',
+        summary: '一人与众人别离……'
+      },
+      {
         dateKey: '2026_05_16',
         dateISO: '2026-05-16',
         dateLabel: '2026.05.16',

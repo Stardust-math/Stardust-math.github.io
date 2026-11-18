@@ -125,6 +125,8 @@
   left: -1px;
   top: -1px;
   z-index: 3;
+  max-width: 100%;
+  overflow-wrap: anywhere;
 
   padding: 12px 16px 10px 15px;
   border-radius: calc(var(--radius, 22px) + 3px) 0 18px 0;

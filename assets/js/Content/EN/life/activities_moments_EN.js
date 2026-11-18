@@ -14,6 +14,15 @@
 
     items: [
       {
+        dateKey: '2026_10_30',
+        dateISO: '2026-10-30',
+        dateLabel: '2026.08.04——2026.10.30',
+        title: 'Three Months of Summer Research in Singapore',
+        location: 'Department of Industrial Systems Engineering and Management (ISEM), College of Design and Engineering (CDE), National University of Singapore (NUS)',
+        cover: './assets/images/life/activities_moments/2026_10_30/cover.jpg',
+        summary: 'One person bids farewell to many…'
+      },
+      {
         dateKey: '2026_05_16',
         dateISO: '2026-05-16',
         dateLabel: '2026.05.16',

@@ -77,6 +77,8 @@
 
 .am-detail-date {
   display: inline-flex;
+  max-width: 100%;
+  overflow-wrap: anywhere;
   margin-bottom: 10px;
 
   font-family: var(--font-activities-date);
@@ -215,7 +217,7 @@ body[data-lang="zh"] .am-detail-index-title {
 
 .am-detail-index-link {
   display: grid;
-  grid-template-columns: max-content max-content minmax(0, 1fr);
+  grid-template-columns: fit-content(50%) max-content minmax(0, 1fr);
   column-gap: 0.18em;
   align-items: baseline;
 
@@ -261,6 +263,7 @@ body[data-lang="zh"] .am-detail-index-link {
   text-decoration-skip-ink: auto;
 }
 
+.am-index-date,
 .am-index-title {
   min-width: 0;
   overflow-wrap: anywhere;
