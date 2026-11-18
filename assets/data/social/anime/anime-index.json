@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-15T23:26:43.576Z",
+  "generatedAt": "2026-11-18T07:38:15.261Z",
   "items": [
     {
       "id": "bgm-220445",
@@ -2030,7 +2030,7 @@
         "A-1_Pictures"
       ],
       "ratings": {
-        "bangumi": 6.1,
+        "bangumi": 6,
         "personal": null
       },
       "notes": {
@@ -2040,7 +2040,7 @@
       "dates": {
         "air": "2019-10-12"
       },
-      "updatedAt": "2026-10-18T21:32:13.989Z"
+      "updatedAt": "2026-11-18T07:38:15.261Z"
     },
     {
       "id": "bgm-292238",
@@ -5316,7 +5316,7 @@
         "动画"
       ],
       "ratings": {
-        "bangumi": 7,
+        "bangumi": 6.9,
         "personal": null
       },
       "notes": {
@@ -5326,7 +5326,7 @@
       "dates": {
         "air": "2016-08-19"
       },
-      "updatedAt": "2026-11-15T23:23:43.928Z"
+      "updatedAt": "2026-11-18T07:37:19.701Z"
     },
     {
       "id": "bgm-49278",
