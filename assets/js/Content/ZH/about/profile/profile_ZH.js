@@ -176,6 +176,21 @@
       <div class="section">
         <h2>科研经历</h2>
         <div class="subheading">
+          <span class="subheading-title">基于上下文学习的凸二次规划活跃约束集预测</span>
+          <span>2026年10月 &mdash; 至今</span>
+        </div>
+        <div class="subsubheading">
+          <div>导师: </div>
+          <div class="profile-advisor-list">
+            <div><strong><a class="profile-link" href="https://www.mccombs.utexas.edu/faculty-and-research/faculty-directory/profile/?username=rg45275" target="_blank" rel="noopener noreferrer">Rui Gao 教授</a></strong>(<a class="profile-link" href="https://www.mccombs.utexas.edu/faculty-research/departments/irom/" target="_blank" rel="noopener noreferrer">得克萨斯大学奥斯汀分校 McCombs 商学院信息、风险与运营管理系</a>)</div>
+          </div>
+        </div>
+        <ul>
+          <li>构建上下文学习框架，利用同一问题族中已求解的实例，预测凸二次规划的活跃约束集。</li>
+          <li>实现基于 KKT 条件的数据生成和解恢复方法，将学习模型预测的活跃约束集与原优化问题相联系。</li>
+          <li>设计对照实验，改变上下文示例标签的可见性、监督方式及上下文长度，评估活跃约束集的精确恢复能力和预测表现。</li>
+        </ul>
+        <div class="subheading">
           <span class="subheading-title">选择模型不等式与边际分布模型</span>
           <span>2026年7月 &mdash; 至今</span>
         </div>
@@ -524,7 +539,7 @@
             </ul>
           </li>
           <li>
-            <strong>语言:</strong> 普通话 (母语), 英语 (流利; 托福: 阅读 28, 听力 24, 口语 24, 写作 27)
+            <strong>语言:</strong> 普通话 (母语), 英语（流利；TOEFL iBT：5.0/6.0；阅读 5.0，听力 5.0，口语 4.5，写作 5.5）
           </li>
         </ul>
       </div>

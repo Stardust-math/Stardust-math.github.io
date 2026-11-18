@@ -176,6 +176,21 @@ Even when the end goal is empirical or decision-oriented, I strive to make the m
       <div class="section">
         <h2>Research Experience</h2>
         <div class="subheading">
+          <span class="subheading-title">In-Context Active-Set Prediction for Convex Quadratic Programming</span>
+          <span>Oct. 2026 &mdash; Present</span>
+        </div>
+        <div class="subsubheading">
+          <div>Advisor:</div>
+          <div class="profile-advisor-list">
+            <div><strong><a class="profile-link" href="https://www.mccombs.utexas.edu/faculty-and-research/faculty-directory/profile/?username=rg45275" target="_blank" rel="noopener noreferrer">Prof. Rui Gao</a></strong> (<a class="profile-link" href="https://www.mccombs.utexas.edu/faculty-research/departments/irom/" target="_blank" rel="noopener noreferrer">Department of Information, Risk, and Operations Management, McCombs School of Business, The University of Texas at Austin</a>)</div>
+          </div>
+        </div>
+        <ul>
+          <li>Developed an in-context learning framework to predict active sets of convex quadratic programs using solved instances from the same problem family.</li>
+          <li>Implemented KKT-based data generation and solution recovery, linking learned active-set predictions to the underlying optimization problem.</li>
+          <li>Designed controlled experiments varying support-label visibility, supervision schemes, and context length to evaluate exact active-set recovery and predictive performance.</li>
+        </ul>
+        <div class="subheading">
           <span class="subheading-title">Choice Model Inequalities and Marginal Distribution Models</span>
           <span>Jul. 2026 &mdash; Present</span>
         </div>
@@ -525,7 +540,7 @@ It links heterogeneous agents, contribution incentives, public-good stock, maint
             </ul>
           </li>
           <li>
-            <strong>Languages:</strong> Mandarin (Native), English (Fluent — TOEFL: Reading 28, Listening 24, Speaking 24, Writing 27)
+            <strong>Languages:</strong> Mandarin (Native), English (Fluent — TOEFL iBT: 5.0/6.0; Reading 5.0, Listening 5.0, Speaking 4.5, Writing 5.5)
           </li>
         </ul>
       </div>
