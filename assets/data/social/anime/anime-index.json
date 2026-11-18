@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-18T07:38:15.261Z",
+  "generatedAt": "2026-11-18T16:20:20.834Z",
   "items": [
     {
       "id": "bgm-220445",
@@ -2450,7 +2450,7 @@
         "科幻"
       ],
       "ratings": {
-        "bangumi": 8.9,
+        "bangumi": 9,
         "personal": null
       },
       "notes": {
@@ -2460,7 +2460,7 @@
       "dates": {
         "air": "1996-09-07"
       },
-      "updatedAt": "2026-11-15T23:23:03.670Z"
+      "updatedAt": "2026-11-18T16:20:20.834Z"
     },
     {
       "id": "bgm-215425",
