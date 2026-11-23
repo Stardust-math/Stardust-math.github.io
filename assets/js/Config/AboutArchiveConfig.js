@@ -158,6 +158,12 @@
         }
       ],
 
+      publicationStatuses: [
+        { id: 'publication', order: 10 },
+        { id: 'preprint', order: 20 },
+        { id: 'manuscript', order: 30 }
+      ],
+
       subjects: [
         {
           id: 'probability-theory',
@@ -194,6 +200,10 @@
         {
           id: 'latex-typesetting',
           order: 90
+        },
+        {
+          id: 'operations-management',
+          order: 100
         }
       ],
 
@@ -1097,6 +1107,32 @@
         ],
         defaultOpen: false,
         order: 84
+      },
+      {
+        id: 'demand-information-sharing',
+        primaryCategory: 'works-compilations',
+        materialType: 'research-manuscripts-notes',
+        publicationStatus: 'preprint',
+        subjects: ['operations-management'],
+        roles: ['co-author'],
+        languages: ['en'],
+        date: '2026-11',
+        year: 2026,
+        resources: [
+          {
+            id: 'document-pdf',
+            type: 'pdf',
+            href: './assets/pdf/preprints/demand-information-sharing.pdf',
+            embed: true,
+            initialPage: 1,
+            zoom: 'page-width',
+            pageMode: 'bookmarks',
+            spreadMode: 'none',
+            order: 10
+          }
+        ],
+        defaultOpen: false,
+        order: 90
       }
     ]
   });

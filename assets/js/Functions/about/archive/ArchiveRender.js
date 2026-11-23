@@ -310,6 +310,7 @@
     const groups = [
       'primaryCategories',
       'materialTypes',
+      'publicationStatuses',
       'subjects',
       'series',
       'roles',
@@ -403,6 +404,9 @@
             materialType: String(
               documentItem.materialType || ''
             ),
+            publicationStatus: String(
+              documentItem.publicationStatus || ''
+            ),
             series: String(
               documentItem.series || ''
             ),
@@ -476,6 +480,11 @@
       ),
       getLabel(
         dictionary,
+        'publicationStatuses',
+        documentItem.publicationStatus
+      ),
+      getLabel(
+        dictionary,
         'series',
         documentItem.series
       ),
@@ -517,6 +526,7 @@
       documentItem.id,
       documentItem.primaryCategory,
       documentItem.materialType,
+      documentItem.publicationStatus,
       documentItem.series,
       documentItem.date,
       documentItem.year,
@@ -1344,95 +1354,68 @@
 
   function renderTypeDocuments(
     documents,
-    dictionary
+    dictionary,
+    groupByStatus = false
   ) {
-    const threshold = Math.max(
+    if (!documents.length) return '';
+
+    const field = groupByStatus ? 'publicationStatus' : 'series';
+    const labelGroup = groupByStatus ? 'publicationStatuses' : 'series';
+    const attribute = groupByStatus ? 'publication-status' : 'series';
+    const minimumSize = groupByStatus ? 1 : Math.max(
       2,
       Number(
         catalog.config.grouping &&
         catalog.config.grouping.seriesMinimumSize
       ) || 2
     );
-    const seriesGroups = groupBy(
-      documents.filter(function (item) {
-        return hasText(item.series);
-      }),
-      function (item) {
-        return item.series;
-      }
-    );
-    const displayedSeries = Array.from(
-      seriesGroups.keys()
-    )
-      .filter(function (seriesId) {
-        return (
-          seriesGroups.get(seriesId).length >=
-          threshold
-        );
+    const groups = groupBy(documents, function (item) {
+      return item[field];
+    });
+    const groupIds = Array.from(groups.keys())
+      .filter(function (id) {
+        return hasText(id) && groups.get(id).length >= minimumSize;
       })
       .sort(function (a, b) {
-        return compareTaxonomyIds(
-          'series',
-          a,
-          b
-        );
+        return compareTaxonomyIds(labelGroup, a, b);
       });
-    const displayedSet = new Set(
-      displayedSeries
-    );
-    const ungrouped = documents.filter(
-      function (item) {
-        return !displayedSet.has(item.series);
-      }
-    );
-    const sections = [];
-
-    if (ungrouped.length) {
-      sections.push(
-        renderDocumentList(
-          ungrouped,
-          dictionary,
-          'archive-document-list-ungrouped'
-        )
-      );
-    }
-
-    displayedSeries.forEach(function (seriesId) {
-      const seriesDocuments =
-        seriesGroups.get(seriesId) || [];
-
-      sections.push(`
-        <section
-          class="archive-series"
-          data-archive-series-section
-          data-archive-series="${escapeHtml(
-            seriesId
-          )}"
-        >
-          <h4 class="archive-series-title">
-            <span
-              data-archive-label-group="series"
-              data-archive-label-id="${escapeHtml(
-                seriesId
-              )}"
-            >${escapeHtml(
-              getLabel(
-                dictionary,
-                'series',
-                seriesId
-              )
-            )}</span>
-            ${renderCount(seriesDocuments.length)}
-          </h4>
-          ${renderDocumentList(
-            seriesDocuments,
-            dictionary,
-            'archive-document-list-series'
-          )}
-        </section>
-      `);
+    const displayed = new Set(groupIds);
+    const ungrouped = documents.filter(function (item) {
+      return !displayed.has(item[field]);
     });
 
+    const sections = groupIds.map(function (id) {
+      const items = groups.get(id);
+      return `
+        <section
+          class="archive-${attribute}"
+          data-archive-${attribute}-section
+          data-archive-${attribute}="${escapeHtml(id)}"
+        >
+          <h4 class="archive-${attribute}-title">
+            <span
+              data-archive-label-group="${labelGroup}"
+              data-archive-label-id="${escapeHtml(id)}"
+            >${escapeHtml(getLabel(dictionary, labelGroup, id))}</span>
+            ${renderCount(items.length)}
+          </h4>
+          ${renderDocumentList(
+            items,
+            dictionary,
+            'archive-document-list-' + attribute
+          )}
+        </section>
+      `;
+    });
+
+    if (groupByStatus) {
+      // Research notes without a publication status retain their usual series grouping.
+      sections.push(renderTypeDocuments(ungrouped, dictionary));
+    } else {
+      sections.unshift(renderDocumentList(
+        ungrouped, dictionary, 'archive-document-list-ungrouped'
+      ));
+    }
     return sections.join('');
   }
 
@@ -1501,7 +1484,8 @@
           </h3>
           ${renderTypeDocuments(
             typeDocuments,
-            dictionary
+            dictionary,
+            typeId === 'research-manuscripts-notes'
           )}
         </section>
       `);
@@ -2126,7 +2110,7 @@
 
   function updateGroupVisibility(root) {
     [
-      '[data-archive-series-section]',
+      '[data-archive-series-section], [data-archive-publication-status-section]',
       '[data-archive-type-section]',
       '[data-archive-category-section]'
     ].forEach(function (selector) {

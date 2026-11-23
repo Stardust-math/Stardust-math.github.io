@@ -386,15 +386,16 @@ body[data-lang="zh"]
   letter-spacing: 0;
 }
 
-.archive-series {
+:is(.archive-series, .archive-publication-status) {
   margin-top: 15px;
 }
 
-.archive-series + .archive-series {
+:is(.archive-series, .archive-publication-status)
+  + :is(.archive-series, .archive-publication-status) {
   margin-top: 20px;
 }
 
-.archive-series-title {
+:is(.archive-series-title, .archive-publication-status-title) {
   display: flex;
   align-items: baseline;
   gap: 0.45em;
@@ -408,7 +409,7 @@ body[data-lang="zh"]
 }
 
 body[data-lang="zh"]
-.archive-series-title {
+:is(.archive-series-title, .archive-publication-status-title) {
   font-family: var(--font-zh-heading);
   font-variant: normal;
   letter-spacing: 0;

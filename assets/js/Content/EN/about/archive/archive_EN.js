@@ -34,6 +34,12 @@
         'other-readings': 'Other Readings'
       }),
 
+      publicationStatuses: Object.freeze({
+        publication: 'Publication',
+        preprint: 'Preprint',
+        manuscript: 'Manuscript'
+      }),
+
       subjects: Object.freeze({
         'probability-theory': 'Probability Theory',
         'mathematical-statistics':
@@ -47,7 +53,8 @@
         'topology-optimization':
           'Topology Optimization',
         'machine-learning': 'Machine Learning',
-        'latex-typesetting': 'LaTeX Typesetting'
+        'latex-typesetting': 'LaTeX Typesetting',
+        'operations-management': 'Operations Management'
       }),
 
       series: Object.freeze({
@@ -94,6 +101,20 @@
     }),
 
     documents: Object.freeze({
+      'demand-information-sharing': Object.freeze({
+        title:
+          'Demand Information Sharing and Transparency Dilemma with Consumer Inequality Aversion',
+        displayTitle: Object.freeze([
+          Object.freeze({
+            text: 'Demand Information Sharing and Transparency Dilemma with Consumer Inequality Aversion',
+            kind: 'cite'
+          })
+        ]),
+        creators: Object.freeze(['Jinghao Chen', 'Qian Wang', 'Yimin Yu']),
+        meta: 'November 2026',
+        notice: 'Jinghao Chen, Qian Wang, and Yimin Yu · Shared first authorship',
+        description: 'Submission in progress (Journal of Marketing Research).'
+      }),
       'probability-statistics-miao-zhang-solutions':
         Object.freeze({
           title:

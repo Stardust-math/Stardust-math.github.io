@@ -174,6 +174,17 @@
         </table>
       </div>
       <div class="section">
+        <h2>已发表论文、预印本与手稿</h2>
+        <ul>
+          <li>
+            <strong>预印本：</strong><cite lang="en">Demand Information Sharing and Transparency Dilemma with Consumer Inequality Aversion</cite>
+            <a class="expand-action-btn" href="./assets/pdf/preprints/demand-information-sharing.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开预印本 PDF"><i class="fas fa-file-pdf btn-ico" aria-hidden="true"></i> PDF</a>
+            <br>
+            投稿准备中（<cite lang="en">Journal of Marketing Research</cite>）。
+          </li>
+        </ul>
+      </div>
+      <div class="section">
         <h2>科研经历</h2>
         <div class="subheading">
           <span class="subheading-title">基于上下文学习的凸二次规划活跃约束集预测</span>

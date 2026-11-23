@@ -24,6 +24,7 @@ const PDF_SPREAD_MODES = new Set([
 const TAXONOMY_GROUPS = [
   'primaryCategories',
   'materialTypes',
+  'publicationStatuses',
   'subjects',
   'series',
   'roles',
@@ -784,6 +785,20 @@ function validateDocument(
       fail(
         `${prefix}.materialType ${materialType} belongs to ${typeDefinition.primaryCategory}, not ${primaryCategory}.`
       );
+    }
+  }
+
+  if (documentItem.publicationStatus !== undefined) {
+    const status = requireSafeId(
+      documentItem.publicationStatus,
+      `${prefix}.publicationStatus`
+    );
+
+    if (status && !taxonomy.publicationStatuses.ids.has(status)) {
+      fail(`${prefix}.publicationStatus is unknown: ${status}`);
+    }
+    if (documentItem.materialType !== 'research-manuscripts-notes') {
+      fail(`${prefix}.publicationStatus requires the research-manuscripts-notes material type.`);
     }
   }
 

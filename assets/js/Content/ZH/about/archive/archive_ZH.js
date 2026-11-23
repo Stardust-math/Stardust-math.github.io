@@ -33,6 +33,12 @@
         'other-readings': '其他阅读'
       }),
 
+      publicationStatuses: Object.freeze({
+        publication: '已发表论文',
+        preprint: '预印本',
+        manuscript: '手稿'
+      }),
+
       subjects: Object.freeze({
         'probability-theory': '概率论',
         'mathematical-statistics': '数理统计',
@@ -42,7 +48,8 @@
         'finite-element-analysis': '有限元分析',
         'topology-optimization': '拓扑优化',
         'machine-learning': '机器学习',
-        'latex-typesetting': 'LaTeX 排版'
+        'latex-typesetting': 'LaTeX 排版',
+        'operations-management': '运营管理'
       }),
 
       series: Object.freeze({
@@ -88,6 +95,20 @@
     }),
 
     documents: Object.freeze({
+      'demand-information-sharing': Object.freeze({
+        title:
+          'Demand Information Sharing and Transparency Dilemma with Consumer Inequality Aversion',
+        displayTitle: Object.freeze([
+          Object.freeze({
+            text: 'Demand Information Sharing and Transparency Dilemma with Consumer Inequality Aversion',
+            kind: 'cite'
+          })
+        ]),
+        creators: Object.freeze(['陈璟皓', '汪倩', '虞义敏']),
+        meta: '2026 年 11 月',
+        notice: '陈璟皓、汪倩、虞义敏 · 共同第一作者',
+        description: '投稿准备中（Journal of Marketing Research）。'
+      }),
       'probability-statistics-miao-zhang-solutions':
         Object.freeze({
           title:

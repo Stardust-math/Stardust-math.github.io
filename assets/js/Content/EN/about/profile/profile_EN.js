@@ -174,6 +174,17 @@ Even when the end goal is empirical or decision-oriented, I strive to make the m
         </table>
       </div>
       <div class="section">
+        <h2>Publication, Preprint &amp; Manuscript</h2>
+        <ul>
+          <li>
+            <strong>Preprint:</strong> <cite>Demand Information Sharing and Transparency Dilemma with Consumer Inequality Aversion</cite>
+            <a class="expand-action-btn" href="./assets/pdf/preprints/demand-information-sharing.pdf" target="_blank" rel="noopener noreferrer" aria-label="Open preprint PDF"><i class="fas fa-file-pdf btn-ico" aria-hidden="true"></i> PDF</a>
+            <br>
+            Submission in progress (<cite>Journal of Marketing Research</cite>).
+          </li>
+        </ul>
+      </div>
+      <div class="section">
         <h2>Research Experience</h2>
         <div class="subheading">
           <span class="subheading-title">In-Context Active-Set Prediction for Convex Quadratic Programming</span>
