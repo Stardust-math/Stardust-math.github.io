@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-23T00:21:44.919Z",
+  "generatedAt": "2026-11-23T13:28:06.703Z",
   "items": [
     {
       "id": "bgm-220445",
@@ -7896,7 +7896,7 @@
         "音乐"
       ],
       "ratings": {
-        "bangumi": 9.2,
+        "bangumi": 9.1,
         "personal": null
       },
       "notes": {
@@ -7906,7 +7906,7 @@
       "dates": {
         "air": "1965-09-25"
       },
-      "updatedAt": "2026-11-23T00:19:33.754Z"
+      "updatedAt": "2026-11-23T13:28:06.703Z"
     },
     {
       "id": "bgm-400117",
