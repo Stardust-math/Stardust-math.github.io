@@ -54,7 +54,8 @@
           'Topology Optimization',
         'machine-learning': 'Machine Learning',
         'latex-typesetting': 'LaTeX Typesetting',
-        'operations-management': 'Operations Management'
+        'operations-management': 'Operations Management',
+        marketing: 'Marketing'
       }),
 
       series: Object.freeze({

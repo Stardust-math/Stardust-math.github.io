@@ -49,7 +49,8 @@
         'topology-optimization': '拓扑优化',
         'machine-learning': '机器学习',
         'latex-typesetting': 'LaTeX 排版',
-        'operations-management': '运营管理'
+        'operations-management': '运营管理',
+        marketing: '市场营销'
       }),
 
       series: Object.freeze({

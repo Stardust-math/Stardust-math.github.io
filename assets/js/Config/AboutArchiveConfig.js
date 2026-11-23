@@ -204,6 +204,10 @@
         {
           id: 'operations-management',
           order: 100
+        },
+        {
+          id: 'marketing',
+          order: 110
         }
       ],
 
@@ -1113,7 +1117,7 @@
         primaryCategory: 'works-compilations',
         materialType: 'research-manuscripts-notes',
         publicationStatus: 'preprint',
-        subjects: ['operations-management'],
+        subjects: ['operations-management', 'marketing'],
         roles: ['co-author'],
         languages: ['en'],
         date: '2026-11',
